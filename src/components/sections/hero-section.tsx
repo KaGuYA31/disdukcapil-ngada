@@ -5,6 +5,11 @@ import Link from "next/link";
 import { ArrowRight, Search, FileText, Users, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { statistikUtama } from "@/data/statistik";
+
+const formatNumber = (num: number) => {
+  return new Intl.NumberFormat("id-ID").format(num);
+};
 
 export function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +20,14 @@ export function HeroSection() {
       window.location.href = `/layanan?q=${encodeURIComponent(searchQuery)}`;
     }
   };
+
+  // Data real dari statistik
+  const heroStats = [
+    { label: "Total Penduduk", value: formatNumber(statistikUtama.totalPenduduk) },
+    { label: "Layanan Gratis", value: "10" },
+    { label: "Perkawinan", value: formatNumber(statistikUtama.jumlahPerkawinan) },
+    { label: "Cakupan Akta", value: `${statistikUtama.cakupanAktaKelahiran}%` },
+  ];
 
   return (
     <section className="relative bg-gradient-to-br from-green-700 via-green-800 to-green-900 text-white overflow-hidden">
@@ -66,7 +79,7 @@ export function HeroSection() {
               <Button
                 type="submit"
                 size="lg"
-                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6"
+                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold"
               >
                 Cari
               </Button>
@@ -77,7 +90,7 @@ export function HeroSection() {
               <Link href="/layanan">
                 <Button
                   size="lg"
-                  className="bg-white text-green-700 hover:bg-green-50 h-12 px-6"
+                  className="bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold"
                 >
                   <FileText className="mr-2 h-5 w-5" />
                   Lihat Layanan
@@ -85,9 +98,8 @@ export function HeroSection() {
               </Link>
               <Link href="/pengaduan">
                 <Button
-                  variant="outline"
                   size="lg"
-                  className="border-white text-white hover:bg-white/10 h-12 px-6"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold"
                 >
                   <Users className="mr-2 h-5 w-5" />
                   Ajukan Pengaduan
@@ -127,14 +139,9 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Stats Quick View */}
+        {/* Stats Quick View - Data Real */}
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-          {[
-            { label: "Total Penduduk", value: "165.842" },
-            { label: "Layanan Aktif", value: "12" },
-            { label: "Pengaduan Selesai", value: "1.234" },
-            { label: "Rating Kepuasan", value: "4.8/5" },
-          ].map((stat, index) => (
+          {heroStats.map((stat, index) => (
             <div
               key={index}
               className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10"
