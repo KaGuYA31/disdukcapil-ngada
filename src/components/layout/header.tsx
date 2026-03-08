@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Search, ChevronDown, Building2, Phone, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -119,8 +120,14 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-green-700 rounded-lg flex items-center justify-center text-white font-bold text-lg md:text-xl group-hover:bg-green-800 transition-colors">
-              N
+            <div className="relative w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+              <Image
+                src="/logo-kabupaten.png"
+                alt="Logo Kabupaten Ngada"
+                fill
+                className="object-contain group-hover:scale-105 transition-transform"
+                priority
+              />
             </div>
             <div className="hidden sm:block">
               <h1 className="font-bold text-green-800 text-sm md:text-base leading-tight">

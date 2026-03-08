@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   MapPin,
   Phone,
@@ -46,8 +47,13 @@ export function Footer() {
           {/* About Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                N
+              <div className="relative w-12 h-12 bg-white rounded-lg p-1 flex-shrink-0">
+                <Image
+                  src="/logo-kabupaten.png"
+                  alt="Logo Kabupaten Ngada"
+                  fill
+                  className="object-contain p-1"
+                />
               </div>
               <div>
                 <h3 className="font-bold text-white text-lg">Disdukcapil</h3>
