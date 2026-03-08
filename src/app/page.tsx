@@ -1,31 +1,27 @@
-'use client'
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { WhatsAppButton } from "@/components/shared/whatsapp-button";
+import { HeroSection } from "@/components/sections/hero-section";
+import { StatsSection } from "@/components/sections/stats-section";
+import { ServicesSection } from "@/components/sections/services-section";
+import { NewsSection } from "@/components/sections/news-section";
+import { AnnouncementsSection } from "@/components/sections/announcements-section";
+import { CTASection } from "@/components/sections/cta-section";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      gap: '2rem',
-      padding: '1rem'
-    }}>
-      <div style={{
-        position: 'relative',
-        width: '6rem',
-        height: '6rem'
-      }}>
-        <img
-          src="/logo.svg"
-          alt="Z.ai Logo"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain'
-          }}
-        />
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main id="main-content" className="flex-1">
+        <HeroSection />
+        <StatsSection />
+        <ServicesSection />
+        <AnnouncementsSection />
+        <NewsSection />
+        <CTASection />
+      </main>
+      <Footer />
+      <WhatsAppButton />
     </div>
-  )
+  );
 }

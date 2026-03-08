@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "prisma generate && prisma migrate deploy && next build",
+  "installCommand": "bun install",
+  "regions": ["sin1"],
+  "functions": {
+    "src/app/api/**": {
+      "maxDuration": 30
+    }
+  }
+}

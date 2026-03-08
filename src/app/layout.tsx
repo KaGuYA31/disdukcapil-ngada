@@ -1,37 +1,49 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { Providers } from "@/components/providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Z.ai Code Scaffold - AI-Powered Development",
-  description: "Modern Next.js scaffold optimized for AI-powered development with Z.ai. Built with TypeScript, Tailwind CSS, and shadcn/ui.",
-  keywords: ["Z.ai", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "AI development", "React"],
-  authors: [{ name: "Z.ai Team" }],
+  title: {
+    default: "Disdukcapil Kabupaten Ngada - Portal Layanan Kependudukan",
+    template: "%s | Disdukcapil Ngada",
+  },
+  description: "Portal resmi Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada. Layanan informasi KTP, KK, Akta Kelahiran, Akta Kematian, dan layanan kependudukan lainnya.",
+  keywords: [
+    "Disdukcapil Ngada",
+    "KTP",
+    "Kartu Keluarga",
+    "Akta Kelahiran",
+    "Akta Kematian",
+    "Kependudukan",
+    "Pencatatan Sipil",
+    "Kabupaten Ngada",
+    "NTT",
+    "Nusa Tenggara Timur",
+    "Layanan Publik",
+    "Pemerintah",
+  ],
+  authors: [{ name: "Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/favicon.ico",
   },
   openGraph: {
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+    title: "Disdukcapil Kabupaten Ngada",
+    description: "Portal Layanan Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
     type: "website",
+    locale: "id_ID",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -41,12 +53,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${plusJakarta.variable} font-sans antialiased bg-background text-foreground`}
       >
-        {children}
-        <Toaster />
+        <a href="#main-content" className="skip-link">
+          Langsung ke konten utama
+        </a>
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

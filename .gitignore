@@ -49,3 +49,21 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Database files
+/db/
+*.db
+*.db-journal
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+
+# Uploads (optional - uncomment if you don't want to track uploads)
+# /upload/
+
+# Mini services
+/mini-services/
+
+# Worklog
+worklog.md
