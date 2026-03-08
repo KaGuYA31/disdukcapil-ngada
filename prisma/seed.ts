@@ -3,18 +3,30 @@ import { db } from "../src/lib/db";
 async function main() {
   console.log("Seeding database...");
 
+  // Get admin credentials from environment variables
+  const adminUsername = process.env.ADMIN_USERNAME || "admin";
+  const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+  const adminName = process.env.ADMIN_NAME || "Administrator";
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@disdukcapil-ngada.go.id";
+
   // Create admin user
-  const admin = await db.admin.upsert({
-    where: { username: "admin" },
-    update: {},
-    create: {
-      username: "admin",
-      password: "admin123", // In production, this should be hashed
-      name: "Administrator",
-      email: "admin@ngadakab.go.id",
-    },
+  const existingAdmin = await db.admin.findUnique({
+    where: { username: adminUsername },
   });
-  console.log("Created admin user:", admin.username);
+
+  if (!existingAdmin) {
+    const admin = await db.admin.create({
+      data: {
+        username: adminUsername,
+        password: adminPassword,
+        name: adminName,
+        email: adminEmail,
+      },
+    });
+    console.log("Created admin user:", admin.username);
+  } else {
+    console.log("Admin user already exists:", adminUsername);
+  }
 
   // Create sample news
   const newsData = [
@@ -23,7 +35,7 @@ async function main() {
       slug: "pelayanan-online-disdukcapil",
       excerpt: "Masyarakat kini dapat mengakses informasi layanan kependudukan secara online melalui portal resmi Disdukcapil Kabupaten Ngada.",
       content: `<p>Masyarakat Kabupaten Ngada kini dapat mengakses informasi layanan kependudukan secara online melalui portal resmi Disdukcapil Kabupaten Ngada. Portal ini menyediakan informasi lengkap tentang persyaratan dan prosedur berbagai layanan administrasi kependudukan.</p>
-      
+
       <h2>Fitur Portal</h2>
       <p>Portal ini menyediakan berbagai fitur yang memudahkan masyarakat untuk:</p>
       <ul>
@@ -37,48 +49,44 @@ async function main() {
       isPublished: true,
     },
     {
-      title: "Jadwal Pelayanan Bulan Januari 2024",
-      slug: "jadwal-pelayanan-januari-2024",
-      excerpt: "Informasi jadwal pelayanan Disdukcapil Ngada untuk bulan Januari 2024.",
-      content: `<p>Berikut informasi jadwal pelayanan Disdukcapil Ngada untuk bulan Januari 2024. Pastikan Anda datang pada jam kerja yang telah ditentukan untuk mendapatkan pelayanan optimal.</p>
-      
+      title: "Semua Layanan Kependudukan GRATIS!",
+      slug: "layanan-kependudukan-gratis",
+      excerpt: "Berdasarkan Permendagri No. 3 Tahun 2024, semua layanan kependudukan tidak dipungut biaya sama sekali.",
+      content: `<p>Berdasarkan <strong>Permendagri No. 3 Tahun 2024</strong> dan <strong>SE Menpan RB Tahun 2024</strong>, semua layanan administrasi kependudukan di Disdukcapil Kabupaten Ngada <strong>GRATIS</strong> (tidak dipungut biaya sama sekali).</p>
+
+      <h2>Layanan yang GRATIS</h2>
+      <ul>
+        <li>Pembuatan KTP-el</li>
+        <li>Pembuatan Kartu Keluarga (KK)</li>
+        <li>Akta Kelahiran</li>
+        <li>Akta Perkawinan</li>
+        <li>Akta Perceraian</li>
+        <li>Akta Kematian</li>
+        <li>Surat Pindah Datang</li>
+        <li>Dan layanan kependudukan lainnya</li>
+      </ul>
+
+      <p>Datang langsung ke kantor Disdukcapil Ngada dengan membawa persyaratan yang diperlukan.</p>`,
+      category: "Informasi",
+      author: "Admin Disdukcapil",
+      isPublished: true,
+    },
+    {
+      title: "Jadwal Pelayanan Disdukcapil Ngada",
+      slug: "jadwal-pelayanan",
+      excerpt: "Informasi jadwal pelayanan Disdukcapil Ngada untuk masyarakat.",
+      content: `<p>Berikut informasi jadwal pelayanan Disdukcapil Ngada. Pastikan Anda datang pada jam kerja yang telah ditentukan untuk mendapatkan pelayanan optimal.</p>
+
       <h2>Jadwal Operasional</h2>
       <ul>
-        <li>Senin - Kamis: 08.00 - 15.30 WITA</li>
-        <li>Jumat: 08.00 - 16.00 WITA</li>
-        <li>Sabtu - Minggu: Tutup</li>
-      </ul>`,
+        <li><strong>Senin - Kamis:</strong> 08.00 - 15.30 WITA</li>
+        <li><strong>Jumat:</strong> 08.00 - 16.00 WITA</li>
+        <li><strong>Sabtu - Minggu:</strong> Tutup</li>
+      </ul>
+
+      <h2>Lokasi</h2>
+      <p>Jl. Ahmed A. Damanik, Soa, Kec. Bajawa, Kabupaten Ngada, Nusa Tenggara Timur</p>`,
       category: "Pengumuman",
-      author: "Admin Disdukcapil",
-      isPublished: true,
-    },
-    {
-      title: "Sosialisasi Pentingnya Mempunyai Dokumen Kependudukan",
-      slug: "sosialisasi-dokumen-kependudukan",
-      excerpt: "Tim Disdukcapil Ngada melakukan sosialisasi ke berbagai kecamatan tentang pentingnya memiliki dokumen kependudukan.",
-      content: `<p>Tim Disdukcapil Ngada melakukan sosialisasi ke berbagai kecamatan tentang pentingnya memiliki dokumen kependudukan yang lengkap untuk akses pelayanan publik.</p>
-      
-      <h2>Kegiatan Sosialisasi</h2>
-      <p>Kegiatan sosialisasi dilakukan di beberapa kecamatan dengan melibatkan perangkat desa dan masyarakat.</p>`,
-      category: "Kegiatan",
-      author: "Humas Disdukcapil",
-      isPublished: true,
-    },
-    {
-      title: "Pembaharuan Sistem Database Kependudukan",
-      slug: "pembaharuan-sistem-database",
-      excerpt: "Disdukcapil Ngada melakukan pembaharuan sistem database kependudukan untuk meningkatkan kualitas data.",
-      content: `<p>Disdukcapil Ngada melakukan pembaharuan sistem database kependudukan untuk meningkatkan kualitas data dan kecepatan pelayanan kepada masyarakat.</p>`,
-      category: "Informasi",
-      author: "Admin Disdukcapil",
-      isPublished: true,
-    },
-    {
-      title: "Layanan Akta Kelahiran Gratis untuk Bayi Baru Lahir",
-      slug: "akta-kelahiran-gratis",
-      excerpt: "Pemerintah Kabupaten Ngada menyediakan layanan pencatatan akta kelahiran gratis.",
-      content: `<p>Pemerintah Kabupaten Ngada menyediakan layanan pencatatan akta kelahiran gratis untuk bayi yang didaftarkan maksimal 60 hari setelah kelahiran.</p>`,
-      category: "Informasi",
       author: "Admin Disdukcapil",
       isPublished: true,
     },
