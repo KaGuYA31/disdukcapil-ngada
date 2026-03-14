@@ -1,5 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { decrypt, maskNIK } from "@/lib/security";
+
+/**
+ * Helper function to safely decrypt NIK
+ */
+function safeDecryptNIK(encryptedNik: string | null): string {
+  if (!encryptedNik) return "";
+  try {
+    if (encryptedNik.includes(":")) {
+      return decrypt(encryptedNik);
+    }
+    return encryptedNik;
+  } catch {
+    return encryptedNik;
+  }
+}
 
 // GET - Get specific submission by ID or nomorPengajuan
 export async function GET(
@@ -26,9 +42,16 @@ export async function GET(
       );
     }
 
+    // Decrypt NIK for admin view
+    const decryptedNik = safeDecryptNIK(submission.nik);
+
     return NextResponse.json({
       success: true,
-      data: submission,
+      data: {
+        ...submission,
+        nik: decryptedNik, // Return decrypted NIK for admin
+        nikMasked: maskNIK(decryptedNik), // Also provide masked version
+      },
     });
   } catch (error) {
     console.error("Error fetching submission:", error);
@@ -48,6 +71,15 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
     const { status, catatan } = body;
+
+    // Validate status
+    const validStatuses = ["Baru", "Diverifikasi", "Diproses", "Selesai", "Ditolak"];
+    if (status && !validStatuses.includes(status)) {
+      return NextResponse.json(
+        { success: false, error: "Status tidak valid" },
+        { status: 400 }
+      );
+    }
 
     // Check if submission exists
     const existing = await db.pengajuanOnline.findUnique({
@@ -71,6 +103,9 @@ export async function PUT(
     if (status === "Diproses" && existing.status === "Baru") {
       updateData.tanggalProses = new Date();
     }
+    if (status === "Diproses" && existing.status === "Diverifikasi") {
+      updateData.tanggalProses = updateData.tanggalProses || existing.tanggalProses;
+    }
     if (status === "Selesai") {
       updateData.tanggalSelesai = new Date();
     }
@@ -85,9 +120,16 @@ export async function PUT(
       },
     });
 
+    // Decrypt NIK for admin view
+    const decryptedNik = safeDecryptNIK(submission.nik);
+
     return NextResponse.json({
       success: true,
-      data: submission,
+      data: {
+        ...submission,
+        nik: decryptedNik,
+        nikMasked: maskNIK(decryptedNik),
+      },
       message: "Status pengajuan berhasil diperbarui",
     });
   } catch (error) {

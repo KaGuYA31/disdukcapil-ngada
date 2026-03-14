@@ -47,7 +47,8 @@ interface Submission {
   id: string;
   nomorPengajuan: string;
   namaLengkap: string;
-  nik: string;
+  nik: string; // This will be masked from API
+  nikMasked?: string; // Alternative masked field
   tempatLahir: string | null;
   tanggalLahir: string | null;
   jenisKelamin: string | null;
