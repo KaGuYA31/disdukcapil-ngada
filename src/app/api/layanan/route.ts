@@ -52,6 +52,7 @@ export async function POST(request: NextRequest) {
       processingTime,
       fee,
       isActive,
+      isOnline,
       order,
     } = body;
 
@@ -87,6 +88,7 @@ export async function POST(request: NextRequest) {
         processingTime: processingTime || "Selesai di Tempat",
         fee: fee || "GRATIS",
         isActive: isActive ?? true,
+        isOnline: isOnline ?? false,
         order: order || 0,
       },
     });
@@ -122,6 +124,7 @@ export async function PUT(request: NextRequest) {
       processingTime,
       fee,
       isActive,
+      isOnline,
       order,
     } = body;
 
@@ -170,6 +173,7 @@ export async function PUT(request: NextRequest) {
         processingTime: processingTime || existingLayanan.processingTime,
         fee: fee || existingLayanan.fee,
         isActive: isActive !== undefined ? isActive : existingLayanan.isActive,
+        isOnline: isOnline !== undefined ? isOnline : existingLayanan.isOnline,
         order: order !== undefined ? order : existingLayanan.order,
       },
     });

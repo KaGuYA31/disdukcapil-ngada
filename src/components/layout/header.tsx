@@ -29,6 +29,7 @@ const navigation = [
     ],
   },
   { title: "Layanan", href: "/layanan" },
+  { title: "Layanan Online", href: "/layanan-online" },
   { title: "Statistik", href: "/statistik" },
   { title: "Berita", href: "/berita" },
   { title: "Inovasi", href: "/inovasi" },

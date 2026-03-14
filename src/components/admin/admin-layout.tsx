@@ -18,6 +18,7 @@ import {
   Lightbulb,
   UserCircle,
   CreditCard,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -43,6 +44,11 @@ const menuItems = [
     title: "Manajemen Layanan",
     href: "/admin/layanan",
     icon: CreditCard,
+  },
+  {
+    title: "Pengajuan Online",
+    href: "/admin/pengajuan-online",
+    icon: Globe,
   },
   {
     title: "Kegiatan Inovasi",

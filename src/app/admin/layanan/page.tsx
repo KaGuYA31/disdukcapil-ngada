@@ -64,6 +64,7 @@ interface Layanan {
   processingTime: string | null;
   fee: string | null;
   isActive: boolean;
+  isOnline: boolean;
   order: number;
   createdAt: string;
   updatedAt: string;
@@ -137,12 +138,15 @@ function SortableItem({
       </button>
 
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <h3 className="font-semibold text-gray-900 truncate">{layanan.name}</h3>
           {layanan.isActive ? (
             <Badge className="bg-green-100 text-green-700">Aktif</Badge>
           ) : (
             <Badge variant="secondary">Nonaktif</Badge>
+          )}
+          {layanan.isOnline && (
+            <Badge className="bg-blue-100 text-blue-700">Online</Badge>
           )}
         </div>
         <p className="text-sm text-gray-500 truncate">{layanan.slug}</p>
@@ -189,6 +193,7 @@ export default function AdminLayananPage() {
     processingTime: "Selesai di Tempat",
     fee: "GRATIS",
     isActive: true,
+    isOnline: false,
   });
   const [uploadingForm, setUploadingForm] = useState(false);
 
@@ -255,6 +260,7 @@ export default function AdminLayananPage() {
       processingTime: "Selesai di Tempat",
       fee: "GRATIS",
       isActive: true,
+      isOnline: false,
     });
     setShowDialog(true);
   };
@@ -274,6 +280,7 @@ export default function AdminLayananPage() {
       processingTime: layanan.processingTime || "Selesai di Tempat",
       fee: layanan.fee || "GRATIS",
       isActive: layanan.isActive,
+      isOnline: layanan.isOnline || false,
     });
     setShowDialog(true);
   };
@@ -426,6 +433,7 @@ export default function AdminLayananPage() {
         processingTime: formData.processingTime,
         fee: formData.fee,
         isActive: formData.isActive,
+        isOnline: formData.isOnline,
         order: editingLayanan?.order ?? layananList.length,
       };
 
@@ -654,15 +662,27 @@ export default function AdminLayananPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Switch
-                id="isActive"
-                checked={formData.isActive}
-                onCheckedChange={(checked) =>
-                  setFormData((prev) => ({ ...prev, isActive: checked }))
-                }
-              />
-              <Label htmlFor="isActive">Layanan aktif (ditampilkan di website)</Label>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="isActive"
+                  checked={formData.isActive}
+                  onCheckedChange={(checked) =>
+                    setFormData((prev) => ({ ...prev, isActive: checked }))
+                  }
+                />
+                <Label htmlFor="isActive">Layanan aktif (ditampilkan di website)</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="isOnline"
+                  checked={formData.isOnline}
+                  onCheckedChange={(checked) =>
+                    setFormData((prev) => ({ ...prev, isOnline: checked }))
+                  }
+                />
+                <Label htmlFor="isOnline">Tersedia untuk pengajuan online</Label>
+              </div>
             </div>
 
             {/* Requirements */}
