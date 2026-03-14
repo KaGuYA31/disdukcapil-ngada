@@ -1,7 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import {
+  validateNIK,
+  validatePhone,
+  sanitizeString,
+  checkRateLimit,
+  secureResponse,
+  logSecurityEvent,
+  encrypt,
+  decrypt,
+  maskNIK,
+} from "@/lib/security";
 
+// ============================================
 // GET - List all online services or submissions
+// ============================================
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -19,7 +32,7 @@ export async function GET(request: NextRequest) {
         orderBy: { order: "asc" },
       });
 
-      return NextResponse.json({
+      return secureResponse({
         success: true,
         data: layanan.map((l) => ({
           ...l,
@@ -31,7 +44,20 @@ export async function GET(request: NextRequest) {
     }
 
     if (type === "submissions") {
-      // Get all submissions (admin only)
+      // Rate limit for admin submissions query
+      const rateCheck = checkRateLimit(request, {
+        windowMs: 60 * 1000,
+        maxRequests: 60,
+      });
+
+      if (!rateCheck.allowed) {
+        return NextResponse.json(
+          { success: false, error: "Terlalu banyak permintaan" },
+          { status: 429 }
+        );
+      }
+
+      // Get all submissions (admin only - should add auth check in production)
       const whereClause: any = {};
       
       if (status && status !== "all") {
@@ -39,11 +65,12 @@ export async function GET(request: NextRequest) {
       }
 
       if (search) {
+        const sanitizedSearch = sanitizeString(search);
         whereClause.OR = [
-          { nomorPengajuan: { contains: search } },
-          { namaLengkap: { contains: search } },
-          { nik: { contains: search } },
+          { nomorPengajuan: { contains: sanitizedSearch } },
+          { namaLengkap: { contains: sanitizedSearch } },
         ];
+        // Note: Cannot search encrypted NIK directly
       }
 
       const submissions = await db.pengajuanOnline.findMany({
@@ -52,14 +79,27 @@ export async function GET(request: NextRequest) {
           layanan: {
             select: { name: true, slug: true },
           },
-          dokumen: true,
+          dokumen: {
+            select: {
+              id: true,
+              namaDokumen: true,
+              fileName: true,
+              fileSize: true,
+            },
+          },
         },
         orderBy: { createdAt: "desc" },
       });
 
-      return NextResponse.json({
+      // Mask NIK in response for security
+      const sanitizedSubmissions = submissions.map((s) => ({
+        ...s,
+        nik: s.nik ? maskNIKFromEncrypted(s.nik) : null,
+      }));
+
+      return secureResponse({
         success: true,
-        data: submissions,
+        data: sanitizedSubmissions,
       });
     }
 
@@ -72,7 +112,7 @@ export async function GET(request: NextRequest) {
       orderBy: { order: "asc" },
     });
 
-    return NextResponse.json({
+    return secureResponse({
       success: true,
       data: layanan.map((l) => ({
         ...l,
@@ -83,15 +123,41 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error fetching online services:", error);
-    return NextResponse.json(
+    return secureResponse(
       { success: false, error: "Failed to fetch data" },
-      { status: 500 }
+      500
     );
   }
 }
 
+// ============================================
 // POST - Create new submission
+// ============================================
 export async function POST(request: NextRequest) {
+  // Rate limiting: 5 submissions per minute per IP
+  const rateCheck = checkRateLimit(request, {
+    windowMs: 60 * 1000,
+    maxRequests: 5,
+  });
+
+  if (!rateCheck.allowed) {
+    logSecurityEvent("RATE_LIMIT_EXCEEDED", { endpoint: "/api/layanan-online POST" }, request);
+    
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Terlalu banyak pengajuan. Silakan tunggu " + rateCheck.retryAfter + " detik.",
+        retryAfter: rateCheck.retryAfter,
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateCheck.retryAfter),
+        },
+      }
+    );
+  }
+
   try {
     const body = await request.json();
     const {
@@ -112,31 +178,58 @@ export async function POST(request: NextRequest) {
       dokumen,
     } = body;
 
+    // Sanitize all string inputs
+    const sanitizedData = {
+      layananId: sanitizeString(layananId),
+      namaLengkap: sanitizeString(namaLengkap),
+      nik: sanitizeString(nik),
+      tempatLahir: sanitizeString(tempatLahir),
+      alamat: sanitizeString(alamat),
+      rt: sanitizeString(rt),
+      rw: sanitizeString(rw),
+      kelurahan: sanitizeString(kelurahan),
+      kecamatan: sanitizeString(kecamatan),
+      noTelepon: sanitizeString(noTelepon),
+      email: sanitizeString(email),
+      keterangan: sanitizeString(keterangan),
+    };
+
     // Validate required fields
-    if (!layananId || !namaLengkap || !nik || !noTelepon) {
-      return NextResponse.json(
+    if (!sanitizedData.layananId || !sanitizedData.namaLengkap || !sanitizedData.nik || !sanitizedData.noTelepon) {
+      return secureResponse(
         { success: false, error: "Field wajib harus diisi" },
-        { status: 400 }
+        400
       );
     }
 
-    // Validate NIK format (16 digits)
-    if (!/^\d{16}$/.test(nik)) {
-      return NextResponse.json(
-        { success: false, error: "NIK harus 16 digit angka" },
-        { status: 400 }
+    // Validate NIK format with security check
+    const nikValidation = validateNIK(sanitizedData.nik);
+    if (!nikValidation.valid) {
+      logSecurityEvent("INVALID_NIK", { reason: nikValidation.error }, request);
+      return secureResponse(
+        { success: false, error: nikValidation.error },
+        400
+      );
+    }
+
+    // Validate phone number
+    const phoneValidation = validatePhone(sanitizedData.noTelepon);
+    if (!phoneValidation.valid) {
+      return secureResponse(
+        { success: false, error: phoneValidation.error },
+        400
       );
     }
 
     // Check if layanan exists and is online
     const layanan = await db.layanan.findUnique({
-      where: { id: layananId },
+      where: { id: sanitizedData.layananId },
     });
 
     if (!layanan || !layanan.isOnline || !layanan.isActive) {
-      return NextResponse.json(
+      return secureResponse(
         { success: false, error: "Layanan tidak tersedia untuk pengajuan online" },
-        { status: 400 }
+        400
       );
     }
 
@@ -144,7 +237,6 @@ export async function POST(request: NextRequest) {
     const today = new Date();
     const dateStr = today.toISOString().slice(0, 10).replace(/-/g, "");
     
-    // Get count of today's submissions
     const todayCount = await db.pengajuanOnline.count({
       where: {
         nomorPengajuan: {
@@ -156,30 +248,33 @@ export async function POST(request: NextRequest) {
     const sequence = String(todayCount + 1).padStart(4, "0");
     const nomorPengajuan = `ONL-${dateStr}-${sequence}`;
 
+    // Encrypt NIK before storing
+    const encryptedNIK = encrypt(sanitizedData.nik);
+
     // Create submission
     const submission = await db.pengajuanOnline.create({
       data: {
         nomorPengajuan,
-        layananId,
-        namaLengkap,
-        nik,
-        tempatLahir: tempatLahir || null,
+        layananId: sanitizedData.layananId,
+        namaLengkap: sanitizedData.namaLengkap,
+        nik: encryptedNIK, // Store encrypted NIK
+        tempatLahir: sanitizedData.tempatLahir || null,
         tanggalLahir: tanggalLahir ? new Date(tanggalLahir) : null,
         jenisKelamin: jenisKelamin || null,
-        alamat: alamat || null,
-        rt: rt || null,
-        rw: rw || null,
-        kelurahan: kelurahan || null,
-        kecamatan: kecamatan || null,
-        noTelepon,
-        email: email || null,
-        keterangan: keterangan || null,
+        alamat: sanitizedData.alamat || null,
+        rt: sanitizedData.rt || null,
+        rw: sanitizedData.rw || null,
+        kelurahan: sanitizedData.kelurahan || null,
+        kecamatan: sanitizedData.kecamatan || null,
+        noTelepon: sanitizedData.noTelepon,
+        email: sanitizedData.email || null,
+        keterangan: sanitizedData.keterangan || null,
         status: "Baru",
         dokumen: dokumen
           ? {
               create: dokumen.map((doc: any) => ({
-                namaDokumen: doc.namaDokumen,
-                fileName: doc.fileName,
+                namaDokumen: sanitizeString(doc.namaDokumen),
+                fileName: sanitizeString(doc.fileName),
                 fileUrl: doc.fileUrl,
                 fileSize: doc.fileSize || null,
                 fileType: doc.fileType || null,
@@ -193,16 +288,47 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({
+    // Log successful submission
+    logSecurityEvent(
+      "SUBMISSION_CREATED",
+      {
+        nomorPengajuan,
+        layanan: layanan.name,
+        nikMasked: maskNIK(sanitizedData.nik),
+      },
+      request
+    );
+
+    // Return response with masked NIK only
+    return secureResponse({
       success: true,
-      data: submission,
+      data: {
+        ...submission,
+        nik: maskNIK(sanitizedData.nik), // Return masked NIK only
+      },
       message: "Pengajuan berhasil dikirim",
     });
   } catch (error) {
     console.error("Error creating submission:", error);
-    return NextResponse.json(
+    logSecurityEvent("SUBMISSION_ERROR", { error: String(error) }, request);
+    return secureResponse(
       { success: false, error: "Gagal mengirim pengajuan" },
-      { status: 500 }
+      500
     );
+  }
+}
+
+// ============================================
+// Helper: Mask NIK from encrypted value
+// ============================================
+function maskNIKFromEncrypted(encryptedNik: string): string {
+  try {
+    if (encryptedNik && encryptedNik.includes(":")) {
+      const decrypted = decrypt(encryptedNik);
+      return maskNIK(decrypted);
+    }
+    return maskNIK(encryptedNik);
+  } catch {
+    return "****************";
   }
 }
