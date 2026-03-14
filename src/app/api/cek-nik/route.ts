@@ -71,9 +71,6 @@ export async function POST(request: NextRequest) {
     // Get all submissions (we need to decrypt NIK to compare)
     // In production, use blind indexing for searchable encryption
     const allPengajuan = await db.pengajuanOnline.findMany({
-      where: {
-        nik: { not: null },
-      },
       select: {
         id: true,
         nik: true,
@@ -92,8 +89,9 @@ export async function POST(request: NextRequest) {
 
     // Find matching NIK (compare decrypted values)
     const matches = allPengajuan.filter((p) => {
+      if (!p.nik) return false;
       try {
-        if (p.nik && p.nik.includes(":")) {
+        if (p.nik.includes(":")) {
           const decrypted = decrypt(p.nik);
           return decrypted === sanitizedNIK;
         }
