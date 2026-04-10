@@ -159,8 +159,8 @@ const defaultServices: Record<string, {
     category: "Dokumen Keluarga",
     processingTime: "Selesai di Tempat",
     fee: "GRATIS",
-    color: "text-blue-600",
-    bgColor: "bg-blue-100",
+    color: "text-teal-600",
+    bgColor: "bg-teal-100",
     sameDayService: true,
     legalBasis: [
       { name: "UU No. 24 Tahun 2013", description: "Pasal 53-59 tentang Kartu Keluarga" },
@@ -319,8 +319,8 @@ const defaultServices: Record<string, {
     category: "Pencatatan Sipil",
     processingTime: "Selesai di Tempat",
     fee: "GRATIS",
-    color: "text-purple-600",
-    bgColor: "bg-purple-100",
+    color: "text-amber-600",
+    bgColor: "bg-amber-100",
     sameDayService: true,
     legalBasis: [
       { name: "UU No. 24 Tahun 2013", description: "Pasal 49-52 tentang Pencatatan Perceraian" },
@@ -605,12 +605,12 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                 </div>
 
                 {/* Free Service Notice */}
-                <Card className="bg-blue-50 border-blue-200">
+                <Card className="bg-green-50 border-green-200">
                   <CardContent className="p-4 flex items-center gap-3">
-                    <Sparkles className="h-6 w-6 text-blue-600 flex-shrink-0" />
+                    <Sparkles className="h-6 w-6 text-green-600 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-blue-800">Pelayanan Gratis</p>
-                      <p className="text-sm text-blue-700">
+                      <p className="font-semibold text-green-800">Pelayanan Gratis</p>
+                      <p className="text-sm text-green-700">
                         Seluruh layanan administrasi kependudukan <strong>TIDAK DIPUNGUT BIAYA</strong> apapun (GRATIS).
                       </p>
                     </div>
@@ -662,7 +662,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                   <Card className="border-gray-200">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <MapPin className="h-5 w-5 text-blue-600" />
+                        <MapPin className="h-5 w-5 text-teal-600" />
                         Prosedur
                       </CardTitle>
                     </CardHeader>
@@ -672,7 +672,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                         <div className="space-y-4">
                           {procedures.map((proc: { step: number; title: string; description?: string }) => (
                             <div key={proc.step} className="flex gap-4 relative">
-                              <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 z-10">
+                              <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 z-10">
                                 {proc.step}
                               </div>
                               <div>
@@ -760,7 +760,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                 <Card className="border-gray-200">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg">
-                      <Clock className="h-5 w-5 text-blue-600" />
+                      <Clock className="h-5 w-5 text-teal-600" />
                       Jam Pelayanan
                     </CardTitle>
                   </CardHeader>
@@ -913,7 +913,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
               <Card className="border-gray-200">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-blue-600" />
+                    <MapPin className="h-5 w-5 text-teal-600" />
                     Prosedur
                   </CardTitle>
                 </CardHeader>
@@ -923,7 +923,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                     <div className="space-y-4">
                       {defaultService.procedures.map((proc) => (
                         <div key={proc.step} className="flex gap-4 relative">
-                          <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 z-10">
+                          <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 z-10">
                             {proc.step}
                           </div>
                           <div>
@@ -964,7 +964,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                 <Card className="border-gray-200">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <HelpCircle className="h-5 w-5 text-purple-600" />
+                      <HelpCircle className="h-5 w-5 text-amber-600" />
                       Pertanyaan Umum
                     </CardTitle>
                   </CardHeader>
@@ -1003,7 +1003,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
               <Card className="border-gray-200">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Clock className="h-5 w-5 text-blue-600" />
+                    <Clock className="h-5 w-5 text-teal-600" />
                     Jam Pelayanan
                   </CardTitle>
                 </CardHeader>

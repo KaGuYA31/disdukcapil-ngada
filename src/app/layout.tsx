@@ -12,6 +12,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://disdukcapil-ngada.vercel.app"),
   title: {
     default: "Disdukcapil Kabupaten Ngada - Portal Layanan Kependudukan",
     template: "%s | Disdukcapil Ngada",
@@ -40,6 +41,16 @@ export const metadata: Metadata = {
     description: "Portal Layanan Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
     type: "website",
     locale: "id_ID",
+    url: "https://disdukcapil-ngada.vercel.app",
+    siteName: "Disdukcapil Kabupaten Ngada",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Disdukcapil Kabupaten Ngada",
+    description: "Portal Layanan Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
+  },
+  alternates: {
+    canonical: "/",
   },
   robots: {
     index: true,

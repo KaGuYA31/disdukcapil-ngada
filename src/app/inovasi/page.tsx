@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
+import { BackToTop } from "@/components/shared/back-to-top";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import {
   Card,
@@ -101,6 +102,7 @@ function InovasiLoadingSkeleton() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BackToTop />
     </div>
   );
 }
@@ -320,6 +322,7 @@ export default function InovasiPage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BackToTop />
     </div>
   );
 }

@@ -1,6 +1,20 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+  },
+};
 
 const timeline = [
   {
@@ -51,21 +65,33 @@ export function SejarahSection() {
   return (
     <section id="sejarah" className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-green-600 font-semibold text-sm uppercase tracking-wider">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerContainer}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
+          <motion.span variants={fadeInUp} className="text-green-600 font-semibold text-sm uppercase tracking-wider">
             Sejarah
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+          </motion.span>
+          <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
             Perjalanan Dinas
-          </h2>
-          <p className="text-gray-600 mt-4">
+          </motion.h2>
+          <motion.p variants={fadeInUp} className="text-gray-600 mt-4">
             Sejarah perkembangan Dinas Kependudukan dan Pencatatan Sipil
             Kabupaten Ngada dari waktu ke waktu
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Timeline */}
-        <div className="max-w-3xl mx-auto">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={staggerContainer}
+          className="max-w-3xl mx-auto"
+        >
           <div className="relative">
             {/* Vertical Line */}
             <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-green-200 transform md:-translate-x-1/2"></div>
@@ -73,8 +99,9 @@ export function SejarahSection() {
             {/* Timeline Items */}
             <div className="space-y-8">
               {timeline.map((item, index) => (
-                <div
+                <motion.div
                   key={index}
+                  variants={fadeInUp}
                   className={`relative flex items-start gap-6 ${
                     index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                   }`}
@@ -107,11 +134,11 @@ export function SejarahSection() {
 
                   {/* Empty space for alternating layout */}
                   <div className="hidden md:block md:w-1/2"></div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

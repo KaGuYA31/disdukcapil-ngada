@@ -427,13 +427,13 @@ function ServicesListContent() {
 
         {/* Same Day Service Notice */}
         <div className="max-w-4xl mx-auto mb-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
-            <CheckCircle className="h-6 w-6 text-blue-600 flex-shrink-0" />
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start gap-3">
+            <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0" />
             <div>
-              <p className="font-semibold text-blue-800">
+              <p className="font-semibold text-green-800">
                 Layanan Selesai di Tempat
               </p>
-              <p className="text-sm text-blue-700 mt-1">
+              <p className="text-sm text-green-700 mt-1">
                 Seluruh layanan kependudukan dapat diselesaikan pada hari yang
                 sama selama persyaratan sudah lengkap dan benar. Kecuali untuk
                 rekam baru KTP-el yang memerlukan waktu 3-5 hari kerja untuk

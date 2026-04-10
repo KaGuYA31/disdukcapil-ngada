@@ -62,8 +62,8 @@ const statusConfig: {
 } = {
   Baru: {
     label: "Baru",
-    color: "text-blue-700",
-    bgColor: "bg-blue-100",
+    color: "text-teal-700",
+    bgColor: "bg-teal-100",
     icon: Clock,
     description: "Pengajuan baru diterima, menunggu verifikasi",
   },
@@ -290,8 +290,8 @@ export default function CekStatusPage() {
                     <CardContent>
                       <div className="space-y-4">
                         <div className="flex items-start gap-3">
-                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <FileText className="h-4 w-4 text-blue-600" />
+                          <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+                            <FileText className="h-4 w-4 text-teal-600" />
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between">

@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
+import { BackToTop } from "@/components/shared/back-to-top";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 interface RingkasanData {
@@ -100,6 +101,7 @@ function StatistikLoadingSkeleton() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BackToTop />
     </div>
   );
 }
@@ -539,6 +541,7 @@ export default function StatistikPage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BackToTop />
     </div>
   );
 }
