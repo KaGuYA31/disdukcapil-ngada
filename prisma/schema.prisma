@@ -1,13 +1,14 @@
 // This is your Prisma schema file for Disdukcapil Ngada
-// Local development uses SQLite
+// Production uses Supabase PostgreSQL
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 // =============================================
@@ -257,8 +258,8 @@ model Berita {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  content     String
-  excerpt     String?
+  content     String   @db.Text
+  excerpt     String?  @db.Text
   thumbnail   String?
   category    String   @default("Umum")
   isPublished Boolean  @default(true)
@@ -274,7 +275,7 @@ model Layanan {
   id             String   @id @default(cuid())
   name           String
   slug           String   @unique
-  description    String
+  description    String   @db.Text
   icon           String?
   category       String   @default("Pendaftaran Penduduk") // Pendaftaran Penduduk, Pencatatan Sipil
   requirements   String   @default("[]") // JSON string of requirements
@@ -306,7 +307,7 @@ model PengajuanOnline {
   tempatLahir  String?
   tanggalLahir DateTime?
   jenisKelamin String? // L/P
-  alamat       String?
+  alamat       String?  @db.Text
   rt           String?
   rw           String?
   kelurahan    String?
@@ -358,9 +359,9 @@ model Pengaduan {
   email     String?
   phone     String?
   subject   String
-  message   String
+  message   String   @db.Text
   status    String   @default("Baru") // Baru, Diproses, Selesai
-  response  String?
+  response  String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -369,7 +370,7 @@ model Pengaduan {
 model Pengumuman {
   id        String   @id @default(cuid())
   title     String
-  content   String
+  content   String   @db.Text
   type      String   @default("Info") // Info, Urgent, Maintenance
   startDate DateTime?
   endDate   DateTime?
@@ -382,7 +383,7 @@ model Pengumuman {
 model Dokumen {
   id            String   @id @default(cuid())
   title         String
-  description   String?
+  description   String?  @db.Text
   category      String   // Peraturan, Laporan, SOP, Formulir
   fileUrl       String
   fileSize      String?
@@ -398,8 +399,8 @@ model Inovasi {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  description String
-  content     String   // Detail kegiatan (HTML atau text)
+  description String   @db.Text
+  content     String   @db.Text
   photo       String?  // URL foto kegiatan
   location    String?  // Lokasi kegiatan
   date        DateTime? // Tanggal kegiatan
@@ -456,7 +457,7 @@ model Sejarah {
   id          String   @id @default(cuid())
   year        String
   title       String
-  description String
+  description String   @db.Text
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
