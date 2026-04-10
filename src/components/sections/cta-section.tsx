@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { Phone, MapPin, Clock, ArrowRight, MessageCircle } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { CONTACT_INFO, OPERATING_HOURS } from "@/lib/constants";
 
 // Animation variants
 const textVariants = {
@@ -47,18 +48,18 @@ const contactItems = [
   {
     icon: MapPin,
     label: "Alamat",
-    value: "Jl. Ahmad Yani No.1, Bajawa, Kabupaten Ngada, NTT 86413",
+    value: CONTACT_INFO.address,
   },
   {
     icon: Phone,
     label: "Telepon",
-    value: "(0382) 21073",
+    value: CONTACT_INFO.phone,
   },
   {
     icon: Clock,
     label: "Jam Pelayanan",
-    value: "Senin - Kamis: 08.00 - 15.30 WITA",
-    value2: "Jumat: 08.00 - 16.00 WITA",
+    value: `${OPERATING_HOURS.weekdays.days}: ${OPERATING_HOURS.weekdays.hours}`,
+    value2: `${OPERATING_HOURS.friday.days}: ${OPERATING_HOURS.friday.hours}`,
   },
 ];
 
@@ -149,7 +150,7 @@ export function CTASection() {
                 animate={isInView ? "visible" : "hidden"}
               >
                 <a
-                  href="https://wa.me/6238221073"
+                  href={CONTACT_INFO.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

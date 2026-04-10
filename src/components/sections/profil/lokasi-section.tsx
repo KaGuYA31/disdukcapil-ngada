@@ -1,12 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Phone, Clock, Mail } from "lucide-react";
+import { MapPin, Phone, Clock, Mail, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { CONTACT_INFO, LOCATION, OPERATING_HOURS } from "@/lib/constants";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+};
+
+const mapFadeInUp = {
+  hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
 };
 
@@ -40,7 +46,61 @@ export function LokasiSection() {
           </motion.p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {/* Google Maps Embed */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={mapFadeInUp}
+          className="max-w-6xl mx-auto w-full"
+        >
+          <div className="w-full h-80 md:h-96 rounded-xl overflow-hidden border border-gray-200">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.5!2d121.0731!3d-8.8489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNTAnNTYuMCJTIDEyMcKwMDQnMjEuMiJF!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Lokasi Disdukcapil Ngada"
+              className="w-full h-full"
+            />
+          </div>
+        </motion.div>
+
+        {/* Address Overlay Card */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={mapFadeInUp}
+          className="max-w-6xl mx-auto w-full -mt-6 relative z-10 px-4"
+        >
+          <Card className="border-gray-200 shadow-lg max-w-md mx-auto">
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <MapPin className="h-5 w-5 text-teal-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-gray-700 text-sm font-medium truncate">
+                  {CONTACT_INFO.address}
+                </p>
+                <a
+                  href={LOCATION.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 text-xs hover:underline inline-flex items-center gap-1"
+                >
+                  Buka di Google Maps
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        <div className="mt-10 grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Contact Info */}
           <motion.div
             initial="hidden"
@@ -59,11 +119,9 @@ export function LokasiSection() {
                     <div>
                       <h3 className="font-semibold text-gray-900">Alamat</h3>
                       <p className="text-gray-600 text-sm mt-1">
-                        Jl. Ahmad Yani No.1
+                        {LOCATION.address}
                         <br />
-                        Bajawa, Kabupaten Ngada
-                        <br />
-                        Nusa Tenggara Timur 86413
+                        {LOCATION.regency}
                       </p>
                     </div>
                   </div>
@@ -80,9 +138,9 @@ export function LokasiSection() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Telepon</h3>
-                      <p className="text-gray-600 text-sm mt-1">(0382) 21073</p>
+                      <p className="text-gray-600 text-sm mt-1">{CONTACT_INFO.phone}</p>
                       <a
-                        href="tel:+6238221073"
+                        href={`tel:+${CONTACT_INFO.phoneRaw}`}
                         className="text-green-600 text-sm hover:underline mt-1 inline-block"
                       >
                         Hubungi Sekarang
@@ -103,12 +161,12 @@ export function LokasiSection() {
                     <div>
                       <h3 className="font-semibold text-gray-900">Jam Pelayanan</h3>
                       <p className="text-gray-600 text-sm mt-1">
-                        Senin - Kamis: 08.00 - 15.30 WITA
+                        {OPERATING_HOURS.weekdays.days}: {OPERATING_HOURS.weekdays.hours}
                         <br />
-                        Jumat: 08.00 - 16.00 WITA
+                        {OPERATING_HOURS.friday.days}: {OPERATING_HOURS.friday.hours}
                         <br />
                         <span className="text-red-500">
-                          Sabtu - Minggu: Tutup
+                          {OPERATING_HOURS.saturday.days} - {OPERATING_HOURS.sunday.days}: {OPERATING_HOURS.saturday.hours}
                         </span>
                       </p>
                     </div>
@@ -127,10 +185,10 @@ export function LokasiSection() {
                     <div>
                       <h3 className="font-semibold text-gray-900">Email</h3>
                       <a
-                        href="mailto:disdukcapil@ngadakab.go.id"
+                        href={`mailto:${CONTACT_INFO.email}`}
                         className="text-green-600 text-sm hover:underline"
                       >
-                        disdukcapil@ngadakab.go.id
+                        {CONTACT_INFO.email}
                       </a>
                     </div>
                   </div>
@@ -140,7 +198,7 @@ export function LokasiSection() {
 
             <motion.div variants={fadeInUp}>
               <a
-                href="https://maps.google.com/?q=Bajawa,+Ngada,+NTT"
+                href={LOCATION.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -164,7 +222,7 @@ export function LokasiSection() {
               <div className="w-full h-full min-h-[400px] bg-gray-200 relative">
                 {/* Placeholder for map - Replace with actual Google Maps embed */}
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3905.123456789!2d120.9!3d-8.8!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNDgnMDAuMCJTIDEyMMKwNTQnMDAuMCJF!5e0!3m2!1sen!2sid!4v1234567890"
+                  src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.5!2d${LOCATION.coordinates.longitude}!3d${LOCATION.coordinates.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNTAnNTYuMCJTIDEyMcKwMDQnMjEuMiJF!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid`}
                   width="100%"
                   height="100%"
                   style={{ border: 0, minHeight: "400px" }}

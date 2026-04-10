@@ -225,10 +225,20 @@ export function HeroSection() {
                   Lihat Layanan
                 </Button>
               </Link>
+              <Link href="/layanan-online">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10"
+                >
+                  <Globe className="mr-2 h-5 w-5" />
+                  Layanan Online
+                </Button>
+              </Link>
               <Link href="/pengaduan">
                 <Button
                   size="lg"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold shadow-lg shadow-yellow-500/20"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold shadow-lg shadow-yellow-500/20 hidden sm:inline-flex"
                 >
                   <Users className="mr-2 h-5 w-5" />
                   Ajukan Pengaduan

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Quote, Star, ChevronDown } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -62,6 +62,8 @@ const testimonials: Testimonial[] = [
   },
 ];
 
+const ROTATION_INTERVAL = 5000;
+
 const headerVariants = {
   hidden: { opacity: 0, y: 25 },
   visible: {
@@ -84,18 +86,37 @@ const cardVariants = {
   }),
 };
 
-function StarRating({ rating }: { rating: number }) {
+const starVariants = {
+  hidden: { scale: 0 },
+  visible: (i: number) => ({
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      delay: i * 0.1,
+      ease: "easeOut" as const,
+    },
+  }),
+};
+
+function StarRating({ rating, animate }: { rating: number; animate?: boolean }) {
   return (
     <div className="flex items-center gap-0.5">
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star
+        <motion.div
           key={i}
-          className={`h-4 w-4 ${
-            i < rating
-              ? "fill-yellow-400 text-yellow-400"
-              : "fill-gray-200 text-gray-200"
-          }`}
-        />
+          custom={i}
+          variants={animate ? starVariants : undefined}
+          initial={animate ? "hidden" : undefined}
+          animate={animate ? "visible" : undefined}
+        >
+          <Star
+            className={`h-4 w-4 ${
+              i < rating
+                ? "fill-yellow-400 text-yellow-400"
+                : "fill-gray-200 text-gray-200"
+            }`}
+          />
+        </motion.div>
       ))}
     </div>
   );
@@ -104,9 +125,11 @@ function StarRating({ rating }: { rating: number }) {
 function TestimonialCard({
   testimonial,
   index,
+  animateStars,
 }: {
   testimonial: Testimonial;
   index: number;
+  animateStars: boolean;
 }) {
   return (
     <motion.div
@@ -120,7 +143,7 @@ function TestimonialCard({
         <CardContent className="p-6 flex flex-col h-full">
           {/* Star Rating */}
           <div className="mb-4">
-            <StarRating rating={testimonial.rating} />
+            <StarRating rating={testimonial.rating} animate={animateStars} />
           </div>
 
           {/* Quote */}
@@ -156,12 +179,64 @@ function TestimonialCard({
 
 export function TestimoniSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [showAll, setShowAll] = useState(false);
+  const [startIndex, setStartIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [progressKey, setProgressKey] = useState(0);
+
+  const clearRotationTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  // Auto-rotation effect — only manages the interval, no setState in body
+  useEffect(() => {
+    if (!isInView || showAll || isPaused) {
+      clearRotationTimer();
+      return;
+    }
+
+    timerRef.current = setInterval(() => {
+      setStartIndex((prev) => (prev + 1) % testimonials.length);
+      setProgressKey((k) => k + 1);
+    }, ROTATION_INTERVAL);
+
+    return () => {
+      clearRotationTimer();
+    };
+  }, [isInView, showAll, isPaused, clearRotationTimer]);
+
+  const handleDotClick = useCallback(
+    (i: number) => {
+      setStartIndex(i);
+      setProgressKey((k) => k + 1);
+      clearRotationTimer();
+    },
+    [clearRotationTimer]
+  );
+
+  const handleShowAll = useCallback(() => {
+    setShowAll(true);
+  }, []);
+
+  const handleShowLess = useCallback(() => {
+    setShowAll(false);
+    setStartIndex(0);
+    setProgressKey((k) => k + 1);
+  }, []);
 
   const displayedTestimonials = showAll
     ? testimonials
-    : testimonials.slice(0, 3);
+    : testimonials.slice(startIndex, startIndex + 3).concat(
+        testimonials.slice(0, Math.max(0, startIndex + 3 - testimonials.length))
+      );
+
+  const showRotationUI = isInView && !showAll && !isPaused;
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 bg-gray-50">
@@ -216,17 +291,48 @@ export function TestimoniSection() {
         </motion.div>
 
         {/* Testimonial Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          ref={gridRef}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {displayedTestimonials.map((testimonial, index) => (
             <TestimonialCard
               key={testimonial.id}
               testimonial={testimonial}
               index={index}
+              animateStars={isInView}
             />
           ))}
         </div>
 
-        {/* Show More / Show Less Button */}
+        {/* Navigation dots (carousel mode) */}
+        <AnimatePresence>
+          {!showAll && isInView && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center justify-center gap-2 mt-6"
+            >
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleDotClick(i)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    i === startIndex
+                      ? "bg-green-600 w-6"
+                      : "bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Testimoni ${i + 1}`}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Show More / Show Less Button + Progress Bar */}
         <motion.div
           variants={headerVariants}
           initial="hidden"
@@ -234,20 +340,52 @@ export function TestimoniSection() {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="text-center mt-10"
         >
-          <Button
-            variant="outline"
-            onClick={() => setShowAll(!showAll)}
-            className="border-green-700 text-green-700 hover:bg-green-50 hover:text-green-800 font-medium"
-          >
-            {showAll ? "Tampilkan Sedikit" : "Lihat Semua Testimoni"}
-            <ChevronDown
-              className={`ml-2 h-4 w-4 transition-transform duration-300 ${
-                showAll ? "rotate-180" : ""
-              }`}
-            />
-          </Button>
+          <div className="inline-flex flex-col items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (showAll) {
+                  handleShowLess();
+                } else {
+                  handleShowAll();
+                }
+              }}
+              className="border-green-700 text-green-700 hover:bg-green-50 hover:text-green-800 font-medium"
+            >
+              {showAll ? "Tampilkan Sedikit" : "Lihat Semua Testimoni"}
+              <ChevronDown
+                className={`ml-2 h-4 w-4 transition-transform duration-300 ${
+                  showAll ? "rotate-180" : ""
+                }`}
+              />
+            </Button>
+            {/* Progress bar for auto-rotation — CSS animation restarts via key */}
+            {showRotationUI && (
+              <div className="w-40 h-1 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  key={progressKey}
+                  className="h-full bg-green-500 rounded-full"
+                  style={{
+                    animation: `progressFill ${ROTATION_INTERVAL}ms linear forwards`,
+                  }}
+                />
+              </div>
+            )}
+          </div>
         </motion.div>
       </div>
+
+      {/* Inline keyframes for progress bar */}
+      <style jsx global>{`
+        @keyframes progressFill {
+          from {
+            width: 0%;
+          }
+          to {
+            width: 100%;
+          }
+        }
+      `}</style>
     </section>
   );
 }

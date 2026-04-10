@@ -20,6 +20,7 @@ import {
   ArrowUp,
   ChevronRight,
 } from "lucide-react";
+import { CONTACT_INFO, OPERATING_HOURS, SOCIAL_MEDIA } from "@/lib/constants";
 
 const quickLinks = [
   { title: "Beranda", href: "/" },
@@ -53,11 +54,11 @@ const pencatatanSipilLinks = [
 ];
 
 const socialLinks = [
-  { title: "Facebook", href: "#", icon: Facebook },
-  { title: "Instagram", href: "#", icon: Instagram },
-  { title: "X (Twitter)", href: "#", icon: Twitter },
-  { title: "TikTok", href: "#", icon: Music2 },
-  { title: "YouTube", href: "#", icon: Youtube },
+  { title: "Facebook", href: SOCIAL_MEDIA.facebook, icon: Facebook },
+  { title: "Instagram", href: SOCIAL_MEDIA.instagram, icon: Instagram },
+  { title: "X (Twitter)", href: SOCIAL_MEDIA.twitter, icon: Twitter },
+  { title: "TikTok", href: SOCIAL_MEDIA.tiktok, icon: Music2 },
+  { title: "YouTube", href: SOCIAL_MEDIA.youtube, icon: Youtube },
 ];
 
 export function Footer() {
@@ -218,10 +219,10 @@ export function Footer() {
               <div>
                 <p className="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Telepon</p>
                 <a
-                  href="tel:038221678"
+                  href={`tel:${CONTACT_INFO.phoneRaw}`}
                   className="text-sm hover:text-green-400 transition-colors"
                 >
-                  (0382) 21678
+                  {CONTACT_INFO.phone}
                 </a>
               </div>
             </div>
@@ -234,13 +235,13 @@ export function Footer() {
               <div>
                 <p className="text-xs text-gray-500 uppercase tracking-wide mb-0.5">WhatsApp</p>
                 <a
-                  href="https://wa.me/6281234567890"
+                  href={CONTACT_INFO.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm hover:text-green-400 transition-colors inline-flex items-center gap-1"
                   aria-label="Hubungi kami via WhatsApp"
                 >
-                  0812-3456-7890
+                  {CONTACT_INFO.whatsappDisplay}
                 </a>
               </div>
             </div>
@@ -253,10 +254,10 @@ export function Footer() {
               <div>
                 <p className="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Email</p>
                 <a
-                  href="mailto:disdukcapil@ngadakab.go.id"
+                  href={`mailto:${CONTACT_INFO.email}`}
                   className="text-sm hover:text-green-400 transition-colors"
                 >
-                  disdukcapil@ngadakab.go.id
+                  {CONTACT_INFO.email}
                 </a>
               </div>
             </div>
@@ -269,7 +270,7 @@ export function Footer() {
               <div>
                 <p className="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Alamat</p>
                 <span className="text-sm">
-                  Jl. Ahmad Yani No.1, Bajawa, Kabupaten Ngada, NTT 86413
+                  {CONTACT_INFO.address}
                 </span>
               </div>
             </div>
@@ -281,7 +282,7 @@ export function Footer() {
               <Clock className="h-4 w-4 text-amber-400 group-hover:text-white transition-colors duration-200" />
             </div>
             <span className="text-sm">
-              Jam Operasional: Senin - Jumat, 09.00 - 15.00 WITA
+              Jam Operasional: {OPERATING_HOURS.weekdays.days}, {OPERATING_HOURS.weekdays.hours} | {OPERATING_HOURS.friday.days}: {OPERATING_HOURS.friday.hours}
             </span>
           </div>
         </div>
