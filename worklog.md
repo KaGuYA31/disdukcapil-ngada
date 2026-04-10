@@ -1,3 +1,25 @@
+
+---
+Task ID: deploy-vercel
+Agent: Main Coordinator
+Task: Deploy latest code to Vercel project disdukcapil-ngada
+
+Work Log:
+- Found disdukcapil-ngada-repo with GitHub remote (PAT authenticated)
+- Found vercel.env with Supabase PostgreSQL credentials
+- Git reset to origin/main, fixed Prisma schema for PostgreSQL
+- Fixed layout.tsx URLs, added vercel.json, committed and pushed
+
+Verification:
+- All 13 routes HTTP 200
+- API endpoints functional (berita returns Supabase data)
+- Site live at https://disdukcapil-ngada.vercel.app
+- Features confirmed: BackToTop, CookieConsent, QuickAccessPanel, Jam Operasional, Info Kependudukan dropdown, enhanced footer, 404 page, SEO JSON-LD
+
+Stage Summary:
+- Deployed via GitHub push (Vercel auto-deploy)
+- GitHub: https://github.com/KaGuYA31/disdukcapil-ngada
+- Database: Supabase PostgreSQL (working)
 ---
 Task ID: round-2 (tasks 1-9)
 Agent: Main Coordinator
