@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/components/providers";
-import { CookieBanner } from "@/components/shared/cookie-banner";
+import { CookieConsent } from "@/components/shared/cookie-consent";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -133,6 +133,7 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} font-sans antialiased bg-background text-foreground`}
       >
+        <CookieConsent />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-lg focus:bg-green-600 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg focus:outline-none"
@@ -140,7 +141,6 @@ export default function RootLayout({
           Langsung ke konten utama
         </a>
         <Providers>
-          <CookieBanner />
           {children}
           <Toaster />
         </Providers>

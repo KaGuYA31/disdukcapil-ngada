@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
+import { BackToTop } from "@/components/shared/back-to-top";
 import { NewsDetail } from "@/components/sections/berita/news-detail";
 
 export const metadata = {
@@ -17,6 +18,7 @@ export default function BeritaDetailPage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BackToTop />
     </div>
   );
 }

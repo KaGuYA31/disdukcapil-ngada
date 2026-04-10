@@ -9,6 +9,7 @@ import { BackToTop } from "@/components/shared/back-to-top";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { VisiMisiSection } from "@/components/sections/profil/visi-misi-section";
 import { StrukturSection } from "@/components/sections/profil/struktur-section";
+import { StrukturOrganisasiSection } from "@/components/sections/profil/struktur-organisasi";
 import { SejarahSection } from "@/components/sections/profil/sejarah-section";
 import { LokasiSection } from "@/components/sections/profil/lokasi-section";
 
@@ -66,6 +67,7 @@ export default function ProfilPage() {
         </section>
 
         <VisiMisiSection />
+        <StrukturOrganisasiSection />
         <StrukturSection />
         <SejarahSection />
         <LokasiSection />
