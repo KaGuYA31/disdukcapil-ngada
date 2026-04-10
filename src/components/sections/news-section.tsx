@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import {
@@ -16,8 +16,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// --- Data ---
-const news = [
+// --- Types ---
+interface NewsItem {
+  id: string;
+  title: string;
+  excerpt: string;
+  thumbnail: string | null;
+  category: string;
+  date: string;
+  views: number;
+  slug: string;
+}
+
+// --- Fallback Data ---
+const fallbackNews: NewsItem[] = [
   {
     id: "1",
     title: "Pelayanan Online Disdukcapil Ngada Kini Lebih Mudah",
@@ -102,6 +114,25 @@ const getThumbnailGradient = (category: string) => {
     default:
       return "from-green-600 to-green-800";
   }
+};
+
+/** Map a raw Berita record from the API to the NewsItem shape */
+const mapApiToNewsItem = (raw: Record<string, unknown>): NewsItem => {
+  const content = (raw.content as string) || "";
+  const excerpt =
+    (raw.excerpt as string) || content.substring(0, 150) + "...";
+  const createdAt = raw.createdAt as string;
+
+  return {
+    id: raw.id as string,
+    title: (raw.title as string) || "",
+    excerpt,
+    thumbnail: (raw.thumbnail as string) || null,
+    category: (raw.category as string) || "Umum",
+    date: createdAt ? new Date(createdAt).toISOString() : "",
+    views: (raw.viewCount as number) || 0,
+    slug: (raw.slug as string) || "",
+  };
 };
 
 // --- Animation Variants ---
@@ -192,19 +223,65 @@ function NewsLoadingSkeleton() {
 // --- Main Component ---
 export function NewsSection() {
   const [loading, setLoading] = useState(true);
+  const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
   const sectionRef = useRef<HTMLElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 500);
-    return () => clearTimeout(timer);
+  const fetchNews = useCallback(async () => {
+    // Abort any in-flight request before starting a new one
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    try {
+      const res = await fetch("/api/berita?limit=6", {
+        signal: controller.signal,
+      });
+
+      if (!res.ok) {
+        throw new Error(`API returned ${res.status}`);
+      }
+
+      const json = await res.json();
+
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        setNewsData(json.data.map(mapApiToNewsItem));
+      } else {
+        // API returned empty data — use fallback
+        setNewsData(fallbackNews);
+      }
+    } catch (err) {
+      // AbortError means the component unmounted or a newer request superseded this one
+      if (err instanceof DOMException && err.name === "AbortError") return;
+      // Any other error — fall back to hardcoded data
+      setNewsData(fallbackNews);
+    } finally {
+      if (abortControllerRef.current === controller) {
+        setLoading(false);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    fetchNews();
+
+    return () => {
+      // Clean up the fetch on unmount
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, [fetchNews]);
 
   const filteredNews =
     activeCategory === "Semua"
-      ? news
-      : news.filter((item) => item.category === activeCategory);
+      ? newsData
+      : newsData.filter((item) => item.category === activeCategory);
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 bg-gray-50">

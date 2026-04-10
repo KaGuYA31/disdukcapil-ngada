@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import { OperatingHoursIndicator } from "@/components/shared/operating-hours-indicator";
 
 interface NavChild {
   title: string;
@@ -218,6 +219,10 @@ export function Header() {
               <span>Pemerintah Kabupaten Ngada</span>
             </span>
           </div>
+
+          {/* Operating Hours Indicator */}
+          <OperatingHoursIndicator />
+
           <div className="flex items-center gap-4">
             <Link href="/admin" className="hover:text-green-200 transition-colors">
               Login Admin
