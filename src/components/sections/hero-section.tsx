@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen, ChevronDown } from "lucide-react";
+import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen, ChevronDown, IdCard } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,10 @@ interface BerandaData {
     position: string;
     photo: string | null;
     description: string | null;
+  } | null;
+  blankoEKTP: {
+    jumlahTersedia: number;
+    keterangan: string | null;
   } | null;
 }
 
@@ -106,9 +110,10 @@ export function HeroSection() {
   const cakupanAkta = data?.dokumen?.cakupanAkta || 0;
   const periode = data?.ringkasan?.periode || "-";
 
+  const blankoTersedia = data?.blankoEKTP?.jumlahTersedia || 0;
   const heroStats = [
     { label: "Total Penduduk", value: formatNumber(totalPenduduk) },
-    { label: "Jenis Layanan", value: "10" },
+    { label: "Blanko E-KTP", value: formatNumber(blankoTersedia) },
     { label: "Cakupan Akta", value: `${cakupanAkta.toFixed(1)}%` },
   ];
 

@@ -10,6 +10,8 @@ import {
   Loader2,
   IdCard,
   Baby,
+  AlertTriangle,
+  TrendingUp,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,6 +36,12 @@ interface StatistikData {
   }>;
 }
 
+interface BlankoData {
+  jumlahTersedia: number;
+  keterangan: string | null;
+  updatedAt: string | null;
+}
+
 const formatNumber = (num: number) => {
   return new Intl.NumberFormat("id-ID").format(num);
 };
@@ -45,6 +53,7 @@ export default function AdminDashboardPage() {
     ringkasan: null,
     dokumen: [],
   });
+  const [blanko, setBlanko] = useState<BlankoData | null>(null);
 
   const authState = useMemo(() => {
     if (typeof document === "undefined")
@@ -66,8 +75,21 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     if (authState.isAuthenticated) {
       fetchStatistik();
+      fetchBlanko();
     }
   }, [authState.isAuthenticated]);
+
+  const fetchBlanko = async () => {
+    try {
+      const response = await fetch("/api/blanko-ektp");
+      const result = await response.json();
+      if (result.success && result.data) {
+        setBlanko(result.data);
+      }
+    } catch (error) {
+      console.error("Error fetching blanko:", error);
+    }
+  };
 
   const fetchStatistik = async () => {
     try {
@@ -215,6 +237,47 @@ export default function AdminDashboardPage() {
           </Card>
         </div>
 
+        {/* Blanko E-KTP Status */}
+        <Card className={`border-2 ${blanko && blanko.jumlahTersedia > 0 ? "border-teal-200 bg-gradient-to-r from-teal-50 to-white" : "border-red-200 bg-gradient-to-r from-red-50 to-white"}`}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${blanko && blanko.jumlahTersedia > 0 ? "bg-teal-100" : "bg-red-100"}`}>
+                  <IdCard className={`h-7 w-7 ${blanko && blanko.jumlahTersedia > 0 ? "text-teal-600" : "text-red-600"}`} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Ketersediaan Blanko E-KTP</h3>
+                  <p className={`text-3xl font-bold mt-1 ${blanko && blanko.jumlahTersedia > 0 ? "text-teal-700" : "text-red-600"}`}>
+                    {blanko ? formatNumber(blanko.jumlahTersedia) : "0"} <span className="text-base font-normal text-gray-500">lembar</span>
+                  </p>
+                  {blanko?.keterangan && (
+                    <p className="text-sm text-gray-500 mt-1">{blanko.keterangan}</p>
+                  )}
+                </div>
+              </div>
+              <div className="text-right">
+                <Badge variant={blanko && blanko.jumlahTersedia > 0 ? "default" : "destructive"} className="text-xs">
+                  {blanko && blanko.jumlahTersedia > 0 ? "Tersedia" : "Kosong"}
+                </Badge>
+                {blanko?.updatedAt && (
+                  <p className="text-xs text-gray-400 mt-2">
+                    Diperbarui: {new Date(blanko.updatedAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                  </p>
+                )}
+              </div>
+            </div>
+            {blanko && blanko.jumlahTersedia === 0 && (
+              <div className="mt-4 flex items-center gap-2 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                <AlertTriangle className="h-4 w-4 text-amber-600 flex-shrink-0" />
+                <p className="text-sm text-amber-700">
+                  Blanko E-KTP habis. Segera update stok melalui halaman{" "}
+                  <Link href="/admin/pengaturan" className="font-semibold underline">Pengaturan</Link>.
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Document Ownership Stats */}
         <Card className="border-gray-200">
           <CardHeader>
@@ -353,6 +416,12 @@ export default function AdminDashboardPage() {
                 <Button className="w-full bg-green-700 hover:bg-green-800">
                   <FileText className="mr-2 h-4 w-4" />
                   Kelola Data Statistik
+                </Button>
+              </Link>
+              <Link href="/admin/pengaturan">
+                <Button variant="outline" className="w-full">
+                  <IdCard className="mr-2 h-4 w-4" />
+                  Kelola Blanko E-KTP
                 </Button>
               </Link>
               <Link href="/admin/berita?new=true">
