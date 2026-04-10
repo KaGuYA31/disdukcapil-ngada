@@ -1,3 +1,72 @@
+---
+Task ID: 12b
+Agent: Subagent
+Task: Add document requirements checker to layanan page
+
+Work Log:
+- Read layanan page (src/app/layanan/page.tsx), service-detail.tsx, and constants.ts to understand structure
+- Created `/home/z/my-project/src/components/sections/layanan/document-checker-section.tsx` as "use client" component
+- Component features:
+  - Props: `serviceSlug: string` to determine which documents to show
+  - Mapping of 6 service slugs (ktp-el, kartu-keluarga, akta-kelahiran, akta-kematian, akta-perkawinan, akta-perceraian) to their required documents
+  - Each document row has CheckCircle/Circle checkbox icon, document name, and status badge ("Wajib" in red-100/red-700 or "Jika Diperlukan" in amber-100/amber-700)
+  - Progress bar showing required document completion (green when all done, teal when in progress)
+  - Collapsible with "Lihat Persyaratan Dokumen" toggle button and animated chevron
+  - "Catatan" note at bottom: "Dokumen asli wajib dibawa saat pengambilan. Fotokopi cukup untuk pendaftaran online."
+  - Completion message when all required docs are checked
+  - framer-motion fade-in and stagger animations
+  - Custom scrollbar styling for document list (max-h-96 overflow-y-auto)
+- Color palette: teal, green, amber, rose - NO blue/purple
+- Integrated into layanan page with:
+  - Added DocumentCheckerWrapper component with service selector buttons (6 services with emoji icons)
+  - Section placed BEFORE ServicesListSection in a separate bg-gray-50 section
+  - Section header: "Persyaratan Dokumen" pill + "Cek Kelengkapan Dokumen Anda" title with ClipboardList icon
+
+Verification:
+- ESLint: 0 errors, 0 warnings
+- Dev server: compiled successfully
+
+Stage Summary:
+- New component: `document-checker-section.tsx` with interactive document checklist
+- 6 service slugs mapped to their required documents with required/optional status
+- Collapsible design with progress bar, status badges, and completion message
+- Integrated into layanan page with service selector before services list
+- Green/teal/amber/rose palette, framer-motion animations throughout
+
+---
+Task ID: 12d
+Agent: Subagent
+Task: Add countdown timer to hero section
+
+Work Log:
+- Read hero-section.tsx and operating-hours-indicator.tsx to understand existing patterns
+- Created `/home/z/my-project/src/components/shared/countdown-timer.tsx` as "use client" component
+- Implemented `useSyncExternalStore` pattern (same as operating-hours-indicator.tsx) for hydration safety
+- Timer logic uses `Intl.DateTimeFormat` with timeZone "Asia/Makassar" (WITA)
+- Three states:
+  - During operating hours (Mon-Fri 08:00-15:30): "Jam Operasional: HH:MM:SS tersisa" (green countdown)
+  - Before operating hours: "Buka pukul 08:00" (amber text)
+  - After hours / weekends: "Tutup — Buka pukul 08:00 besok" (amber text)
+- Updates every second via `setInterval` with proper cleanup (auto-clears when last listener unsubscribes)
+- Server snapshot returns `{ status: "closed", display: "--:--:--" }` for safe SSR
+- Compact inline pill design: glass-morphism badge (bg-white/10, backdrop-blur, border-white/20)
+- Green themed: Clock icon (green-300), green-100 text, green-300 monospace timer
+- Amber accent for opening time display (amber-300)
+- framer-motion fade-in animation with 0.8s delay
+- Integrated into hero-section.tsx: placed after description paragraph, before search bar
+- Wrapped in `motion.div` with `fadeIn` variant and `justify-center lg:justify-start`
+
+Verification:
+- ESLint: 0 errors, 0 warnings
+- Dev server: compiled successfully, GET / 200
+- No blue/purple colors used (green/amber palette only)
+
+Stage Summary:
+- New component: `countdown-timer.tsx` with real-time WITA countdown/countup timer
+- Hydration-safe via `useSyncExternalStore` with safe server snapshot
+- Integrated into hero section below the main heading description
+- Green/amber color palette, compact pill design with glass-morphism styling
+- Auto-cleanup interval on unmount
 
 ---
 Task ID: round-11
@@ -2106,3 +2175,56 @@ Stage Summary:
 - Visitor counter displays "Pengunjung Hari Ini" and "Total Pengunjung" with animated numbers
 - Uses localStorage for persistent per-browser tracking (unique ID, daily date-keyed count, running total)
 - No blue or purple colors used — green accent for icons, gray text for readability on dark footer
+
+---
+Task ID: 12a
+Agent: Subagent
+Task: Add "Mengapa Memilih Kami?" trust section
+
+Work Log:
+- Read homepage page.tsx to understand section order and import patterns
+- Found section order: Hero → Stats → Services → Featured Services → Announcements → FAQ → Keunggulan → Testimoni → News → CTA
+- Reviewed existing section components (testimoni-section.tsx, keunggulan-section.tsx) for animation patterns and code style
+- Created /home/z/my-project/src/components/sections/why-choose-us-section.tsx with:
+  - "use client" directive
+  - Section header with Award icon, "MENGAPA MEMILIH KAMI?" label, title, subtitle
+  - 4 trust cards in responsive grid (1/2/4 cols at sm/md/lg)
+  - Gradient circle icon containers (bg-green-500 to-emerald-600) with Shield, Zap, Heart, MapPin icons
+  - Stat badges at bottom of each card (98% Kepuasan, 5-15 Menit, 100% GRATIS, 12 Kecamatan)
+  - framer-motion stagger animations (0.12s delay between cards)
+  - useInView for scroll-triggered animation (margin: -100px)
+  - Card hover effects: translateY(-4px), shadow-lg, border-green-200
+  - bg-gray-50 background with subtle dot pattern overlay
+  - Green/teal color palette — NO blue or purple
+- Imported WhyChooseUsSection in page.tsx and placed between TestimoniSection and NewsSection
+- ESLint: 0 errors, 0 warnings
+- Dev server compiled successfully (GET / 200)
+
+Stage Summary:
+- New component: why-choose-us-section.tsx with 4 trust/value cards
+- Added to homepage between Testimoni and News sections
+- Section order now: Hero → Stats → Services → Featured Services → Announcements → FAQ → Keunggulan → Testimoni → Why Choose Us → News → CTA
+---
+Task ID: 12c
+Agent: Subagent
+Task: Improve dark mode support across homepage sections
+
+Work Log:
+- Read all 9 files (8 sections + footer) to audit dark mode class coverage
+- Identified that CTA section (green gradient hero) and footer (already bg-gray-900) were already dark-mode friendly — no changes needed
+- Updated featured-services-section.tsx: dark bg/card/text/border/badge/gradient overlay classes
+- Updated stats-section.tsx: dark bg/gradient/card/text/border classes, icon bg colors, dual SVG wave dividers for light/dark
+- Updated services-section.tsx: dark bg/card/text/border/badge/tab classes, getCategoryColor() dynamic dark variants
+- Updated news-section.tsx: dark bg/card/text/border/tab classes, getCategoryColor() dynamic dark variants
+- Updated announcements-section.tsx: dark bg/card/gradient/text/badge classes, getTypeColor() dynamic dark variants, dual SVG wave divider
+- Updated testimoni-section.tsx: dark bg/card/text/border/divider/progress-bar classes, stat summary text
+- Updated faq-section.tsx: dark bg/search-input/accordion/card/text/badge classes
+- All SVG wave dividers with hardcoded fills now use hidden/block pattern to show appropriate color in dark mode
+- Ran `bun run lint` — passed with no errors
+
+Stage Summary:
+- 7 section files updated with comprehensive dark mode support
+- 2 files (cta-section, footer) confirmed already dark-mode compatible — no changes
+- Consistent dark mode pattern applied: gray-900 for white/gray-50 backgrounds, gray-800/gray-700 for borders, gray-100/gray-200/gray-300 for text, -950/50 variants for light-colored badges/accents
+- All dynamic class functions (getCategoryColor, getTypeColor) updated with dark variants
+- No blue or purple colors introduced in dark mode
