@@ -10,6 +10,8 @@ import {
   Instagram,
   Youtube,
   ExternalLink,
+  ClipboardList,
+  BookOpen,
 } from "lucide-react";
 
 const quickLinks = [
@@ -21,12 +23,19 @@ const quickLinks = [
   { title: "Pengaduan", href: "/pengaduan" },
 ];
 
-const services = [
+const pendaftaranPendudukLinks = [
   { title: "KTP-el", href: "/layanan/ktp-el" },
   { title: "Kartu Keluarga", href: "/layanan/kartu-keluarga" },
+  { title: "Perubahan Data", href: "/layanan/perubahan-data" },
+  { title: "Legalisasi", href: "/layanan/legalisasi" },
+];
+
+const pencatatanSipilLinks = [
   { title: "Akta Kelahiran", href: "/layanan/akta-kelahiran" },
   { title: "Akta Kematian", href: "/layanan/akta-kematian" },
-  { title: "Perpindahan Penduduk", href: "/layanan/perpindahan" },
+  { title: "Akta Perkawinan", href: "/layanan/akta-perkawinan" },
+  { title: "Akta Perceraian", href: "/layanan/akta-perceraian" },
+  { title: "Pindah Penduduk", href: "/layanan/pindah-penduduk" },
 ];
 
 const socialLinks = [
@@ -42,9 +51,9 @@ export function Footer() {
     <footer className="bg-gray-900 text-gray-300">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* About Section */}
-          <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6">
+          {/* About Section - spans 4 cols */}
+          <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12 bg-white rounded-lg p-1 flex-shrink-0">
                 <Image
@@ -60,9 +69,10 @@ export function Footer() {
               </div>
             </div>
             <p className="text-sm leading-relaxed">
-              Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada berkomitmen
-              memberikan layanan administrasi kependudukan yang profesional,
-              transparan, dan mudah diakses oleh seluruh masyarakat.
+              Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada
+              berkomitmen memberikan layanan administrasi kependudukan yang
+              profesional, transparan, dan mudah diakses oleh seluruh
+              masyarakat.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social) => (
@@ -80,12 +90,12 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
+          {/* Quick Links - spans 2 cols */}
+          <div className="lg:col-span-2">
             <h4 className="font-semibold text-white text-lg mb-4">
               Tautan Cepat
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -99,51 +109,75 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
-          <div>
-            <h4 className="font-semibold text-white text-lg mb-4">Layanan</h4>
-            <ul className="space-y-2">
-              {services.map((service) => (
-                <li key={service.href}>
+          {/* Pendaftaran Penduduk - spans 3 cols */}
+          <div className="lg:col-span-3">
+            <div className="flex items-center gap-2 mb-4">
+              <ClipboardList className="h-4.5 w-4.5 text-green-400" />
+              <h4 className="font-semibold text-white text-lg">
+                Pendaftaran Penduduk
+              </h4>
+            </div>
+            <ul className="space-y-2.5">
+              {pendaftaranPendudukLinks.map((link) => (
+                <li key={link.href}>
                   <Link
-                    href={service.href}
+                    href={link.href}
                     className="text-sm hover:text-green-400 transition-colors inline-flex items-center gap-1"
                   >
-                    {service.title}
+                    {link.title}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div>
-            <h4 className="font-semibold text-white text-lg mb-4">
-              Kontak Kami
-            </h4>
-            <ul className="space-y-3">
-              <li className="flex gap-3">
-                <MapPin className="h-5 w-5 text-green-500 flex-shrink-0" />
-                <span className="text-sm">
-                  Jl. Ahmad Yani No.1, Bajawa, Kabupaten Ngada, NTT 86413
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <Mail className="h-5 w-5 text-green-500 flex-shrink-0" />
-                <a
-                  href="mailto:disdukcapil@ngadakab.go.id"
-                  className="text-sm hover:text-green-400 transition-colors"
-                >
-                  disdukcapil@ngadakab.go.id
-                </a>
-              </li>
-              <li className="flex gap-3">
-                <Clock className="h-5 w-5 text-green-500 flex-shrink-0" />
-                <span className="text-sm">
-                  Senin - Jumat: 09.00 - 15.00 WITA
-                </span>
-              </li>
+          {/* Pencatatan Sipil - spans 3 cols */}
+          <div className="lg:col-span-3">
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="h-4.5 w-4.5 text-green-400" />
+              <h4 className="font-semibold text-white text-lg">
+                Pencatatan Sipil
+              </h4>
+            </div>
+            <ul className="space-y-2.5">
+              {pencatatanSipilLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm hover:text-green-400 transition-colors inline-flex items-center gap-1"
+                  >
+                    {link.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
+          </div>
+        </div>
+
+        {/* Contact Bar - full width, separated */}
+        <div className="mt-10 pt-8 border-t border-gray-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="flex items-start gap-3">
+              <MapPin className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+              <span className="text-sm">
+                Jl. Ahmad Yani No.1, Bajawa, Kabupaten Ngada, NTT 86413
+              </span>
+            </div>
+            <div className="flex items-start gap-3">
+              <Mail className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+              <a
+                href="mailto:disdukcapil@ngadakab.go.id"
+                className="text-sm hover:text-green-400 transition-colors"
+              >
+                disdukcapil@ngadakab.go.id
+              </a>
+            </div>
+            <div className="flex items-start gap-3">
+              <Clock className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+              <span className="text-sm">
+                Senin - Jumat: 09.00 - 15.00 WITA
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -153,8 +187,8 @@ export function Footer() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-center md:text-left">
-              © {currentYear} Dinas Kependudukan dan Pencatatan Sipil Kabupaten
-              Ngada. Hak Cipta Dilindungi.
+              © {currentYear} Dinas Kependudukan dan Pencatatan Sipil
+              Kabupaten Ngada. Hak Cipta Dilindungi.
             </p>
             <div className="flex items-center gap-4 text-sm">
               <Link

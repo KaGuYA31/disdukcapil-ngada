@@ -176,7 +176,6 @@ const formatDate = (dateString: string) => {
 export function TransparansiSection() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filterDocuments = (docs: any[]) => {
     return docs.filter(
       (doc) =>

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Users, FileCheck, Clock, TrendingUp, ArrowRight, Loader2 } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 
 interface RingkasanData {
   totalPenduduk: number;
@@ -26,10 +27,109 @@ const formatNumber = (num: number) => {
   return new Intl.NumberFormat("id-ID").format(num);
 };
 
+// Custom hook for animated counting
+function useAnimatedCounter(
+  target: number,
+  duration: number = 2000,
+  isActive: boolean = false
+) {
+  const [count, setCount] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    startTimeRef.current = null;
+    const currentTarget = target;
+    const currentDuration = duration;
+
+    const step = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const elapsed = timestamp - startTimeRef.current;
+      const progress = Math.min(elapsed / currentDuration, 1);
+
+      // Ease-out cubic for natural feel
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * currentTarget));
+
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(step);
+      } else {
+        setCount(currentTarget);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(step);
+
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [isActive, target, duration]);
+
+  return count;
+}
+
+// Animated stat card component
+function AnimatedStatCard({
+  icon: Icon,
+  rawValue,
+  formattedValue,
+  label,
+  description,
+  color,
+  bgColor,
+  delay = 0,
+  isAnimating,
+  isPercent = false,
+}: {
+  icon: React.ElementType;
+  rawValue: number;
+  formattedValue: string;
+  label: string;
+  description: string;
+  color: string;
+  bgColor: string;
+  delay: number;
+  isAnimating: boolean;
+  isPercent?: boolean;
+}) {
+  const animatedRaw = useAnimatedCounter(rawValue, 2000, isAnimating);
+
+  const displayValue = isPercent
+    ? `${(animatedRaw / 10).toFixed(1)}%`
+    : formatNumber(animatedRaw);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={isAnimating ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      whileHover={{ scale: 1.03, y: -4 }}
+      className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg border border-gray-100 transition-shadow cursor-default"
+    >
+      <div
+        className={`w-12 h-12 ${bgColor} rounded-lg flex items-center justify-center mb-4`}
+      >
+        <Icon className={`h-6 w-6 ${color}`} />
+      </div>
+      <p className="text-2xl md:text-3xl font-bold text-gray-900 tabular-nums">
+        {isAnimating ? displayValue : "0"}
+      </p>
+      <p className="font-semibold text-gray-700 mt-1">{label}</p>
+      <p className="text-sm text-gray-500 mt-1">{description}</p>
+    </motion.div>
+  );
+}
+
 export function StatsSection() {
   const [loading, setLoading] = useState(true);
   const [ringkasan, setRingkasan] = useState<RingkasanData | null>(null);
   const [dokumen, setDokumen] = useState<DokumenData | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,47 +151,70 @@ export function StatsSection() {
   }, []);
 
   const totalPenduduk = ringkasan?.totalPenduduk || 0;
-  const cakupanAkta = dokumen?.cakupanAkta || 0;
+  const cakupanAktaRaw = dokumen?.cakupanAkta ? Math.round(dokumen.cakupanAkta * 10) : 0;
   const periode = ringkasan?.periode || "-";
 
   const stats = [
     {
       icon: Users,
-      value: formatNumber(totalPenduduk),
+      rawValue: totalPenduduk,
+      formattedValue: formatNumber(totalPenduduk),
       label: "Total Penduduk",
       description: `Periode ${periode}`,
       color: "text-green-600",
       bgColor: "bg-green-100",
+      isPercent: false,
     },
     {
       icon: FileCheck,
-      value: "10",
+      rawValue: 10,
+      formattedValue: "10",
       label: "Jenis Layanan",
       description: "Administrasi Kependudukan",
       color: "text-blue-600",
       bgColor: "bg-blue-100",
+      isPercent: false,
     },
     {
       icon: Clock,
-      value: "1",
+      rawValue: 1,
+      formattedValue: "1",
       label: "Hari Kerja",
       description: "Layanan Same Day",
       color: "text-amber-600",
       bgColor: "bg-amber-100",
+      isPercent: false,
     },
     {
       icon: TrendingUp,
-      value: `${cakupanAkta.toFixed(1)}%`,
+      rawValue: cakupanAktaRaw,
+      formattedValue: `${dokumen?.cakupanAkta?.toFixed(1) || "0"}%`,
       label: "Cakupan Akta",
       description: "Akta Kelahiran",
       color: "text-purple-600",
       bgColor: "bg-purple-100",
+      isPercent: true,
     },
   ];
 
+  const shouldAnimate = !loading && isInView;
+
   return (
-    <section className="py-12 md:py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <section ref={sectionRef} className="py-12 md:py-16 relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-gray-50">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2315803d' fill-opacity='1'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2l2 3.5-2 3zm0-18V0h20v2H20v2l-2-3.5 2-3z'/%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
+      </div>
+
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-gray-50/80 to-gray-100" />
+
+      <div className="container mx-auto px-4 relative">
         {loading ? (
           <div className="flex justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-green-600" />
@@ -99,35 +222,38 @@ export function StatsSection() {
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {stats.map((stat, index) => (
-              <div
+              <AnimatedStatCard
                 key={index}
-                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
-              >
-                <div
-                  className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center mb-4`}
-                >
-                  <stat.icon className={`h-6 w-6 ${stat.color}`} />
-                </div>
-                <p className="text-2xl md:text-3xl font-bold text-gray-900">
-                  {stat.value}
-                </p>
-                <p className="font-semibold text-gray-700 mt-1">{stat.label}</p>
-                <p className="text-sm text-gray-500 mt-1">{stat.description}</p>
-              </div>
+                icon={stat.icon}
+                rawValue={stat.rawValue}
+                formattedValue={stat.formattedValue}
+                label={stat.label}
+                description={stat.description}
+                color={stat.color}
+                bgColor={stat.bgColor}
+                delay={index * 0.12}
+                isAnimating={shouldAnimate}
+                isPercent={stat.isPercent}
+              />
             ))}
           </div>
         )}
 
         {/* Link to statistics page */}
-        <div className="mt-8 text-center">
+        <motion.div
+          className="mt-8 text-center"
+          initial={{ opacity: 0 }}
+          animate={shouldAnimate ? { opacity: 1 } : {}}
+          transition={{ duration: 0.5, delay: 0.7 }}
+        >
           <Link
             href="/statistik"
-            className="inline-flex items-center gap-2 text-green-700 hover:text-green-800 font-medium"
+            className="inline-flex items-center gap-2 text-green-700 hover:text-green-800 font-medium transition-colors"
           >
             Lihat Statistik Lengkap
             <ArrowRight className="h-4 w-4" />
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -211,6 +211,36 @@
   background: linear-gradient(135deg, #15803d 0%, #166534 100%);
 }
 
+/* Hero gradient animation */
+@keyframes hero-gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-hero-gradient {
+  background: linear-gradient(-45deg, #15803d, #166534, #14532d, #1a5c38);
+  background-size: 400% 400%;
+  animation: hero-gradient 15s ease infinite;
+}
+
+/* Subtle pulse animation for icon backgrounds */
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 3s ease-in-out infinite;
+}
+
 .bg-gradient-gold {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
 }

@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Search, FileText, Users, Building2, Loader2 } from "lucide-react";
+import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen } from "lucide-react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -34,6 +35,40 @@ interface BerandaData {
 
 const formatNumber = (num: number) => {
   return new Intl.NumberFormat("id-ID").format(num);
+};
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay: i * 0.15,
+      ease: "easeOut",
+    },
+  }),
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
 };
 
 export function HeroSection() {
@@ -80,7 +115,10 @@ export function HeroSection() {
   const kepalaDinas = data?.kepalaDinas;
 
   return (
-    <section className="relative bg-gradient-to-br from-green-700 via-green-800 to-green-900 text-white overflow-hidden">
+    <section className="relative overflow-hidden text-white">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-700 via-green-800 to-green-900 animate-hero-gradient" />
+
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div
@@ -91,28 +129,48 @@ export function HeroSection() {
         />
       </div>
 
+      {/* Decorative Globe Element */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 opacity-[0.06] hidden xl:block">
+        <Globe className="h-[500px] w-[500px] text-white" strokeWidth={0.5} />
+      </div>
+
       <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32 relative">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
-          <div className="space-y-6 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-sm">
+          <motion.div
+            className="space-y-6 text-center lg:text-left"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div
+              variants={fadeIn}
+              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-sm"
+            >
               <Building2 className="h-4 w-4" />
               <span>Pemerintah Kabupaten Ngada</span>
-            </div>
+            </motion.div>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+            <motion.h1
+              variants={fadeIn}
+              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+            >
               Portal Layanan{" "}
               <span className="text-yellow-400">Kependudukan</span> dan
               Pencatatan Sipil
-            </h1>
+            </motion.h1>
 
-            <p className="text-lg md:text-xl text-green-100 max-w-xl mx-auto lg:mx-0">
+            <motion.p
+              variants={fadeIn}
+              className="text-lg md:text-xl text-green-100 max-w-xl mx-auto lg:mx-0"
+            >
               Melayani dengan sepenuh hati untuk kemudahan akses layanan
               administrasi kependudukan bagi seluruh masyarakat Kabupaten Ngada.
-            </p>
+            </motion.p>
 
             {/* Search Bar */}
-            <form
+            <motion.form
+              variants={fadeIn}
               onSubmit={handleSearch}
               className="flex gap-2 max-w-md mx-auto lg:mx-0"
             >
@@ -123,24 +181,27 @@ export function HeroSection() {
                   placeholder="Cari layanan..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white text-gray-900 placeholder:text-gray-500 h-12"
+                  className="pl-10 bg-white text-gray-900 placeholder:text-gray-500 h-12 shadow-lg shadow-black/20 focus:ring-2 focus:ring-yellow-400/50"
                 />
               </div>
               <Button
                 type="submit"
                 size="lg"
-                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold"
+                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold shadow-lg shadow-yellow-500/20"
               >
                 Cari
               </Button>
-            </form>
+            </motion.form>
 
             {/* Quick Actions */}
-            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+            <motion.div
+              variants={fadeIn}
+              className="flex flex-wrap gap-3 justify-center lg:justify-start"
+            >
               <Link href="/layanan">
                 <Button
                   size="lg"
-                  className="bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold"
+                  className="bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold shadow-lg shadow-black/10"
                 >
                   <FileText className="mr-2 h-5 w-5" />
                   Lihat Layanan
@@ -149,24 +210,58 @@ export function HeroSection() {
               <Link href="/pengaduan">
                 <Button
                   size="lg"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold shadow-lg shadow-yellow-500/20"
                 >
                   <Users className="mr-2 h-5 w-5" />
                   Ajukan Pengaduan
                 </Button>
               </Link>
-            </div>
-          </div>
+            </motion.div>
+
+            {/* Category Quick Links */}
+            <motion.div
+              variants={fadeIn}
+              className="flex flex-wrap gap-3 justify-center lg:justify-start pt-2"
+            >
+              <Link href="/layanan?kategori=Pendaftaran+Penduduk">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 h-10 px-4 bg-transparent"
+                >
+                  <ClipboardList className="mr-2 h-4 w-4" />
+                  Pendaftaran Penduduk
+                  <ArrowRight className="ml-1 h-3 w-3" />
+                </Button>
+              </Link>
+              <Link href="/layanan?kategori=Pencatatan+Sipil">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 h-10 px-4 bg-transparent"
+                >
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Pencatatan Sipil
+                  <ArrowRight className="ml-1 h-3 w-3" />
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
 
           {/* Right Content - Head of Dinas */}
-          <div className="hidden lg:flex justify-center">
+          <motion.div
+            className="hidden lg:flex justify-center"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+          >
             <div className="relative">
               {/* Decorative elements */}
               <div className="absolute -top-4 -left-4 w-72 h-72 bg-yellow-400/20 rounded-full blur-3xl" />
               <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-green-400/20 rounded-full blur-3xl" />
 
-              {/* Card */}
-              <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 max-w-sm">
+              {/* Card with glass-morphism */}
+              <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 max-w-sm shadow-xl shadow-black/10">
                 <div className="text-center">
                   {loading ? (
                     <div className="w-32 h-32 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4 ring-4 ring-white/20">
@@ -193,8 +288,8 @@ export function HeroSection() {
                   <p className="text-green-200 text-sm mb-4">
                     {kepalaDinas?.position || "dan Pencatatan Sipil"}
                   </p>
-                  <div className="bg-white/10 rounded-lg p-3 text-sm">
-                    <p className="font-semibold">"Melayani dengan Integritas"</p>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-sm">
+                    <p className="font-semibold">&ldquo;Melayani dengan Integritas&rdquo;</p>
                     <p className="text-green-200 mt-1">
                       Komitmen kami untuk pelayanan terbaik
                     </p>
@@ -202,36 +297,49 @@ export function HeroSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Stats Quick View - Data dari Database */}
-        <div className="mt-16 grid grid-cols-3 gap-4 max-w-3xl mx-auto">
+        {/* Stats Quick View - Glass-morphism Cards */}
+        <motion.div
+          className="mt-16 grid grid-cols-3 gap-4 max-w-3xl mx-auto"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
           {loading ? (
             <div className="col-span-3 flex justify-center">
               <Loader2 className="h-8 w-8 animate-spin text-yellow-400" />
             </div>
           ) : (
             heroStats.map((stat, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10"
+                custom={index}
+                variants={fadeInUp}
+                className="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center border border-white/20 shadow-lg shadow-black/10 hover:bg-white/15 transition-colors"
               >
                 <p className="text-2xl md:text-3xl font-bold text-yellow-400">
                   {stat.value}
                 </p>
                 <p className="text-sm text-green-100 mt-1">{stat.label}</p>
-              </div>
+              </motion.div>
             ))
           )}
-        </div>
+        </motion.div>
         
         {/* Periode Info */}
-        {!loading && data?.ringkasan && (
-          <p className="text-center text-green-200 text-sm mt-4">
-            Periode: {periode}
-          </p>
-        )}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.0, duration: 0.5 }}
+        >
+          {!loading && data?.ringkasan && (
+            <p className="text-center text-green-200 text-sm mt-4">
+              Periode: {periode}
+            </p>
+          )}
+        </motion.div>
       </div>
 
       {/* Wave Divider */}
