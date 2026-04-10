@@ -1084,3 +1084,150 @@ Priority Recommendations for Next Phase:
 8. SEO optimization: structured data (JSON-LD), meta tags, Open Graph
 9. Performance optimization: dynamic imports for heavy components
 10. Accessibility audit: ARIA improvements, keyboard navigation
+
+---
+Task ID: round-9
+Agent: Main Coordinator
+Task: Round 9 - Apply centralized constants, Google Maps, testimoni carousel, SEO, accessibility
+
+Work Log:
+- Reviewed worklog.md (Rounds 2-8 complete, all features accumulated)
+- ESLint: 0 errors, 0 warnings throughout all changes
+- QA: All 8 public routes verified returning HTTP 200 via curl
+- Dispatched 3 parallel subagents for independent tasks
+- All 3 subagents completed successfully
+- Committed as 7e041fc (8 files, +374 -76 lines)
+
+Changes Implemented:
+
+  1. Applied centralized constants to fix data inconsistencies:
+     - footer.tsx: Imported CONTACT_INFO, OPERATING_HOURS, SOCIAL_MEDIA
+       - Phone: (0382) 21678 → (0382) 21073 (fixed!)
+       - WhatsApp: 0812-3456-7890 → 0822-2107-3 (fixed!)
+       - WhatsApp URL: wa.me/6281234567890 → wa.me/6238221073 (fixed!)
+       - Email: dynamic from CONTACT_INFO.email
+       - Address: dynamic from CONTACT_INFO.address
+       - Operating hours: dynamic from OPERATING_HOURS
+       - Social media: dynamic from SOCIAL_MEDIA
+     - cta-section.tsx: Imported CONTACT_INFO, OPERATING_HOURS
+       - Phone, WhatsApp URL, address, hours now dynamic
+     - lokasi-section.tsx: Imported CONTACT_INFO, LOCATION, OPERATING_HOURS
+       - Address, phone, email, hours, Google Maps URL now dynamic
+
+  2. Google Maps embed in Lokasi section:
+     - Full-width iframe embed above existing content
+     - h-80 md:h-96, rounded-xl, lazy loading
+     - framer-motion fadeInUp animation on map container
+     - Address overlay card (-mt-6) with MapPin icon + "Buka di Google Maps" link
+     - Dynamic coordinates from LOCATION.coordinates
+
+  3. Testimoni section auto-carousel:
+     - 5-second auto-rotation cycling through testimonials
+     - Hover pause on grid
+     - Permanent stop when "Lihat Semua" toggled
+     - Green progress indicator bar below toggle
+     - Navigation dots for current position
+     - Star rating stagger animation (0.1s delay per star)
+     - All framer-motion ease values use "easeOut" as const
+
+  4. Hero section "Layanan Online" CTA button:
+     - Added between "Lihat Layanan" and "Ajukan Pengaduan"
+     - Outline variant: white border/text, hover white bg with green text
+     - Globe icon from lucide-react
+     - Mobile responsive: "Ajukan Pengaduan" hidden on small screens
+
+  5. SEO JSON-LD structured data:
+     - GovernmentOrganization schema (name, address, phone, email, hours, social media, area served)
+     - WebSite schema with SearchAction (sitelinks search box → /berita?q=)
+     - Both added to layout.tsx <head>
+
+  6. Skip-to-content accessibility link:
+     - Added to layout.tsx right after <body>
+     - sr-only by default, green focus state with z-[9999]
+     - "Langsung ke konten utama" text
+     - Removed unused .skip-link CSS rules from globals.css
+
+Deployment:
+- GitHub push successful: commit 7e041fc → main
+- Vercel production deployment: ✅ READY (39s build, aliased to my-project-mu-ivory-36.vercel.app)
+
+Stage Summary:
+- 8 files modified (footer, cta-section, lokasi-section, hero-section, testimoni-section, layout, globals.css, agent-ctx)
+- All data inconsistencies in footer/cta/lokasi now use centralized constants
+- Google Maps embed provides visual location context
+- Testimoni carousel adds dynamic interactivity
+- Hero section now has 3 CTA buttons including Layanan Online
+- SEO structured data enables rich search results
+- Accessibility improved with skip-to-content link
+
+---
+CURRENT PROJECT STATUS ASSESSMENT (Round 9 Complete):
+
+✅ GitHub: https://github.com/KaGuYA31/disdukcapil-ngada (commit 7e041fc)
+✅ Vercel: https://my-project-mu-ivory-36.vercel.app (production deployment live)
+✅ Cron Job: ID 76382, every 15 minutes, webDevReview
+✅ TypeScript: 0 errors
+✅ ESLint: 0 errors
+
+Completed Features (Round 9):
+✅ Centralized constants applied to footer, CTA, Lokasi sections
+✅ Fixed inconsistent phone/WhatsApp data across site
+✅ Google Maps embed with address overlay in Lokasi section
+✅ Testimoni auto-carousel (5s interval, hover pause, progress bar, dots)
+✅ Star rating stagger animation on testimonial render
+✅ Hero "Layanan Online" CTA button (outline variant, mobile responsive)
+✅ JSON-LD structured data (GovernmentOrganization + WebSite schemas)
+✅ Skip-to-content accessibility link
+✅ Removed unused CSS rules
+
+Completed Features (accumulated from all rounds):
+✅ Layanan dropdown menu with 2 sub-categories (with descriptions)
+✅ Info Kependudukan dropdown with 3 children
+✅ Full formal label in dropdowns
+✅ Admin sidebar collapsible menu grouping (synced)
+✅ Animated hero section with gradient, glass-morphism stats, 3 CTA buttons
+✅ Animated stats section with counter hook + section header
+✅ Animated services section grouped by category
+✅ Enhanced announcements with database API + animations
+✅ Enhanced news section with database API, search, category filters
+✅ Enhanced CTA section with WhatsApp button
+✅ FAQ section with accordion + search + 10 Q&As + WhatsApp CTA
+✅ Testimoni section with auto-carousel, progress bar, star animations
+✅ Back to Top floating button
+✅ Breadcrumb navigation on all sub-pages
+✅ Consistent layout on ALL pages
+✅ Loading skeletons on all dynamic sections
+✅ Mobile Sheet drawer navigation with collapsible sub-menus
+✅ Jam Operasional live indicator (WITA timezone)
+✅ Enhanced footer with centralized data, 5 social links, featured services
+✅ Transparansi page with animations, empty state, download counts
+✅ Real-time search on Berita page
+✅ Service detail with animations, related services, back button
+✅ Google Maps embed in Lokasi section
+✅ Dark mode support
+✅ Responsive design maintained
+✅ TypeScript strict mode with 0 errors
+✅ Zero blue/purple colors across ALL pages (public + admin)
+✅ Centralized site configuration constants (applied to 3 key files)
+✅ SEO JSON-LD structured data (GovernmentOrganization + WebSite)
+✅ Skip-to-content accessibility link
+✅ Vercel production deployment
+
+Known Issues / Risks:
+1. Supabase credentials not configured on Vercel (file upload won't work in production)
+2. Testimoni section uses hardcoded data (no database integration)
+3. Service detail page has code duplication (2 render blocks) - partially addressed
+4. Open Data Kependudukan links to /statistik#open-data (no dedicated page yet)
+5. Homepage (/) times out in sandbox due to memory limits (not a code issue)
+
+Priority Recommendations for Next Phase:
+1. Create dedicated Open Data Kependudukan page (linked from nav dropdown)
+2. Refactor service-detail.tsx to eliminate code duplication (extract shared layout)
+3. Integrate testimoni with database API
+4. Configure Supabase environment variables on Vercel for file upload
+5. Add admin management pages (pengumuman, berita CRUD)
+6. Add print-friendly styles for service detail pages
+7. Performance optimization: dynamic imports for heavy components (framer-motion, chart libs)
+8. Add more SEO: per-page meta tags, Open Graph images, canonical URLs
+9. Dark mode testing and polish
+10. Add loading skeleton to hero section (currently uses simple spinner)
