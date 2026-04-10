@@ -28,7 +28,7 @@ const panelVariants = {
     x: 0,
     opacity: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 30,
     },
@@ -38,7 +38,7 @@ const panelVariants = {
     opacity: 0,
     transition: {
       duration: 0.2,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
 };
@@ -57,7 +57,7 @@ const linkItemVariants = {
     transition: {
       delay: 0.08 + i * 0.03,
       duration: 0.25,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   }),
 };
