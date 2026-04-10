@@ -23,7 +23,20 @@ import {
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
-const navigation = [
+interface NavChild {
+  title: string;
+  href: string;
+  description?: string;
+}
+
+interface NavItem {
+  title: string;
+  href: string;
+  dropdownLabel?: string;
+  children?: NavChild[];
+}
+
+const navigation: NavItem[] = [
   { title: "Beranda", href: "/" },
   {
     title: "Profil",
@@ -39,12 +52,19 @@ const navigation = [
     title: "Layanan",
     href: "/layanan",
     children: [
-      { title: "Pendaftaran Penduduk", href: "/layanan?kategori=Pendaftaran+Penduduk" },
-      { title: "Pencatatan Sipil", href: "/layanan?kategori=Pencatatan+Sipil" },
+      { title: "Pendaftaran Penduduk", href: "/layanan?kategori=Pendaftaran+Penduduk", description: "KTP, KK, dan data penduduk" },
+      { title: "Pencatatan Sipil", href: "/layanan?kategori=Pencatatan+Sipil", description: "Akta nikah, cerai, kelahiran" },
     ],
   },
   { title: "Layanan Online", href: "/layanan-online" },
-  { title: "Statistik", href: "/statistik" },
+  {
+    title: "Info Kependudukan",
+    href: "/statistik",
+    dropdownLabel: "Pengelolaan Informasi Administrasi Kependudukan",
+    children: [
+      { title: "Statistik Kependudukan", href: "/statistik", description: "Data penduduk & dokumen" },
+    ],
+  },
   { title: "Berita", href: "/berita" },
   { title: "Inovasi", href: "/inovasi" },
   { title: "Pengaduan", href: "/pengaduan" },
@@ -65,7 +85,7 @@ function MobileNavItem({
   isActive,
   pathname,
 }: {
-  item: { title: string; href: string; children?: { title: string; href: string }[] };
+  item: NavItem;
   isActive: boolean;
   pathname: string;
 }) {
@@ -85,10 +105,15 @@ function MobileNavItem({
               : "text-gray-700 hover:text-green-700 hover:bg-gray-50"
           )}
         >
-          <span>{item.title}</span>
+          <div className="text-left">
+            <span>{item.title}</span>
+            {item.dropdownLabel && (
+              <p className="text-[10px] text-gray-400 font-normal mt-0.5 leading-tight">{item.dropdownLabel}</p>
+            )}
+          </div>
           <ChevronDown
             className={cn(
-              "h-4 w-4 transition-transform duration-200",
+              "h-4 w-4 transition-transform duration-200 flex-shrink-0",
               expanded && "rotate-180"
             )}
           />
@@ -111,23 +136,33 @@ function MobileNavItem({
         <div
           className={cn(
             "overflow-hidden transition-all duration-300",
-            expanded ? "max-h-60 mt-1" : "max-h-0"
+            expanded ? "max-h-96 mt-1" : "max-h-0"
           )}
         >
-          <div className="ml-4 pl-3 border-l-2 border-green-200 space-y-1">
+          {item.dropdownLabel && (
+            <div className="ml-4 pl-3 mb-2">
+              <p className="text-xs font-semibold text-green-700 border-b border-green-100 pb-2">{item.dropdownLabel}</p>
+            </div>
+          )}
+          <div className={cn("pl-3 border-l-2 border-green-200 space-y-1", !item.dropdownLabel && "ml-4")}>
             {item.children!.map((child) => (
               <Link
                 key={child.href}
                 href={child.href}
                 className={cn(
-                  "flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors",
+                  "flex flex-col px-3 py-2.5 rounded-lg transition-colors",
                   pathname === child.href
                     ? "text-green-700 bg-green-50 font-medium"
                     : "text-gray-500 hover:text-green-700 hover:bg-gray-50"
                 )}
               >
-                <ChevronRight className="h-3 w-3 flex-shrink-0" />
-                {child.title}
+                <span className="flex items-center gap-2 text-sm">
+                  <ChevronRight className="h-3 w-3 flex-shrink-0" />
+                  {child.title}
+                </span>
+                {child.description && (
+                  <span className="text-[11px] text-gray-400 ml-5 mt-0.5">{child.description}</span>
+                )}
               </Link>
             ))}
           </div>
@@ -244,14 +279,22 @@ export function Header() {
                       <ChevronDown className="h-4 w-4" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48">
+                  <DropdownMenuContent align="start" className={cn(item.dropdownLabel ? "w-64" : "w-48")}>
+                    {item.dropdownLabel && (
+                      <div className="px-2 py-1.5 border-b border-gray-100 mb-1">
+                        <p className="text-xs font-semibold text-green-700 leading-tight">{item.dropdownLabel}</p>
+                      </div>
+                    )}
                     {item.children.map((child) => (
-                      <DropdownMenuItem key={child.href} asChild>
+                      <DropdownMenuItem key={child.href} asChild className="py-2.5">
                         <Link
                           href={child.href}
-                          className="w-full cursor-pointer"
+                          className="w-full cursor-pointer flex flex-col"
                         >
-                          {child.title}
+                          <span className="font-medium">{child.title}</span>
+                          {child.description && (
+                            <span className="text-[11px] text-gray-400 mt-0.5">{child.description}</span>
+                          )}
                         </Link>
                       </DropdownMenuItem>
                     ))}
