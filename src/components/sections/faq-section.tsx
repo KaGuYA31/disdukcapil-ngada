@@ -122,7 +122,7 @@ export function FAQSection() {
   }, [searchQuery]);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-white">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <motion.div
@@ -135,10 +135,10 @@ export function FAQSection() {
             <HelpCircle className="h-4 w-4" />
             FAQ
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2">
             Pertanyaan yang Sering Diajukan
           </h2>
-          <p className="text-gray-600 mt-4">
+          <p className="text-gray-600 dark:text-gray-400 mt-4">
             Temukan jawaban untuk pertanyaan umum seputar layanan administrasi
             kependudukan
           </p>
@@ -151,7 +151,7 @@ export function FAQSection() {
           transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
           className="max-w-2xl mx-auto mb-8"
         >
-          <div className="relative bg-gray-50 rounded-xl border border-gray-200 transition-all duration-200 focus-within:ring-2 focus-within:ring-green-500/20 focus-within:border-green-500">
+          <div className="relative bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-200 focus-within:ring-2 focus-within:ring-green-500/20 focus-within:border-green-500">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
             <Input
               type="text"
@@ -192,20 +192,20 @@ export function FAQSection() {
                     >
                       <AccordionItem
                         value={`faq-${originalIndex}`}
-                        className="border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md"
+                        className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md"
                       >
-                        <AccordionTrigger className="px-5 py-5 md:px-6 md:py-5 hover:bg-gray-50 hover:no-underline transition-colors duration-200 [&[data-state=open]]:bg-green-50/50">
+                        <AccordionTrigger className="px-5 py-5 md:px-6 md:py-5 hover:bg-gray-50 dark:hover:bg-gray-800 hover:no-underline transition-colors duration-200 [&[data-state=open]]:bg-green-50/50 dark:[&[data-state=open]]:bg-green-900/30">
                           <div className="flex items-start gap-3">
                             <span className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-green-600 text-white text-xs font-bold">
                               {originalIndex + 1}
                             </span>
-                            <span className="text-left text-sm md:text-base font-semibold text-gray-800">
+                            <span className="text-left text-sm md:text-base font-semibold text-gray-800 dark:text-gray-200">
                               {faq.question}
                             </span>
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className="px-5 pb-5 md:px-6 md:pb-6">
-                          <div className="pl-10 text-gray-600 leading-relaxed text-sm md:text-base">
+                          <div className="pl-10 text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base">
                             {faq.answer}
                           </div>
                         </AccordionContent>
@@ -222,10 +222,10 @@ export function FAQSection() {
               transition={{ duration: 0.3 }}
               className="text-center py-12"
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
                 <SearchX className="h-7 w-7 text-gray-400" />
               </div>
-              <p className="text-gray-500 font-medium text-lg">
+              <p className="text-gray-500 dark:text-gray-400 font-medium text-lg">
                 Tidak ada pertanyaan yang cocok
               </p>
               <p className="text-gray-400 text-sm mt-1">
@@ -243,17 +243,17 @@ export function FAQSection() {
           transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" as const }}
           className="max-w-3xl mx-auto mt-10"
         >
-          <Card className="bg-green-50 border-green-200 overflow-hidden">
+          <Card className="bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 overflow-hidden">
             <CardContent className="p-6 md:p-8">
               <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
-                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
                   <MessageCircle className="h-7 w-7 text-green-600" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
                     Masih Punya Pertanyaan?
                   </h3>
-                  <p className="text-gray-600 text-sm md:text-base mt-1">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base mt-1">
                     Hubungi kami melalui WhatsApp untuk konsultasi langsung
                   </p>
                 </div>

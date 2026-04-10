@@ -7,6 +7,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CountdownTimer } from "@/components/shared/countdown-timer";
 
 interface BerandaData {
   ringkasan: {
@@ -247,6 +248,14 @@ export function HeroSection() {
               Melayani dengan sepenuh hati untuk kemudahan akses layanan
               administrasi kependudukan bagi seluruh masyarakat Kabupaten Ngada.
             </motion.p>
+
+            {/* Countdown Timer */}
+            <motion.div
+              variants={fadeIn}
+              className="flex justify-center lg:justify-start"
+            >
+              <CountdownTimer />
+            </motion.div>
 
             {/* Search Bar */}
             <motion.form

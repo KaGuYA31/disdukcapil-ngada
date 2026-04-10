@@ -139,7 +139,7 @@ function TestimonialCard({
       initial="hidden"
       animate="visible"
     >
-      <Card className="h-full border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 rounded-xl overflow-hidden">
+      <Card className="h-full border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 rounded-xl overflow-hidden">
         <CardContent className="p-6 flex flex-col h-full">
           {/* Star Rating */}
           <div className="mb-4">
@@ -148,16 +148,16 @@ function TestimonialCard({
 
           {/* Quote */}
           <div className="flex gap-3 mb-4">
-            <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mt-0.5">
+            <div className="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center mt-0.5">
               <Quote className="h-4 w-4 text-green-600" />
             </div>
-            <p className="text-gray-600 italic leading-relaxed text-sm flex-1">
+            <p className="text-gray-600 dark:text-gray-400 italic leading-relaxed text-sm flex-1">
               &ldquo;{testimonial.text}&rdquo;
             </p>
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-100 my-4 mt-auto" />
+          <div className="border-t border-gray-100 dark:border-gray-700 my-4 mt-auto" />
 
           {/* Author Info */}
           <div className="flex items-center gap-3">
@@ -165,10 +165,10 @@ function TestimonialCard({
               {testimonial.name.charAt(0)}
             </div>
             <div>
-              <p className="font-semibold text-gray-900 text-sm">
+              <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
                 {testimonial.name}
               </p>
-              <p className="text-xs text-gray-500">{testimonial.location}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{testimonial.location}</p>
             </div>
           </div>
         </CardContent>
@@ -239,7 +239,7 @@ export function TestimoniSection() {
   const showRotationUI = isInView && !showAll && !isPaused;
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-gray-50">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <motion.div
@@ -252,10 +252,10 @@ export function TestimoniSection() {
             <Quote className="h-4 w-4" />
             Testimoni
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2">
             Testimoni Masyarakat
           </h2>
-          <p className="text-gray-600 mt-4">
+          <p className="text-gray-600 dark:text-gray-400 mt-4">
             Apa kata masyarakat tentang pelayanan Disdukcapil Kabupaten Ngada.
             Kepuasan Anda adalah prioritas kami.
           </p>
@@ -272,21 +272,21 @@ export function TestimoniSection() {
           <div className="text-center">
             <div className="flex items-center justify-center gap-1">
               <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-              <span className="text-2xl font-bold text-gray-900">4.8</span>
+              <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">4.8</span>
             </div>
-            <p className="text-xs text-gray-500 mt-0.5">Rating Rata-rata</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Rating Rata-rata</p>
           </div>
-          <div className="w-px h-10 bg-gray-200" />
+          <div className="w-px h-10 bg-gray-200 dark:bg-gray-700" />
           <div className="text-center">
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {testimonials.length}
             </span>
-            <p className="text-xs text-gray-500 mt-0.5">Testimoni</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Testimoni</p>
           </div>
-          <div className="w-px h-10 bg-gray-200" />
+          <div className="w-px h-10 bg-gray-200 dark:bg-gray-700" />
           <div className="text-center">
             <span className="text-2xl font-bold text-green-700">98%</span>
-            <p className="text-xs text-gray-500 mt-0.5">Puas dengan Layanan</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Puas dengan Layanan</p>
           </div>
         </motion.div>
 
@@ -350,7 +350,7 @@ export function TestimoniSection() {
                   handleShowAll();
                 }
               }}
-              className="border-green-700 text-green-700 hover:bg-green-50 hover:text-green-800 font-medium"
+              className="border-green-700 text-green-700 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-800 font-medium"
             >
               {showAll ? "Tampilkan Sedikit" : "Lihat Semua Testimoni"}
               <ChevronDown
@@ -361,7 +361,7 @@ export function TestimoniSection() {
             </Button>
             {/* Progress bar for auto-rotation — CSS animation restarts via key */}
             {showRotationUI && (
-              <div className="w-40 h-1 bg-gray-200 rounded-full overflow-hidden">
+              <div className="w-40 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
                   key={progressKey}
                   className="h-full bg-green-500 rounded-full"

@@ -114,18 +114,18 @@ function AnimatedStatCard({
       animate={isAnimating ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" as const }}
       whileHover={{ scale: 1.03, y: -4 }}
-      className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg border border-gray-100 transition-shadow cursor-default"
+      className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm hover:shadow-lg border border-gray-100 dark:border-gray-800 transition-shadow cursor-default"
     >
       <div
         className={`w-12 h-12 ${bgColor} rounded-lg flex items-center justify-center mb-4`}
       >
         <Icon className={`h-6 w-6 ${color}`} />
       </div>
-      <p className="text-2xl md:text-3xl font-bold text-gray-900 tabular-nums">
+      <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums">
         {isAnimating ? displayValue : "0"}
       </p>
-      <p className="font-semibold text-gray-700 mt-1">{label}</p>
-      <p className="text-sm text-gray-500 mt-1">{description}</p>
+      <p className="font-semibold text-gray-700 dark:text-gray-300 mt-1">{label}</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
     </motion.div>
   );
 }
@@ -170,7 +170,7 @@ export function StatsSection() {
       label: "Total Penduduk",
       description: `Periode ${periode}`,
       color: "text-green-600",
-      bgColor: "bg-green-100",
+      bgColor: "bg-green-100 dark:bg-green-900/50",
       isPercent: false,
     },
     {
@@ -180,7 +180,7 @@ export function StatsSection() {
       label: "Blanko E-KTP",
       description: blankoEKTP?.keterangan || "Tersedia saat ini",
       color: blankoEKTP && blankoEKTP.jumlahTersedia > 0 ? "text-teal-600" : "text-red-600",
-      bgColor: blankoEKTP && blankoEKTP.jumlahTersedia > 0 ? "bg-teal-100" : "bg-red-100",
+      bgColor: blankoEKTP && blankoEKTP.jumlahTersedia > 0 ? "bg-teal-100 dark:bg-teal-900/50" : "bg-red-100 dark:bg-red-900/50",
       isPercent: false,
     },
     {
@@ -190,7 +190,7 @@ export function StatsSection() {
       label: "Kecamatan",
       description: "Wilayah Layanan",
       color: "text-amber-600",
-      bgColor: "bg-amber-100",
+      bgColor: "bg-amber-100 dark:bg-amber-900/50",
       isPercent: false,
     },
     {
@@ -200,7 +200,7 @@ export function StatsSection() {
       label: "Cakupan Akta",
       description: "Akta Kelahiran",
       color: "text-rose-600",
-      bgColor: "bg-rose-100",
+      bgColor: "bg-rose-100 dark:bg-rose-900/50",
       isPercent: true,
     },
   ];
@@ -210,7 +210,7 @@ export function StatsSection() {
   return (
     <section ref={sectionRef} className="py-12 md:py-16 relative overflow-hidden">
       {/* Subtle background pattern */}
-      <div className="absolute inset-0 bg-gray-50">
+      <div className="absolute inset-0 bg-gray-50 dark:bg-gray-900">
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -220,7 +220,7 @@ export function StatsSection() {
       </div>
 
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-gray-50/80 to-gray-100" />
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 dark:from-gray-900 via-gray-50/80 dark:via-gray-900/80 to-gray-100 dark:to-gray-800" />
 
       <div className="container mx-auto px-4 relative">
         {/* Section Header */}
@@ -234,10 +234,10 @@ export function StatsSection() {
             <BarChart3 className="h-4 w-4" />
             Data Kependudukan
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">
             Ringkasan Statistik
           </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto">
+          <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
             Data kependudukan Kabupaten Ngada berdasarkan periode terbaru
           </p>
         </motion.div>
@@ -289,12 +289,24 @@ export function StatsSection() {
           viewBox="0 0 1440 80"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute bottom-0 left-0 right-0 w-full h-full"
+          className="absolute bottom-0 left-0 right-0 w-full h-full dark:hidden"
           preserveAspectRatio="none"
         >
           <path
             d="M0 40C180 65 360 75 540 60C720 45 900 20 1080 25C1260 30 1380 50 1440 55V80H0V40Z"
             fill="white"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 1440 80"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute bottom-0 left-0 right-0 w-full h-full hidden dark:block"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0 40C180 65 360 75 540 60C720 45 900 20 1080 25C1260 30 1380 50 1440 55V80H0V40Z"
+            fill="#111827"
           />
         </svg>
       </div>

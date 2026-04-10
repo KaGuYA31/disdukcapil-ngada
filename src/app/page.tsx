@@ -14,6 +14,7 @@ import { FAQSection } from "@/components/sections/faq-section";
 import { KeunggulanSection } from "@/components/sections/keunggulan-section";
 import { TestimoniSection } from "@/components/sections/testimoni-section";
 import { CTASection } from "@/components/sections/cta-section";
+import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
 
 export default function HomePage() {
   return (
@@ -29,6 +30,7 @@ export default function HomePage() {
         <FAQSection />
         <KeunggulanSection />
         <TestimoniSection />
+        <WhyChooseUsSection />
         <NewsSection />
         <CTASection />
       </main>

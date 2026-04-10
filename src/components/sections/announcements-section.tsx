@@ -90,25 +90,25 @@ const getTypeColor = (type: string) => {
   switch (type.toLowerCase()) {
     case "urgent":
       return {
-        badge: "bg-red-100 text-red-700",
+        badge: "bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300",
         icon: "text-red-600",
-        iconBg: "bg-red-50",
+        iconBg: "bg-red-50 dark:bg-red-950/50",
         border: "border-l-red-500",
         borderHover: "hover:border-l-red-600",
       };
     case "maintenance":
       return {
-        badge: "bg-amber-100 text-amber-700",
+        badge: "bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300",
         icon: "text-amber-600",
-        iconBg: "bg-amber-50",
+        iconBg: "bg-amber-50 dark:bg-amber-950/50",
         border: "border-l-amber-500",
         borderHover: "hover:border-l-amber-600",
       };
     default:
       return {
-        badge: "bg-green-100 text-green-700",
+        badge: "bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300",
         icon: "text-green-600",
-        iconBg: "bg-green-50",
+        iconBg: "bg-green-50 dark:bg-green-950/50",
         border: "border-l-green-500",
         borderHover: "hover:border-l-green-600",
       };
@@ -222,7 +222,7 @@ export function AnnouncementsSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 bg-white"
+      className="py-16 md:py-24 bg-white dark:bg-gray-900"
     >
       <div className="container mx-auto px-4">
         {/* Section Header */}
@@ -236,10 +236,10 @@ export function AnnouncementsSection() {
             <Bell className="h-4 w-4" />
             Pengumuman
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2">
             Informasi Penting
           </h2>
-          <p className="text-gray-600 mt-4">
+          <p className="text-gray-600 dark:text-gray-400 mt-4">
             Pengumuman dan informasi penting seputar layanan Disdukcapil
             Kabupaten Ngada.
           </p>
@@ -266,8 +266,8 @@ export function AnnouncementsSection() {
                     className={`border-l-4 ${colors.border} ${colors.borderHover} 
                       shadow-sm hover:shadow-md hover:-translate-y-0.5
                       transition-all duration-300
-                      bg-gradient-to-r from-white to-gray-50/50
-                      hover:from-white hover:to-green-50/40
+                      bg-gradient-to-r from-white dark:from-gray-900 to-gray-50/50 dark:to-gray-800/50
+                      hover:from-white dark:hover:from-gray-900 hover:to-green-50/40 dark:hover:to-green-900/30
                       overflow-hidden`}
                   >
                     <CardHeader className="pb-2">
@@ -301,7 +301,7 @@ export function AnnouncementsSection() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600 leading-relaxed">
+                      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                         {announcement.content}
                       </p>
                     </CardContent>
@@ -328,7 +328,7 @@ export function AnnouncementsSection() {
             <Link href="/berita">
               <Button
                 variant="outline"
-                className="border-green-600 text-green-700 hover:bg-green-50 hover:text-green-800 font-medium"
+                className="border-green-600 text-green-700 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-800 font-medium"
               >
                 Lihat Berita & Pengumuman
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -344,12 +344,24 @@ export function AnnouncementsSection() {
           viewBox="0 0 1440 60"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute bottom-0 left-0 right-0 w-full h-full"
+          className="absolute bottom-0 left-0 right-0 w-full h-full dark:hidden"
           preserveAspectRatio="none"
         >
           <path
             d="M0 30C240 50 480 55 720 40C960 25 1200 15 1440 25V60H0V30Z"
             fill="#f9fafb"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 1440 60"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute bottom-0 left-0 right-0 w-full h-full hidden dark:block"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0 30C240 50 480 55 720 40C960 25 1200 15 1440 25V60H0V30Z"
+            fill="#111827"
           />
         </svg>
       </div>

@@ -1,13 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, Clock } from "lucide-react";
+import { FileText, Clock, ClipboardList } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { BackToTop } from "@/components/shared/back-to-top";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { ServicesListSection } from "@/components/sections/layanan/services-list-section";
+import { DocumentCheckerSection } from "@/components/sections/layanan/document-checker-section";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -30,6 +32,45 @@ const floatOrb = {
     transition: { duration: 1.2, ease: "easeOut" as const },
   },
 };
+
+// Available services for document checker
+const documentCheckerServices = [
+  { slug: "ktp-el", label: "KTP-el", icon: "🪪" },
+  { slug: "kartu-keluarga", label: "Kartu Keluarga", icon: "👨‍👩‍👧‍👦" },
+  { slug: "akta-kelahiran", label: "Akta Kelahiran", icon: "👶" },
+  { slug: "akta-kematian", label: "Akta Kematian", icon: "🕊️" },
+  { slug: "akta-perkawinan", label: "Akta Perkawinan", icon: "💍" },
+  { slug: "akta-perceraian", label: "Akta Perceraian", icon: "📜" },
+] as const;
+
+function DocumentCheckerWrapper() {
+  const [selectedService, setSelectedService] = useState<string>("ktp-el");
+
+  return (
+    <div className="space-y-4">
+      {/* Service selector buttons */}
+      <div className="flex flex-wrap gap-2 justify-center">
+        {documentCheckerServices.map((service) => (
+          <button
+            key={service.slug}
+            onClick={() => setSelectedService(service.slug)}
+            className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer ${
+              selectedService === service.slug
+                ? "bg-teal-600 text-white shadow-md shadow-teal-600/25 scale-105"
+                : "bg-white text-gray-700 border border-gray-200 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-700"
+            }`}
+          >
+            <span>{service.icon}</span>
+            <span className="hidden sm:inline">{service.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Document checker for selected service */}
+      <DocumentCheckerSection serviceSlug={selectedService} />
+    </div>
+  );
+}
 
 export default function LayananPage() {
   return (
@@ -158,6 +199,35 @@ export default function LayananPage() {
                 </p>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* Document Requirements Checker */}
+        <section className="bg-gray-50 py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={staggerContainer}
+            >
+              <motion.div variants={fadeInUp} className="text-center mb-8">
+                <span className="inline-block bg-teal-100 text-teal-700 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full mb-3">
+                  Persyaratan Dokumen
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+                  <ClipboardList className="h-7 w-7 text-teal-600" />
+                  Cek Kelengkapan Dokumen Anda
+                </h2>
+                <p className="text-gray-600 max-w-xl mx-auto">
+                  Pilih layanan yang ingin diurus untuk mengetahui dokumen yang diperlukan.
+                </p>
+              </motion.div>
+
+              <motion.div variants={fadeInUp} className="max-w-2xl mx-auto">
+                <DocumentCheckerWrapper />
+              </motion.div>
+            </motion.div>
           </div>
         </section>
 

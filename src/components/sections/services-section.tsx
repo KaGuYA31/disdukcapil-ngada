@@ -93,11 +93,11 @@ function getCategoryDescription(category: string) {
 function getCategoryColor(category: string) {
   switch (category) {
     case "Pendaftaran Penduduk":
-      return { bg: "bg-emerald-100", text: "text-emerald-700", border: "border-emerald-200", gradient: "from-emerald-600 to-emerald-800", hoverBorder: "hover:border-emerald-300" };
+      return { bg: "bg-emerald-100 dark:bg-emerald-900/50", text: "text-emerald-700 dark:text-emerald-300", border: "border-emerald-200 dark:border-emerald-800", gradient: "from-emerald-600 to-emerald-800", hoverBorder: "hover:border-emerald-300" };
     case "Pencatatan Sipil":
-      return { bg: "bg-amber-100", text: "text-amber-700", border: "border-amber-200", gradient: "from-amber-600 to-amber-800", hoverBorder: "hover:border-amber-300" };
+      return { bg: "bg-amber-100 dark:bg-amber-900/50", text: "text-amber-700 dark:text-amber-300", border: "border-amber-200 dark:border-amber-800", gradient: "from-amber-600 to-amber-800", hoverBorder: "hover:border-amber-300" };
     default:
-      return { bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-200", gradient: "from-gray-600 to-gray-800", hoverBorder: "hover:border-gray-300" };
+      return { bg: "bg-gray-100 dark:bg-gray-800", text: "text-gray-700 dark:text-gray-300", border: "border-gray-200 dark:border-gray-700", gradient: "from-gray-600 to-gray-800", hoverBorder: "hover:border-gray-300" };
   }
 }
 
@@ -209,8 +209,8 @@ function CategorySection({
           </h3>
           <div className={`absolute bottom-0 left-0 h-0.5 ${colors.bg} transition-all duration-300 group-hover:w-full`} style={{ width: "0" }} />
         </div>
-        <p className="text-sm text-gray-500 hidden lg:block max-w-md">{getCategoryDescription(category)}</p>
-        <div className="flex-1 h-px bg-gray-200 ml-4 hidden sm:block" />
+        <p className="text-sm text-gray-500 dark:text-gray-400 hidden lg:block max-w-md">{getCategoryDescription(category)}</p>
+        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700 ml-4 hidden sm:block" />
         <Link
           href={`/layanan?kategori=${encodeURIComponent(category)}`}
           className="hidden sm:flex items-center gap-1 text-sm font-medium text-green-700 hover:text-green-800 transition-colors"
@@ -228,9 +228,9 @@ function CategorySection({
                 href={`/layanan/${service.slug}`}
                 className="group block h-full"
               >
-                <Card className={`relative h-full card-hover border-gray-200 ${colors.hoverBorder} hover:border-green-300 hover:shadow-green-100/50 hover:shadow-lg transition-all duration-300 overflow-hidden`}>
+                <Card className={`relative h-full card-hover border-gray-200 dark:border-gray-800 ${colors.hoverBorder} hover:border-green-300 hover:shadow-green-100/50 hover:shadow-lg transition-all duration-300 overflow-hidden`}>
                   {/* Gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-transparent to-green-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-transparent to-green-50/50 dark:to-green-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0" />
                   {/* Left border accent on hover */}
                   <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top z-10 rounded-r" />
 
@@ -245,16 +245,16 @@ function CategorySection({
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="relative z-[1]">
-                    <CardDescription className="text-gray-600 leading-relaxed">
+                    <CardDescription className="text-gray-600 dark:text-gray-400 leading-relaxed">
                       {service.description}
                     </CardDescription>
                     <div className="mt-3 flex items-center gap-2 flex-wrap">
-                      <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs gap-1">
+                      <Badge className="bg-green-50 dark:bg-green-950/50 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800 text-xs gap-1">
                         <BadgeCheck className="h-3 w-3" />
                         {service.fee || "GRATIS"}
                       </Badge>
                       {service.processingTime && (
-                        <Badge className="bg-teal-50 text-teal-600 border border-teal-100 text-xs gap-1">
+                        <Badge className="bg-teal-50 dark:bg-teal-950/50 text-teal-600 dark:text-teal-300 border border-teal-100 dark:border-teal-800 text-xs gap-1">
                           <Clock className="h-3 w-3" />
                           {service.processingTime.replace("*", "")}
                         </Badge>
@@ -278,7 +278,7 @@ function CategorySection({
       {/* Mobile "See All" link */}
       <motion.div variants={cardVariants} className="mt-6 text-center sm:hidden">
         <Link href={`/layanan?kategori=${encodeURIComponent(category)}`}>
-          <Button variant="outline" className="border-green-700 text-green-700 hover:bg-green-50">
+          <Button variant="outline" className="border-green-700 text-green-700 hover:bg-green-50 dark:hover:bg-green-900/30">
             Lihat Semua {category}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
@@ -334,7 +334,7 @@ export function ServicesSection() {
   const totalServices = services.length;
 
   return (
-    <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
       {/* Subtle background dot grid pattern */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div
@@ -363,7 +363,7 @@ export function ServicesSection() {
           </div>
 
           {/* Label with green-100 pill and Service icon */}
-          <span className="inline-flex items-center gap-2 bg-green-100 text-green-700 font-semibold text-sm uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">
+          <span className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold text-sm uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">
             <ConciergeBell className="h-4 w-4" />
             Layanan Kami
           </span>
@@ -376,16 +376,16 @@ export function ServicesSection() {
               transition={{ duration: 0.3, delay: 0.2 }}
               className="mb-4"
             >
-              <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs font-medium px-3 py-1">
+              <Badge className="bg-green-50 dark:bg-green-950/50 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800 text-xs font-medium px-3 py-1">
                 {totalServices} Layanan Tersedia
               </Badge>
             </motion.div>
           )}
 
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2">
             Layanan Administrasi Kependudukan
           </h2>
-          <p className="text-gray-600 mt-4">
+          <p className="text-gray-600 dark:text-gray-400 mt-4">
             Berbagai layanan administrasi kependudukan yang dapat diakses oleh
             masyarakat Kabupaten Ngada. Silakan pilih layanan yang Anda
             butuhkan.
@@ -409,7 +409,7 @@ export function ServicesSection() {
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
                   activeTab === tab.value
                     ? "bg-green-700 text-white shadow-md shadow-green-700/25"
-                    : "bg-white text-gray-600 border border-gray-200 hover:border-green-300 hover:text-green-700 hover:bg-green-50"
+                    : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-green-300 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/30"
                 }`}
               >
                 <TabIcon className="h-4 w-4" />
@@ -433,7 +433,7 @@ export function ServicesSection() {
                 {/* Cards skeleton */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   {[0, 1, 2, 3].map((cardIndex) => (
-                    <div key={cardIndex} className="rounded-xl border border-gray-200 p-6">
+                    <div key={cardIndex} className="rounded-xl border border-gray-200 dark:border-gray-800 p-6">
                       <Skeleton className="h-14 w-14 rounded-xl mb-4" />
                       <Skeleton className="h-5 w-28 rounded mb-3" />
                       <Skeleton className="h-4 w-full rounded mb-1.5" />
