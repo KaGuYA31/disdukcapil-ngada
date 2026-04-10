@@ -1,6 +1,9 @@
 "use client";
 
-import { Bell, AlertTriangle, Info, Wrench } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
+import { Bell, AlertTriangle, Info, Wrench, ArrowRight } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 import {
   Card,
   CardContent,
@@ -9,6 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const announcements = [
   {
@@ -54,30 +59,110 @@ const getTypeColor = (type: string) => {
       return {
         badge: "bg-red-100 text-red-700",
         icon: "text-red-600",
+        iconBg: "bg-red-50",
         border: "border-l-red-500",
+        borderHover: "hover:border-l-red-600",
       };
     case "maintenance":
       return {
-        badge: "bg-yellow-100 text-yellow-700",
-        icon: "text-yellow-600",
-        border: "border-l-yellow-500",
+        badge: "bg-amber-100 text-amber-700",
+        icon: "text-amber-600",
+        iconBg: "bg-amber-50",
+        border: "border-l-amber-500",
+        borderHover: "hover:border-l-amber-600",
       };
     default:
       return {
-        badge: "bg-blue-100 text-blue-700",
-        icon: "text-blue-600",
-        border: "border-l-blue-500",
+        badge: "bg-green-100 text-green-700",
+        icon: "text-green-600",
+        iconBg: "bg-green-50",
+        border: "border-l-green-500",
+        borderHover: "hover:border-l-green-600",
       };
   }
 };
 
-export function AnnouncementsSection() {
+// Animation variants
+const headerVariants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: 0.2 + i * 0.1,
+      ease: "easeOut",
+    },
+  }),
+};
+
+function AnnouncementsLoadingSkeleton() {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <div className="max-w-4xl mx-auto space-y-4">
+      {[1, 2, 3].map((i) => (
+        <Card
+          key={i}
+          className="border-l-4 border-l-gray-300 overflow-hidden"
+        >
+          <CardHeader className="pb-2">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Skeleton className="w-10 h-10 rounded-lg" />
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-48" />
+                  <Skeleton className="h-4 w-28" />
+                </div>
+              </div>
+              <Skeleton className="h-6 w-20 rounded-full" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-3/4 mt-2" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+export function AnnouncementsSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a brief loading state for visual effect
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="py-16 md:py-24 bg-white"
+    >
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <span className="text-green-600 font-semibold text-sm uppercase tracking-wider">
+        <motion.div
+          variants={headerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="text-center max-w-3xl mx-auto mb-10"
+        >
+          <span className="inline-flex items-center gap-2 text-green-600 font-semibold text-sm uppercase tracking-wider">
+            <Bell className="h-4 w-4" />
             Pengumuman
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
@@ -87,51 +172,99 @@ export function AnnouncementsSection() {
             Pengumuman dan informasi penting seputar layanan Disdukcapil
             Kabupaten Ngada.
           </p>
-        </div>
+        </motion.div>
 
         {/* Announcements List */}
-        <div className="max-w-4xl mx-auto space-y-4">
-          {announcements.map((announcement) => {
-            const colors = getTypeColor(announcement.type);
-            const Icon = getTypeIcon(announcement.type);
+        {loading ? (
+          <AnnouncementsLoadingSkeleton />
+        ) : (
+          <div className="max-w-4xl mx-auto space-y-4">
+            {announcements.map((announcement, index) => {
+              const colors = getTypeColor(announcement.type);
+              const Icon = getTypeIcon(announcement.type);
 
-            return (
-              <Card
-                key={announcement.id}
-                className={`border-l-4 ${colors.border} hover:shadow-md transition-shadow`}
+              return (
+                <motion.div
+                  key={announcement.id}
+                  custom={index}
+                  variants={cardVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                >
+                  <Card
+                    className={`border-l-4 ${colors.border} ${colors.borderHover} 
+                      shadow-sm hover:shadow-md hover:-translate-y-0.5
+                      transition-all duration-300
+                      bg-gradient-to-r from-white to-gray-50/50
+                      hover:from-white hover:to-green-50/40
+                      overflow-hidden`}
+                  >
+                    <CardHeader className="pb-2">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-10 h-10 ${colors.iconBg} rounded-lg flex items-center justify-center`}
+                          >
+                            <Icon
+                              className={`h-5 w-5 ${colors.icon}`}
+                            />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">
+                              {announcement.title}
+                            </CardTitle>
+                            <CardDescription>
+                              {new Date(
+                                announcement.date
+                              ).toLocaleDateString("id-ID", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </CardDescription>
+                          </div>
+                        </div>
+                        <Badge className={colors.badge}>
+                          {announcement.type}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 leading-relaxed">
+                        {announcement.content}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* See All Link */}
+        {loading ? (
+          <div className="flex justify-center mt-8">
+            <Skeleton className="h-10 w-56 rounded-lg" />
+          </div>
+        ) : (
+          <motion.div
+            variants={headerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+            className="flex justify-center mt-8"
+          >
+            <Link href="/berita">
+              <Button
+                variant="outline"
+                className="border-green-600 text-green-700 hover:bg-green-50 hover:text-green-800 font-medium"
               >
-                <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <Icon className={`h-5 w-5 ${colors.icon}`} />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg">
-                          {announcement.title}
-                        </CardTitle>
-                        <CardDescription>
-                          {new Date(announcement.date).toLocaleDateString(
-                            "id-ID",
-                            {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                            }
-                          )}
-                        </CardDescription>
-                      </div>
-                    </div>
-                    <Badge className={colors.badge}>{announcement.type}</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">{announcement.content}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                Lihat Semua Pengumuman
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </motion.div>
+        )}
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { ServicesListSection } from "@/components/sections/layanan/services-list-section";
 
 export const metadata = {
@@ -18,7 +19,10 @@ export default function LayananPage() {
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              <div className="mb-4">
+                <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Layanan Publik" }]} />
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">
                 Layanan Publik
               </h1>
               <p className="text-green-100 text-lg">
