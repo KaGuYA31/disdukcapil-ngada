@@ -40,7 +40,7 @@ const formatDate = (dateString: string) => {
 const getCategoryColor = (category: string) => {
   switch (category.toLowerCase()) {
     case "informasi":
-      return "bg-blue-100 text-blue-700";
+      return "bg-teal-100 text-teal-700";
     case "pengumuman":
       return "bg-yellow-100 text-yellow-700";
     case "kegiatan":

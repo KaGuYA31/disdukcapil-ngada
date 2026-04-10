@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen } from "lucide-react";
+import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -119,20 +119,38 @@ export function HeroSection() {
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-700 via-green-800 to-green-900 animate-hero-gradient" />
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
+      {/* Subtle Dot Grid Pattern Overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+          opacity: 0.07,
+        }}
+      />
 
       {/* Decorative Globe Element */}
       <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 opacity-[0.06] hidden xl:block">
         <Globe className="h-[500px] w-[500px] text-white" strokeWidth={0.5} />
       </div>
+
+      {/* Visitor Counter Badge - Real-time Data */}
+      <motion.div
+        className="hidden lg:flex absolute top-6 right-6 z-10 items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-4 py-2 border border-white/20"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 1.2 }}
+      >
+        <motion.span
+          className="relative flex h-2.5 w-2.5"
+          animate={{ scale: [1, 1.3, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
+          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400" />
+        </motion.span>
+        <span className="text-sm font-medium text-green-100">Data Kependudukan Real-time</span>
+      </motion.div>
 
       <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32 relative">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -341,6 +359,22 @@ export function HeroSection() {
           )}
         </motion.div>
       </div>
+
+      {/* Scroll Down Indicator */}
+      <motion.button
+        className="hidden md:flex absolute bottom-28 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-1 group cursor-pointer"
+        onClick={() => {
+          window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
+        }}
+        aria-label="Scroll ke bawah"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm opacity-70 group-hover:opacity-100 transition-opacity">
+          <ChevronDown className="h-5 w-5 text-white" />
+        </span>
+        <span className="text-xs text-white/50 mt-1">Scroll ke bawah</span>
+      </motion.button>
 
       {/* Wave Divider */}
       <div className="absolute bottom-0 left-0 right-0">

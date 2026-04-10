@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -182,6 +182,7 @@ export function Header() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const mounted = useMounted();
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -190,6 +191,23 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Ctrl+K / Cmd+K shortcut to focus/open search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen(true);
+        // Focus after a short delay to let the animation expand
+        setTimeout(() => searchInputRef.current?.focus(), 100);
+      }
+      if (e.key === "Escape" && isSearchOpen) {
+        setIsSearchOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isSearchOpen]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -427,13 +445,22 @@ export function Header() {
           )}
         >
           <form onSubmit={handleSearch} className="flex gap-2">
-            <Input
-              type="search"
-              placeholder="Cari berita atau informasi..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1"
-            />
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+              <Input
+                ref={searchInputRef}
+                type="search"
+                placeholder="Cari berita atau informasi..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchOpen(true)}
+                className="pl-9 pr-16 focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+              />
+              {/* Ctrl+K shortcut hint — hidden on mobile */}
+              <kbd className="hidden sm:inline-flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-0.5 pointer-events-none select-none rounded border border-gray-300 bg-gray-100 px-1.5 py-0.5 font-mono text-[10px] font-medium text-gray-500">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </div>
             <Button type="submit" className="bg-green-700 hover:bg-green-800">
               <Search className="h-4 w-4 mr-2" />
               Cari
