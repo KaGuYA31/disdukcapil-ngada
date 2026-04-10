@@ -936,3 +936,151 @@ Priority Recommendations for Next Phase:
 6. SEO optimization: structured data (JSON-LD), meta tags, Open Graph
 7. Performance optimization: dynamic imports for heavy components
 8. Accessibility audit: ARIA improvements, keyboard navigation
+
+---
+Task ID: round-8
+Agent: Main Coordinator
+Task: Round 8 - Comprehensive code analysis, centralized config, animations, FAQ enhancements, admin color fixes
+
+Work Log:
+- Reviewed worklog.md (Rounds 2-7 complete, all features accumulated)
+- Comprehensive code analysis via Explore agent (full project audit)
+- ESLint: 0 errors, 0 warnings throughout all changes
+- Dispatched 4 parallel subagents for independent tasks
+- All 4 subagents completed successfully
+- Committed as 71366ac (13 files, +963 -445 lines)
+
+Analysis Findings:
+- Data inconsistencies: 6 places with different operating hours, 3 different phone numbers, 3 different WhatsApp numbers
+- Service detail page had NO framer-motion animations (only major page missing them)
+- Wrong icon: MapPin used for "Prosedur" section (should be ClipboardCheck)
+- Announcements "Lihat Semua" linked to /pengaduan (wrong destination)
+- Admin pages had 30+ blue/purple color instances
+- Massive code duplication in service-detail.tsx (~460 lines duplicated)
+- Missing: Related services, back button, search in FAQ
+
+Changes Implemented:
+
+  1. Created centralized site config (`src/lib/constants.ts`):
+     - SITE_CONFIG: name, description, URL
+     - CONTACT_INFO: phone, WhatsApp, email, address (single source of truth)
+     - OPERATING_HOURS: structured schedule (Sen-Kam 08.00-15.30, Jumat 08.00-16.00)
+     - SOCIAL_MEDIA: Facebook, Instagram, Twitter, TikTok, YouTube
+     - LOCATION: office name, address, GPS coordinates, Google Maps URL
+     - LAYANAN_CATEGORIES: service categories with colors and icons
+
+  2. Enhanced service detail page (`service-detail.tsx`):
+     - Added framer-motion animations: hero fadeInUp, card stagger (0.1s), sidebar stagger (0.3s delay)
+     - Added card hover effects: shadow-md + -translate-y-0.5 on all Cards
+     - Fixed MapPin → ClipboardCheck icon for Prosedur section
+     - Fixed operating hours: "Senin-Jumat 09.00-15.00" → "Sen-Kam 08.00-15.30, Jumat 08.00-16.00"
+     - Extracted reusable OfficeHours component (eliminates duplication)
+     - Added "Layanan Terkait" section with getRelatedServices() helper (shows 4 related services)
+     - Added "Kembali ke Daftar Layanan" button at bottom of both render blocks
+     - Applied to both database and fallback render blocks
+
+  3. Enhanced FAQ section (`faq-section.tsx`):
+     - Added 4 more FAQs (6 → 10 total): KTP luar kota, data tidak sesuai, KK timeline, jemput bola
+     - Added search/filter functionality with Search icon, clear button, empty state
+     - Added "Masih Punya Pertanyaan?" CTA card with WhatsApp link + MessageCircle icon
+     - framer-motion fadeInUp animation (0.8s delay) on CTA card
+
+  4. Fixed announcements link (`announcements-section.tsx`):
+     - Changed "Lihat Semua Pengumuman" button href from /pengaduan → /berita
+     - Updated button text to "Lihat Berita & Pengumuman"
+
+  5. Fixed admin page colors (6 files + globals.css):
+     - admin/dashboard/page.tsx: 14 replacements (blue→teal, purple→amber)
+     - admin/pengajuan-online/page.tsx: 4 replacements (blue→teal)
+     - admin/pengaduan/page.tsx: 2 replacements (blue→teal)
+     - admin/statistik/page.tsx: 4 replacements (blue→teal, purple→amber)
+     - admin/layanan/page.tsx: 1 replacement (blue→teal)
+     - admin/pengaturan/page.tsx: 3 replacements (blue→teal)
+     - globals.css: --chart-4 blue-500 → teal-500, dark: blue-400 → teal-400
+
+Deployment:
+- GitHub push successful: commit 71366ac → main
+- Vercel production deployment: ✅ READY (41s build, aliased to my-project-mu-ivory-36.vercel.app)
+
+Stage Summary:
+- 1 new file created (lib/constants.ts)
+- 12 files modified (service-detail, faq, announcements, 6 admin pages, globals.css, agent-ctx docs)
+- Centralized config provides single source of truth for contact info and hours
+- Service detail page now has animations matching other pages
+- Related services cross-linking added to service detail
+- FAQ section now has search functionality and 10 Q&As
+- Admin pages fully aligned with teal/amber/rose palette (zero blue/purple)
+- All data inconsistencies documented for future centralized config adoption
+
+---
+CURRENT PROJECT STATUS ASSESSMENT (Round 8 Complete):
+
+✅ GitHub: https://github.com/KaGuYA31/disdukcapil-ngada (commit 71366ac)
+✅ Vercel: https://my-project-mu-ivory-36.vercel.app (production deployment live)
+✅ Cron Job: ID 76382, every 15 minutes, webDevReview
+✅ TypeScript: 0 errors
+✅ ESLint: 0 errors
+
+Completed Features (Round 8):
+✅ Centralized site config (lib/constants.ts)
+✅ Service detail page framer-motion animations
+✅ Layanan Terkait (Related Services) on service detail
+✅ Kembali ke Daftar Layanan button
+✅ ClipboardCheck icon for Prosedur section
+✅ Corrected operating hours on service detail
+✅ FAQ search/filter functionality
+✅ FAQ expanded to 10 Q&As
+✅ FAQ "Masih Punya Pertanyaan?" WhatsApp CTA
+✅ Announcements link fixed (/pengaduan → /berita)
+✅ Admin pages: all blue/purple → teal/amber/rose
+✅ CSS chart colors fixed (blue → teal)
+
+Completed Features (accumulated from all rounds):
+✅ Layanan dropdown menu with 2 sub-categories (with descriptions)
+✅ Info Kependudukan dropdown with 3 children
+✅ Full formal label in dropdowns
+✅ Admin sidebar collapsible menu grouping (synced)
+✅ Animated hero section with gradient, glass-morphism stats
+✅ Animated stats section with counter hook + section header
+✅ Animated services section grouped by category
+✅ Enhanced announcements with database API + animations
+✅ Enhanced news section with database API, search, category filters
+✅ Enhanced CTA section with WhatsApp button
+✅ FAQ section with accordion + search + 10 Q&As + WhatsApp CTA
+✅ Testimoni section with toggle (6 testimonials)
+✅ Back to Top floating button
+✅ Breadcrumb navigation on all sub-pages
+✅ Consistent layout on ALL pages
+✅ Loading skeletons on all dynamic sections
+✅ Mobile Sheet drawer navigation with collapsible sub-menus
+✅ Jam Operasional live indicator (WITA timezone)
+✅ Enhanced footer with 5 social links, phone/WhatsApp, featured services
+✅ Transparansi page with animations, empty state, download counts
+✅ Real-time search on Berita page
+✅ Service detail with animations, related services, back button
+✅ Dark mode support
+✅ Responsive design maintained
+✅ TypeScript strict mode with 0 errors
+✅ Zero blue/purple colors across ALL pages (public + admin)
+✅ Centralized site configuration constants
+✅ Vercel production deployment
+
+Known Issues / Risks:
+1. Supabase credentials not configured on Vercel (file upload won't work in production)
+2. Testimoni section uses hardcoded data (no database integration)
+3. Footer and CTA section still use hardcoded contact info (not yet importing from constants.ts)
+4. Service detail page has code duplication (2 render blocks) - partially addressed with OfficeHours component
+5. Open Data Kependudukan links to /statistik#open-data (no dedicated page yet)
+6. No structured data (JSON-LD) for SEO
+
+Priority Recommendations for Next Phase:
+1. Import centralized constants into footer.tsx, cta-section.tsx, lokasi-section.tsx to fix data inconsistencies
+2. Refactor service-detail.tsx to eliminate remaining code duplication (extract shared ServiceDetailLayout)
+3. Configure Supabase environment variables on Vercel for file upload
+4. Create dedicated Open Data Kependudukan page
+5. Integrate testimoni with database API
+6. Google Maps integration for Lokasi section
+7. Add admin management pages (pengumuman, berita CRUD)
+8. SEO optimization: structured data (JSON-LD), meta tags, Open Graph
+9. Performance optimization: dynamic imports for heavy components
+10. Accessibility audit: ARIA improvements, keyboard navigation
