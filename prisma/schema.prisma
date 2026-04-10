@@ -472,3 +472,15 @@ model Kontak {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// Blanko E-KTP Availability
+model BlankoEKTP {
+  id             String   @id @default(cuid())
+  jumlahTersedia Int      @default(0)
+  keterangan     String?  // Optional note, e.g. "Blanko habis, menunggu pengiriman"
+  updatedBy      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("blanko_ektp")
+}

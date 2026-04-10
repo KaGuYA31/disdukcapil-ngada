@@ -183,7 +183,7 @@ export default function StatistikPage() {
                 variants={staggerContainer}
               >
                 <motion.div variants={fadeInUp} className="mb-4">
-                  <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Info Kependudukan", href: "/statistik" }, { label: "Statistik Kependudukan" }]} />
+                  <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Statistik Kependudukan" }]} />
                 </motion.div>
                 <motion.h1
                   variants={fadeInUp}

@@ -58,16 +58,7 @@ const navigation: NavItem[] = [
     ],
   },
   { title: "Layanan Online", href: "/layanan-online" },
-  {
-    title: "Info Kependudukan",
-    href: "/statistik",
-    dropdownLabel: "Pengelolaan Informasi Administrasi Kependudukan",
-    children: [
-      { title: "Statistik Kependudukan", href: "/statistik", description: "Data penduduk & dokumen" },
-      { title: "Transparansi & Publikasi", href: "/transparansi", description: "Dokumen, laporan, SOP" },
-      { title: "Open Data Kependudukan", href: "/statistik#open-data", description: "Data terbuka untuk publik" },
-    ],
-  },
+  { title: "Statistik Kependudukan", href: "/statistik" },
   { title: "Berita", href: "/berita" },
   { title: "Inovasi", href: "/inovasi" },
   { title: "Pengaduan", href: "/pengaduan" },

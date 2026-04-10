@@ -21,6 +21,11 @@ export async function GET() {
       },
     });
 
+    // Fetch blanko E-KTP availability
+    const blankoEKTP = await db.blankoEKTP.findFirst({
+      orderBy: { updatedAt: "desc" },
+    });
+
     // Calculate cakupan akta
     const totalAkta = (ringkasanDokumen?.aktaLahir || 0) + (ringkasanDokumen?.aktaBelum || 0);
     const cakupanAkta = totalAkta > 0 
@@ -51,6 +56,11 @@ export async function GET() {
           position: kepalaDinas.position,
           photo: kepalaDinas.photo,
           description: kepalaDinas.description,
+        } : null,
+        blankoEKTP: blankoEKTP ? {
+          jumlahTersedia: blankoEKTP.jumlahTersedia,
+          keterangan: blankoEKTP.keterangan,
+          updatedAt: blankoEKTP.updatedAt,
         } : null,
       },
     });

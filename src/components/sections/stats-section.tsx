@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Users, FileCheck, MapPin, TrendingUp, ArrowRight, Loader2, BarChart3 } from "lucide-react";
+import { Users, IdCard, MapPin, TrendingUp, ArrowRight, Loader2, BarChart3 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 
 interface RingkasanData {
@@ -21,6 +21,12 @@ interface DokumenData {
   kiaMiliki: number;
   kiaBelum: number;
   cakupanAkta: number;
+}
+
+interface BlankoEKTPData {
+  jumlahTersedia: number;
+  keterangan: string | null;
+  updatedAt: string | null;
 }
 
 const formatNumber = (num: number) => {
@@ -128,6 +134,7 @@ export function StatsSection() {
   const [loading, setLoading] = useState(true);
   const [ringkasan, setRingkasan] = useState<RingkasanData | null>(null);
   const [dokumen, setDokumen] = useState<DokumenData | null>(null);
+  const [blankoEKTP, setBlankoEKTP] = useState<BlankoEKTPData | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -139,6 +146,7 @@ export function StatsSection() {
         if (result.success) {
           setRingkasan(result.data.ringkasan);
           setDokumen(result.data.dokumen);
+          setBlankoEKTP(result.data.blankoEKTP);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -166,13 +174,13 @@ export function StatsSection() {
       isPercent: false,
     },
     {
-      icon: FileCheck,
-      rawValue: 10,
-      formattedValue: "10",
-      label: "Jenis Layanan",
-      description: "Administrasi Kependudukan",
-      color: "text-teal-600",
-      bgColor: "bg-teal-100",
+      icon: IdCard,
+      rawValue: blankoEKTP?.jumlahTersedia || 0,
+      formattedValue: formatNumber(blankoEKTP?.jumlahTersedia || 0),
+      label: "Blanko E-KTP",
+      description: blankoEKTP?.keterangan || "Tersedia saat ini",
+      color: blankoEKTP && blankoEKTP.jumlahTersedia > 0 ? "text-teal-600" : "text-red-600",
+      bgColor: blankoEKTP && blankoEKTP.jumlahTersedia > 0 ? "bg-teal-100" : "bg-red-100",
       isPercent: false,
     },
     {

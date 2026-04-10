@@ -7,20 +7,17 @@ import {
   LayoutDashboard,
   FileText,
   Settings,
-  Users,
   MessageSquare,
   LogOut,
   Menu,
   X,
   Building2,
   ChevronDown,
-  ChevronRight,
   BarChart3,
   Lightbulb,
   UserCircle,
   CreditCard,
   Globe,
-  Database,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,8 +32,6 @@ interface AdminMenuItem {
   title: string;
   href: string;
   icon: React.ElementType;
-  children?: { title: string; href: string; icon: React.ElementType; description?: string }[];
-  groupLabel?: string;
 }
 
 const menuItems: AdminMenuItem[] = [
@@ -46,30 +41,9 @@ const menuItems: AdminMenuItem[] = [
     icon: LayoutDashboard,
   },
   {
-    title: "Info Kependudukan",
+    title: "Data Statistik",
     href: "/admin/statistik",
-    icon: Database,
-    groupLabel: "Pengelolaan Informasi Administrasi Kependudukan",
-    children: [
-      {
-        title: "Data Statistik",
-        href: "/admin/statistik",
-        icon: BarChart3,
-        description: "Statistik penduduk & dokumen",
-      },
-      {
-        title: "Transparansi & Publikasi",
-        href: "/admin/transparansi",
-        icon: FileText,
-        description: "Dokumen, laporan, SOP",
-      },
-      {
-        title: "Open Data",
-        href: "/admin/statistik#open-data",
-        icon: Database,
-        description: "Data terbuka untuk publik",
-      },
-    ],
+    icon: BarChart3,
   },
   {
     title: "Manajemen Layanan",
@@ -112,19 +86,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(["Info Kependudukan"]);
 
   const handleLogout = () => {
     document.cookie = "admin_session=; path=/; max-age=0";
     router.push("/");
-  };
-
-  const toggleMenu = (title: string) => {
-    setExpandedMenus((prev) =>
-      prev.includes(title)
-        ? prev.filter((t) => t !== title)
-        : [...prev, title]
-    );
   };
 
   return (
@@ -153,78 +118,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
         <nav className="p-4 space-y-1 flex-1 overflow-y-auto">
           {menuItems.map((item) => {
-            const isActive = !item.children && pathname === item.href;
-            const isParentActive = item.children
-              ? item.children.some((child) => pathname === child.href)
-              : false;
-            const isExpanded = expandedMenus.includes(item.title);
-
-            if (item.children) {
-              return (
-                <div key={item.title}>
-                  <button
-                    onClick={() => toggleMenu(item.title)}
-                    className={cn(
-                      "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                      isParentActive
-                        ? "bg-gray-800 text-green-400"
-                        : "text-gray-300 hover:bg-gray-800 hover:text-white"
-                    )}
-                  >
-                    <item.icon className="h-5 w-5 flex-shrink-0" />
-                    <span className="flex-1 text-left">{item.title}</span>
-                    <ChevronDown
-                      className={cn(
-                        "h-4 w-4 transition-transform duration-200 flex-shrink-0",
-                        isExpanded && "rotate-180"
-                      )}
-                    />
-                  </button>
-                  {isExpanded && (
-                    <div className="mt-1 space-y-0.5">
-                      {item.groupLabel && (
-                        <div className="px-4 py-1.5">
-                          <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider leading-tight">
-                            {item.groupLabel}
-                          </p>
-                        </div>
-                      )}
-                      {item.children.map((child) => {
-                        const childActive = pathname === child.href;
-                        return (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className={cn(
-                              "flex items-center gap-3 pl-10 pr-4 py-2.5 rounded-lg text-sm transition-colors",
-                              childActive
-                                ? "bg-green-600 text-white"
-                                : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                            )}
-                          >
-                            <child.icon className="h-4 w-4 flex-shrink-0" />
-                            <div className="text-left">
-                              <span className="block text-sm">{child.title}</span>
-                              {child.description && (
-                                <span className={cn(
-                                  "block text-[10px] mt-0.5 leading-tight",
-                                  childActive ? "text-green-200" : "text-gray-500"
-                                )}>
-                                  {child.description}
-                                </span>
-                              )}
-                            </div>
-                            {childActive && (
-                              <ChevronRight className="h-3 w-3 ml-auto flex-shrink-0" />
-                            )}
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            }
+            const isActive = pathname === item.href;
 
             return (
               <Link
