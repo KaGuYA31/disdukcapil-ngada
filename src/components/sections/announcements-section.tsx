@@ -325,12 +325,12 @@ export function AnnouncementsSection() {
             transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" as const }}
             className="flex justify-center mt-8"
           >
-            <Link href="/pengaduan">
+            <Link href="/berita">
               <Button
                 variant="outline"
                 className="border-green-600 text-green-700 hover:bg-green-50 hover:text-green-800 font-medium"
               >
-                Lihat Semua Pengumuman
+                Lihat Berita & Pengumuman
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

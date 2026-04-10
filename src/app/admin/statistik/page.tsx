@@ -316,8 +316,8 @@ export default function AdminStatistikPage() {
               </div>
 
               {/* Akta Kelahiran */}
-              <div className="p-4 bg-blue-50 rounded-lg space-y-3">
-                <div className="flex items-center gap-2 font-semibold text-blue-800">
+              <div className="p-4 bg-teal-50 rounded-lg space-y-3">
+                <div className="flex items-center gap-2 font-semibold text-teal-800">
                   <FileText className="h-5 w-5" />
                   Akta Kelahiran
                 </div>
@@ -347,8 +347,8 @@ export default function AdminStatistikPage() {
               </div>
 
               {/* KIA */}
-              <div className="p-4 bg-purple-50 rounded-lg space-y-3">
-                <div className="flex items-center gap-2 font-semibold text-purple-800">
+              <div className="p-4 bg-amber-50 rounded-lg space-y-3">
+                <div className="flex items-center gap-2 font-semibold text-amber-800">
                   <Baby className="h-5 w-5" />
                   KIA (Kartu Identitas Anak)
                 </div>

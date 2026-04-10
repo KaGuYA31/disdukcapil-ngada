@@ -153,12 +153,12 @@ export default function AdminDashboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200 border-l-4 border-l-blue-600">
+          <Card className="border-gray-200 border-l-4 border-l-teal-600">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-500">Laki-laki</p>
-                  <p className="text-2xl font-bold text-blue-700 mt-1">
+                  <p className="text-2xl font-bold text-teal-700 mt-1">
                     {formatNumber(ringkasan.lakiLaki)}
                   </p>
                   <p className="text-xs text-gray-400 mt-1">
@@ -168,8 +168,8 @@ export default function AdminDashboardPage() {
                     %
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Users className="h-6 w-6 text-blue-600" />
+                <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                  <Users className="h-6 w-6 text-teal-600" />
                 </div>
               </div>
             </CardContent>
@@ -264,15 +264,15 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* Akta Kelahiran */}
-              <div className="p-4 bg-blue-50 rounded-lg">
+              <div className="p-4 bg-teal-50 rounded-lg">
                 <div className="flex items-center gap-2 mb-3">
-                  <FileText className="h-5 w-5 text-blue-600" />
-                  <span className="font-semibold text-blue-800">Akta Kelahiran</span>
+                  <FileText className="h-5 w-5 text-teal-600" />
+                  <span className="font-semibold text-teal-800">Akta Kelahiran</span>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Memiliki</span>
-                    <span className="font-bold text-blue-700">
+                    <span className="font-bold text-teal-700">
                       {formatNumber(totalDokumen.aktaLahir)}
                     </span>
                   </div>
@@ -282,7 +282,7 @@ export default function AdminDashboardPage() {
                       {formatNumber(totalDokumen.aktaBelum)}
                     </span>
                   </div>
-                  <div className="pt-2 border-t border-blue-200">
+                  <div className="pt-2 border-t border-teal-200">
                     <div className="flex justify-between text-sm">
                       <span>Cakupan</span>
                       <span className="font-bold">
@@ -291,7 +291,7 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="mt-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-blue-600 rounded-full"
+                        className="h-full bg-teal-600 rounded-full"
                         style={{
                           width: `${totalAkta > 0 ? (totalDokumen.aktaLahir / totalAkta) * 100 : 0}%`,
                         }}
@@ -302,15 +302,15 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* KIA */}
-              <div className="p-4 bg-purple-50 rounded-lg">
+              <div className="p-4 bg-amber-50 rounded-lg">
                 <div className="flex items-center gap-2 mb-3">
-                  <Baby className="h-5 w-5 text-purple-600" />
-                  <span className="font-semibold text-purple-800">KIA</span>
+                  <Baby className="h-5 w-5 text-amber-600" />
+                  <span className="font-semibold text-amber-800">KIA</span>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Memiliki</span>
-                    <span className="font-bold text-purple-700">
+                    <span className="font-bold text-amber-700">
                       {formatNumber(totalDokumen.kiaMiliki)}
                     </span>
                   </div>
@@ -320,7 +320,7 @@ export default function AdminDashboardPage() {
                       {formatNumber(totalDokumen.kiaBelum)}
                     </span>
                   </div>
-                  <div className="pt-2 border-t border-purple-200">
+                  <div className="pt-2 border-t border-amber-200">
                     <div className="flex justify-between text-sm">
                       <span>Cakupan</span>
                       <span className="font-bold">
@@ -329,7 +329,7 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="mt-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-purple-600 rounded-full"
+                        className="h-full bg-amber-600 rounded-full"
                         style={{
                           width: `${totalKIA > 0 ? (totalDokumen.kiaMiliki / totalKIA) * 100 : 0}%`,
                         }}

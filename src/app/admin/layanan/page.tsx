@@ -152,7 +152,7 @@ function SortableItem({
             <Badge variant="secondary">Nonaktif</Badge>
           )}
           {layanan.isOnline && (
-            <Badge className="bg-blue-100 text-blue-700">Online</Badge>
+            <Badge className="bg-teal-100 text-teal-700">Online</Badge>
           )}
         </div>
         <p className="text-sm text-gray-500 truncate">{layanan.slug}</p>

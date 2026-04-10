@@ -77,7 +77,7 @@ const getStatusColor = (status: string) => {
     case "Baru":
       return "bg-yellow-100 text-yellow-700";
     case "Diproses":
-      return "bg-blue-100 text-blue-700";
+      return "bg-teal-100 text-teal-700";
     default:
       return "bg-gray-100 text-gray-700";
   }
@@ -180,7 +180,7 @@ export default function AdminPengaduanPage() {
                 <Clock className="h-3 w-3" />
                 {complaints.filter((c) => c.status === "Baru").length} Baru
               </span>
-              <span className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded">
+              <span className="flex items-center gap-1 px-2 py-1 bg-teal-100 text-teal-700 rounded">
                 <MessageSquare className="h-3 w-3" />
                 {complaints.filter((c) => c.status === "Diproses").length} Diproses
               </span>

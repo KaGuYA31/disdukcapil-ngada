@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   CreditCard,
   Users,
@@ -25,6 +26,7 @@ import {
   Sparkles,
   Loader2,
   File,
+  ClipboardCheck,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -44,6 +46,46 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
+const sidebarStaggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3,
+    },
+  },
+};
 
 // Icon mapping
 const iconMap: Record<string, React.ElementType> = {
@@ -491,6 +533,68 @@ const defaultServices: Record<string, {
   },
 };
 
+// Helper: get related services by category (excluding current)
+function getRelatedServices(currentSlug: string, category?: string) {
+  return Object.values(defaultServices)
+    .filter((s) => s.id !== currentSlug && (category ? s.category === category : true))
+    .slice(0, 4);
+}
+
+// Related Services Card component
+function RelatedServicesCard({ service }: { service: { id: string; icon: typeof CreditCard; title: string; description: string; category: string; color: string; bgColor: string } }) {
+  const ServiceIcon = service.icon;
+  return (
+    <Link href={`/layanan/${service.id}`}>
+      <Card className="transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 border-gray-200 h-full group">
+        <CardContent className="p-4">
+          <div className={`w-10 h-10 ${service.bgColor} rounded-lg flex items-center justify-center mb-3 group-hover:scale-105 transition-transform`}>
+            <ServiceIcon className={`h-5 w-5 ${service.color}`} />
+          </div>
+          <Badge variant="secondary" className="bg-green-50 text-green-700 text-xs mb-2">
+            {service.category}
+          </Badge>
+          <h3 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-2">{service.title}</h3>
+          <p className="text-xs text-gray-500 line-clamp-2">
+            {service.description.length > 80
+              ? service.description.substring(0, 80) + "..."
+              : service.description}
+          </p>
+        </CardContent>
+      </Card>
+    </Link>
+  );
+}
+
+// Office Hours component (reusable)
+function OfficeHours() {
+  return (
+    <Card className="transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 border-gray-200">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Clock className="h-5 w-5 text-teal-600" />
+          Jam Pelayanan
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Senin - Kamis</span>
+            <span className="font-medium">08.00 - 15.30 WITA</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Jumat</span>
+            <span className="font-medium">08.00 - 16.00 WITA</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Sabtu - Minggu</span>
+            <span className="text-red-500 font-medium">Tutup</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
   const params = useParams();
   const slugValue = params.slug as string;
@@ -536,39 +640,48 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
     const procedures = JSON.parse(service.procedures || "[]");
     const formFiles = service.forms ? JSON.parse(service.forms) : [];
 
+    const relatedServices = getRelatedServices(slugValue);
+
     return (
       <>
         {/* Hero Banner */}
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-12">
           <div className="container mx-auto px-4">
-            <Breadcrumb className="mb-6">
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/" className="text-green-200 hover:text-white">
-                    Beranda
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="text-green-300" />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/layanan" className="text-green-200 hover:text-white">
-                    Layanan
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="text-green-300" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage className="text-white">{service.name}</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUp}
+              transition={{ duration: 0.5, ease: "easeOut" as const }}
+            >
+              <Breadcrumb className="mb-6">
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/" className="text-green-200 hover:text-white">
+                      Beranda
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="text-green-300" />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/layanan" className="text-green-200 hover:text-white">
+                      Layanan
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="text-green-300" />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-white">{service.name}</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
 
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center">
-                <Icon className="h-8 w-8 text-green-600" />
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center">
+                  <Icon className="h-8 w-8 text-green-600" />
+                </div>
+                <div>
+                  <h1 className="text-2xl md:text-3xl font-bold">{service.name}</h1>
+                </div>
               </div>
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold">{service.name}</h1>
-              </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -577,210 +690,250 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Left Column */}
-              <div className="lg:col-span-2 space-y-6">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                variants={staggerContainer}
+                className="lg:col-span-2 space-y-6"
+              >
                 {/* Quick Info */}
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <Card className="border-gray-200">
-                    <CardContent className="p-4 flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                        <Clock className="h-5 w-5 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Waktu Proses</p>
-                        <p className="font-semibold text-gray-900">{service.processingTime || "Selesai di Tempat"}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-green-200 bg-green-50">
-                    <CardContent className="p-4 flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                        <Sparkles className="h-5 w-5 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-green-600">Biaya</p>
-                        <p className="font-bold text-green-700 text-lg">{service.fee || "GRATIS"}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <motion.div variants={staggerItem}>
+                    <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                      <CardContent className="p-4 flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                          <Clock className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Waktu Proses</p>
+                          <p className="font-semibold text-gray-900">{service.processingTime || "Selesai di Tempat"}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                  <motion.div variants={staggerItem}>
+                    <Card className="border-green-200 bg-green-50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                      <CardContent className="p-4 flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                          <Sparkles className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-green-600">Biaya</p>
+                          <p className="font-bold text-green-700 text-lg">{service.fee || "GRATIS"}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 </div>
 
                 {/* Free Service Notice */}
-                <Card className="bg-green-50 border-green-200">
-                  <CardContent className="p-4 flex items-center gap-3">
-                    <Sparkles className="h-6 w-6 text-green-600 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-green-800">Pelayanan Gratis</p>
-                      <p className="text-sm text-green-700">
-                        Seluruh layanan administrasi kependudukan <strong>TIDAK DIPUNGUT BIAYA</strong> apapun (GRATIS).
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Description */}
-                <Card className="border-gray-200">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText className="h-5 w-5 text-green-600" />
-                      Deskripsi
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700">{service.description}</p>
-                  </CardContent>
-                </Card>
-
-                {/* Requirements */}
-                {requirements.length > 0 && (
-                  <Card className="border-gray-200">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <FileCheck className="h-5 w-5 text-green-600" />
-                        Persyaratan
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {requirements.map((req: { label: string; description?: string }, index: number) => (
-                          <div key={index} className="flex items-start gap-2">
-                            <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="text-gray-700">{req.label}</p>
-                              {req.description && (
-                                <p className="text-sm text-gray-500">{req.description}</p>
-                              )}
-                            </div>
-                          </div>
-                        ))}
+                <motion.div variants={staggerItem}>
+                  <Card className="bg-green-50 border-green-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <Sparkles className="h-6 w-6 text-green-600 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold text-green-800">Pelayanan Gratis</p>
+                        <p className="text-sm text-green-700">
+                          Seluruh layanan administrasi kependudukan <strong>TIDAK DIPUNGUT BIAYA</strong> apapun (GRATIS).
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
-                )}
+                </motion.div>
 
-                {/* Procedures */}
-                {procedures.length > 0 && (
-                  <Card className="border-gray-200">
+                {/* Description */}
+                <motion.div variants={staggerItem}>
+                  <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <MapPin className="h-5 w-5 text-teal-600" />
-                        Prosedur
+                        <FileText className="h-5 w-5 text-green-600" />
+                        Deskripsi
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="relative">
-                        <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                      <p className="text-gray-700">{service.description}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* Requirements */}
+                {requirements.length > 0 && (
+                  <motion.div variants={staggerItem}>
+                    <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <FileCheck className="h-5 w-5 text-green-600" />
+                          Persyaratan
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
                         <div className="space-y-4">
-                          {procedures.map((proc: { step: number; title: string; description?: string }) => (
-                            <div key={proc.step} className="flex gap-4 relative">
-                              <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 z-10">
-                                {proc.step}
-                              </div>
+                          {requirements.map((req: { label: string; description?: string }, index: number) => (
+                            <div key={index} className="flex items-start gap-2">
+                              <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
                               <div>
-                                <p className="font-medium text-gray-900">{proc.title}</p>
-                                {proc.description && (
-                                  <p className="text-sm text-gray-600">{proc.description}</p>
+                                <p className="text-gray-700">{req.label}</p>
+                                {req.description && (
+                                  <p className="text-sm text-gray-500">{req.description}</p>
                                 )}
                               </div>
                             </div>
                           ))}
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                )}
+
+                {/* Procedures */}
+                {procedures.length > 0 && (
+                  <motion.div variants={staggerItem}>
+                    <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <ClipboardCheck className="h-5 w-5 text-teal-600" />
+                          Prosedur
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="relative">
+                          <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                          <div className="space-y-4">
+                            {procedures.map((proc: { step: number; title: string; description?: string }) => (
+                              <div key={proc.step} className="flex gap-4 relative">
+                                <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 z-10">
+                                  {proc.step}
+                                </div>
+                                <div>
+                                  <p className="font-medium text-gray-900">{proc.title}</p>
+                                  {proc.description && (
+                                    <p className="text-sm text-gray-600">{proc.description}</p>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 )}
 
                 {/* Formulir */}
                 {formFiles.length > 0 && (
-                  <Card className="border-gray-200">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Download className="h-5 w-5 text-red-600" />
-                        Formulir Layanan
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 mb-4">
-                        Unduh dan isi formulir berikut sebelum mengurus layanan:
+                  <motion.div variants={staggerItem}>
+                    <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Download className="h-5 w-5 text-red-600" />
+                          Formulir Layanan
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-600 mb-4">
+                          Unduh dan isi formulir berikut sebelum mengurus layanan:
+                        </p>
+                        <div className="space-y-2">
+                          {formFiles.map((file: { name: string; url: string; size?: string }, index: number) => (
+                            <a
+                              key={index}
+                              href={file.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                            >
+                              <File className="h-5 w-5 text-red-500" />
+                              <div className="flex-1">
+                                <p className="text-sm font-medium">{file.name}</p>
+                                {file.size && (
+                                  <p className="text-xs text-gray-500">{file.size}</p>
+                                )}
+                              </div>
+                              <Download className="h-4 w-4 text-gray-600" />
+                            </a>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                )}
+              </motion.div>
+
+              {/* Right Column - Sidebar */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                variants={sidebarStaggerContainer}
+                className="space-y-6"
+              >
+                {/* Free Service Banner */}
+                <motion.div variants={staggerItem}>
+                  <Card className="bg-gradient-to-br from-green-600 to-green-700 text-white border-0 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                    <CardContent className="p-6 text-center">
+                      <Sparkles className="h-10 w-10 mx-auto mb-3" />
+                      <h3 className="font-bold text-xl mb-2">GRATIS</h3>
+                      <p className="text-green-100 text-sm mb-4">
+                        Seluruh layanan administrasi kependudukan tidak dipungut biaya apapun.
                       </p>
-                      <div className="space-y-2">
-                        {formFiles.map((file: { name: string; url: string; size?: string }, index: number) => (
-                          <a
-                            key={index}
-                            href={file.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
-                          >
-                            <File className="h-5 w-5 text-red-500" />
-                            <div className="flex-1">
-                              <p className="text-sm font-medium">{file.name}</p>
-                              {file.size && (
-                                <p className="text-xs text-gray-500">{file.size}</p>
-                              )}
-                            </div>
-                            <Download className="h-4 w-4 text-gray-600" />
-                          </a>
-                        ))}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* Notice */}
+                <motion.div variants={staggerItem}>
+                  <Card className="bg-yellow-50 border-yellow-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                    <CardContent className="p-6">
+                      <div className="flex gap-3">
+                        <AlertCircle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-medium text-yellow-800">Penting!</p>
+                          <p className="text-sm text-yellow-700 mt-1">
+                            Seluruh layanan diproses dengan datang langsung ke kantor
+                            Disdukcapil dengan membawa berkas lengkap.
+                          </p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
-                )}
-              </div>
-
-              {/* Right Column - Sidebar */}
-              <div className="space-y-6">
-                {/* Free Service Banner */}
-                <Card className="bg-gradient-to-br from-green-600 to-green-700 text-white border-0">
-                  <CardContent className="p-6 text-center">
-                    <Sparkles className="h-10 w-10 mx-auto mb-3" />
-                    <h3 className="font-bold text-xl mb-2">GRATIS</h3>
-                    <p className="text-green-100 text-sm mb-4">
-                      Seluruh layanan administrasi kependudukan tidak dipungut biaya apapun.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                {/* Notice */}
-                <Card className="bg-yellow-50 border-yellow-200">
-                  <CardContent className="p-6">
-                    <div className="flex gap-3">
-                      <AlertCircle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-medium text-yellow-800">Penting!</p>
-                        <p className="text-sm text-yellow-700 mt-1">
-                          Seluruh layanan diproses dengan datang langsung ke kantor
-                          Disdukcapil dengan membawa berkas lengkap.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                </motion.div>
 
                 {/* Office Hours */}
-                <Card className="border-gray-200">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <Clock className="h-5 w-5 text-teal-600" />
-                      Jam Pelayanan
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Senin - Jumat</span>
-                        <span className="font-medium">09.00 - 15.00 WITA</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Sabtu - Minggu</span>
-                        <span className="text-red-500 font-medium">Tutup</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                <motion.div variants={staggerItem}>
+                  <OfficeHours />
+                </motion.div>
+              </motion.div>
             </div>
           </div>
         </section>
+
+        {/* Related Services */}
+        {relatedServices.length > 0 && (
+          <section className="py-12 bg-white">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <MoveRight className="h-5 w-5 text-green-600" />
+                Layanan Terkait
+              </h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {relatedServices.map((rs) => (
+                  <RelatedServicesCard key={rs.id} service={rs} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Back Button */}
+        <div className="container mx-auto px-4 pb-12">
+          <Link href="/layanan">
+            <Button variant="outline" className="border-green-600 text-green-700 hover:bg-green-50">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Kembali ke Daftar Layanan
+            </Button>
+          </Link>
+        </div>
       </>
     );
   }
@@ -808,237 +961,284 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
 
   // Render with default data
   const Icon = defaultService.icon;
+  const relatedServices = getRelatedServices(slugValue, defaultService.category);
 
   return (
     <>
       {/* Hero Banner */}
       <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-12">
         <div className="container mx-auto px-4">
-          <Breadcrumb className="mb-6">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/" className="text-green-200 hover:text-white">
-                  Beranda
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="text-green-300" />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/layanan" className="text-green-200 hover:text-white">
-                  Layanan
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="text-green-300" />
-              <BreadcrumbItem>
-                <BreadcrumbPage className="text-white">{defaultService.title}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            transition={{ duration: 0.5, ease: "easeOut" as const }}
+          >
+            <Breadcrumb className="mb-6">
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/" className="text-green-200 hover:text-white">
+                    Beranda
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="text-green-300" />
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/layanan" className="text-green-200 hover:text-white">
+                    Layanan
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="text-green-300" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="text-white">{defaultService.title}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
 
-          <div className="flex items-center gap-4">
-            <div className={`w-16 h-16 ${defaultService.bgColor} rounded-xl flex items-center justify-center`}>
-              <Icon className={`h-8 w-8 ${defaultService.color}`} />
+            <div className="flex items-center gap-4">
+              <div className={`w-16 h-16 ${defaultService.bgColor} rounded-xl flex items-center justify-center`}>
+                <Icon className={`h-8 w-8 ${defaultService.color}`} />
+              </div>
+              <div>
+                <Badge variant="secondary" className="bg-white/20 text-white mb-2">
+                  {defaultService.category}
+                </Badge>
+                <h1 className="text-2xl md:text-3xl font-bold">{defaultService.title}</h1>
+              </div>
             </div>
-            <div>
-              <Badge variant="secondary" className="bg-white/20 text-white mb-2">
-                {defaultService.category}
-              </Badge>
-              <h1 className="text-2xl md:text-3xl font-bold">{defaultService.title}</h1>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Main Content - Same structure as above */}
+      {/* Main Content */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-6">
+            {/* Left Column */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={staggerContainer}
+              className="lg:col-span-2 space-y-6"
+            >
               {/* Quick Info */}
               <div className="grid sm:grid-cols-2 gap-4">
-                <Card className="border-gray-200">
-                  <CardContent className="p-4 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Clock className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Waktu Proses</p>
-                      <p className="font-semibold text-gray-900">{defaultService.processingTime}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="border-green-200 bg-green-50">
-                  <CardContent className="p-4 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Sparkles className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-green-600">Biaya</p>
-                      <p className="font-bold text-green-700 text-lg">{defaultService.fee}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                <motion.div variants={staggerItem}>
+                  <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <Clock className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Waktu Proses</p>
+                        <p className="font-semibold text-gray-900">{defaultService.processingTime}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+                <motion.div variants={staggerItem}>
+                  <Card className="border-green-200 bg-green-50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <Sparkles className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-green-600">Biaya</p>
+                        <p className="font-bold text-green-700 text-lg">{defaultService.fee}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </div>
 
               {/* Requirements */}
-              <Card className="border-gray-200">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileCheck className="h-5 w-5 text-green-600" />
-                    Persyaratan
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {defaultService.requirements.map((reqGroup, groupIndex) => (
-                      <div key={groupIndex}>
-                        <h4 className="font-semibold text-gray-800 mb-3">{reqGroup.title}</h4>
-                        <ul className="space-y-2">
-                          {reqGroup.items.map((item, itemIndex) => (
-                            <li key={itemIndex} className="flex items-start gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
-                              <span className="text-gray-700">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        {groupIndex < defaultService.requirements.length - 1 && (
-                          <Separator className="mt-4" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Procedures */}
-              <Card className="border-gray-200">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-teal-600" />
-                    Prosedur
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="relative">
-                    <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200"></div>
-                    <div className="space-y-4">
-                      {defaultService.procedures.map((proc) => (
-                        <div key={proc.step} className="flex gap-4 relative">
-                          <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 z-10">
-                            {proc.step}
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900">{proc.title}</p>
-                            <p className="text-sm text-gray-600">{proc.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Notes */}
-              {defaultService.notes.length > 0 && (
-                <Card className="border-yellow-200 bg-yellow-50">
+              <motion.div variants={staggerItem}>
+                <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-yellow-800">
-                      <AlertCircle className="h-5 w-5" />
-                      Catatan Penting
+                    <CardTitle className="flex items-center gap-2">
+                      <FileCheck className="h-5 w-5 text-green-600" />
+                      Persyaratan
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2">
-                      {defaultService.notes.map((note, index) => (
-                        <li key={index} className="flex items-start gap-2 text-yellow-800">
-                          <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full flex-shrink-0 mt-2"></span>
-                          <span>{note}</span>
-                        </li>
+                    <div className="space-y-6">
+                      {defaultService.requirements.map((reqGroup, groupIndex) => (
+                        <div key={groupIndex}>
+                          <h4 className="font-semibold text-gray-800 mb-3">{reqGroup.title}</h4>
+                          <ul className="space-y-2">
+                            {reqGroup.items.map((item, itemIndex) => (
+                              <li key={itemIndex} className="flex items-start gap-2">
+                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
+                                <span className="text-gray-700">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          {groupIndex < defaultService.requirements.length - 1 && (
+                            <Separator className="mt-4" />
+                          )}
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </CardContent>
                 </Card>
+              </motion.div>
+
+              {/* Procedures */}
+              <motion.div variants={staggerItem}>
+                <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <ClipboardCheck className="h-5 w-5 text-teal-600" />
+                      Prosedur
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="relative">
+                      <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                      <div className="space-y-4">
+                        {defaultService.procedures.map((proc) => (
+                          <div key={proc.step} className="flex gap-4 relative">
+                            <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 z-10">
+                              {proc.step}
+                            </div>
+                            <div>
+                              <p className="font-medium text-gray-900">{proc.title}</p>
+                              <p className="text-sm text-gray-600">{proc.description}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Notes */}
+              {defaultService.notes.length > 0 && (
+                <motion.div variants={staggerItem}>
+                  <Card className="border-yellow-200 bg-yellow-50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-yellow-800">
+                        <AlertCircle className="h-5 w-5" />
+                        Catatan Penting
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2">
+                        {defaultService.notes.map((note, index) => (
+                          <li key={index} className="flex items-start gap-2 text-yellow-800">
+                            <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full flex-shrink-0 mt-2"></span>
+                            <span>{note}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               )}
 
               {/* FAQ */}
               {defaultService.faq.length > 0 && (
-                <Card className="border-gray-200">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <HelpCircle className="h-5 w-5 text-amber-600" />
-                      Pertanyaan Umum
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Accordion type="single" collapsible className="w-full">
-                      {defaultService.faq.map((item, index) => (
-                        <AccordionItem key={index} value={`item-${index}`}>
-                          <AccordionTrigger className="text-left">
-                            {item.question}
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-600">
-                            {item.answer}
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </CardContent>
-                </Card>
+                <motion.div variants={staggerItem}>
+                  <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <HelpCircle className="h-5 w-5 text-amber-600" />
+                        Pertanyaan Umum
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <Accordion type="single" collapsible className="w-full">
+                        {defaultService.faq.map((item, index) => (
+                          <AccordionItem key={index} value={`item-${index}`}>
+                            <AccordionTrigger className="text-left">
+                              {item.question}
+                            </AccordionTrigger>
+                            <AccordionContent className="text-gray-600">
+                              {item.answer}
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* Right Column */}
-            <div className="space-y-6">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={sidebarStaggerContainer}
+              className="space-y-6"
+            >
               {/* Free Service Banner */}
-              <Card className="bg-gradient-to-br from-green-600 to-green-700 text-white border-0">
-                <CardContent className="p-6 text-center">
-                  <Sparkles className="h-10 w-10 mx-auto mb-3" />
-                  <h3 className="font-bold text-xl mb-2">GRATIS</h3>
-                  <p className="text-green-100 text-sm mb-4">
-                    Seluruh layanan administrasi kependudukan tidak dipungut biaya apapun.
-                  </p>
-                </CardContent>
-              </Card>
+              <motion.div variants={staggerItem}>
+                <Card className="bg-gradient-to-br from-green-600 to-green-700 text-white border-0 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                  <CardContent className="p-6 text-center">
+                    <Sparkles className="h-10 w-10 mx-auto mb-3" />
+                    <h3 className="font-bold text-xl mb-2">GRATIS</h3>
+                    <p className="text-green-100 text-sm mb-4">
+                      Seluruh layanan administrasi kependudukan tidak dipungut biaya apapun.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
               {/* Office Hours */}
-              <Card className="border-gray-200">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Clock className="h-5 w-5 text-teal-600" />
-                    Jam Pelayanan
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Senin - Jumat</span>
-                      <span className="font-medium">09.00 - 15.00 WITA</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Sabtu - Minggu</span>
-                      <span className="text-red-500 font-medium">Tutup</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <motion.div variants={staggerItem}>
+                <OfficeHours />
+              </motion.div>
 
               {/* Contact CTA */}
-              <Card className="bg-green-700 text-white border-0">
-                <CardContent className="p-6 text-center">
-                  <h3 className="font-bold text-lg mb-2">Butuh Bantuan?</h3>
-                  <p className="text-green-100 text-sm mb-4">
-                    Hubungi kami untuk informasi lebih lanjut
-                  </p>
-                  <Link href="/pengaduan">
-                    <Button className="w-full bg-white text-green-700 hover:bg-green-50">
-                      Hubungi Kami
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </div>
+              <motion.div variants={staggerItem}>
+                <Card className="bg-green-700 text-white border-0 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                  <CardContent className="p-6 text-center">
+                    <h3 className="font-bold text-lg mb-2">Butuh Bantuan?</h3>
+                    <p className="text-green-100 text-sm mb-4">
+                      Hubungi kami untuk informasi lebih lanjut
+                    </p>
+                    <Link href="/pengaduan">
+                      <Button className="w-full bg-white text-green-700 hover:bg-green-50">
+                        Hubungi Kami
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
+
+      {/* Related Services */}
+      {relatedServices.length > 0 && (
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <MoveRight className="h-5 w-5 text-green-600" />
+              Layanan Terkait
+            </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {relatedServices.map((rs) => (
+                <RelatedServicesCard key={rs.id} service={rs} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Back Button */}
+      <div className="container mx-auto px-4 pb-12">
+        <Link href="/layanan">
+          <Button variant="outline" className="border-green-600 text-green-700 hover:bg-green-50">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Kembali ke Daftar Layanan
+          </Button>
+        </Link>
+      </div>
     </>
   );
 }

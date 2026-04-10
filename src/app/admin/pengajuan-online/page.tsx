@@ -79,7 +79,7 @@ interface Submission {
 }
 
 const statusOptions = [
-  { value: "Baru", label: "Baru", color: "bg-blue-100 text-blue-700" },
+  { value: "Baru", label: "Baru", color: "bg-teal-100 text-teal-700" },
   { value: "Diverifikasi", label: "Diverifikasi", color: "bg-yellow-100 text-yellow-700" },
   { value: "Diproses", label: "Diproses", color: "bg-orange-100 text-orange-700" },
   { value: "Selesai", label: "Selesai", color: "bg-green-100 text-green-700" },
@@ -267,9 +267,9 @@ export default function AdminPengajuanOnlinePage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-500">Baru</p>
-                  <p className="text-2xl font-bold text-blue-600">{stats.baru}</p>
+                  <p className="text-2xl font-bold text-teal-600">{stats.baru}</p>
                 </div>
-                <Clock className="h-8 w-8 text-blue-300" />
+                <Clock className="h-8 w-8 text-teal-300" />
               </div>
             </CardContent>
           </Card>
@@ -627,8 +627,8 @@ export default function AdminPengajuanOnlinePage() {
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <FileText className="h-4 w-4 text-blue-600" />
+                      <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+                        <FileText className="h-4 w-4 text-teal-600" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between">

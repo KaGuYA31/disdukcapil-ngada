@@ -154,10 +154,10 @@ export default function PengaturanPage() {
           </Card>
 
           {/* Info Card */}
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-teal-50 border-teal-200">
             <CardContent className="p-6">
-              <h3 className="font-semibold text-blue-800 mb-2">Informasi</h3>
-              <p className="text-sm text-blue-700">
+              <h3 className="font-semibold text-teal-800 mb-2">Informasi</h3>
+              <p className="text-sm text-teal-700">
                 Halaman ini berisi pengaturan dasar untuk website dan akun
                 administrator. Untuk perubahan data yang lebih kompleks, silakan
                 hubungi developer.
