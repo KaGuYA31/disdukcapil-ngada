@@ -92,7 +92,7 @@ export function OperatingHoursIndicator() {
               className="relative flex h-2 w-2"
               initial={{ scale: 1.4 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.4, ease: "easeOut" as const }}
             >
               <span
                 className={[

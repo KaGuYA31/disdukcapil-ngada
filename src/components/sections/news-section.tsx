@@ -141,7 +141,7 @@ const headerVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: "easeOut" as const },
   },
 };
 
@@ -150,7 +150,7 @@ const buttonVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, delay: 0.2, ease: "easeOut" },
+    transition: { duration: 0.5, delay: 0.2, ease: "easeOut" as const },
   },
 };
 
@@ -167,7 +167,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
@@ -176,7 +176,7 @@ const tabsVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: "easeOut" },
+    transition: { duration: 0.4, ease: "easeOut" as const },
   },
 };
 

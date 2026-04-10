@@ -121,7 +121,7 @@ const headerVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
@@ -133,7 +133,7 @@ const cardVariants = {
     transition: {
       duration: 0.5,
       delay: 0.2 + i * 0.1,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   }),
 };
@@ -322,7 +322,7 @@ export function AnnouncementsSection() {
             variants={headerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" as const }}
             className="flex justify-center mt-8"
           >
             <Link href="/pengaduan">

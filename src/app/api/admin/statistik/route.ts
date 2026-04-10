@@ -544,7 +544,7 @@ export async function POST(request: NextRequest) {
     if (kecamatanSheet) {
       const kecamatanData = parsePendudukKecamatan(rawData[kecamatanSheet] as unknown[][], periode);
       if (kecamatanData.length > 0) {
-        await db.pendudukKecamatan.createMany({ data: kecamatanData, skipDuplicates: true });
+        await db.pendudukKecamatan.createMany({ data: kecamatanData });
       }
     }
 
@@ -552,7 +552,7 @@ export async function POST(request: NextRequest) {
     if (kelurahanSheet) {
       const kelurahanData = parsePendudukKelurahan(rawData[kelurahanSheet] as unknown[][], periode);
       if (kelurahanData.length > 0) {
-        await db.pendudukKelurahan.createMany({ data: kelurahanData, skipDuplicates: true });
+        await db.pendudukKelurahan.createMany({ data: kelurahanData });
       }
     }
 
@@ -560,7 +560,7 @@ export async function POST(request: NextRequest) {
     if (agamaSheet) {
       const agamaData = parseDistribusiAgama(rawData[agamaSheet] as unknown[][], periode);
       if (agamaData.length > 0) {
-        await db.distribusiAgama.createMany({ data: agamaData, skipDuplicates: true });
+        await db.distribusiAgama.createMany({ data: agamaData });
       }
     }
 
@@ -568,7 +568,7 @@ export async function POST(request: NextRequest) {
     if (agamaKecamatanSheet) {
       const agamaKecData = parseAgamaKecamatan(rawData[agamaKecamatanSheet] as unknown[][], periode);
       if (agamaKecData.length > 0) {
-        await db.agamaKecamatan.createMany({ data: agamaKecData, skipDuplicates: true });
+        await db.agamaKecamatan.createMany({ data: agamaKecData });
       }
     }
 
@@ -576,7 +576,7 @@ export async function POST(request: NextRequest) {
     if (pendidikanSheet) {
       const pendidikanData = parseDistribusiPendidikan(rawData[pendidikanSheet] as unknown[][], periode);
       if (pendidikanData.length > 0) {
-        await db.distribusiPendidikan.createMany({ data: pendidikanData, skipDuplicates: true });
+        await db.distribusiPendidikan.createMany({ data: pendidikanData });
       }
     }
 
@@ -584,7 +584,7 @@ export async function POST(request: NextRequest) {
     if (pekerjaanSheet) {
       const pekerjaanData = parseDistribusiPekerjaan(rawData[pekerjaanSheet] as unknown[][], periode);
       if (pekerjaanData.length > 0) {
-        await db.distribusiPekerjaan.createMany({ data: pekerjaanData, skipDuplicates: true });
+        await db.distribusiPekerjaan.createMany({ data: pekerjaanData });
       }
     }
 
@@ -592,7 +592,7 @@ export async function POST(request: NextRequest) {
     if (perkawinanSheet) {
       const statusData = parseStatusPerkawinan(rawData[perkawinanSheet] as unknown[][], periode);
       if (statusData.length > 0) {
-        await db.statusPerkawinan.createMany({ data: statusData, skipDuplicates: true });
+        await db.statusPerkawinan.createMany({ data: statusData });
       }
     }
 
@@ -600,7 +600,7 @@ export async function POST(request: NextRequest) {
     if (perkawinanKecSheet) {
       const perkawinanKecData = parsePerkawinanKecamatan(rawData[perkawinanKecSheet] as unknown[][], periode);
       if (perkawinanKecData.length > 0) {
-        await db.perkawinanKecamatan.createMany({ data: perkawinanKecData, skipDuplicates: true });
+        await db.perkawinanKecamatan.createMany({ data: perkawinanKecData });
       }
     }
 
@@ -608,7 +608,7 @@ export async function POST(request: NextRequest) {
     if (disabilitasSheet) {
       const disabilitasData = parseDistribusiDisabilitas(rawData[disabilitasSheet] as unknown[][], periode);
       if (disabilitasData.length > 0) {
-        await db.distribusiDisabilitas.createMany({ data: disabilitasData, skipDuplicates: true });
+        await db.distribusiDisabilitas.createMany({ data: disabilitasData });
       }
     }
 
@@ -616,7 +616,7 @@ export async function POST(request: NextRequest) {
     if (dokumenSheet) {
       const dokumenData = parseDokumenKecamatan(rawData[dokumenSheet] as unknown[][], periode);
       if (dokumenData.length > 0) {
-        await db.dokumenKecamatan.createMany({ data: dokumenData, skipDuplicates: true });
+        await db.dokumenKecamatan.createMany({ data: dokumenData });
       }
     }
 

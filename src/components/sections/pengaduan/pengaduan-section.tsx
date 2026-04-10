@@ -64,7 +64,7 @@ const sectionTitleVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
@@ -73,7 +73,7 @@ const contactCardVariants = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45, delay: 0.1 + i * 0.08, ease: "easeOut" },
+    transition: { duration: 0.45, delay: 0.1 + i * 0.08, ease: "easeOut" as const },
   }),
 };
 
@@ -82,7 +82,7 @@ const formCardVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: 0.35, ease: "easeOut" },
+    transition: { duration: 0.6, delay: 0.35, ease: "easeOut" as const },
   },
 };
 
@@ -91,7 +91,7 @@ const successCardVariants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: "easeOut" as const },
   },
 };
 
@@ -202,7 +202,7 @@ export function PengaduanSection() {
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" as const }}
                   className="absolute inset-0 rounded-full border-4 border-green-200"
                 />
                 {/* Confetti dots */}
@@ -214,7 +214,7 @@ export function PengaduanSection() {
                     transition={{
                       duration: 0.4,
                       delay: 0.5 + i * 0.05,
-                      ease: "easeOut",
+                      ease: "easeOut" as const,
                     }}
                     className="absolute w-2 h-2 rounded-full"
                     style={{
@@ -393,7 +393,7 @@ export function PengaduanSection() {
                   ? { opacity: 1, y: 0 }
                   : { opacity: 0, y: 16 }
               }
-              transition={{ duration: 0.5, delay: 0.45, ease: "easeOut" }}
+              transition={{ duration: 0.5, delay: 0.45, ease: "easeOut" as const }}
               whileHover={{ scale: 1.02 }}
             >
               <Card className="bg-green-700 text-white border-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">

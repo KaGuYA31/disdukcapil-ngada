@@ -47,7 +47,7 @@ const getCategoryColor = (category: string) => {
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 export function NewsListSection() {
@@ -108,7 +108,7 @@ export function NewsListSection() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: "easeOut" as const }}
             className="max-w-4xl mx-auto mb-6"
           >
             <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -134,7 +134,7 @@ export function NewsListSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" as const }}
           className="max-w-4xl mx-auto mb-10"
         >
           <div className="flex flex-col sm:flex-row gap-4">
@@ -240,7 +240,7 @@ export function NewsListSection() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                transition={{ duration: 0.4, ease: "easeOut" as const }}
                 className="text-center py-16"
               >
                 <div className="flex justify-center mb-4">

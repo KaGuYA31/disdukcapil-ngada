@@ -121,7 +121,7 @@ const cardVariants = {
     y: 0,
     transition: {
       duration: 0.45,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   },
 };
@@ -131,7 +131,7 @@ const headerVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
@@ -295,7 +295,7 @@ export function ServicesSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" as const }}
         >
           <span className="text-green-600 font-semibold text-sm uppercase tracking-wider">
             Layanan Kami
@@ -336,7 +336,7 @@ export function ServicesSection() {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" as const }}
         >
           <Link href="/layanan">
             <Button

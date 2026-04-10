@@ -46,7 +46,7 @@ const fadeInUp = {
     transition: {
       duration: 0.6,
       delay: i * 0.15,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   }),
 };
@@ -67,7 +67,7 @@ const fadeIn = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
@@ -253,7 +253,7 @@ export function HeroSection() {
             className="hidden lg:flex justify-center"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" as const }}
           >
             <div className="relative">
               {/* Decorative elements */}

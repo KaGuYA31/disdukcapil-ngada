@@ -210,7 +210,7 @@ const headerVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
@@ -219,7 +219,7 @@ const searchVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: "easeOut", delay: 0.1 },
+    transition: { duration: 0.4, ease: "easeOut" as const, delay: 0.1 },
   },
 };
 
@@ -227,7 +227,7 @@ const tabsVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.4, delay: 0.2, ease: "easeOut" },
+    transition: { duration: 0.4, delay: 0.2, ease: "easeOut" as const },
   },
 };
 
@@ -239,7 +239,7 @@ const cardVariants = {
     transition: {
       duration: 0.45,
       delay: 0.05 + i * 0.08,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   }),
 };
@@ -249,7 +249,7 @@ const tabContentVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.35, ease: "easeOut" },
+    transition: { duration: 0.35, ease: "easeOut" as const },
   },
 };
 
@@ -310,7 +310,7 @@ function EmptySearchState({ query }: { query: string }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: "easeOut" as const }}
       className="flex flex-col items-center justify-center py-16 text-center"
     >
       <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6">
@@ -443,7 +443,7 @@ export function TransparansiSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  const filterDocuments = (docs: typeof peraturan) => {
+  const filterDocuments = <T extends { title: string; description: string }>(docs: T[]) => {
     if (!searchQuery.trim()) return docs;
     return docs.filter(
       (doc) =>

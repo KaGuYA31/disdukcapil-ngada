@@ -12,7 +12,7 @@ const textVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: "easeOut" as const },
   },
 };
 
@@ -21,7 +21,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.6, delay: 0.2, ease: "easeOut" },
+    transition: { duration: 0.6, delay: 0.2, ease: "easeOut" as const },
   },
 };
 
@@ -30,7 +30,7 @@ const buttonVariants = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, delay: 0.3 + i * 0.1, ease: "easeOut" },
+    transition: { duration: 0.5, delay: 0.3 + i * 0.1, ease: "easeOut" as const },
   }),
 };
 
@@ -39,7 +39,7 @@ const contactItemVariants = {
   visible: (i: number) => ({
     opacity: 1,
     x: 0,
-    transition: { duration: 0.4, delay: 0.4 + i * 0.1, ease: "easeOut" },
+    transition: { duration: 0.4, delay: 0.4 + i * 0.1, ease: "easeOut" as const },
   }),
 };
 
@@ -101,7 +101,7 @@ export function CTASection() {
               variants={textVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
-              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" as const }}
               className="text-green-100 text-lg mt-4 max-w-xl mx-auto lg:mx-0"
             >
               Tim kami siap membantu Anda dengan berbagai pertanyaan seputar

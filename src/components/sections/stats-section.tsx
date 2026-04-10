@@ -106,7 +106,7 @@ function AnimatedStatCard({
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={isAnimating ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" as const }}
       whileHover={{ scale: 1.03, y: -4 }}
       className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg border border-gray-100 transition-shadow cursor-default"
     >
@@ -220,7 +220,7 @@ export function StatsSection() {
           className="text-center mb-10 md:mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" as const }}
         >
           <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-green-600 mb-3">
             <BarChart3 className="h-4 w-4" />

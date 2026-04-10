@@ -349,7 +349,7 @@ export default function LayananOnlinePage() {
               className="max-w-3xl"
             >
               {/* Breadcrumb */}
-              <motion.div variants={fadeInUp} transition={{ duration: 0.4, ease: "easeOut" }}>
+              <motion.div variants={fadeInUp} transition={{ duration: 0.4, ease: "easeOut" as const }}>
                 <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Layanan Online" }]} />
               </motion.div>
 
@@ -873,7 +873,7 @@ export default function LayananOnlinePage() {
             initial="hidden"
             animate="visible"
             variants={scaleIn}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.5, ease: "easeOut" as const }}
             className="text-center py-4"
           >
             <motion.div

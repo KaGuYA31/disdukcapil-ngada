@@ -48,7 +48,7 @@ const headerVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
@@ -60,7 +60,7 @@ const itemVariants = {
     transition: {
       duration: 0.5,
       delay: 0.2 + i * 0.08,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   }),
 };
