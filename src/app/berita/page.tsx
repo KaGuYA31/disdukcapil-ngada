@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { motion } from "framer-motion";
 import { Newspaper } from "lucide-react";
 import { Header } from "@/components/layout/header";
@@ -59,7 +60,9 @@ export default function BeritaPage() {
           </div>
         </section>
 
-        <NewsListSection />
+        <Suspense fallback={<div className="container mx-auto px-4 py-12"><div className="animate-pulse space-y-4"><div className="h-8 bg-gray-200 rounded w-1/3" /><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"><div className="h-64 bg-gray-200 rounded-lg" /><div className="h-64 bg-gray-200 rounded-lg" /><div className="h-64 bg-gray-200 rounded-lg" /></div></div></div>}>
+          <NewsListSection />
+        </Suspense>
       </main>
       <Footer />
       <WhatsAppButton />
