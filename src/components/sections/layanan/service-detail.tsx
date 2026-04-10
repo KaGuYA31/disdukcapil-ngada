@@ -27,6 +27,7 @@ import {
   Loader2,
   File,
   ClipboardCheck,
+  Printer,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -602,6 +603,81 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
   const [loading, setLoading] = useState(true);
   const [service, setService] = useState<Layanan | null>(null);
 
+  // Inject print styles
+  useEffect(() => {
+    const styleId = "service-detail-print-styles";
+    if (document.getElementById(styleId)) return;
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      @media print {
+        /* Hide non-essential elements */
+        header,
+        footer,
+        [data-whatsapp],
+        [data-back-to-top],
+        [data-quick-access],
+        [data-cookie-banner],
+        .print-hide {
+          display: none !important;
+        }
+
+        /* Remove shadows and borders from cards */
+        .border-gray-200,
+        .border-green-200,
+        .border-yellow-200 {
+          border: 1px solid #e5e7eb !important;
+          box-shadow: none !important;
+        }
+
+        /* Page setup for A4 */
+        @page {
+          size: A4;
+          margin: 15mm 15mm 20mm 15mm;
+        }
+
+        /* White background */
+        body {
+          background: white !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        /* Ensure content is properly formatted */
+        section {
+          break-inside: avoid;
+        }
+
+        /* Hide print button itself */
+        [data-print-button] {
+          display: none !important;
+        }
+
+        /* Show hero gradient in print */
+        .bg-gradient-to-br {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        /* Ensure grid prints properly */
+        .grid {
+          display: block !important;
+        }
+        .grid > * {
+          margin-bottom: 1rem;
+        }
+        .lg\\:col-span-2 {
+          display: block !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      const existing = document.getElementById(styleId);
+      if (existing) existing.remove();
+    };
+  }, []);
+
   useEffect(() => {
     const fetchService = async () => {
       try {
@@ -684,6 +760,22 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
             </motion.div>
           </div>
         </section>
+
+        {/* Print Button */}
+        <div className="container mx-auto px-4 -mt-6 mb-6" data-print-button>
+          <div className="flex justify-end">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200 hover:border-green-300 rounded-full transition-colors shadow-sm cursor-pointer"
+            >
+              <Printer className="h-4 w-4" />
+              <span className="sm:hidden">Cetak</span>
+              <span className="hidden sm:inline">Cetak Halaman</span>
+            </motion.button>
+          </div>
+        </div>
 
         {/* Main Content */}
         <section className="py-12 bg-gray-50">
@@ -1008,6 +1100,22 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
           </motion.div>
         </div>
       </section>
+
+      {/* Print Button */}
+      <div className="container mx-auto px-4 -mt-6 mb-6" data-print-button>
+        <div className="flex justify-end">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-700 border border-gray-200 hover:border-green-300 rounded-full transition-colors shadow-sm cursor-pointer"
+          >
+            <Printer className="h-4 w-4" />
+            <span className="sm:hidden">Cetak</span>
+            <span className="hidden sm:inline">Cetak Halaman</span>
+          </motion.button>
+        </div>
+      </div>
 
       {/* Main Content */}
       <section className="py-12 bg-gray-50">

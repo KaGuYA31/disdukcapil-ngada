@@ -2,8 +2,8 @@
 
 import { useRef, useState, useMemo } from "react";
 import Link from "next/link";
-import { HelpCircle, MessageCircle, Search, X } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { HelpCircle, MessageCircle, Search, SearchX, X } from "lucide-react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -87,6 +87,14 @@ const itemVariants = {
       ease: "easeOut" as const,
     },
   }),
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.2,
+      ease: "easeIn" as const,
+    },
+  },
 };
 
 const fadeInUp = {
@@ -138,20 +146,19 @@ export function FAQSection() {
 
         {/* Search Input */}
         <motion.div
-          variants={headerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" as const }}
-          className="max-w-md mx-auto mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+          className="max-w-2xl mx-auto mb-8"
         >
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <div className="relative bg-gray-50 rounded-xl border border-gray-200 transition-all duration-200 focus-within:ring-2 focus-within:ring-green-500/20 focus-within:border-green-500">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
             <Input
               type="text"
               placeholder="Cari pertanyaan..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10 h-11 border-gray-200 focus:border-green-500 focus:ring-green-500/20"
+              className="pl-10 pr-10 h-11 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none focus-visible:border-0"
             />
             {searchQuery && (
               <button
@@ -169,55 +176,60 @@ export function FAQSection() {
         <div className="max-w-3xl mx-auto">
           {filteredFaqs.length > 0 ? (
             <Accordion type="single" collapsible className="space-y-3">
-              {filteredFaqs.map((faq, index) => {
-                const originalIndex = faqs.indexOf(faq);
-                return (
-                  <motion.div
-                    key={originalIndex}
-                    custom={index}
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                  >
-                    <AccordionItem
-                      value={`faq-${originalIndex}`}
-                      className="border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md"
+              <AnimatePresence>
+                {filteredFaqs.map((faq, index) => {
+                  const originalIndex = faqs.indexOf(faq);
+                  return (
+                    <motion.div
+                      key={originalIndex}
+                      layout
+                      layoutId={`faq-item-${originalIndex}`}
+                      custom={index}
+                      variants={itemVariants}
+                      initial="hidden"
+                      animate={isInView ? "visible" : "hidden"}
+                      exit="exit"
                     >
-                      <AccordionTrigger className="px-5 py-5 md:px-6 md:py-5 hover:bg-gray-50 hover:no-underline transition-colors duration-200 [&[data-state=open]]:bg-green-50/50">
-                        <div className="flex items-start gap-3">
-                          <span className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-green-600 text-white text-xs font-bold">
-                            {originalIndex + 1}
-                          </span>
-                          <span className="text-left text-sm md:text-base font-semibold text-gray-800">
-                            {faq.question}
-                          </span>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="px-5 pb-5 md:px-6 md:pb-6">
-                        <div className="pl-10 text-gray-600 leading-relaxed text-sm md:text-base">
-                          {faq.answer}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </motion.div>
-                );
-              })}
+                      <AccordionItem
+                        value={`faq-${originalIndex}`}
+                        className="border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md"
+                      >
+                        <AccordionTrigger className="px-5 py-5 md:px-6 md:py-5 hover:bg-gray-50 hover:no-underline transition-colors duration-200 [&[data-state=open]]:bg-green-50/50">
+                          <div className="flex items-start gap-3">
+                            <span className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-green-600 text-white text-xs font-bold">
+                              {originalIndex + 1}
+                            </span>
+                            <span className="text-left text-sm md:text-base font-semibold text-gray-800">
+                              {faq.question}
+                            </span>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-5 pb-5 md:px-6 md:pb-6">
+                          <div className="pl-10 text-gray-600 leading-relaxed text-sm md:text-base">
+                            {faq.answer}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
             </Accordion>
           ) : (
             <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
               className="text-center py-12"
             >
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                <Search className="h-7 w-7 text-gray-400" />
+                <SearchX className="h-7 w-7 text-gray-400" />
               </div>
               <p className="text-gray-500 font-medium text-lg">
-                Tidak ada FAQ yang cocok
+                Tidak ada pertanyaan yang cocok
               </p>
               <p className="text-gray-400 text-sm mt-1">
-                Coba kata kunci yang berbeda
+                Coba kata kunci lain
               </p>
             </motion.div>
           )}

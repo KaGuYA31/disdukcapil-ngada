@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen, ChevronDown, IdCard } from "lucide-react";
+import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen, ChevronDown, IdCard, FileCheck } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -111,10 +111,30 @@ export function HeroSection() {
   const periode = data?.ringkasan?.periode || "-";
 
   const blankoTersedia = data?.blankoEKTP?.jumlahTersedia || 0;
+
+  // Stats with gradient accent colors and icons
   const heroStats = [
-    { label: "Total Penduduk", value: formatNumber(totalPenduduk) },
-    { label: "Blanko E-KTP", value: formatNumber(blankoTersedia) },
-    { label: "Cakupan Akta", value: `${cakupanAkta.toFixed(1)}%` },
+    {
+      label: "Total Penduduk",
+      value: formatNumber(totalPenduduk),
+      gradient: "from-green-400 to-emerald-500",
+      iconColor: "text-green-400",
+      Icon: Users,
+    },
+    {
+      label: "Blanko E-KTP",
+      value: formatNumber(blankoTersedia),
+      gradient: "from-teal-400 to-cyan-500",
+      iconColor: "text-teal-400",
+      Icon: IdCard,
+    },
+    {
+      label: "Cakupan Akta",
+      value: `${cakupanAkta.toFixed(1)}%`,
+      gradient: "from-amber-400 to-yellow-500",
+      iconColor: "text-amber-400",
+      Icon: FileCheck,
+    },
   ];
 
   const kepalaDinas = data?.kepalaDinas;
@@ -221,34 +241,42 @@ export function HeroSection() {
               variants={fadeIn}
               className="flex flex-wrap gap-3 justify-center lg:justify-start"
             >
-              <Link href="/layanan">
-                <Button
-                  size="lg"
-                  className="bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold shadow-lg shadow-black/10"
-                >
-                  <FileText className="mr-2 h-5 w-5" />
-                  Lihat Layanan
-                </Button>
-              </Link>
-              <Link href="/layanan-online">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10"
-                >
-                  <Globe className="mr-2 h-5 w-5" />
-                  Layanan Online
-                </Button>
-              </Link>
-              <Link href="/pengaduan">
-                <Button
-                  size="lg"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold shadow-lg shadow-yellow-500/20 hidden sm:inline-flex"
-                >
-                  <Users className="mr-2 h-5 w-5" />
-                  Ajukan Pengaduan
-                </Button>
-              </Link>
+              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+                <Link href="/layanan">
+                  <Button
+                    size="lg"
+                    className="relative bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold shadow-lg shadow-black/10 overflow-hidden"
+                  >
+                    {/* Subtle gradient overlay */}
+                    <span className="absolute inset-0 bg-gradient-to-r from-white via-green-50/40 to-white opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                    <FileText className="mr-2 h-5 w-5 relative z-10" />
+                    <span className="relative z-10">Lihat Layanan</span>
+                  </Button>
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+                <Link href="/layanan-online">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10"
+                  >
+                    <Globe className="mr-2 h-5 w-5" />
+                    Layanan Online
+                  </Button>
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+                <Link href="/pengaduan">
+                  <Button
+                    size="lg"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold shadow-lg shadow-yellow-500/20 hidden sm:inline-flex"
+                  >
+                    <Users className="mr-2 h-5 w-5" />
+                    Ajukan Pengaduan
+                  </Button>
+                </Link>
+              </motion.div>
             </motion.div>
 
             {/* Category Quick Links */}
@@ -301,18 +329,48 @@ export function HeroSection() {
                       <Loader2 className="h-10 w-10 animate-spin text-white" />
                     </div>
                   ) : kepalaDinas?.photo ? (
-                    <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 ring-4 ring-white/20">
-                      <Image
-                        src={kepalaDinas.photo}
-                        alt={kepalaDinas.name}
-                        width={128}
-                        height={128}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="w-32 h-32 mx-auto mb-4">
+                      {/* Rotating border animation wrapper */}
+                      <div className="relative w-full h-full">
+                        <motion.div
+                          className="absolute -inset-1 rounded-full"
+                          style={{
+                            background: "conic-gradient(from 0deg, #4ade80, #22d3ee, #facc15, #4ade80)",
+                          }}
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                        />
+                        {/* Inner ring to create border effect */}
+                        <div className="absolute inset-0 rounded-full bg-green-800" />
+                        {/* Photo with green ring */}
+                        <div className="relative w-32 h-32 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-green-800 ring-green-400/30">
+                          <Image
+                            src={kepalaDinas.photo}
+                            alt={kepalaDinas.name}
+                            width={128}
+                            height={128}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
                     </div>
                   ) : (
-                    <div className="w-32 h-32 mx-auto bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mb-4 ring-4 ring-white/20">
-                      <Users className="h-16 w-16 text-white" />
+                    <div className="w-32 h-32 mx-auto mb-4">
+                      {/* Rotating border animation wrapper for fallback */}
+                      <div className="relative w-full h-full">
+                        <motion.div
+                          className="absolute -inset-1 rounded-full"
+                          style={{
+                            background: "conic-gradient(from 0deg, #4ade80, #22d3ee, #facc15, #4ade80)",
+                          }}
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                        />
+                        <div className="absolute inset-0 rounded-full bg-green-800" />
+                        <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-green-400/30">
+                          <Users className="h-16 w-16 text-white" />
+                        </div>
+                      </div>
                     </div>
                   )}
                   <h3 className="font-bold text-xl mb-1">
@@ -333,7 +391,7 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Stats Quick View - Glass-morphism Cards */}
+        {/* Stats Quick View - Glass-morphism Cards with Enhanced Accents */}
         <motion.div
           className="mt-16 grid grid-cols-3 gap-4 max-w-3xl mx-auto"
           variants={staggerContainer}
@@ -350,12 +408,16 @@ export function HeroSection() {
                 key={index}
                 custom={index}
                 variants={fadeInUp}
-                className="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center border border-white/20 shadow-lg shadow-black/10 hover:bg-white/15 transition-colors"
+                className="relative bg-white/10 backdrop-blur-md rounded-xl p-4 text-center border border-white/20 shadow-lg shadow-black/10 hover:bg-white/15 transition-colors overflow-hidden"
               >
+                {/* Colored top border accent */}
+                <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${stat.gradient}`} />
                 <p className="text-2xl md:text-3xl font-bold text-yellow-400">
                   {stat.value}
                 </p>
                 <p className="text-sm text-green-100 mt-1">{stat.label}</p>
+                {/* Subtle accent icon below the text */}
+                <stat.Icon className={`mx-auto mt-2 h-3.5 w-3.5 ${stat.iconColor} opacity-70`} />
               </motion.div>
             ))
           )}
@@ -388,7 +450,16 @@ export function HeroSection() {
         <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm opacity-70 group-hover:opacity-100 transition-opacity">
           <ChevronDown className="h-5 w-5 text-white" />
         </span>
-        <span className="text-xs text-white/50 mt-1">Scroll ke bawah</span>
+        {/* Semi-transparent white line extending from button to wave divider */}
+        <div className="w-px h-16 bg-gradient-to-b from-white/30 to-white/5" />
+        {/* Animated opacity pulse text */}
+        <motion.span
+          className="text-xs text-white/50 mt-0"
+          animate={{ opacity: [0.3, 0.7, 0.3] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          Scroll ke bawah
+        </motion.span>
       </motion.button>
 
       {/* Wave Divider */}

@@ -235,6 +235,20 @@
   outline-offset: 2px;
 }
 
+/* Breathing scale animation for FAB icon */
+@keyframes breathing {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.animate-breathing {
+  animation: breathing 2.5s ease-in-out infinite;
+}
+
 /* Print styles */
 @media print {
   .no-print {
