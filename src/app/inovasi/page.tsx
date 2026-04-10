@@ -156,29 +156,40 @@ export default function InovasiPage() {
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16">
-          <div className="container mx-auto px-4">
+        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16 relative overflow-hidden">
+          {/* Decorative gradient orbs */}
+          <div className="absolute top-0 right-0 w-72 h-72 bg-green-600/20 rounded-full -translate-y-1/2 translate-x-1/3" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-green-500/10 rounded-full translate-y-1/2 -translate-x-1/4" />
+
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
-              <div className="mb-4">
-                <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Inovasi" }]} />
-              </div>
               <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={staggerContainer}
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                    <Lightbulb className="w-8 h-8 text-green-200" />
-                  </div>
-                  <motion.h1
-                    variants={fadeInUp}
-                    transition={{ duration: 0.5 }}
-                    className="text-3xl md:text-4xl font-bold"
-                  >
-                    Kegiatan Inovasi Jemput Bola
-                  </motion.h1>
-                </div>
+                <motion.div variants={fadeInUp} className="mb-4">
+                  <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Inovasi" }]} />
+                </motion.div>
+
+                {/* Section Label */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex items-center gap-2 mb-3"
+                >
+                  <Lightbulb className="h-4 w-4 text-green-200" />
+                  <span className="text-xs font-semibold tracking-wider text-green-200 uppercase">
+                    Kegiatan Inovasi
+                  </span>
+                </motion.div>
+
+                <motion.h1
+                  variants={fadeInUp}
+                  transition={{ duration: 0.5 }}
+                  className="text-4xl md:text-5xl font-bold mb-3"
+                >
+                  Kegiatan Inovasi Jemput Bola
+                </motion.h1>
                 <motion.p
                   variants={fadeInUp}
                   transition={{ duration: 0.5, delay: 0.1 }}

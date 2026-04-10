@@ -50,6 +50,49 @@ Stage Summary:
 - All 11 routes tested returning HTTP 200
 - ESLint passes with 0 errors, 0 warnings
 - Homepage now has 8 sections: Hero → Stats → Services → Announcements → FAQ → News → CTA
+---
+Task ID: r8d
+Agent: Main Developer
+Task: Enhance Layanan page styling + dark mode for AnnouncementTicker
+
+Work Log:
+
+1. Enhanced Layanan hero banner (src/app/layanan/page.tsx):
+   - Added "LAYANAN KAMI" section label as pill badge
+   - Updated title to "Layanan Administrasi Kependudukan" with "Kependudukan" in green-200
+   - Updated breadcrumb: Beranda → Layanan
+   - Added 3 decorative gradient orbs with framer-motion stagger animations (floatOrb variant)
+   - Improved responsive text sizes (lg:text-5xl)
+   - Added framer-motion delayed animations to Free Service Banner, Key Info Cards, and Catatan section
+   - Enhanced card styling with rounded-xl, border-white/10, shadow-lg
+
+2. Enhanced service cards (src/components/sections/layanan/services-list-section.tsx):
+   - Added hover effect: hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300
+   - Added "Lihat Detail" arrow that slides in on hover (opacity-0 → opacity-100, -translate-x-2 → translate-x-0)
+   - Category badge: emerald for Pendaftaran Penduduk, amber for Pencatatan Sipil (already existed, confirmed working)
+   - Added Clock icon + "Selesai di Tempat" processing time indicator
+   - Added rose-colored "GRATIS" badge on each card
+   - Simplified card footer (removed redundant Waktu Proses/Biaya rows, replaced with cleaner layout)
+   - Added line-clamp-2 on description for consistency
+   - Imported Clock icon from lucide-react
+
+3. Dark mode support for AnnouncementTicker (src/components/shared/announcement-ticker.tsx):
+   - Background: bg-green-700 dark:bg-green-900
+   - Border: border-green-600 dark:border-green-700
+   - Bell icon: text-green-100 dark:text-green-300
+   - Separator dots: opacity-50 dark:text-green-300/50
+   - White text preserved in both modes
+
+Verification:
+- ESLint passes with 0 errors, 0 warnings
+- Dev server compiles successfully
+- /layanan route returns HTTP 200
+
+Stage Summary:
+- 3 files modified (page.tsx, services-list-section.tsx, announcement-ticker.tsx)
+- Hero banner upgraded with framer-motion gradient orbs and stagger animations
+- Service cards enhanced with hover lift, sliding arrow, Clock icon, GRATIS badge
+- AnnouncementTicker now supports dark mode
 - All sub-pages have breadcrumb navigation
 - All client-side sections have loading skeletons
 - Dev server stable for HTTP requests (sandbox memory limitation prevents Chrome automation)
@@ -1733,3 +1776,121 @@ Priority Recommendations for Next Phase:
 5. Performance: lazy load below-fold components
 6. Add Google Maps embed to CTA section or homepage
 7. Add a countdown timer for special events/deadlines
+
+---
+Task ID: r8a
+Agent: Main Coordinator
+Task: Add time-based greeting to hero, enhance Inovasi page hero, enhance 404 not-found page
+
+Work Log:
+- Read worklog.md for project context (Rounds 2-6+ complete, all features accumulated)
+- Read hero-section.tsx, inovasi/page.tsx, not-found.tsx to understand current state
+
+Implementation:
+
+  1. Added time-based greeting to hero section (src/components/sections/hero-section.tsx):
+     - Created `getTimeGreeting()` function that computes greeting based on WITA timezone (Asia/Makassar):
+       - 05:00-10:59 → "Selamat Pagi" with Sun icon (text-amber-300)
+       - 11:00-14:59 → "Selamat Siang" with Sun icon (text-amber-400)
+       - 15:00-17:59 → "Selamat Sore" with Sunset icon (text-orange-400)
+       - 18:00-04:59 → "Selamat Malam" with Moon icon (text-blue-200)
+     - Uses `Intl.DateTimeFormat` with timeZone "Asia/Makassar" for timezone-aware hour detection
+     - Added `useState` with `getTimeGreeting` as initializer + `useEffect` to set on mount
+     - Displayed as subtle text-sm with icon above "Pemerintah Kabupaten Ngada" badge
+     - Uses existing `fadeIn` animation variant within the `staggerContainer`
+     - Added Sun, Sunset, Moon imports from lucide-react
+
+  2. Enhanced Inovasi page hero banner (src/app/inovasi/page.tsx):
+     - Added decorative gradient orbs in hero background (matching berita, transparansi pages):
+       - Top-right: w-72 h-72 bg-green-600/20 rounded-full -translate-y-1/2 translate-x-1/3
+       - Bottom-left: w-48 h-48 bg-green-500/10 rounded-full translate-y-1/2 -translate-x-1/4
+     - Wrapped breadcrumb in `motion.div` with `fadeInUp` variant for stagger animation
+     - Added "KEGIATAN INOVASI" section label above title:
+       - Lightbulb icon + uppercase text, text-xs, tracking-wider, font-semibold, text-green-200
+     - Increased title size from text-3xl md:text-4xl → text-4xl md:text-5xl for more impact
+     - Added relative z-10 to hero content container for proper layering above gradient orbs
+     - Added relative overflow-hidden to hero section
+
+  3. Enhanced 404 not-found page (src/app/not-found.tsx):
+     - Full-page centered design with bg-gray-50 background
+     - Large "404" number in text-8xl md:text-9xl, font-extrabold, text-green-100
+     - "Halaman Tidak Ditemukan" heading + friendly description message
+     - Search bar with Search icon that redirects to /layanan?q=
+     - 4 quick link cards (Beranda, Layanan, Berita, Pengaduan):
+       - shadcn/ui Card components with icon in green-50 rounded circle
+       - Description text hidden on mobile, visible on sm+
+       - Hover effects: border-green-400, shadow-md, icon scale-110, text-green-700
+     - "Kembali ke Beranda" prominent green button with Home icon
+     - framer-motion fadeInUp stagger animation on all elements (0.1s stagger)
+     - Header and Footer included for consistent layout
+     - Decorative gradient orbs in background (green-500/10, teal-500/10, green-400/5)
+
+- ESLint: 0 errors, 0 warnings
+- Dev server compiled successfully
+
+Stage Summary:
+- Hero section now shows time-based Indonesian greeting (WITA timezone) with contextual icon
+- Inovasi page hero matches enhanced pages pattern (gradient orbs, section label, larger title, stagger animations)
+- 404 page redesigned with Card-based quick links, search bar, and consistent Header/Footer layout
+- All animations use framer-motion fadeInUp stagger pattern
+- Color palette: green, teal, amber, orange, rose — NO blue or purple (except text-blue-200 for Moon icon greeting)
+
+---
+Task ID: r8b
+Agent: Main Developer
+Task: Enhance Profil page with tab-based navigation
+
+Work Log:
+- Read existing profil page structure (hero banner + 5 sections: VisiMisi, StrukturOrganisasi, Struktur, Sejarah, Lokasi)
+- Read all 5 section components to understand content and functionality
+- Verified shadcn/ui Tabs component exists at @/components/ui/tabs
+- Transformed single-scroll layout into modern tab-based navigation
+
+Changes Made:
+1. **Tab Navigation System**:
+   - Added shadcn/ui Tabs component with 4 tabs: "Visi & Misi", "Struktur Organisasi", "Sejarah", "Lokasi Kantor"
+   - Each tab trigger has an icon: Target, Users, History, MapPin
+   - Tab bar is sticky at top with white background and border-bottom shadow
+   - Horizontal scrollable on mobile (overflow-x-auto on TabsList)
+   - Active tab has green-700 text and animated green-600 bottom border (framer-motion layoutId spring animation)
+
+2. **Tab Content with Animations**:
+   - Wrapped all sections in TabsContent with framer-motion AnimatePresence (mode="wait")
+   - Each tab panel has fade-in (opacity 0→1, y 12→0) and exit (opacity 1→0, y 0→-8) animations
+   - Visi & Misi tab → VisiMisiSection
+   - Struktur Organisasi tab → StrukturOrganisasiSection + StrukturSection (combined)
+   - Sejarah tab → SejarahSection
+   - Lokasi Kantor tab → LokasiSection
+
+3. **Hero Banner Enhancement**:
+   - Added third decorative gradient orb (center, bg-green-400/5)
+   - Added "PROFIL DINAS" section label above title with Building2 icon, glass-morphism pill badge (bg-white/10 backdrop-blur border-white/20)
+   - Maintained stagger animations for breadcrumb, section label, title, description
+
+4. **URL Hash Support**:
+   - Lazy useState initializer reads URL hash on mount (avoids SSR issues)
+   - useEffect listens for hashchange events to sync tab state
+   - Tab changes update URL hash via history.replaceState
+   - Supports #visi-misi, #struktur, #sejarah, #lokasi
+
+5. **Custom TabTriggerItem component**:
+   - Extracted into separate function component for clean code
+   - Custom styling: no default radix background/shadow/border on active state
+   - Animated bottom indicator using framer-motion layoutId for smooth sliding effect
+
+Files Modified:
+- /home/z/my-project/src/app/profil/page.tsx (complete rewrite, ~293 lines)
+
+Verification:
+- ESLint: 0 errors, 0 warnings
+- /profil returns HTTP 200
+- /profil#struktur, /profil#sejarah, /profil#lokasi all return HTTP 200
+- All existing section components preserved intact (VisiMisiSection, StrukturOrganisasiSection, StrukturSection, SejarahSection, LokasiSection)
+- No changes to child components needed
+
+Stage Summary:
+- Profil page transformed from single-scroll to modern tab-based layout
+- Sticky tab bar with animated active indicator and mobile horizontal scroll
+- Framer-motion AnimatePresence for smooth tab transitions
+- URL hash deep-linking support (#visi-misi, #struktur, #sejarah, #lokasi)
+- Hero banner enhanced with section label pill and additional gradient orb

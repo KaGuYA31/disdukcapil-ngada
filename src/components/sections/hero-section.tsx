@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen, ChevronDown, IdCard, FileCheck } from "lucide-react";
+import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen, ChevronDown, IdCard, FileCheck, Sun, Sunset, Moon } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -75,10 +75,38 @@ const fadeIn = {
   },
 };
 
+function getTimeGreeting() {
+  const now = new Date();
+  const hour = parseInt(
+    new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      hour12: false,
+      timeZone: "Asia/Makassar",
+    }).format(now),
+    10
+  );
+
+  if (hour >= 5 && hour < 11) {
+    return { text: "Selamat Pagi", Icon: Sun, colorClass: "text-amber-300" };
+  }
+  if (hour >= 11 && hour < 15) {
+    return { text: "Selamat Siang", Icon: Sun, colorClass: "text-amber-400" };
+  }
+  if (hour >= 15 && hour < 18) {
+    return { text: "Selamat Sore", Icon: Sunset, colorClass: "text-orange-400" };
+  }
+  return { text: "Selamat Malam", Icon: Moon, colorClass: "text-blue-200" };
+}
+
 export function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState<BerandaData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [greeting, setGreeting] = useState(getTimeGreeting);
+
+  useEffect(() => {
+    setGreeting(getTimeGreeting());
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -186,6 +214,15 @@ export function HeroSection() {
             initial="hidden"
             animate="visible"
           >
+            {/* Time-based greeting */}
+            <motion.div
+              variants={fadeIn}
+              className="flex items-center justify-center lg:justify-start gap-2 text-sm text-green-100/80"
+            >
+              <greeting.Icon className={`h-4 w-4 ${greeting.colorClass}`} />
+              <span>{greeting.text}</span>
+            </motion.div>
+
             <motion.div
               variants={fadeIn}
               className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-sm"

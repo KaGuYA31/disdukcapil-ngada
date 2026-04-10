@@ -92,11 +92,11 @@ export function AnnouncementTicker() {
   const tickerItems = [...displayItems, ...displayItems];
 
   return (
-    <div className="announcement-ticker-bar bg-green-700 text-white py-1 text-sm overflow-hidden hidden md:block">
+    <div className="announcement-ticker-bar bg-green-700 dark:bg-green-900 text-white py-1 text-sm overflow-hidden hidden md:block">
       <div className="container mx-auto flex items-center">
         {/* Static bell icon + label */}
-        <div className="flex-shrink-0 flex items-center gap-1.5 px-4 border-r border-green-600 h-6">
-          <Bell className="h-3.5 w-3.5 flex-shrink-0" />
+        <div className="flex-shrink-0 flex items-center gap-1.5 px-4 border-r border-green-600 dark:border-green-700 h-6">
+          <Bell className="h-3.5 w-3.5 flex-shrink-0 text-green-100 dark:text-green-300" />
           <span className="font-medium text-xs tracking-wide">Pengumuman</span>
         </div>
 
@@ -125,7 +125,7 @@ export function AnnouncementTicker() {
                     </span>
                   )}
                   {index < tickerItems.length - 1 && (
-                    <span className="inline-block mx-3 opacity-50 text-xs select-none" aria-hidden="true">
+                    <span className="inline-block mx-3 opacity-50 dark:text-green-300/50 text-xs select-none" aria-hidden="true">
                       &bull;
                     </span>
                   )}

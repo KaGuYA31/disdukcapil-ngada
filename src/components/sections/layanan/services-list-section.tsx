@@ -25,6 +25,7 @@ import {
   Home,
   Inbox,
   FileSearch,
+  Clock,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -328,29 +329,28 @@ function ServicesListContent() {
   // Render a single service card
   const renderServiceCard = (service: Layanan, colors: ReturnType<typeof getCategoryColor>) => {
     const IconComponent = getIcon(service.icon);
+    const isPendaftaran = service.category === "Pendaftaran Penduduk";
     return (
       <Link
         key={service.id}
         href={`/layanan/${service.slug}`}
         className="group block h-full"
       >
-        <Card className="h-full card-hover border-gray-200 hover:border-green-300">
-          <CardHeader>
-            <div className="flex items-start justify-between gap-4">
-              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                <IconComponent className="h-7 w-7 text-green-600" />
+        <Card className="h-full border border-gray-200 hover:border-green-300 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className={`w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${isPendaftaran ? "bg-emerald-100" : "bg-amber-100"}`}>
+                <IconComponent className={`h-7 w-7 ${isPendaftaran ? "text-emerald-600" : "text-amber-600"}`} />
               </div>
-              <div className="flex flex-col gap-1 items-end">
-                {service.category && (
-                  <Badge
-                    variant="secondary"
-                    className={`text-xs ${colors.bg} ${colors.text} border ${colors.border}`}
-                  >
-                    {service.category}
-                  </Badge>
-                )}
-                <Badge className="text-xs bg-green-100 text-green-700 hover:bg-green-100">
-                  Selesai di Tempat
+              <div className="flex flex-col gap-1.5 items-end">
+                <Badge
+                  variant="secondary"
+                  className={`text-xs ${colors.bg} ${colors.text} border ${colors.border}`}
+                >
+                  {service.category || "Layanan"}
+                </Badge>
+                <Badge className="text-xs bg-rose-100 text-rose-700 hover:bg-rose-100 border border-rose-200 font-bold">
+                  GRATIS
                 </Badge>
               </div>
             </div>
@@ -359,25 +359,21 @@ function ServicesListContent() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600 text-sm mb-4">{service.description}</p>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Waktu Proses:</span>
-                <span className="font-medium text-green-600">
-                  {service.processingTime || "Selesai di Tempat"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-500">Biaya:</span>
-                <Badge className="bg-green-100 text-green-700 hover:bg-green-100 font-bold">
-                  {service.fee || "GRATIS"}
-                </Badge>
-              </div>
+            <p className="text-gray-500 text-sm mb-4 line-clamp-2">{service.description}</p>
+
+            {/* Processing time indicator */}
+            <div className="flex items-center gap-2 text-sm mb-4">
+              <Clock className="h-4 w-4 text-green-600 flex-shrink-0" />
+              <span className="font-medium text-green-600">
+                {service.processingTime || "Selesai di Tempat"}
+              </span>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <span className="text-green-700 text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
-                Lihat Persyaratan
-                <ArrowRight className="h-4 w-4" />
+
+            {/* Footer with sliding arrow */}
+            <div className="pt-3 border-t border-gray-100">
+              <span className="text-green-700 text-sm font-medium inline-flex items-center gap-0 group-hover:gap-2 transition-all duration-300">
+                Lihat Detail
+                <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
               </span>
             </div>
           </CardContent>
