@@ -13,7 +13,7 @@ export const CONTACT_INFO = {
   phone: "(0382) 21073",
   phoneRaw: "038221073",
   whatsapp: "6238221073",
-  whatsappDisplay: "0822-2107-3",
+  whatsappDisplay: "0822-21073",
   whatsappUrl: "https://wa.me/6238221073",
   email: "disdukcapil@ngadakab.go.id",
   address: "Jl. Ahmad Yani No.1, Bajawa, Kabupaten Ngada, NTT",

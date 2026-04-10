@@ -249,6 +249,34 @@
   animation: breathing 2.5s ease-in-out infinite;
 }
 
+/* Announcement ticker marquee animation */
+.announcement-ticker-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
+}
+
+.announcement-ticker-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker-scroll 40s linear infinite;
+}
+
+.announcement-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 /* Print styles */
 @media print {
   .no-print {

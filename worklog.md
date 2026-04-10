@@ -1376,3 +1376,360 @@ Priority Recommendations for Next Phase:
 7. Add more SEO: per-page meta tags, Open Graph images
 8. Dark mode testing and polish
 9. Add visitor counter widget (simulated)
+
+---
+Task ID: 4-a
+Agent: Subagent
+Task: Create Announcement Ticker Banner component
+
+Work Log:
+- Created announcement-ticker.tsx with marquee scrolling animation
+- Integrated into homepage page.tsx
+- ESLint: 0 errors
+
+Stage Summary:
+- New AnnouncementTicker component with horizontal scroll
+- Shows announcements from API with fallback data
+- Placed between header and main content on homepage
+Task ID: 4-c
+Agent: Subagent
+Task: Enhance "Lokasi" section on /profil page with embedded Google Maps iframe, polished info cards, and scroll animations
+
+Work Log:
+- Read worklog.md for project context (Rounds 2-6 complete, all features accumulated)
+- Read profil/page.tsx to understand page structure (LokasiSection imported, section id="lokasi")
+- Read constants.ts for LOCATION and CONTACT_INFO constants
+- Read existing lokasi-section.tsx (had two redundant map embeds, overlay card, separate contact/map grid layout)
+
+Changes Implemented:
+
+1. Redesigned LokasiSection layout (src/components/sections/profil/lokasi-section.tsx):
+   - Removed redundant dual map embeds — consolidated to single full-width Google Maps iframe
+   - Removed address overlay card that was floating over the map (-mt-6 pattern)
+   - Removed the side-by-side grid layout (contact info + map) in favor of stacked layout
+
+2. Google Maps iframe:
+   - src: `https://maps.google.com/maps?q=-8.8489,121.0731&z=15&output=embed`
+   - Full width with rounded-xl corners
+   - Height: 400px (h-[400px])
+   - border-0, allowFullScreen, loading="lazy"
+   - Wrapped in shadow-lg, overflow-hidden, rounded-xl container
+   - Proper title attribute for accessibility
+
+3. "Buka di Google Maps" button:
+   - Positioned below the map, centered
+   - Uses shadcn/ui Button with variant="outline", size="lg"
+   - Green-themed outline (border-green-600, text-green-700, hover:bg-green-50)
+   - ExternalLink icon from lucide-react
+   - Links to LOCATION.googleMapsUrl with target="_blank" and rel="noopener noreferrer"
+
+4. Info cards redesign:
+   - 4 cards in responsive grid: sm:grid-cols-2 lg:grid-cols-4
+   - Each card has icon badge + label + value layout:
+     - Alamat: MapPin icon, green-100/green-600
+     - Telepon: Phone icon, teal-100/teal-600, "Hubungi Sekarang" link
+     - Jam Pelayanan: Clock icon, amber-100/amber-600
+     - Arahkan di Maps: Navigation icon, rose-100/rose-600, "Buka Google Maps" link
+   - Each card has hover:shadow-md transition
+   - TypeScript InfoItem interface for type safety
+
+5. Section heading:
+   - "LOKASI" label with MapPin icon (green-600, uppercase, tracking-wider)
+   - "Lokasi Kantor" heading (text-3xl/4xl, bold)
+   - Descriptive subtitle
+
+6. Scroll animations (framer-motion):
+   - Used `useInView` from framer-motion with sectionRef for scroll-triggered animations
+   - Section heading: staggerContainer with fadeInUp variants
+   - Map: fadeInUp animation on scroll
+   - Info cards: staggerContainer with cardVariants (0.1s stagger between cards)
+   - Closed hours notice: fadeInUp animation
+
+7. Color palette:
+   - green, teal, amber, rose — NO blue or purple
+   - Consistent with project design system
+
+- ESLint: 0 errors, 0 warnings
+- Dev server compiled successfully
+
+Stage Summary:
+- Lokasi section completely redesigned with cleaner layout
+- Single full-width Google Maps iframe (400px height, shadow-lg, rounded-xl)
+- "Buka di Google Maps" button with ExternalLink icon below map
+- 4 polished info cards in responsive grid (Address, Phone, Hours, Directions)
+- MapPin icon in section heading
+- framer-motion fadeInUp animations via useInView scroll trigger
+- TypeScript InfoItem interface for card data
+- File: src/components/sections/profil/lokasi-section.tsx (1 file modified)
+---
+Task ID: 4-d
+Agent: Main Coordinator
+Task: Enhance services section with better styling details (background pattern, header, card hover, count badge, category tabs, button)
+
+Work Log:
+- Read worklog.md for project context (Rounds 2-7 complete)
+- Read services-section.tsx (category grouping, service cards, stagger animations, loading skeleton, view all button)
+- Read stats-section.tsx and news-section.tsx for reference patterns (dot grid pattern, category filter tabs)
+
+Implementation (all changes in src/components/sections/services-section.tsx):
+
+1. Added subtle SVG dot grid background pattern:
+   - Light green-200 dot pattern (24x24px grid) at opacity-[0.04]
+   - Absolute positioned behind content with pointer-events-none and z-10 on container
+
+2. Enhanced section header with visual details:
+   - Decorative accent line above label: two h-px w-8 green-300 lines flanking a green-500 dot
+   - Green-100 rounded-full pill/badge around "LAYANAN KAMI" label with ConciergeBell icon
+   - Label styled as inline-flex with gap-2, px-4 py-1.5
+
+3. Improved service card hover effects:
+   - Gradient overlay: absolute div with bg-gradient-to-t from-transparent to-green-50/50, opacity-0 → opacity-100 on group-hover
+   - Colored left border accent: absolute left div with w-1 bg-green-500, scale-y-0 → scale-y-100 on group-hover with origin-top
+   - Icon container already had group-hover:scale-110 transition-transform duration-300 (preserved)
+   - "Lihat Detail →" text at bottom of each card: opacity-0 translate-y-1 → opacity-100 translate-y-0 on group-hover with green-600 color
+   - Card gets overflow-hidden and relative positioning for proper layering
+
+4. Added service count indicator:
+   - Badge showing "{totalServices} Layanan Tersedia" near section header
+   - Green-50 bg, green-700 text, green-200 border
+   - Animated fade-in with framer-motion (scale 0.9 → 1, opacity)
+   - Only shown when not loading
+
+5. Added category tab pills for filtering:
+   - Three pills: "Semua Layanan" (LayoutGrid icon), "Pendaftaran Penduduk" (ClipboardList icon), "Pencatatan Sipil" (BookOpen icon)
+   - Active tab: bg-green-700 text-white with shadow-md shadow-green-700/25
+   - Inactive tab: bg-white text-gray-600 with border, hover:border-green-300 hover:text-green-700 hover:bg-green-50
+   - State managed with useState("Semua") and useMemo for filtered categories
+   - framer-motion fade-in animation on tab container
+   - TabIconDisplay helper component for consistent icon rendering
+   - Added useMemo import, categoryTabs constant array
+
+6. Enhanced "Lihat Semua Layanan" button:
+   - Gradient background: bg-gradient-to-r from-green-700 to-green-800 with hover:from-green-800 hover:to-green-900
+   - Shadow: shadow-lg shadow-green-700/20
+   - Arrow animation: motion.span wrapping ArrowRight with whileHover x:4 spring animation
+   - Wrapped in group inline-block Link for proper hover trigger
+
+7. All existing functionality preserved:
+   - Category grouping (Pendaftaran Penduduk / Pencatatan Sipil)
+   - Service cards with icons, descriptions, fee badges, processing time badges
+   - Stagger animations via framer-motion (containerVariants, cardVariants, headerVariants)
+   - Loading skeleton with proper layout
+   - API fetch with graceful fallback to defaultServices
+   - "Lihat Semua" links per category section
+   - Mobile responsive "See All" button
+
+- ESLint: 0 errors, 0 warnings
+- Dev server compiled successfully (GET / 200, /api/layanan 200)
+
+Stage Summary:
+- Services section now has 6 visual enhancements while maintaining all existing functionality
+- Subtle dot grid background pattern adds depth without distraction
+- Enhanced header with decorative accent, icon pill badge, and service count indicator
+- Service cards have rich hover effects: gradient overlay, left border accent, "Lihat Detail" text
+- Category tab pills allow filtering by "Semua Layanan", "Pendaftaran Penduduk", or "Pencatatan Sipil"
+- "Lihat Semua Layanan" button has gradient background and animated arrow
+- File: src/components/sections/services-section.tsx (1 file modified)
+
+---
+Task ID: 4-b-5-a
+Agent: Main Coordinator
+Task: Add SVG section dividers + Create "Keunggulan Kami" section
+
+Work Log:
+- Read worklog.md (Rounds 2-10 complete, all features accumulated)
+- Read all relevant section components to understand backgrounds and structure
+
+Section Backgrounds (verified):
+- HeroSection: green gradient → wave divider → white
+- StatsSection: gray-50 → white
+- ServicesSection: white → white
+- AnnouncementsSection: white → white
+- FAQSection: white → white
+- TestimoniSection: gray-50 → gray-50
+- NewsSection: gray-50 → green (CTA)
+- CTASection: green gradient
+
+Task 1 — SVG Section Dividers:
+
+  1. stats-section.tsx (gray-50 → white transition):
+     - Added SVG wave divider at bottom of section
+     - Organic curve path filling with white color
+     - Height: h-12 md:h-16 (~48-64px)
+     - Positioned with relative container, -mb-px to prevent gap
+     - preserveAspectRatio="none" for full-width stretch
+
+  2. announcements-section.tsx (white → gray-50 transition):
+     - Added subtle SVG wave divider at bottom
+     - Organic curve path filling with #f9fafb (gray-50)
+     - Height: h-10 md:h-14 (~40-56px)
+     - Positioned with -mb-px
+
+  3. news-section.tsx (gray-50 → green transition before CTA):
+     - Added SVG wave divider at bottom
+     - Organic curve path filling with #15803d (green-700)
+     - Height: h-12 md:h-16 (~48-64px)
+     - Positioned with -mb-px
+
+Task 2 — Keunggulan Kami Section:
+
+  Created `src/components/sections/keunggulan-section.tsx`:
+  - TypeScript interface KeunggulanItem (id, icon, title, description, iconBg, iconColor)
+  - 6 feature cards with alternating icon colors:
+    - 01 Pelayanan Gratis (BadgeCheck, teal-100/teal-700)
+    - 02 Proses Cepat (Zap, green-100/green-700)
+    - 03 Jemput Bola (Truck, teal-100/teal-700)
+    - 04 Transparan (Eye, green-100/green-700)
+    - 05 Profesional (Award, teal-100/teal-700)
+    - 06 Digital (Smartphone, green-100/green-700)
+  - Section header: "KEUNGGULAN KAMI" label (Sparkles icon, green-600, uppercase, tracking-wider)
+  - Title: "Mengapa Memilih Layanan Kami" (text-3xl md:text-4xl, bold)
+  - Subtitle: commitment description
+  - Responsive grid: grid-cols-1 md:grid-cols-2 lg:grid-cols-3, gap-6
+  - Cards: white bg, rounded-xl, p-6, border border-gray-100, shadow-sm
+  - Number badge: text-5xl font-bold text-gray-100, top-right, 01-06
+  - Icon container: w-12 h-12 rounded-xl with alternating green/teal colors
+  - framer-motion animations:
+    - headerVariants: fadeInUp on section header
+    - containerVariants: staggerChildren 0.1, delayChildren 0.15
+    - cardVariants: fadeInUp with 0.5s duration
+    - whileHover: translateY(-2px) on cards
+    - Group hover: icon scale 110%
+  - useInView for scroll-triggered animation
+  - bg-gray-50 background
+
+  Updated `src/app/page.tsx`:
+  - Added KeunggulanSection import
+  - Placed between FAQSection and TestimoniSection
+  - New homepage order: Hero → Stats → Services → Announcements → FAQ → Keunggulan → Testimoni → News → CTA (10 sections total)
+
+- ESLint: 0 errors, 0 warnings
+- Dev server compiled successfully (GET / 200)
+
+Stage Summary:
+- 3 SVG wave dividers added: stats (gray→white), announcements (white→gray), news (gray→green)
+- 1 new section: KeunggulanSection with 6 feature cards and stagger animations
+- Homepage now has 10 sections total
+- All dividers use organic SVG curves, color-matched transitions, ~40-60px height
+- TypeScript interfaces, framer-motion animations, responsive design maintained
+- Files modified: stats-section.tsx, announcements-section.tsx, news-section.tsx, page.tsx
+- Files created: keunggulan-section.tsx
+
+---
+Task ID: round-7
+Agent: Main Coordinator
+Task: Round 7 - Comprehensive QA, bug fixes, styling improvements, and new features
+
+Work Log:
+- Read worklog.md (Rounds 2-6 complete, all features accumulated)
+- QA Testing with agent-browser:
+  - Homepage screenshot captured (qa-r7-home.png, qa-r7-final-home.png)
+  - Mobile viewport (375x812) screenshot captured (qa-r7-mobile.png)
+  - Statistik page screenshot captured (qa-r7-statistik.png)
+  - Layanan Online page screenshot captured (qa-r7-layanan-online.png)
+  - Profil page screenshot captured with Google Maps (qa-r7-profil.png)
+  - Homepage snapshot verified: all 10 sections rendering correctly
+  - Keunggulan section verified: all 6 feature cards rendering
+  - Announcement Ticker verified: scrolling text visible
+  - Google Maps iframe verified: embedded on profil page
+  - All 9 main routes tested: HTTP 200
+  - ESLint: 0 errors, 0 warnings
+
+Bug Fixes:
+1. Fixed WhatsApp display number in constants.ts: "0822-2107-3" → "0822-21073"
+2. Fixed JSON-LD structured data URLs in layout.tsx:
+   - GovernmentOrganization URL: "my-project-mu-ivory-36.vercel.app" → "disdukcapil-ngada.vercel.app"
+   - GovernmentOrganization logo: updated to correct path
+   - WebSite SearchAction target URL: fixed to production domain
+
+New Features (dispatched to 4 parallel subagents):
+3. Created Announcement Ticker Banner (announcement-ticker.tsx):
+   - Horizontal marquee scrolling with CSS @keyframes (40s infinite loop)
+   - Fetches from /api/pengumuman?limit=5 with 3 hardcoded fallbacks
+   - Green-700 background, Bell icon, separator dots between items
+   - Hover pauses animation, CSS mask-image for edge fade
+   - Hidden on mobile (hidden md:block), AbortController cleanup
+   - Integrated into homepage between Header and main content
+
+4. Created "Keunggulan Kami" (Why Choose Us) section (keunggulan-section.tsx):
+   - 6 feature cards: Pelayanan Gratis, Proses Cepat, Jemput Bola, Transparan, Profesional, Digital
+   - Light gray background, 3-column responsive grid
+   - Number badges (01-06), alternating green/teal icon colors
+   - framer-motion stagger fade-in on scroll, hover effects
+   - Placed between FAQ and Testimoni on homepage
+
+5. Enhanced Profil page with Google Maps embed (lokasi-section.tsx):
+   - Full-width Google Maps iframe (400px height, rounded-xl, shadow-lg)
+   - "Buka di Google Maps" button with ExternalLink icon
+   - 4 polished info cards: Alamat, Telepon, Jam Pelayanan, Arahkan di Maps
+   - framer-motion scroll animations on all elements
+
+6. Enhanced Services Section (services-section.tsx):
+   - Subtle dot grid background pattern (green-200, opacity-0.04)
+   - Enhanced section header with decorative accent line and green-100 pill badge
+   - Service card hover effects: gradient overlay, green left border, "Lihat Detail →" text
+   - Service count indicator Badge ("9 Layanan Tersedia")
+   - Category filter tabs: "Semua Layanan", "Pendaftaran Penduduk", "Pencatatan Sipil"
+   - Enhanced "Lihat Semua Layanan" button with gradient and arrow animation
+
+Styling Enhancements:
+7. Added SVG wave section dividers:
+   - stats-section.tsx: gray-50 → white wave divider
+   - announcements-section.tsx: white → gray-50 subtle wave
+   - news-section.tsx: gray-50 → green-700 curve wave (before CTA)
+
+Stage Summary:
+- 2 bug fixes (WhatsApp number, JSON-LD URLs)
+- 3 new components (Announcement Ticker, Keunggulan Kami, Enhanced Lokasi with Maps)
+- 1 major section enhancement (Services with tabs, hover effects, count badge)
+- 3 SVG section dividers added
+- Homepage now has 10 sections: Hero → Stats → Services → Announcements → FAQ → Keunggulan → Testimoni → News → CTA
+- 5 QA screenshots captured
+- All routes returning HTTP 200
+- ESLint passes with 0 errors, 0 warnings
+
+---
+CURRENT PROJECT STATUS ASSESSMENT (Round 7 Complete):
+
+Completed Features (accumulated from all rounds):
+✅ Clean navigation: Beranda, Profil, Layanan (dropdown with Layanan Online), Statistik Kependudukan, Berita, Pengaduan
+✅ Admin panel with category selector, settings for blanko KTP
+✅ Animated hero section with gradient, glass-morphism stats, kepala dinas card
+✅ Announcement Ticker banner (marquee) between header and content
+✅ Animated stats section with counter hook, Blanko E-KTP display
+✅ Animated services section with category filter tabs, count badge, enhanced hover
+✅ Enhanced announcements with API integration, animations, skeleton loading
+✅ Enhanced news section with database API, category filter tabs
+✅ FAQ section with accordion and search
+✅ Keunggulan Kami (Why Choose Us) section with 6 feature cards
+✅ Testimoni section with toggle (6 testimonials)
+✅ Enhanced CTA section with WhatsApp button
+✅ Back to Top floating button
+✅ Breadcrumb navigation on all sub-pages
+✅ SVG wave section dividers between homepage sections
+✅ Consistent layout on ALL pages
+✅ Loading skeletons on all dynamic sections
+✅ Mobile Sheet drawer navigation with collapsible sub-menus
+✅ Jam Operasional live indicator (WITA timezone)
+✅ Enhanced footer with 5 social links, contact bar, featured services
+✅ Transparansi page with animations, empty state, download counts
+✅ Google Maps embed on profil page location section
+✅ Dark mode support
+✅ Responsive design (verified with 375x812 mobile viewport)
+✅ TypeScript interfaces throughout
+✅ JSON-LD structured data (corrected URLs)
+✅ SEO metadata, Open Graph, Twitter cards
+
+Known Issues / Risks:
+1. Stats show 0 values (expected - no seed data in local SQLite DB; production Supabase may have data)
+2. Testimoni section uses hardcoded data
+3. No real-time search functionality
+
+Priority Recommendations for Next Phase:
+1. Add more content to the Keunggulan section (animated icons or illustrations)
+2. Add a "Tahapan Pengurusan" (Process Steps) visual guide for popular services
+3. Integrate testimoni with database API
+4. Add dark mode optimization for new components
+5. Performance: lazy load below-fold components
+6. Add Google Maps embed to CTA section or homepage
+7. Add a countdown timer for special events/deadlines

@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { MapPin, Phone, Clock, Mail, ExternalLink } from "lucide-react";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { MapPin, Phone, Clock, Navigation, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CONTACT_INFO, LOCATION, OPERATING_HOURS } from "@/lib/constants";
@@ -11,231 +12,212 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
 };
 
-const mapFadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
-};
-
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
   },
 };
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+};
+
+interface InfoItem {
+  icon: typeof MapPin;
+  label: string;
+  value: string;
+  subValue?: string;
+  subValueClass?: string;
+  iconBg: string;
+  iconColor: string;
+  href?: string;
+  hrefLabel?: string;
+}
+
+const infoItems: InfoItem[] = [
+  {
+    icon: MapPin,
+    label: "Alamat",
+    value: LOCATION.address,
+    subValue: `${LOCATION.regency} ${LOCATION.postalCode}`,
+    iconBg: "bg-green-100",
+    iconColor: "text-green-600",
+  },
+  {
+    icon: Phone,
+    label: "Telepon",
+    value: CONTACT_INFO.phone,
+    iconBg: "bg-teal-100",
+    iconColor: "text-teal-600",
+    href: `tel:+${CONTACT_INFO.phoneRaw}`,
+    hrefLabel: "Hubungi Sekarang",
+  },
+  {
+    icon: Clock,
+    label: "Jam Pelayanan",
+    value: `${OPERATING_HOURS.weekdays.days}: ${OPERATING_HOURS.weekdays.hours}`,
+    subValue: `${OPERATING_HOURS.friday.days}: ${OPERATING_HOURS.friday.hours}`,
+    subValueClass: "",
+    iconBg: "bg-amber-100",
+    iconColor: "text-amber-600",
+  },
+  {
+    icon: Navigation,
+    label: "Arahkan di Maps",
+    value: LOCATION.name,
+    iconBg: "bg-rose-100",
+    iconColor: "text-rose-600",
+    href: LOCATION.googleMapsUrl,
+    hrefLabel: "Buka Google Maps",
+  },
+];
+
 export function LokasiSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+
   return (
-    <section id="lokasi" className="py-16 md:py-24 bg-gray-50">
+    <section id="lokasi" ref={sectionRef} className="py-16 md:py-24 bg-gray-50">
       <div className="container mx-auto px-4">
+        {/* Section Heading */}
         <motion.div
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate={isInView ? "visible" : "hidden"}
           variants={staggerContainer}
           className="text-center max-w-3xl mx-auto mb-12"
         >
-          <motion.span variants={fadeInUp} className="text-green-600 font-semibold text-sm uppercase tracking-wider">
+          <motion.span
+            variants={fadeInUp}
+            className="inline-flex items-center gap-2 text-green-600 font-semibold text-sm uppercase tracking-wider"
+          >
+            <MapPin className="h-4 w-4" />
             Lokasi
           </motion.span>
           <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
             Lokasi Kantor
           </motion.h2>
           <motion.p variants={fadeInUp} className="text-gray-600 mt-4">
-            Kunjungi kantor kami untuk mendapatkan layanan langsung
+            Kunjungi kantor kami untuk mendapatkan layanan langsung dengan ramah dan cepat
           </motion.p>
         </motion.div>
 
         {/* Google Maps Embed */}
         <motion.div
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={mapFadeInUp}
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
           className="max-w-6xl mx-auto w-full"
         >
-          <div className="w-full h-80 md:h-96 rounded-xl overflow-hidden border border-gray-200">
+          <div className="w-full h-[400px] rounded-xl overflow-hidden shadow-lg border border-gray-200">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.5!2d121.0731!3d-8.8489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNTAnNTYuMCJTIDEyMcKwMDQnMjEuMiJF!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+              src="https://maps.google.com/maps?q=-8.8489,121.0731&z=15&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Lokasi Disdukcapil Ngada"
+              title="Lokasi Kantor Disdukcapil Kabupaten Ngada"
               className="w-full h-full"
             />
           </div>
-        </motion.div>
 
-        {/* Address Overlay Card */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={mapFadeInUp}
-          className="max-w-6xl mx-auto w-full -mt-6 relative z-10 px-4"
-        >
-          <Card className="border-gray-200 shadow-lg max-w-md mx-auto">
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <MapPin className="h-5 w-5 text-teal-600" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-gray-700 text-sm font-medium truncate">
-                  {CONTACT_INFO.address}
-                </p>
-                <a
-                  href={LOCATION.googleMapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-green-600 text-xs hover:underline inline-flex items-center gap-1"
-                >
-                  Buka di Google Maps
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <div className="mt-10 grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Contact Info */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
-            className="lg:col-span-1 space-y-4"
-          >
-            <motion.div variants={fadeInUp}>
-              <Card className="border-gray-200">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <MapPin className="h-6 w-6 text-green-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">Alamat</h3>
-                      <p className="text-gray-600 text-sm mt-1">
-                        {LOCATION.address}
-                        <br />
-                        {LOCATION.regency}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={fadeInUp}>
-              <Card className="border-gray-200">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Phone className="h-6 w-6 text-teal-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">Telepon</h3>
-                      <p className="text-gray-600 text-sm mt-1">{CONTACT_INFO.phone}</p>
-                      <a
-                        href={`tel:+${CONTACT_INFO.phoneRaw}`}
-                        className="text-green-600 text-sm hover:underline mt-1 inline-block"
-                      >
-                        Hubungi Sekarang
-                      </a>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={fadeInUp}>
-              <Card className="border-gray-200">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock className="h-6 w-6 text-yellow-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">Jam Pelayanan</h3>
-                      <p className="text-gray-600 text-sm mt-1">
-                        {OPERATING_HOURS.weekdays.days}: {OPERATING_HOURS.weekdays.hours}
-                        <br />
-                        {OPERATING_HOURS.friday.days}: {OPERATING_HOURS.friday.hours}
-                        <br />
-                        <span className="text-red-500">
-                          {OPERATING_HOURS.saturday.days} - {OPERATING_HOURS.sunday.days}: {OPERATING_HOURS.saturday.hours}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={fadeInUp}>
-              <Card className="border-gray-200">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Mail className="h-6 w-6 text-rose-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">Email</h3>
-                      <a
-                        href={`mailto:${CONTACT_INFO.email}`}
-                        className="text-green-600 text-sm hover:underline"
-                      >
-                        {CONTACT_INFO.email}
-                      </a>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={fadeInUp}>
+          {/* Open in Google Maps Button */}
+          <div className="mt-6 flex justify-center">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="gap-2 border-green-600 text-green-700 hover:bg-green-50 hover:text-green-800 transition-colors"
+            >
               <a
                 href={LOCATION.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button className="w-full bg-green-700 hover:bg-green-800">
-                  <MapPin className="mr-2 h-4 w-4" />
-                  Buka di Google Maps
-                </Button>
+                <ExternalLink className="h-4 w-4" />
+                Buka di Google Maps
               </a>
-            </motion.div>
-          </motion.div>
+            </Button>
+          </div>
+        </motion.div>
 
-          {/* Map */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={fadeInUp}
-            className="lg:col-span-2"
-          >
-            <Card className="border-gray-200 overflow-hidden h-full">
-              <div className="w-full h-full min-h-[400px] bg-gray-200 relative">
-                {/* Placeholder for map - Replace with actual Google Maps embed */}
-                <iframe
-                  src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.5!2d${LOCATION.coordinates.longitude}!3d${LOCATION.coordinates.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNTAnNTYuMCJTIDEyMcKwMDQnMjEuMiJF!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid`}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, minHeight: "400px" }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Lokasi Disdukcapil Ngada"
-                  className="absolute inset-0"
-                ></iframe>
-              </div>
-            </Card>
-          </motion.div>
-        </div>
+        {/* Info Cards */}
+        <motion.div
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={staggerContainer}
+          className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto"
+        >
+          {infoItems.map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <motion.div key={item.label} variants={cardVariants}>
+                <Card className="border-gray-200 h-full hover:shadow-md transition-shadow duration-200">
+                  <CardContent className="p-5">
+                    <div className="flex items-start gap-4">
+                      {/* Icon Badge */}
+                      <div
+                        className={`w-11 h-11 ${item.iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}
+                      >
+                        <IconComponent className={`h-5 w-5 ${item.iconColor}`} />
+                      </div>
+                      {/* Text Content */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-sm">
+                          {item.label}
+                        </h3>
+                        <p className="text-gray-600 text-sm mt-1 leading-relaxed">
+                          {item.value}
+                        </p>
+                        {item.subValue && (
+                          <p
+                            className={`text-sm mt-0.5 ${item.subValueClass || "text-gray-500"}`}
+                          >
+                            {item.subValue}
+                          </p>
+                        )}
+                        {item.href && item.hrefLabel && (
+                          <a
+                            href={item.href}
+                            target={
+                              item.href.startsWith("http") ? "_blank" : undefined
+                            }
+                            rel={
+                              item.href.startsWith("http")
+                                ? "noopener noreferrer"
+                                : undefined
+                            }
+                            className="inline-flex items-center gap-1 text-green-600 text-xs font-medium hover:text-green-700 hover:underline mt-2"
+                          >
+                            {item.hrefLabel}
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Saturday/Sunday closed notice */}
+        <motion.div
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+          className="mt-6 max-w-6xl mx-auto"
+        >
+          <p className="text-center text-sm text-red-500">
+            {OPERATING_HOURS.saturday.days} & {OPERATING_HOURS.sunday.days}:{" "}
+            {OPERATING_HOURS.saturday.hours}
+          </p>
+        </motion.div>
       </div>
     </section>
   );

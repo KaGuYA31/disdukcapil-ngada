@@ -430,6 +430,22 @@ export function NewsSection() {
           </motion.div>
         )}
       </div>
+
+      {/* SVG Wave Divider — gray-50 → green CTA */}
+      <div className="relative h-12 md:h-16 -mb-px">
+        <svg
+          viewBox="0 0 1440 80"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute bottom-0 left-0 right-0 w-full h-full"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0 35C160 55 320 65 480 55C640 45 800 25 960 30C1120 35 1280 55 1440 45V80H0V35Z"
+            fill="#15803d"
+          />
+        </svg>
+      </div>
     </section>
   );
 }

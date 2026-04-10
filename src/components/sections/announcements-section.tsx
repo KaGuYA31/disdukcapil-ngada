@@ -337,6 +337,22 @@ export function AnnouncementsSection() {
           </motion.div>
         )}
       </div>
+
+      {/* SVG Wave Divider — white → subtle separation */}
+      <div className="relative h-10 md:h-14 -mb-px">
+        <svg
+          viewBox="0 0 1440 60"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute bottom-0 left-0 right-0 w-full h-full"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0 30C240 50 480 55 720 40C960 25 1200 15 1440 25V60H0V30Z"
+            fill="#f9fafb"
+          />
+        </svg>
+      </div>
     </section>
   );
 }

@@ -282,6 +282,22 @@ export function StatsSection() {
           </Link>
         </motion.div>
       </div>
+
+      {/* SVG Wave Divider — gray-50 → white */}
+      <div className="relative h-12 md:h-16 -mb-px">
+        <svg
+          viewBox="0 0 1440 80"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute bottom-0 left-0 right-0 w-full h-full"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0 40C180 65 360 75 540 60C720 45 900 20 1080 25C1260 30 1380 50 1440 55V80H0V40Z"
+            fill="white"
+          />
+        </svg>
+      </div>
     </section>
   );
 }

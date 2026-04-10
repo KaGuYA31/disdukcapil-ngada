@@ -77,8 +77,8 @@ export default function RootLayout({
               "@type": "GovernmentOrganization",
               "name": "Disdukcapil Kabupaten Ngada",
               "alternateName": "Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
-              "url": "https://my-project-mu-ivory-36.vercel.app",
-              "logo": "https://my-project-mu-ivory-36.vercel.app/images/logo.svg",
+              "url": "https://disdukcapil-ngada.vercel.app",
+              "logo": "https://disdukcapil-ngada.vercel.app/logo-kabupaten.png",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Jl. Ahmad Yani No.1, Bajawa",
@@ -122,10 +122,10 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "Disdukcapil Ngada",
-              "url": "https://my-project-mu-ivory-36.vercel.app",
+              "url": "https://disdukcapil-ngada.vercel.app",
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://my-project-mu-ivory-36.vercel.app/berita?q={search_term_string}",
+                "target": "https://disdukcapil-ngada.vercel.app/berita?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               }
             })
