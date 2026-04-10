@@ -54,3 +54,4 @@ server.log
 /skills/
 # Credentials and upload files
 upload/
+.env\n.env.local
