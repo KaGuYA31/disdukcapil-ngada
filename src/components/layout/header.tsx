@@ -64,6 +64,8 @@ const navigation: NavItem[] = [
     dropdownLabel: "Pengelolaan Informasi Administrasi Kependudukan",
     children: [
       { title: "Statistik Kependudukan", href: "/statistik", description: "Data penduduk & dokumen" },
+      { title: "Transparansi & Publikasi", href: "/transparansi", description: "Dokumen, laporan, SOP" },
+      { title: "Open Data Kependudukan", href: "/statistik#open-data", description: "Data terbuka untuk publik" },
     ],
   },
   { title: "Berita", href: "/berita" },

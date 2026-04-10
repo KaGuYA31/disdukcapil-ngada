@@ -566,3 +566,279 @@ Priority Recommendations for Next Phase:
 7. SEO optimization: meta tags, structured data for all pages
 8. Performance optimization: dynamic imports for heavy components
 9. Accessibility audit: ARIA improvements, keyboard navigation
+
+---
+Task ID: round-6-stats
+Agent: Main Coordinator
+Task: Fix color palette in stats section and enhance with section header
+
+Work Log:
+- Read worklog.md (Rounds 2-5 complete, all features accumulated)
+- Read stats-section.tsx (4 stat cards, no section header, blue/purple colors)
+
+Changes Implemented:
+
+1. Fixed color palette — removed blue and purple, aligned with project palette:
+   - "Jenis Layanan": `text-blue-600` → `text-teal-600`, `bg-blue-100` → `bg-teal-100`
+   - "Cakupan Akta": `text-purple-600` → `text-rose-600`, `bg-purple-100` → `bg-rose-100`
+
+2. Replaced "Hari Kerja" / "Layanan Same Day" stat card with more meaningful data:
+   - Icon: `Clock` → `MapPin`
+   - Label: "Hari Kerja" → "Kecamatan"
+   - Description: "Layanan Same Day" → "Wilayah Layanan"
+   - rawValue: 1 → 12
+   - Color: kept amber-600/amber-100 (already correct)
+
+3. Added section header above stats grid:
+   - Label: "DATA KEPENDUDUKAN" (uppercase, green-600, tracking-wider) with BarChart3 icon
+   - Title: "Ringkasan Statistik" (text-3xl/4xl, bold, gray-900)
+   - Description: "Data kependudukan Kabupaten Ngada berdasarkan periode terbaru"
+   - framer-motion fadeInUp animation using existing `isInView` and `sectionRef`
+   - `motion.div` with initial opacity:0, y:20, animates on scroll into view
+
+4. Updated imports:
+   - Removed: `Clock` (no longer used)
+   - Added: `MapPin`, `BarChart3`
+
+5. All existing functionality preserved:
+   - Animated counters with ease-out cubic
+   - Loading state with Loader2 spinner
+   - Link to /statistik page
+   - Background pattern and gradient overlay
+   - Staggered card animations
+   - Hover effects (scale + shadow)
+
+- ESLint: 0 errors, 0 warnings
+- Dev server compiled successfully (GET / 200)
+
+Stage Summary:
+- Stats section now has a proper section header matching other homepage sections
+- Color palette fully consistent: green, teal, amber, rose (no blue or purple)
+- "Kecamatan" stat card shows 12 wilayah layanan (more meaningful than "Hari Kerja")
+- framer-motion fadeInUp animation on header via useInView
+- File: src/components/sections/stats-section.tsx (1 file modified)
+
+---
+Task ID: round-6-dropdown
+Agent: Main Coordinator
+Task: Add more items to "Info Kependudukan" dropdown in header and sync admin sidebar
+
+Work Log:
+- Read worklog.md for context (Rounds 2-5 complete)
+- Read header.tsx and admin-layout.tsx to understand current structure
+
+Implementation:
+
+  1. Header Navigation (header.tsx):
+     - Added 2 new children to "Info Kependudukan" dropdown:
+       - { title: "Transparansi & Publikasi", href: "/transparansi", description: "Dokumen, laporan, SOP" }
+       - { title: "Open Data Kependudukan", href: "/statistik#open-data", description: "Data terbuka untuk publik" }
+     - Existing "Statistik Kependudukan" child preserved as-is
+     - Dropdown now has 3 items total
+
+  2. Admin Sidebar (admin-layout.tsx):
+     - Added 2 new children under "Info Kependudukan" group after "Data Statistik":
+       - { title: "Transparansi & Publikasi", href: "/admin/transparansi", icon: FileText, description: "Dokumen, laporan, SOP" }
+       - { title: "Open Data", href: "/admin/statistik#open-data", icon: Database, description: "Data terbuka untuk publik" }
+     - Admin group now has 3 items total, synced with public header
+
+- ESLint: 0 errors, 0 warnings
+- All existing functionality preserved unchanged
+
+Stage Summary:
+- Info Kependudukan dropdown expanded from 1 to 3 items in both public header and admin sidebar
+- New items: Transparansi & Publikasi (/transparansi) and Open Data Kependudukan (/statistik#open-data)
+- Admin sidebar synced with matching items (FileText and Database icons)
+- Zero breaking changes — purely additive
+
+---
+Task ID: round-6-berita
+Agent: Main Coordinator
+Task: Enhance Berita page with framer-motion animations, BackToTop component, URL search query reading, and stagger animations on news cards
+
+Work Log:
+- Read worklog.md (Rounds 2-6 complete, all features accumulated)
+- Read berita/page.tsx (server component, no animations, no BackToTop, static metadata export)
+- Read news-list-section.tsx (client component, local search state only, no URL param reading, no animations)
+- Read BackToTop component and transparansi/page.tsx as reference patterns
+
+Implementation:
+
+  1. Enhanced berita page (src/app/berita/page.tsx):
+     - Converted from server component to "use client" for framer-motion support
+     - Added framer-motion stagger fade-in animations to hero banner:
+       - Breadcrumb fade-in (fadeInUp variant, 0.12s stagger delay)
+       - Title with Newspaper icon (lucide-react) fade-in
+       - Description fade-in
+     - Added decorative gradient orbs in hero background (matching transparansi, statistik, inovasi pages):
+       - Top-right: w-72 h-72 bg-green-600/20 rounded-full
+       - Bottom-left: w-48 h-48 bg-green-500/10 rounded-full
+     - Added BackToTop component import and render (before closing </div>)
+     - Removed static metadata export (incompatible with "use client")
+     - Added relative z-10 to hero content for proper layering above gradient orbs
+
+  2. Enhanced NewsListSection (src/components/sections/berita/news-list-section.tsx):
+     - Added URL search parameter reading using `useSearchParams()` from next/navigation
+     - Reads `q` param from URL (e.g. /berita?q=cari) and syncs to local search state
+     - Search query is automatically passed to `/api/berita?q={query}` on fetch
+     - Added search results message banner:
+       - Green-50 background with green-200 border
+       - Search icon + "Hasil pencarian untuk: {query}" with bold query highlight
+       - "Hapus Pencarian" clear button (X icon + text on sm+ screens)
+       - Animated fade-in with framer-motion
+     - Added framer-motion stagger animations to news cards:
+       - `cardVariants` with opacity:0, y:20 → opacity:1, y:0 (0.5s duration)
+       - Grid container uses staggerChildren: 0.08 with 0.05s delayChildren
+       - Each card wrapped in `motion.div` with cardVariants
+     - Added scroll-triggered animation on search/filter bar using `useInView`
+     - Enhanced empty state:
+       - FileX icon in gray-100 rounded circle
+       - "Berita Tidak Ditemukan" heading
+       - Contextual message (shows search query if present)
+       - "Hapus Pencarian" button when in search mode
+       - framer-motion scale animation
+     - Added useCallback for stable fetch reference in useEffect dependency
+     - Fixed category badge colors: blue → teal (Informasi), kept amber (Pengumuman), kept green (Kegiatan)
+     - Wrapped Link in motion.div for proper stagger (Link itself can't have variants)
+
+- ESLint: 0 errors, 0 warnings
+- Dev server compiled successfully
+
+Stage Summary:
+- Berita page now matches animation/style quality of other enhanced pages (transparansi, statistik, inovasi)
+- URL search query support: /berita?q=keyword triggers search with results banner and clear button
+- framer-motion stagger animations on hero banner (breadcrumb, title, description)
+- framer-motion stagger animations on news cards (0.08s delay between cards)
+- Enhanced empty state with FileX icon, contextual messaging, and clear search button
+- BackToTop floating button added
+- Decorative gradient orbs in hero background
+- All existing functionality preserved: category filtering, pagination, responsive design, API integration
+
+---
+Task ID: round-6-announcements
+Agent: Main Coordinator
+Task: Integrate Announcements section with Pengumuman database API, graceful fallback to hardcoded data
+
+Work Log:
+- Read worklog.md (Rounds 2-6 complete, all features accumulated)
+- Read announcements-section.tsx (hardcoded 3 announcements, artificial 600ms loading delay)
+- Read Prisma schema — Pengumuman model fields: id, title, content, type, startDate, endDate, isActive, createdAt, updatedAt
+- Confirmed /api/pengumuman route does not exist yet
+
+Implementation:
+
+  1. Created API route `src/app/api/pengumuman/route.ts`:
+     - GET endpoint that fetches active Pengumuman records from the database
+     - Filters where `isActive === true`
+     - Orders by `createdAt` descending
+     - Supports `?limit=` query parameter (default 5)
+     - Returns `{ success: true, data: [...] }` on success
+     - Returns `{ success: false, error: "..." }` with status 500 on error
+     - Follows same pattern as existing /api/berita route
+
+  2. Modified `src/components/sections/announcements-section.tsx`:
+     - Added TypeScript interface `AnnouncementItem` (id, title, content, type, date)
+     - Renamed hardcoded array to `fallbackAnnouncements` (typed as `AnnouncementItem[]`)
+     - Added `mapType()` helper: maps database type strings (info/urgent/maintenance) to display type (Info/Urgent/Maintenance)
+     - Added `mapApiToAnnouncement()` helper: maps database record (id, title, content, type, createdAt) to AnnouncementItem
+     - Replaced artificial 600ms `setTimeout` with real `fetch("/api/pengumuman?limit=5")` call
+     - Added `AbortController` via `useRef` — created fresh controller per fetch, aborted on unmount and before new requests
+     - Wrapped fetch logic in `useCallback` for stable reference in `useEffect` dependency array
+     - Graceful fallback: if API fails (network error, non-2xx, AbortError) or returns empty data, `fallbackAnnouncements` is used
+     - Changed "Lihat Semua Pengumuman" button href from `/berita` to `/pengaduan`
+
+  3. All existing functionality preserved:
+     - Type-based colors (Info=green, Maintenance=amber, Urgent=red)
+     - Type-based icons (Info, Wrench, AlertTriangle)
+     - framer-motion animations (headerVariants, cardVariants with stagger)
+     - Loading skeleton (shown only during real API fetch, no artificial delay)
+     - "Lihat Semua Pengumuman" button → /pengaduan
+     - Responsive layout
+     - Hover effects (shadow, translateY, gradient)
+
+- ESLint: 0 errors, 0 warnings
+
+Stage Summary:
+- Announcements section now fetches from `/api/pengumuman?limit=5` with graceful fallback to 3 hardcoded items
+- New API route at `/api/pengumuman` (GET, isActive filter, limit support, createdAt desc)
+- Proper cleanup with AbortController on unmount
+- No artificial loading delay — skeleton shows only while the real API request is pending
+- TypeScript `AnnouncementItem` interface added for type safety
+- "Lihat Semua Pengumuman" button now links to `/pengaduan`
+- All styling, animations, colors, and interactive features fully preserved
+- Files created: src/app/api/pengumuman/route.ts
+- Files modified: src/components/sections/announcements-section.tsx
+
+---
+CURRENT PROJECT STATUS ASSESSMENT (Round 6 Complete):
+
+Task: Round 6 - Color fixes, dropdown expansion, database integrations, search functionality
+
+Work Log:
+- Reviewed worklog.md (Rounds 2-5 complete, 9 homepage sections, all routes working)
+- ESLint: 0 errors, 0 warnings
+- Dev server compiled successfully
+- Dispatched 4 parallel subagents for independent tasks
+- All 4 subagents completed successfully
+- Committed as 6bb1569 (8 files, +567 -111 lines)
+
+Completed Features (Round 6):
+✅ Stats section color fix (blue→teal, purple→rose)
+✅ Stats section: new "Kecamatan" stat replacing "Hari Kerja"
+✅ Stats section: added "DATA KEPENDUDUKAN" header with BarChart3 icon
+✅ Info Kependudukan dropdown: added "Transparansi & Publikasi" and "Open Data Kependudukan"
+✅ Admin sidebar synchronized with 3 items under Info Kependudukan
+✅ Announcements section integrated with /api/pengumuman (graceful fallback)
+✅ Created /api/pengumuman/route.ts GET endpoint
+✅ Berita page converted to client component with framer-motion animations
+✅ Berita page: real-time search functionality (?q= query parameter)
+✅ News list: search results banner with clear button
+✅ Berita page: added BackToTop component
+✅ Fixed news category badge color (blue→teal for Informasi)
+
+Completed Features (accumulated from all rounds):
+✅ Layanan dropdown menu with 2 sub-categories (with descriptions)
+✅ Info Kependudukan dropdown with 3 children (Statistik, Transparansi, Open Data)
+✅ Full formal label in dropdowns
+✅ Admin sidebar collapsible menu grouping (synced with public nav)
+✅ Animated hero section with gradient, glass-morphism stats
+✅ Animated stats section with counter hook + section header
+✅ Animated services section grouped by category
+✅ Enhanced announcements with database API + animations
+✅ Enhanced news section with database API + search + category filter tabs
+✅ Enhanced CTA section with WhatsApp button
+✅ FAQ section with accordion
+✅ Testimoni section with toggle (6 testimonials)
+✅ Back to Top floating button
+✅ Breadcrumb navigation on all sub-pages
+✅ Consistent layout on ALL pages
+✅ Loading skeletons on all dynamic sections
+✅ Mobile Sheet drawer navigation with collapsible sub-menus
+✅ Jam Operasional live indicator (WITA timezone)
+✅ Enhanced footer with 5 social links, phone/WhatsApp, featured services
+✅ Transparansi page with animations, empty state, download counts
+✅ Real-time search on Berita page
+✅ Dark mode support
+✅ Responsive design maintained
+✅ TypeScript interfaces throughout
+✅ Zero blue/purple colors across all components
+
+Pending Actions:
+❌ Push to GitHub (needs GITHUB_TOKEN)
+❌ Deploy to Vercel (needs VERCEL_TOKEN)
+
+Known Issues / Risks:
+1. Dev server memory instability in sandbox
+2. Testimoni section uses hardcoded data
+3. No Google Maps integration for Lokasi section
+4. Open Data Kependudukan links to /statistik#open-data (no dedicated page yet)
+
+Priority Recommendations for Next Phase:
+1. **User action needed**: Push to GitHub and deploy to Vercel
+2. Create dedicated Open Data Kependudukan page
+3. Integrate testimoni with database API
+4. Google Maps integration for Lokasi section
+5. Add more sub-pages for admin (pengumuman management)
+6. Performance optimization: dynamic imports
+7. Accessibility audit: ARIA improvements, keyboard navigation
+8. SEO optimization: structured data (JSON-LD) for all pages

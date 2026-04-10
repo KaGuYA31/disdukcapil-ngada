@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Bell, AlertTriangle, Info, Wrench, ArrowRight } from "lucide-react";
 import { motion, useInView } from "framer-motion";
@@ -15,7 +15,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const announcements = [
+// TypeScript interface for announcement items
+interface AnnouncementItem {
+  id: string;
+  title: string;
+  content: string;
+  type: string;
+  date: string;
+}
+
+// Hardcoded fallback data
+const fallbackAnnouncements: AnnouncementItem[] = [
   {
     id: "1",
     title: "Jadwal Pelayanan Bulan Ini",
@@ -41,6 +51,29 @@ const announcements = [
     date: "2024-01-10",
   },
 ];
+
+// Map database type to display type
+const mapType = (dbType: string): string => {
+  const lower = dbType.toLowerCase();
+  if (lower === "urgent") return "Urgent";
+  if (lower === "maintenance") return "Maintenance";
+  return "Info";
+};
+
+// Map database record to AnnouncementItem
+const mapApiToAnnouncement = (record: {
+  id: string;
+  title: string;
+  content: string;
+  type: string;
+  createdAt: string;
+}): AnnouncementItem => ({
+  id: record.id,
+  title: record.title,
+  content: record.content,
+  type: mapType(record.type),
+  date: new Date(record.createdAt).toISOString(),
+});
 
 const getTypeIcon = (type: string) => {
   switch (type.toLowerCase()) {
@@ -137,16 +170,54 @@ function AnnouncementsLoadingSkeleton() {
 
 export function AnnouncementsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [loading, setLoading] = useState(true);
+  const [announcements, setAnnouncements] = useState<AnnouncementItem[]>([]);
+
+  const fetchAnnouncements = useCallback(async () => {
+    // Abort previous request if any
+    if (abortRef.current) {
+      abortRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/pengumuman?limit=5", {
+        signal: controller.signal,
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const json = await res.json();
+
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        const mapped = json.data.map(mapApiToAnnouncement);
+        setAnnouncements(mapped);
+      } else {
+        // Empty or unsuccessful — use fallback
+        setAnnouncements(fallbackAnnouncements);
+      }
+    } catch (err) {
+      // AbortError or network error — silently use fallback
+      if (err instanceof DOMException && err.name === "AbortError") return;
+      setAnnouncements(fallbackAnnouncements);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    // Simulate a brief loading state for visual effect
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 600);
-    return () => clearTimeout(timer);
-  }, []);
+    fetchAnnouncements();
+    return () => {
+      if (abortRef.current) {
+        abortRef.current.abort();
+      }
+    };
+  }, [fetchAnnouncements]);
 
   return (
     <section
@@ -254,7 +325,7 @@ export function AnnouncementsSection() {
             transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
             className="flex justify-center mt-8"
           >
-            <Link href="/berita">
+            <Link href="/pengaduan">
               <Button
                 variant="outline"
                 className="border-green-600 text-green-700 hover:bg-green-50 hover:text-green-800 font-medium"

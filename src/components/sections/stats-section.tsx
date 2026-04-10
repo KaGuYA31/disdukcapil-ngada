@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Users, FileCheck, Clock, TrendingUp, ArrowRight, Loader2 } from "lucide-react";
+import { Users, FileCheck, MapPin, TrendingUp, ArrowRight, Loader2, BarChart3 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 
 interface RingkasanData {
@@ -171,16 +171,16 @@ export function StatsSection() {
       formattedValue: "10",
       label: "Jenis Layanan",
       description: "Administrasi Kependudukan",
-      color: "text-blue-600",
-      bgColor: "bg-blue-100",
+      color: "text-teal-600",
+      bgColor: "bg-teal-100",
       isPercent: false,
     },
     {
-      icon: Clock,
-      rawValue: 1,
-      formattedValue: "1",
-      label: "Hari Kerja",
-      description: "Layanan Same Day",
+      icon: MapPin,
+      rawValue: 12,
+      formattedValue: "12",
+      label: "Kecamatan",
+      description: "Wilayah Layanan",
       color: "text-amber-600",
       bgColor: "bg-amber-100",
       isPercent: false,
@@ -191,8 +191,8 @@ export function StatsSection() {
       formattedValue: `${dokumen?.cakupanAkta?.toFixed(1) || "0"}%`,
       label: "Cakupan Akta",
       description: "Akta Kelahiran",
-      color: "text-purple-600",
-      bgColor: "bg-purple-100",
+      color: "text-rose-600",
+      bgColor: "bg-rose-100",
       isPercent: true,
     },
   ];
@@ -215,6 +215,25 @@ export function StatsSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-gray-50/80 to-gray-100" />
 
       <div className="container mx-auto px-4 relative">
+        {/* Section Header */}
+        <motion.div
+          className="text-center mb-10 md:mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-green-600 mb-3">
+            <BarChart3 className="h-4 w-4" />
+            Data Kependudukan
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+            Ringkasan Statistik
+          </h2>
+          <p className="text-gray-500 max-w-2xl mx-auto">
+            Data kependudukan Kabupaten Ngada berdasarkan periode terbaru
+          </p>
+        </motion.div>
+
         {loading ? (
           <div className="flex justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-green-600" />

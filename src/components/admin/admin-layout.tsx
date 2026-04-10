@@ -57,6 +57,18 @@ const menuItems: AdminMenuItem[] = [
         icon: BarChart3,
         description: "Statistik penduduk & dokumen",
       },
+      {
+        title: "Transparansi & Publikasi",
+        href: "/admin/transparansi",
+        icon: FileText,
+        description: "Dokumen, laporan, SOP",
+      },
+      {
+        title: "Open Data",
+        href: "/admin/statistik#open-data",
+        icon: Database,
+        description: "Data terbuka untuk publik",
+      },
     ],
   },
   {
