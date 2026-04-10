@@ -54,12 +54,11 @@ const navigation: NavItem[] = [
     children: [
       { title: "Pendaftaran Penduduk", href: "/layanan?kategori=Pendaftaran+Penduduk", description: "KTP, KK, dan data penduduk" },
       { title: "Pencatatan Sipil", href: "/layanan?kategori=Pencatatan+Sipil", description: "Akta nikah, cerai, kelahiran" },
+      { title: "Layanan Online", href: "/layanan-online", description: "Ajukan layanan secara daring" },
     ],
   },
-  { title: "Layanan Online", href: "/layanan-online" },
   { title: "Statistik Kependudukan", href: "/statistik" },
   { title: "Berita", href: "/berita" },
-  { title: "Inovasi", href: "/inovasi" },
   { title: "Pengaduan", href: "/pengaduan" },
 ];
 

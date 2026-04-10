@@ -26,8 +26,8 @@ const quickLinks = [
   { title: "Beranda", href: "/" },
   { title: "Profil Dinas", href: "/profil" },
   { title: "Layanan Publik", href: "/layanan" },
+  { title: "Statistik Kependudukan", href: "/statistik" },
   { title: "Berita & Informasi", href: "/berita" },
-  { title: "Inovasi", href: "/inovasi" },
   { title: "Pengaduan", href: "/pengaduan" },
 ];
 

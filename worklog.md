@@ -1253,3 +1253,38 @@ Priority Recommendations for Next Phase:
 8. Add more SEO: per-page meta tags, Open Graph images, canonical URLs
 9. Dark mode testing and polish
 10. Add loading skeleton to hero section (currently uses simple spinner)
+---
+Task ID: 1
+Agent: Main Agent
+Task: Update dashboard to show Jumlah Blanko KTP and clean up navigation
+
+Work Log:
+- Explored project structure to understand current dashboard, navigation, and admin features
+- Found that Blanko E-KTP feature is already fully implemented:
+  - Prisma model: BlankoEKTP (id, jumlahTersedia, keterangan, updatedBy, timestamps)
+  - API endpoints: GET/PUT /api/blanko-ektp (public read, admin write)
+  - Homepage API /api/beranda includes blankoEKTP data
+  - Stats section (stats-section.tsx) displays Blanko E-KTP card with dynamic color
+  - Hero section (hero-section.tsx) shows Blanko E-KTP in quick stats
+  - Admin dashboard shows blanko status with availability indicator
+  - Admin settings (/admin/pengaturan) has full blanko CRUD management form
+- Identified navigation items "Layanan Online" and "Inovasi" as the 2 extra menus user didn't ask for
+- Updated header.tsx navigation:
+  - Removed standalone "Layanan Online" link from main navigation
+  - Moved "Layanan Online" into the "Layanan" dropdown as a 3rd child item
+  - Removed "Inovasi" from main navigation (still accessible via footer and search)
+- Updated footer.tsx:
+  - Removed "Inovasi" from quick links array
+  - Added "Statistik Kependudukan" to quick links
+- Verified changes via agent-browser preview:
+  - Navigation now shows: Beranda, Profil, Layanan, Statistik Kependudukan, Berita, Pengaduan
+  - Layanan dropdown includes: Pendaftaran Penduduk, Pencatatan Sipil, Layanan Online
+  - Blanko E-KTP appears on homepage in both hero and stats sections
+- ESLint passes clean
+
+Stage Summary:
+- Dashboard already prominently displays "Jumlah Blanko KTP Tersedia" (Blanko E-KTP) - no changes needed
+- Navigation cleaned up: only "Statistik Kependudukan" remains as population info link
+- "Layanan Online" moved into Layanan dropdown for better organization
+- "Inovasi" removed from nav, accessible via footer/search
+- All changes verified working via agent-browser
