@@ -4,6 +4,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/components/providers";
 import { CookieConsent } from "@/components/shared/cookie-consent";
+import { SearchCommand } from "@/components/shared/search-command";
+import { ScrollProgress } from "@/components/shared/scroll-progress";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -134,6 +136,7 @@ export default function RootLayout({
         className={`${plusJakarta.variable} font-sans antialiased bg-background text-foreground`}
       >
         <CookieConsent />
+        <ScrollProgress />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-lg focus:bg-green-600 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg focus:outline-none"
@@ -142,6 +145,7 @@ export default function RootLayout({
         </a>
         <Providers>
           {children}
+          <SearchCommand />
           <Toaster />
         </Providers>
       </body>

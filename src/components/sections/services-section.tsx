@@ -14,9 +14,10 @@ import {
   Stamp,
   Gavel,
   MoveRight,
-  Loader2,
   ClipboardList,
   BookOpen,
+  Clock,
+  BadgeCheck,
 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Icon mapping
 const iconMap: Record<string, React.ElementType> = {
@@ -192,7 +194,7 @@ function CategorySection({
           </h3>
           <div className={`absolute bottom-0 left-0 h-0.5 ${colors.bg} transition-all duration-300 group-hover:w-full`} style={{ width: "0" }} />
         </div>
-        <p className="text-sm text-gray-500 hidden sm:block">{getCategoryDescription(category)}</p>
+        <p className="text-sm text-gray-500 hidden lg:block max-w-md">{getCategoryDescription(category)}</p>
         <div className="flex-1 h-px bg-gray-200 ml-4 hidden sm:block" />
         <Link
           href={`/layanan?kategori=${encodeURIComponent(category)}`}
@@ -211,7 +213,7 @@ function CategorySection({
                 href={`/layanan/${service.slug}`}
                 className="group block h-full"
               >
-                <Card className={`h-full card-hover border-gray-200 ${colors.hoverBorder}`}>
+                <Card className={`h-full card-hover border-gray-200 ${colors.hoverBorder} hover:border-green-300 hover:shadow-green-100/50 hover:shadow-lg transition-shadow duration-300`}>
                   <CardHeader>
                     <div
                       className={`w-14 h-14 ${colors.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
@@ -226,11 +228,21 @@ function CategorySection({
                     <CardDescription className="text-gray-600 leading-relaxed">
                       {service.description}
                     </CardDescription>
-                    <div className="mt-3 flex items-center justify-between">
-                      <Badge className={`text-xs ${colors.bg} ${colors.text} border ${colors.border}`}>
+                    <div className="mt-3 flex items-center gap-2 flex-wrap">
+                      <Badge className="bg-green-50 text-green-700 border border-green-200 text-xs gap-1">
+                        <BadgeCheck className="h-3 w-3" />
                         {service.fee || "GRATIS"}
                       </Badge>
+                      {service.processingTime && (
+                        <Badge className="bg-teal-50 text-teal-600 border border-teal-100 text-xs gap-1">
+                          <Clock className="h-3 w-3" />
+                          {service.processingTime.replace("*", "")}
+                        </Badge>
+                      )}
                     </div>
+                    {service.processingTime?.includes("*") && (
+                      <p className="text-[10px] text-gray-400 mt-1.5 italic">* Tergantung kelengkapan berkas</p>
+                    )}
                   </CardContent>
                 </Card>
               </Link>
@@ -311,8 +323,33 @@ export function ServicesSection() {
         </motion.div>
 
         {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+          <div className="space-y-12">
+            {[0, 1].map((catIndex) => (
+              <div key={catIndex} className="mb-12">
+                {/* Category header skeleton */}
+                <div className="flex items-center gap-3 mb-8">
+                  <Skeleton className="h-10 w-10 rounded-lg" />
+                  <Skeleton className="h-7 w-52 rounded" />
+                  <Skeleton className="h-4 w-64 rounded hidden lg:block" />
+                  <div className="flex-1" />
+                </div>
+                {/* Cards skeleton */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[0, 1, 2, 3].map((cardIndex) => (
+                    <div key={cardIndex} className="rounded-xl border border-gray-200 p-6">
+                      <Skeleton className="h-14 w-14 rounded-xl mb-4" />
+                      <Skeleton className="h-5 w-28 rounded mb-3" />
+                      <Skeleton className="h-4 w-full rounded mb-1.5" />
+                      <Skeleton className="h-4 w-3/4 rounded mb-4" />
+                      <div className="flex gap-2">
+                        <Skeleton className="h-5 w-16 rounded-md" />
+                        <Skeleton className="h-5 w-32 rounded-md" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           categoryOrder.map((category, index) => {

@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, Search, ChevronDown, ChevronRight, Building2, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Sheet,
   SheetContent,
@@ -167,13 +166,10 @@ function MobileNavItem({
 }
 
 export function Header() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const mounted = useMounted();
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -183,28 +179,8 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Ctrl+K / Cmd+K shortcut to focus/open search
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-        e.preventDefault();
-        setIsSearchOpen(true);
-        // Focus after a short delay to let the animation expand
-        setTimeout(() => searchInputRef.current?.focus(), 100);
-      }
-      if (e.key === "Escape" && isSearchOpen) {
-        setIsSearchOpen(false);
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isSearchOpen]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/berita?q=${encodeURIComponent(searchQuery)}`;
-    }
+  const openSearchCommand = () => {
+    window.dispatchEvent(new Event("open-search-command"));
   };
 
   const isActive = (href: string) => {
@@ -339,9 +315,9 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              onClick={openSearchCommand}
               className="hidden md:flex"
-              aria-label="Toggle search"
+              aria-label="Buka pencarian"
             >
               <Search className="h-5 w-5" />
             </Button>
@@ -387,20 +363,18 @@ export function Header() {
                     />
                   ))}
 
-                  {/* Search in Mobile */}
+                  {/* Search in Mobile — opens command palette */}
                   <div className="pt-4 mt-4 border-t border-gray-100">
-                    <form onSubmit={(e) => { e.preventDefault(); if(searchQuery.trim()) window.location.href = `/berita?q=${encodeURIComponent(searchQuery)}`; }} className="flex gap-2">
-                      <Input
-                        type="search"
-                        placeholder="Cari berita..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="flex-1"
-                      />
-                      <Button type="submit" size="icon" className="bg-green-700 hover:bg-green-800 flex-shrink-0">
-                        <Search className="h-4 w-4" />
-                      </Button>
-                    </form>
+                    <button
+                      onClick={openSearchCommand}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-500 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 hover:text-green-700 transition-all"
+                    >
+                      <Search className="h-4 w-4" />
+                      <span>Cari halaman, layanan, atau berita...</span>
+                      <kbd className="ml-auto inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 font-mono text-[10px] text-gray-400">
+                        ⌘K
+                      </kbd>
+                    </button>
                   </div>
 
                   {/* Quick Links */}
@@ -428,36 +402,7 @@ export function Header() {
           </div>
         </div>
 
-        {/* Search Bar (Expandable) */}
-        <div
-          className={cn(
-            "overflow-hidden transition-all duration-300",
-            isSearchOpen ? "max-h-16 pb-4" : "max-h-0"
-          )}
-        >
-          <form onSubmit={handleSearch} className="flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-              <Input
-                ref={searchInputRef}
-                type="search"
-                placeholder="Cari berita atau informasi..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setIsSearchOpen(true)}
-                className="pl-9 pr-16 focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-              />
-              {/* Ctrl+K shortcut hint — hidden on mobile */}
-              <kbd className="hidden sm:inline-flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-0.5 pointer-events-none select-none rounded border border-gray-300 bg-gray-100 px-1.5 py-0.5 font-mono text-[10px] font-medium text-gray-500">
-                <span className="text-xs">⌘</span>K
-              </kbd>
-            </div>
-            <Button type="submit" className="bg-green-700 hover:bg-green-800">
-              <Search className="h-4 w-4 mr-2" />
-              Cari
-            </Button>
-          </form>
-        </div>
+
       </div>
     </header>
   );
