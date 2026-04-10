@@ -22,6 +22,7 @@ import {
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { OperatingHoursIndicator } from "@/components/shared/operating-hours-indicator";
+import { ScrollProgress } from "@/components/shared/scroll-progress";
 
 interface NavChild {
   title: string;
@@ -403,6 +404,9 @@ export function Header() {
 
 
       </div>
+
+      {/* Scroll Progress Indicator - sits at the bottom of the header */}
+      <ScrollProgress />
     </header>
   );
 }

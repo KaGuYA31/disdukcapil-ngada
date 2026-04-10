@@ -1,51 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 
 export function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
-  const rafId = useRef<number>(0);
+  const { scrollY, scrollYProgress } = useScroll();
 
-  useEffect(() => {
-    const updateProgress = () => {
-      const scrollY = window.scrollY;
-      const scrollHeight = document.body.scrollHeight - window.innerHeight;
+  // Smooth spring animation for the horizontal progress
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
-      if (scrollHeight > 0) {
-        const raw = scrollY / scrollHeight;
-        setProgress(Math.min(Math.max(raw, 0), 1));
-      }
-    };
-
-    const handleScroll = () => {
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current);
-      }
-      rafId.current = requestAnimationFrame(updateProgress);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // Set initial state
-    updateProgress();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current);
-      }
-    };
-  }, []);
+  // Fade in opacity when scrolling past ~100px
+  const opacity = useTransform(scrollY, [0, 100], [0, 1]);
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 z-[60] h-[3px] bg-gradient-to-r from-green-500 via-green-600 to-teal-500 shadow-[0_0_10px_rgba(22,163,74,0.5)] origin-left"
+      className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-green-400 to-emerald-500 origin-left"
       style={{
-        scaleX: progress,
-        opacity: progress > 0 ? 1 : 0,
+        scaleX,
+        opacity,
       }}
-      transition={{ opacity: { duration: 0.3 } }}
+      aria-hidden="true"
     />
   );
 }

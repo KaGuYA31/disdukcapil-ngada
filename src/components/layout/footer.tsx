@@ -20,6 +20,7 @@ import {
   ArrowUp,
   ChevronRight,
 } from "lucide-react";
+import { VisitorCounter } from "@/components/shared/visitor-counter";
 import { CONTACT_INFO, OPERATING_HOURS, SOCIAL_MEDIA } from "@/lib/constants";
 
 const quickLinks = [
@@ -309,6 +310,11 @@ export function Footer() {
                 © {currentYear} Dinas Kependudukan dan Pencatatan Sipil
                 Kabupaten Ngada
               </p>
+            </div>
+
+            {/* Visitor Counter */}
+            <div className="order-first md:order-none">
+              <VisitorCounter />
             </div>
 
             {/* Government Links */}

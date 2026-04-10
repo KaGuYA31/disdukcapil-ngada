@@ -8,6 +8,7 @@ import { HeroSection } from "@/components/sections/hero-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { NewsSection } from "@/components/sections/news-section";
+import { FeaturedServicesSection } from "@/components/sections/featured-services-section";
 import { AnnouncementsSection } from "@/components/sections/announcements-section";
 import { FAQSection } from "@/components/sections/faq-section";
 import { KeunggulanSection } from "@/components/sections/keunggulan-section";
@@ -23,6 +24,7 @@ export default function HomePage() {
         <HeroSection />
         <StatsSection />
         <ServicesSection />
+        <FeaturedServicesSection />
         <AnnouncementsSection />
         <FAQSection />
         <KeunggulanSection />
