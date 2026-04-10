@@ -4,9 +4,16 @@ import { useState, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Search, ChevronDown, Building2, Sun, Moon } from "lucide-react";
+import { Menu, Search, ChevronDown, ChevronRight, Building2, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,8 +59,85 @@ function useMounted() {
   );
 }
 
+// Mobile Navigation Item with collapsible children
+function MobileNavItem({
+  item,
+  isActive,
+  pathname,
+}: {
+  item: { title: string; href: string; children?: { title: string; href: string }[] };
+  isActive: boolean;
+  pathname: string;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const hasChildren = item.children && item.children.length > 0;
+  const isCurrentActive = pathname === item.href || (hasChildren && pathname.startsWith(item.href));
+
+  return (
+    <div>
+      {hasChildren ? (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className={cn(
+            "w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+            isCurrentActive
+              ? "text-green-700 bg-green-50"
+              : "text-gray-700 hover:text-green-700 hover:bg-gray-50"
+          )}
+        >
+          <span>{item.title}</span>
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 transition-transform duration-200",
+              expanded && "rotate-180"
+            )}
+          />
+        </button>
+      ) : (
+        <Link
+          href={item.href}
+          className={cn(
+            "block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+            isActive
+              ? "text-green-700 bg-green-50"
+              : "text-gray-700 hover:text-green-700 hover:bg-gray-50"
+          )}
+        >
+          {item.title}
+        </Link>
+      )}
+      {/* Sub-menu children */}
+      {hasChildren && (
+        <div
+          className={cn(
+            "overflow-hidden transition-all duration-300",
+            expanded ? "max-h-60 mt-1" : "max-h-0"
+          )}
+        >
+          <div className="ml-4 pl-3 border-l-2 border-green-200 space-y-1">
+            {item.children!.map((child) => (
+              <Link
+                key={child.href}
+                href={child.href}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors",
+                  pathname === child.href
+                    ? "text-green-700 bg-green-50 font-medium"
+                    : "text-gray-500 hover:text-green-700 hover:bg-gray-50"
+                )}
+              >
+                <ChevronRight className="h-3 w-3 flex-shrink-0" />
+                {child.title}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -203,20 +287,85 @@ export function Header() {
               <Search className="h-5 w-5" />
             </Button>
 
-            {/* Mobile Menu Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </Button>
+            {/* Mobile Menu Toggle - Sheet */}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden"
+                  aria-label="Buka menu"
+                >
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[340px] p-0 overflow-y-auto">
+                <SheetHeader className="border-b border-gray-100 px-4 py-4">
+                  <SheetTitle className="flex items-center gap-3">
+                    <div className="relative w-8 h-8 flex-shrink-0">
+                      <Image
+                        src="/logo-kabupaten.png"
+                        alt="Logo"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-bold text-green-800 text-sm leading-tight">Disdukcapil</p>
+                      <p className="text-xs text-gray-500">Kabupaten Ngada</p>
+                    </div>
+                  </SheetTitle>
+                </SheetHeader>
+
+                {/* Mobile Nav Items */}
+                <nav className="py-4 space-y-1">
+                  {navigation.map((item) => (
+                    <MobileNavItem
+                      key={item.title}
+                      item={item}
+                      isActive={isActive(item.href)}
+                      pathname={pathname}
+                    />
+                  ))}
+
+                  {/* Search in Mobile */}
+                  <div className="pt-4 mt-4 border-t border-gray-100">
+                    <form onSubmit={(e) => { e.preventDefault(); if(searchQuery.trim()) window.location.href = `/berita?q=${encodeURIComponent(searchQuery)}`; }} className="flex gap-2">
+                      <Input
+                        type="search"
+                        placeholder="Cari berita..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="flex-1"
+                      />
+                      <Button type="submit" size="icon" className="bg-green-700 hover:bg-green-800 flex-shrink-0">
+                        <Search className="h-4 w-4" />
+                      </Button>
+                    </form>
+                  </div>
+
+                  {/* Quick Links */}
+                  <div className="pt-4 mt-4 border-t border-gray-100 space-y-2">
+                    <Link
+                      href="/admin"
+                      className="block px-4 py-2.5 text-sm text-center border border-green-700 text-green-700 rounded-lg hover:bg-green-50 font-medium transition-colors"
+                    >
+                      Login Admin
+                    </Link>
+                    {mounted && (
+                      <button
+                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        className="w-full px-4 py-2.5 text-sm text-center border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 font-medium transition-colors flex items-center justify-center gap-2"
+                        aria-label="Toggle theme"
+                      >
+                        {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                        {theme === "dark" ? "Mode Terang" : "Mode Gelap"}
+                      </button>
+                    )}
+                  </div>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
 
@@ -241,84 +390,6 @@ export function Header() {
             </Button>
           </form>
         </div>
-      </div>
-
-      {/* Mobile Navigation */}
-      <div
-        className={cn(
-          "lg:hidden overflow-hidden transition-all duration-300 bg-white border-t",
-          isMenuOpen ? "max-h-[calc(100vh-5rem)]" : "max-h-0"
-        )}
-      >
-        <nav className="container mx-auto px-4 py-4 space-y-2">
-          {navigation.map((item) => (
-            <div key={item.title}>
-              <Link
-                href={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className={cn(
-                  "block px-4 py-3 text-sm font-medium rounded-md transition-colors",
-                  isActive(item.href)
-                    ? "text-green-700 bg-green-50"
-                    : "text-gray-700 hover:text-green-700 hover:bg-green-50"
-                )}
-              >
-                {item.title}
-              </Link>
-              {item.children && (
-                <div className="ml-4 mt-1 space-y-1">
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-600 hover:text-green-700"
-                    >
-                      {child.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-          <div className="pt-4 border-t">
-            <form onSubmit={handleSearch} className="flex gap-2">
-              <Input
-                type="search"
-                placeholder="Cari..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1"
-              />
-              <Button type="submit" size="icon" className="bg-green-700 hover:bg-green-800">
-                <Search className="h-4 w-4" />
-              </Button>
-            </form>
-          </div>
-          <div className="pt-4 flex gap-2">
-            <Link
-              href="/admin"
-              className="flex-1 text-center px-4 py-2 text-sm border border-green-700 text-green-700 rounded-md hover:bg-green-50"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Login Admin
-            </Link>
-            {mounted && (
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                aria-label="Toggle theme"
-              >
-                {theme === "dark" ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-              </Button>
-            )}
-          </div>
-        </nav>
       </div>
     </header>
   );

@@ -8,6 +8,7 @@ import { ServicesSection } from "@/components/sections/services-section";
 import { NewsSection } from "@/components/sections/news-section";
 import { AnnouncementsSection } from "@/components/sections/announcements-section";
 import { FAQSection } from "@/components/sections/faq-section";
+import { TestimoniSection } from "@/components/sections/testimoni-section";
 import { CTASection } from "@/components/sections/cta-section";
 
 export default function HomePage() {
@@ -20,6 +21,7 @@ export default function HomePage() {
         <ServicesSection />
         <AnnouncementsSection />
         <FAQSection />
+        <TestimoniSection />
         <NewsSection />
         <CTASection />
       </main>

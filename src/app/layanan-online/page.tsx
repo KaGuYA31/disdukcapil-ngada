@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
+import { BackToTop } from "@/components/shared/back-to-top";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import {
   Globe,
   FileText,
@@ -19,6 +21,7 @@ import {
   Mail,
   MapPin,
   Calendar,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +37,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 
 interface LayananOnline {
   id: string;
@@ -54,6 +58,27 @@ interface UploadedDoc {
   fileSize?: string;
   fileType?: string;
 }
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+};
 
 export default function LayananOnlinePage() {
   const router = useRouter();
@@ -265,6 +290,33 @@ export default function LayananOnlinePage() {
     return icons[iconName || "FileText"] || FileText;
   };
 
+  const steps = [
+    {
+      step: 1,
+      title: "Pilih Layanan",
+      desc: "Pilih layanan yang ingin diajukan",
+      icon: FileText,
+    },
+    {
+      step: 2,
+      title: "Isi Formulir",
+      desc: "Lengkapi data diri dan informasi pengajuan",
+      icon: User,
+    },
+    {
+      step: 3,
+      title: "Upload Dokumen",
+      desc: "Unggah dokumen persyaratan yang diperlukan",
+      icon: Upload,
+    },
+    {
+      step: 4,
+      title: "Pantau Status",
+      desc: "Cek status pengajuan kapan saja",
+      icon: Clock,
+    },
+  ];
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -280,26 +332,48 @@ export default function LayananOnlinePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1" id="main-content">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-2 mb-4">
+        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16 relative overflow-hidden">
+          {/* Decorative background elements */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-10 right-10 w-64 h-64 bg-white rounded-full blur-3xl" />
+            <div className="absolute bottom-10 left-10 w-48 h-48 bg-green-300 rounded-full blur-3xl" />
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="max-w-3xl"
+            >
+              {/* Breadcrumb */}
+              <motion.div variants={fadeInUp} transition={{ duration: 0.4, ease: "easeOut" }}>
+                <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Layanan Online" }]} />
+              </motion.div>
+
+              <motion.div variants={fadeInUp} transition={{ duration: 0.5 }} className="flex items-center gap-2 mb-4 mt-4">
                 <Globe className="h-8 w-8" />
                 <Badge className="bg-white/20 text-white border-white/30">
                   Layanan Jarak Jauh
                 </Badge>
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              </motion.div>
+
+              <motion.h1 variants={fadeInUp} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-bold mb-4">
                 Layanan Online
-              </h1>
-              <p className="text-green-100 text-lg">
+              </motion.h1>
+
+              <motion.p variants={fadeInUp} transition={{ duration: 0.5 }} className="text-green-100 text-lg">
                 Ajukan layanan kependudukan dari mana saja tanpa harus datang ke kantor.
                 Untuk masyarakat yang lokasinya jauh dari pusat pelayanan.
-              </p>
+              </motion.p>
 
-              <div className="mt-6 bg-white/20 backdrop-blur-sm rounded-lg p-6 border border-white/30">
+              <motion.div
+                variants={fadeInUp}
+                transition={{ duration: 0.5 }}
+                className="mt-6 bg-white/20 backdrop-blur-sm rounded-lg p-6 border border-white/30"
+              >
                 <h2 className="text-xl font-bold mb-3">Keunggulan Layanan Online</h2>
                 <ul className="space-y-2">
                   <li className="flex items-center gap-2">
@@ -319,9 +393,9 @@ export default function LayananOnlinePage() {
                     <span>GRATIS - tidak dipungut biaya apapun</span>
                   </li>
                 </ul>
-              </div>
+              </motion.div>
 
-              <div className="mt-6">
+              <motion.div variants={fadeInUp} transition={{ duration: 0.5 }} className="mt-6">
                 <Button
                   onClick={() => router.push("/layanan-online/cek-status")}
                   variant="outline"
@@ -330,139 +404,167 @@ export default function LayananOnlinePage() {
                   <Clock className="mr-2 h-4 w-4" />
                   Cek Status Pengajuan
                 </Button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
 
         {/* Available Online Services */}
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Layanan Tersedia untuk Pengajuan Online
-            </h2>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={staggerContainer}
+            >
+              <motion.h2 variants={fadeInUp} transition={{ duration: 0.5 }} className="text-2xl font-bold text-gray-900 mb-6">
+                Layanan Tersedia untuk Pengajuan Online
+              </motion.h2>
 
-            {layananList.length === 0 ? (
-              <Card>
-                <CardContent className="py-12 text-center">
-                  <AlertCircle className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                  <p className="text-gray-500">
-                    Saat ini belum ada layanan yang tersedia untuk pengajuan online.
-                    Silakan kunjungi kantor Disdukcapil untuk layanan langsung.
-                  </p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {layananList.map((layanan) => {
-                  const IconComponent = getIconComponent(layanan.icon);
-                  return (
-                    <Card key={layanan.id} className="hover:shadow-lg transition-shadow">
-                      <CardHeader>
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                            <IconComponent className="h-6 w-6 text-green-600" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-lg">{layanan.name}</CardTitle>
-                            <CardDescription>
-                              {layanan.processingTime || "Selesai di Tempat"}
-                            </CardDescription>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                          {layanan.description}
-                        </p>
-
-                        {layanan.requirements.length > 0 && (
-                          <div className="mb-4">
-                            <p className="text-sm font-medium text-gray-700 mb-2">
-                              Persyaratan:
+              {layananList.length === 0 ? (
+                <motion.div variants={fadeInUp} transition={{ duration: 0.5 }}>
+                  <Card>
+                    <CardContent className="py-12 text-center">
+                      <AlertCircle className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                      <p className="text-gray-500">
+                        Saat ini belum ada layanan yang tersedia untuk pengajuan online.
+                        Silakan kunjungi kantor Disdukcapil untuk layanan langsung.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {layananList.map((layanan) => {
+                    const IconComponent = getIconComponent(layanan.icon);
+                    return (
+                      <motion.div
+                        key={layanan.id}
+                        variants={fadeInUp}
+                        transition={{ duration: 0.4 }}
+                      >
+                        <Card className="h-full card-hover border border-gray-200 hover:border-green-300 shadow-sm hover:shadow-lg transition-all">
+                          <CardHeader>
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center">
+                                <IconComponent className="h-6 w-6 text-green-700" />
+                              </div>
+                              <div>
+                                <CardTitle className="text-lg">{layanan.name}</CardTitle>
+                                <CardDescription>
+                                  {layanan.processingTime || "Selesai di Tempat"}
+                                </CardDescription>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                              {layanan.description}
                             </p>
-                            <ul className="text-sm text-gray-600 space-y-1">
-                              {layanan.requirements.slice(0, 3).map((req, i) => (
-                                <li key={i} className="flex items-start gap-2">
-                                  <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                  <span className="line-clamp-1">{req.label}</span>
-                                </li>
-                              ))}
-                              {layanan.requirements.length > 3 && (
-                                <li className="text-green-600">
-                                  +{layanan.requirements.length - 3} persyaratan lainnya
-                                </li>
-                              )}
-                            </ul>
-                          </div>
-                        )}
 
-                        <Button
-                          onClick={() => openSubmissionForm(layanan)}
-                          className="w-full bg-green-700 hover:bg-green-800"
-                        >
-                          Ajukan Sekarang
-                          <ChevronRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            )}
+                            {layanan.requirements.length > 0 && (
+                              <div className="mb-4">
+                                <p className="text-sm font-medium text-gray-700 mb-2">
+                                  Persyaratan:
+                                </p>
+                                <ul className="text-sm text-gray-600 space-y-1">
+                                  {layanan.requirements.slice(0, 3).map((req, i) => (
+                                    <li key={i} className="flex items-start gap-2">
+                                      <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                      <span className="line-clamp-1">{req.label}</span>
+                                    </li>
+                                  ))}
+                                  {layanan.requirements.length > 3 && (
+                                    <li className="text-green-600">
+                                      +{layanan.requirements.length - 3} persyaratan lainnya
+                                    </li>
+                                  )}
+                                </ul>
+                              </div>
+                            )}
+
+                            <Button
+                              onClick={() => openSubmissionForm(layanan)}
+                              className="w-full bg-green-700 hover:bg-green-800"
+                            >
+                              Ajukan Sekarang
+                              <ChevronRight className="ml-2 h-4 w-4" />
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              )}
+            </motion.div>
           </div>
         </section>
 
         {/* How It Works */}
-        <section className="py-12 bg-white">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-              Cara Mengajukan Layanan Online
-            </h2>
-            <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-              {[
-                {
-                  step: 1,
-                  title: "Pilih Layanan",
-                  desc: "Pilih layanan yang ingin diajukan",
-                  icon: FileText,
-                },
-                {
-                  step: 2,
-                  title: "Isi Formulir",
-                  desc: "Lengkapi data diri dan informasi pengajuan",
-                  icon: User,
-                },
-                {
-                  step: 3,
-                  title: "Upload Dokumen",
-                  desc: "Unggah dokumen persyaratan yang diperlukan",
-                  icon: Upload,
-                },
-                {
-                  step: 4,
-                  title: "Pantau Status",
-                  desc: "Cek status pengajuan kapan saja",
-                  icon: Clock,
-                },
-              ].map((item) => (
-                <div key={item.step} className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <item.icon className="h-8 w-8 text-green-600" />
-                  </div>
-                  <div className="text-sm font-bold text-green-600 mb-1">
-                    Langkah {item.step}
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
-                  <p className="text-sm text-gray-600">{item.desc}</p>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={staggerContainer}
+            >
+              <motion.h2 variants={fadeInUp} transition={{ duration: 0.5 }} className="text-2xl font-bold text-gray-900 mb-12 text-center">
+                Cara Mengajukan Layanan Online
+              </motion.h2>
+
+              <div className="relative max-w-4xl mx-auto">
+                {/* Connecting line - visible on md+ */}
+                <div className="hidden md:block absolute top-16 left-[calc(12.5%+24px)] right-[calc(12.5%+24px)] h-0.5 bg-gradient-to-r from-green-200 via-green-400 to-green-200 z-0" />
+
+                <div className="grid md:grid-cols-4 gap-8 relative z-10">
+                  {steps.map((item) => {
+                    const StepIcon = item.icon;
+                    return (
+                      <motion.div
+                        key={item.step}
+                        variants={fadeInUp}
+                        transition={{ duration: 0.5 }}
+                        className="group"
+                      >
+                        <div className="bg-white border border-gray-100 rounded-xl p-6 text-center shadow-sm hover:shadow-lg hover:border-green-300 hover:-translate-y-1 transition-all duration-300 cursor-default">
+                          {/* Step number circle with gradient */}
+                          <div className="relative mx-auto mb-5">
+                            <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto shadow-md group-hover:shadow-lg group-hover:shadow-green-200 transition-shadow duration-300">
+                              <StepIcon className="h-8 w-8 text-white" />
+                            </div>
+                            <div className="absolute -top-2 -right-2 w-7 h-7 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm ring-2 ring-white">
+                              {item.step}
+                            </div>
+                          </div>
+
+                          <div className="text-sm font-bold text-green-700 mb-1">
+                            Langkah {item.step}
+                          </div>
+                          <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
+                          <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                        </div>
+
+                        {/* Arrow between steps on desktop */}
+                        {item.step < 4 && (
+                          <div className="hidden md:flex justify-center mt-2">
+                            <ArrowRight className="h-5 w-5 text-green-300" />
+                          </div>
+                        )}
+                      </motion.div>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
+              </div>
+            </motion.div>
           </div>
         </section>
       </main>
       <Footer />
       <WhatsAppButton />
+      <BackToTop />
 
       {/* Submission Form Dialog */}
       <Dialog open={showFormDialog} onOpenChange={setShowFormDialog}>
@@ -767,19 +869,46 @@ export default function LayananOnlinePage() {
               Pengajuan Berhasil Dikirim
             </DialogTitle>
           </DialogHeader>
-          <div className="text-center py-4">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <p className="text-gray-600 mb-4">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={scaleIn}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="text-center py-4"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
+            >
+              <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-gray-600 mb-4"
+            >
               Pengajuan Anda telah berhasil dikirim. Silakan simpan nomor pengajuan berikut
               untuk melacak status:
-            </p>
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6 }}
+              className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4"
+            >
               <p className="text-2xl font-bold text-green-700">{nomorPengajuan}</p>
-            </div>
-            <p className="text-sm text-gray-500">
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="text-sm text-gray-500"
+            >
               Anda akan dihubungi oleh petugas melalui nomor telepon yang terdaftar.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
           <div className="flex gap-3 justify-center">
             <Button
               variant="outline"
