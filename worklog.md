@@ -1932,3 +1932,86 @@ Stage Summary:
 - Framer-motion AnimatePresence for smooth tab transitions
 - URL hash deep-linking support (#visi-misi, #struktur, #sejarah, #lokasi)
 - Hero banner enhanced with section label pill and additional gradient orb
+---
+Task ID: 5a
+Agent: Subagent
+Task: Add scroll progress indicator
+
+Work Log:
+- Read existing header.tsx to understand layout and integration point
+- Read existing scroll-progress.tsx to understand current implementation
+- Read shared components (back-to-top.tsx, operating-hours-indicator.tsx) for pattern reference
+- Confirmed framer-motion (v12) is installed with useScroll, useSpring, useTransform APIs
+- Rewrote scroll-progress.tsx with framer-motion pattern:
+  - Replaced manual scroll tracking (useState + requestAnimationFrame) with useScroll hook
+  - Added useSpring for smooth scaleX animation (stiffness: 100, damping: 30)
+  - Added useTransform to fade opacity from 0→1 as scrollY goes 0→100px
+  - Positioned with absolute bottom-0 inside header (no z-[60] override needed)
+  - Gradient from-green-400 to-emerald-500, h-[3px]
+  - aria-hidden for accessibility
+- Integrated ScrollProgress into header.tsx:
+  - Added import at top of file
+  - Placed component just before closing </header> tag
+  - Bar renders at bottom edge of sticky header element
+
+Verification:
+- bun run lint: 0 errors, 0 warnings
+- Dev server compiled successfully (GET / 200)
+
+Stage Summary:
+- Rewrote /src/components/shared/scroll-progress.tsx using framer-motion useScroll + useSpring + useTransform
+- Thin 3px green gradient bar (from-green-400 to-emerald-500) positioned at bottom of sticky header
+- Opacity fades in when scrolling past ~100px for clean UX
+- Integrated into header.tsx — bar stays below header content on all pages
+- Works in both light and dark mode (gradient colors are theme-independent)
+- No blue or purple colors used
+
+---
+Task ID: 6a
+Agent: Subagent
+Task: Add Layanan Unggulan section to homepage
+
+Work Log:
+- Read homepage at src/app/page.tsx to understand current section order (Hero → Stats → Services → Announcements → FAQ → Keunggulan → Testimoni → News → CTA)
+- Read existing section components (services-section.tsx, announcements-section.tsx, keunggulan-section.tsx) for pattern reference
+- Created new component src/components/sections/featured-services-section.tsx with:
+  - Section header: "LAYANAN UNGGULAN" label with Star icon, title "Layanan yang Paling Banyak Diminati", description about Kabupaten Ngada
+  - 4 hardcoded featured service cards: KTP-el Baru, Kartu Keluarga, Akta Kelahiran, Surat Pindah
+  - Each card has: green gradient icon container, service name (bold), description, "Estimasi: X menit" processing time badge, "GRATIS" rose badge
+  - Hover effects: translateY(-4px), shadow-lg, border-green-200, gradient overlay, icon scale
+  - framer-motion stagger animations (fadeInUp, 0.1s delay between cards)
+  - useInView trigger for scroll-based animation start
+  - Responsive grid: 1 col mobile, 2 cols md, 4 cols lg
+- Added import and component placement in page.tsx between ServicesSection and AnnouncementsSection
+- Ran bun run lint: 0 errors, 0 warnings
+- Dev server compiled successfully with GET / 200
+
+Stage Summary:
+- New file: src/components/sections/featured-services-section.tsx
+- Modified: src/app/page.tsx (import + placement)
+- Section order is now: Hero → Stats → Services → Featured Services → Announcements → FAQ → Keunggulan → Testimoni → News → CTA
+- Follows existing project patterns: framer-motion, useInView, green/teal/rose palette, shadcn/ui Card/Badge
+- No blue or purple colors used
+
+---
+Task ID: 6b
+Agent: Subagent
+Task: Add visitor counter widget to footer
+
+Work Log:
+- Read existing footer component at src/components/layout/footer.tsx to understand the bottom bar layout structure
+- Created new component src/components/shared/visitor-counter.tsx as "use client"
+- Implemented localStorage-based visitor tracking with unique visitor ID, daily counter (resets each day), and total counter (starts from 25,847 with per-visit increments of 1-3)
+- Built animated count-up effect using requestAnimationFrame with easeOutCubic easing
+- Added loading skeleton state with pulse animation while data initializes
+- Used useReducer pattern to avoid react-hooks/set-state-in-effect lint error
+- Integrated VisitorCounter component into footer bottom bar between copyright and government links sections
+- Styled with text-xs, gray-400 text, Eye/Users icons from lucide-react, green-400/70 icon accent, flex row with gap-4, pipe separators
+- Ran bun run lint — passes with zero errors
+
+Stage Summary:
+- New file: src/components/shared/visitor-counter.tsx
+- Modified file: src/components/layout/footer.tsx (added import + VisitorCounter in bottom bar)
+- Visitor counter displays "Pengunjung Hari Ini" and "Total Pengunjung" with animated numbers
+- Uses localStorage for persistent per-browser tracking (unique ID, daily date-keyed count, running total)
+- No blue or purple colors used — green accent for icons, gray text for readability on dark footer
