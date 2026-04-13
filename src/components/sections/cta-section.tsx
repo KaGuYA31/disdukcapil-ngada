@@ -191,8 +191,6 @@ export function CTASection() {
                       <p className="font-medium dark:text-gray-100">{item.label}</p>
                       <p className="text-green-100 dark:text-green-300 text-sm mt-1">
                         {item.value}
-                        {item.value2 && <br />}
-                        {item.value2}
                       </p>
                     </div>
                   </motion.div>
