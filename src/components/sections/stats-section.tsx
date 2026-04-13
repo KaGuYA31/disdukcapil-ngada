@@ -114,17 +114,19 @@ function AnimatedStatCard({
       animate={isAnimating ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" as const }}
       whileHover={{ scale: 1.03, y: -4 }}
-      className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm hover:shadow-lg border border-gray-100 dark:border-gray-800 transition-shadow cursor-default"
+      className="relative bg-white/70 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 shadow-sm hover:shadow-xl hover:shadow-green-500/5 dark:hover:shadow-green-400/5 border border-white/60 dark:border-gray-700/50 transition-all duration-300 cursor-default group"
     >
+      {/* Subtle gradient shimmer on top edge */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/40 to-transparent dark:via-green-500/30 rounded-t-2xl" />
       <div
-        className={`w-12 h-12 ${bgColor} rounded-lg flex items-center justify-center mb-4`}
+        className={`w-12 h-12 ${bgColor} rounded-xl flex items-center justify-center mb-4 ring-1 ring-inset ring-black/5 dark:ring-white/5 transition-transform duration-300 group-hover:scale-110`}
       >
         <Icon className={`h-6 w-6 ${color}`} />
       </div>
-      <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums">
+      <p className="text-2xl md:text-3xl font-bold bg-gradient-to-br from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent tabular-nums">
         {isAnimating ? displayValue : "0"}
       </p>
-      <p className="font-semibold text-gray-700 dark:text-gray-300 mt-1">{label}</p>
+      <p className="font-semibold text-gray-700 dark:text-gray-200 mt-1">{label}</p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
     </motion.div>
   );
@@ -208,19 +210,24 @@ export function StatsSection() {
   const shouldAnimate = !loading && isInView;
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 relative overflow-hidden">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 bg-gray-50 dark:bg-gray-900">
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2315803d' fill-opacity='1'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2l2 3.5-2 3zm0-18V0h20v2H20v2l-2-3.5 2-3z'/%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
+    <section ref={sectionRef} className="py-14 md:py-20 relative overflow-hidden">
+      {/* Subtle gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-50/80 via-gray-50 to-teal-50/60 dark:from-gray-900 dark:via-gray-900/95 dark:to-gray-800" />
+
+      {/* Subtle dot grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.035] dark:opacity-[0.05]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='%230f766e'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Decorative gradient orbs */}
+      <div className="absolute -top-24 -left-24 w-72 h-72 bg-green-400/10 dark:bg-green-500/5 rounded-full blur-3xl" />
+      <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-teal-400/10 dark:bg-teal-500/5 rounded-full blur-3xl" />
 
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 dark:from-gray-900 via-gray-50/80 dark:via-gray-900/80 to-gray-100 dark:to-gray-800" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-100/50 dark:to-gray-800/50" />
 
       <div className="container mx-auto px-4 relative">
         {/* Section Header */}
@@ -230,11 +237,11 @@ export function StatsSection() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, ease: "easeOut" as const }}
         >
-          <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-green-600 mb-3">
+          <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-green-600 dark:text-green-400 mb-3">
             <BarChart3 className="h-4 w-4" />
             Data Kependudukan
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mb-3">
             Ringkasan Data Kependudukan
           </h2>
           <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
@@ -247,7 +254,11 @@ export function StatsSection() {
             <Loader2 className="h-8 w-8 animate-spin text-green-600" />
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 relative">
+            {/* Decorative dividers between cards (desktop) */}
+            <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[25%] w-px h-3/4 bg-gradient-to-b from-transparent via-green-300/30 dark:via-green-600/20 to-transparent" />
+            <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[50%] w-px h-3/4 bg-gradient-to-b from-transparent via-teal-300/30 dark:via-teal-600/20 to-transparent" />
+            <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[75%] w-px h-3/4 bg-gradient-to-b from-transparent via-emerald-300/30 dark:via-emerald-600/20 to-transparent" />
             {stats.map((stat, index) => (
               <AnimatedStatCard
                 key={index}
@@ -275,10 +286,10 @@ export function StatsSection() {
         >
           <Link
             href="/statistik"
-            className="inline-flex items-center gap-2 text-green-700 hover:text-green-800 font-medium transition-colors"
+            className="inline-flex items-center gap-2 text-green-700 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 font-medium transition-colors group/link"
           >
             Lihat Data Lengkap
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/link:translate-x-1" />
           </Link>
         </motion.div>
       </div>

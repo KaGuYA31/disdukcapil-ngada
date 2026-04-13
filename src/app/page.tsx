@@ -18,6 +18,7 @@ import { CTASection } from "@/components/sections/cta-section";
 import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
 import { GaleriInovasiSection } from "@/components/sections/galeri-inovasi-section";
 import { QuickInfoBar } from "@/components/shared/quick-info-bar";
+import { AddTestimoniWidget } from "@/components/shared/add-testimoni-widget";
 
 export default function HomePage() {
   return (
@@ -42,6 +43,7 @@ export default function HomePage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <AddTestimoniWidget />
       <QuickAccessPanel />
       <BackToTop />
     </div>

@@ -474,6 +474,22 @@ model Kontak {
   updatedAt DateTime @updatedAt
 }
 
+// Testimonials (Testimoni Masyarakat)
+model Testimoni {
+  id          String   @id @default(cuid())
+  nama        String
+  pekerjaan   String?
+  kecamatan   String?
+  rating      Int
+  isi         String   @db.Text
+  noTelepon   String?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("testimoni")
+}
+
 // Blanko E-KTP Availability
 model BlankoEKTP {
   id             String   @id @default(cuid())

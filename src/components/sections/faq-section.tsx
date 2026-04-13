@@ -122,8 +122,19 @@ export function FAQSection() {
   }, [searchQuery]);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-4">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
+      {/* Decorative dot pattern background */}
+      <div
+        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='4' cy='4' r='1.5' fill='%23059669'/%3E%3C/svg%3E")`,
+        }}
+      />
+      {/* Subtle gradient orbs */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-green-100/40 dark:bg-green-900/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-teal-100/40 dark:bg-teal-900/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+
+      <div className="container mx-auto px-4 relative">
         {/* Section Header */}
         <motion.div
           variants={headerVariants}
@@ -131,11 +142,11 @@ export function FAQSection() {
           animate={isInView ? "visible" : "hidden"}
           className="text-center max-w-3xl mx-auto mb-10"
         >
-          <span className="inline-flex items-center gap-2 text-green-600 font-semibold text-sm uppercase tracking-wider">
+          <span className="inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold text-sm uppercase tracking-wider">
             <HelpCircle className="h-4 w-4" />
             FAQ
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2">
             Pertanyaan yang Sering Diajukan
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-4">
@@ -151,7 +162,7 @@ export function FAQSection() {
           transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
           className="max-w-2xl mx-auto mb-8"
         >
-          <div className="relative bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-200 focus-within:ring-2 focus-within:ring-green-500/20 focus-within:border-green-500">
+          <div className="relative bg-gray-50/80 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/80 dark:border-gray-700/60 transition-all duration-200 focus-within:ring-2 focus-within:ring-green-500/20 focus-within:border-green-500 dark:focus-within:border-green-600 shadow-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
             <Input
               type="text"
@@ -192,11 +203,11 @@ export function FAQSection() {
                     >
                       <AccordionItem
                         value={`faq-${originalIndex}`}
-                        className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md"
+                        className="border border-gray-200/80 dark:border-gray-700/50 rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-green-500/5 dark:hover:shadow-green-400/5 hover:border-green-200 dark:hover:border-green-800/60 bg-white/80 dark:bg-gray-800/40 backdrop-blur-sm"
                       >
-                        <AccordionTrigger className="px-5 py-5 md:px-6 md:py-5 hover:bg-gray-50 dark:hover:bg-gray-800 hover:no-underline transition-colors duration-200 [&[data-state=open]]:bg-green-50/50 dark:[&[data-state=open]]:bg-green-900/30">
+                        <AccordionTrigger className="px-5 py-5 md:px-6 md:py-5 hover:bg-green-50/50 dark:hover:bg-green-900/20 hover:no-underline transition-colors duration-200 [&[data-state=open]]:bg-green-50/70 dark:[&[data-state=open]]:bg-green-900/30">
                           <div className="flex items-start gap-3">
-                            <span className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-green-600 text-white text-xs font-bold">
+                            <span className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-green-500 to-teal-600 dark:from-green-400 dark:to-teal-500 text-white text-xs font-bold shadow-sm ring-1 ring-inset ring-green-600/10 dark:ring-green-400/10">
                               {originalIndex + 1}
                             </span>
                             <span className="text-left text-sm md:text-base font-semibold text-gray-800 dark:text-gray-200">
@@ -205,7 +216,7 @@ export function FAQSection() {
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className="px-5 pb-5 md:px-6 md:pb-6">
-                          <div className="pl-10 text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base">
+                          <div className="pl-10 text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base">
                             {faq.answer}
                           </div>
                         </AccordionContent>
@@ -243,11 +254,11 @@ export function FAQSection() {
           transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" as const }}
           className="max-w-3xl mx-auto mt-10"
         >
-          <Card className="bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 overflow-hidden">
+          <Card className="bg-gradient-to-br from-green-50 to-teal-50/80 dark:from-green-950/30 dark:to-teal-950/20 border-green-200/80 dark:border-green-800/50 overflow-hidden shadow-sm">
             <CardContent className="p-6 md:p-8">
               <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
-                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
-                  <MessageCircle className="h-7 w-7 text-green-600" />
+                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-green-100 to-teal-100 dark:from-green-900/50 dark:to-teal-900/50 flex items-center justify-center ring-1 ring-green-200/50 dark:ring-green-800/30">
+                  <MessageCircle className="h-7 w-7 text-green-600 dark:text-green-400" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
@@ -262,7 +273,7 @@ export function FAQSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button className="bg-green-600 hover:bg-green-700 text-white font-medium whitespace-nowrap">
+                  <Button className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-medium whitespace-nowrap shadow-sm hover:shadow-md transition-all duration-200">
                     <MessageCircle className="mr-2 h-4 w-4" />
                     Chat WhatsApp
                   </Button>

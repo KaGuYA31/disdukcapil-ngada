@@ -1,9 +1,26 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle, Loader2 } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  CheckCircle,
+  MessageCircle,
+  Loader2,
+  User,
+  FileText,
+  AtSign,
+  Smartphone,
+  HelpCircle,
+  MessageSquare,
+  ShieldCheck,
+  Info,
+} from "lucide-react";
 import { motion, useInView } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,31 +39,31 @@ const contactInfo = [
     icon: MapPin,
     title: "Alamat",
     content: "Jl. Ahmad Yani No.1, Bajawa, Kabupaten Ngada, NTT 86413",
-    color: "text-green-600",
-    bgColor: "bg-green-100",
+    color: "text-green-600 dark:text-green-400",
+    bgColor: "bg-green-100 dark:bg-green-900/40",
   },
   {
     icon: Phone,
     title: "Telepon",
     content: "(0382) 21073",
     link: "tel:+6238221073",
-    color: "text-teal-600",
-    bgColor: "bg-teal-100",
+    color: "text-teal-600 dark:text-teal-400",
+    bgColor: "bg-teal-100 dark:bg-teal-900/40",
   },
   {
     icon: Mail,
     title: "Email",
     content: "disdukcapil@ngadakab.go.id",
     link: "mailto:disdukcapil@ngadakab.go.id",
-    color: "text-rose-600",
-    bgColor: "bg-rose-100",
+    color: "text-rose-600 dark:text-rose-400",
+    bgColor: "bg-rose-100 dark:bg-rose-900/40",
   },
   {
     icon: Clock,
     title: "Jam Pelayanan",
     content: "Senin - Kamis: 08.00 - 15.30 WITA\nJumat: 08.00 - 16.00 WITA",
-    color: "text-amber-600",
-    bgColor: "bg-amber-100",
+    color: "text-amber-600 dark:text-amber-400",
+    bgColor: "bg-amber-100 dark:bg-amber-900/40",
   },
 ];
 
@@ -174,7 +191,7 @@ export function PengaduanSection() {
   // Success state
   if (isSubmitted) {
     return (
-      <section className="relative py-16 md:py-24 bg-gray-50 overflow-hidden">
+      <section className="relative py-16 md:py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-[0.03]">
           <div
@@ -186,7 +203,7 @@ export function PengaduanSection() {
         </div>
 
         {/* Decorative gradient blob */}
-        <div className="absolute top-10 right-1/4 w-72 h-72 bg-green-200/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-10 right-1/4 w-72 h-72 bg-green-200/30 dark:bg-green-800/20 rounded-full blur-3xl pointer-events-none" />
 
         <div className="container mx-auto px-4 relative">
           <motion.div
@@ -195,7 +212,7 @@ export function PengaduanSection() {
             animate="visible"
             className="max-w-md mx-auto text-center"
           >
-            <div className="bg-white rounded-2xl shadow-lg p-8 md:p-10 border border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 md:p-10 border border-gray-100 dark:border-gray-700">
               {/* Animated checkmark with ring */}
               <div className="relative w-24 h-24 mx-auto mb-8">
                 {/* Animated ring */}
@@ -203,7 +220,7 @@ export function PengaduanSection() {
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" as const }}
-                  className="absolute inset-0 rounded-full border-4 border-green-200"
+                  className="absolute inset-0 rounded-full border-4 border-green-200 dark:border-green-700"
                 />
                 {/* Confetti dots */}
                 {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
@@ -240,9 +257,9 @@ export function PengaduanSection() {
                     damping: 15,
                     delay: 0.2,
                   }}
-                  className="absolute inset-0 bg-green-100 rounded-full flex items-center justify-center"
+                  className="absolute inset-0 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center"
                 >
-                  <CheckCircle className="h-12 w-12 text-green-600" />
+                  <CheckCircle className="h-12 w-12 text-green-600 dark:text-green-400" />
                 </motion.div>
               </div>
 
@@ -250,7 +267,7 @@ export function PengaduanSection() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
-                className="text-2xl font-bold text-gray-900 mb-3"
+                className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3"
               >
                 Pengaduan Berhasil Dikirim!
               </motion.h2>
@@ -258,7 +275,7 @@ export function PengaduanSection() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
-                className="text-gray-600 mb-6 leading-relaxed"
+                className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed"
               >
                 Terima kasih atas masukan Anda. Tim kami akan segera meninjau
                 dan merespons pengaduan Anda.
@@ -269,15 +286,15 @@ export function PengaduanSection() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
-                className="bg-green-50 border border-green-200 rounded-xl p-4 mb-8"
+                className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl p-4 mb-8"
               >
                 <div className="flex items-center justify-center gap-3">
-                  <Clock className="h-5 w-5 text-green-600 flex-shrink-0" />
+                  <Clock className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                   <div className="text-left">
-                    <p className="text-sm font-semibold text-green-800">
+                    <p className="text-sm font-semibold text-green-800 dark:text-green-300">
                       Estimasi Waktu Respons
                     </p>
-                    <p className="text-sm text-green-700">
+                    <p className="text-sm text-green-700 dark:text-green-400">
                       1–3 hari kerja melalui email atau telepon
                     </p>
                   </div>
@@ -301,7 +318,7 @@ export function PengaduanSection() {
                       message: "",
                     });
                   }}
-                  className="bg-green-700 hover:bg-green-800 w-full"
+                  className="bg-green-700 hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700 w-full"
                 >
                   <Send className="mr-2 h-4 w-4" />
                   Kirim Pengaduan Lainnya
@@ -317,7 +334,7 @@ export function PengaduanSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-12 md:py-20 bg-gray-50 overflow-hidden"
+      className="relative py-12 md:py-20 bg-gray-50 dark:bg-gray-900 overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
@@ -330,8 +347,8 @@ export function PengaduanSection() {
       </div>
 
       {/* Decorative gradient blobs */}
-      <div className="absolute -top-20 -left-20 w-72 h-72 bg-green-200/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-64 h-64 bg-amber-200/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-20 -left-20 w-72 h-72 bg-green-200/20 dark:bg-green-800/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-64 h-64 bg-amber-200/15 dark:bg-amber-800/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="container mx-auto px-4 relative">
         <div className="grid lg:grid-cols-3 gap-8 lg:gap-10">
@@ -341,7 +358,7 @@ export function PengaduanSection() {
               variants={sectionTitleVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
-              className="text-xl font-bold text-gray-900 mb-6"
+              className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6"
             >
               Informasi Kontak
             </motion.h2>
@@ -354,7 +371,7 @@ export function PengaduanSection() {
                 animate={isInView ? "visible" : "hidden"}
                 whileHover={{ y: -2 }}
               >
-                <Card className="border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                <Card className="border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
                   <CardContent className="p-4">
                     <div className="flex items-start gap-4">
                       <div
@@ -363,7 +380,7 @@ export function PengaduanSection() {
                         <info.icon className={`h-5 w-5 ${info.color}`} />
                       </div>
                       <div>
-                        <h3 className="font-medium text-gray-900">
+                        <h3 className="font-medium text-gray-900 dark:text-gray-100">
                           {info.title}
                         </h3>
                         {info.link ? (
@@ -374,7 +391,7 @@ export function PengaduanSection() {
                             {info.content}
                           </a>
                         ) : (
-                          <p className="text-sm text-gray-600 whitespace-pre-line">
+                          <p className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-line">
                             {info.content}
                           </p>
                         )}
@@ -396,7 +413,7 @@ export function PengaduanSection() {
               transition={{ duration: 0.5, delay: 0.45, ease: "easeOut" as const }}
               whileHover={{ scale: 1.02 }}
             >
-              <Card className="bg-green-700 text-white border-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+              <Card className="bg-green-700 dark:bg-green-800 text-white border-0 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-white/15 rounded-full flex items-center justify-center mx-auto mb-3">
                     <MessageCircle className="h-6 w-6 text-white" />
@@ -422,7 +439,7 @@ export function PengaduanSection() {
           </div>
 
           {/* Vertical Divider on desktop */}
-          <div className="hidden lg:block absolute left-1/3 top-8 bottom-8 w-px bg-gray-200" />
+          <div className="hidden lg:block absolute left-1/3 top-8 bottom-8 w-px bg-gray-200 dark:bg-gray-700" />
 
           {/* Complaint Form */}
           <div className="lg:col-span-2">
@@ -431,124 +448,188 @@ export function PengaduanSection() {
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
             >
-              <Card className="border-gray-200 rounded-xl shadow-sm">
+              <Card className="border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 rounded-xl shadow-sm">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Send className="h-4 w-4 text-green-600" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-teal-600 rounded-xl flex items-center justify-center shadow-md">
+                      <Send className="h-5 w-5 text-white" />
                     </div>
-                    Formulir Pengaduan
-                  </CardTitle>
+                    <div>
+                      <CardTitle className="text-lg text-gray-900 dark:text-gray-100">
+                        Formulir Pengaduan
+                      </CardTitle>
+                      <CardDescription className="text-gray-500 dark:text-gray-400">
+                        Isi formulir berikut untuk menyampaikan pengaduan Anda
+                      </CardDescription>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">
-                          Nama Lengkap <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                          id="name"
-                          name="name"
-                          placeholder="Masukkan nama lengkap"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                        />
+                    {/* Section: Data Pribadi */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-6 h-6 bg-green-100 dark:bg-green-900/40 rounded-md flex items-center justify-center">
+                          <User className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
+                        </div>
+                        <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 uppercase tracking-wider">
+                          Data Pribadi
+                        </h3>
+                        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="nik">NIK (Opsional)</Label>
-                        <Input
-                          id="nik"
-                          name="nik"
-                          placeholder="16 digit NIK"
-                          value={formData.nik}
-                          onChange={handleChange}
-                          maxLength={16}
-                        />
+
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">
+                            Nama Lengkap <span className="text-red-500">*</span>
+                          </Label>
+                          <div className="relative">
+                            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
+                            <Input
+                              id="name"
+                              name="name"
+                              placeholder="Masukkan nama lengkap"
+                              value={formData.name}
+                              onChange={handleChange}
+                              required
+                              className="pl-9 dark:bg-gray-900 dark:border-gray-600"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="nik" className="text-gray-700 dark:text-gray-300">
+                            NIK <span className="text-gray-400 dark:text-gray-500 font-normal">(Opsional)</span>
+                          </Label>
+                          <div className="relative">
+                            <FileText className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
+                            <Input
+                              id="nik"
+                              name="nik"
+                              placeholder="16 digit NIK"
+                              value={formData.nik}
+                              onChange={handleChange}
+                              maxLength={16}
+                              className="pl-9 dark:bg-gray-900 dark:border-gray-600"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">
+                            Email <span className="text-red-500">*</span>
+                          </Label>
+                          <div className="relative">
+                            <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
+                            <Input
+                              id="email"
+                              name="email"
+                              type="email"
+                              placeholder="email@contoh.com"
+                              value={formData.email}
+                              onChange={handleChange}
+                              required
+                              className="pl-9 dark:bg-gray-900 dark:border-gray-600"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="phone" className="text-gray-700 dark:text-gray-300">
+                            No. Telepon <span className="text-red-500">*</span>
+                          </Label>
+                          <div className="relative">
+                            <Smartphone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
+                            <Input
+                              id="phone"
+                              name="phone"
+                              type="tel"
+                              placeholder="08xxxxxxxxxx"
+                              value={formData.phone}
+                              onChange={handleChange}
+                              required
+                              className="pl-9 dark:bg-gray-900 dark:border-gray-600"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email">
-                          Email <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          placeholder="email@contoh.com"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                        />
+                    {/* Section: Detail Pengaduan */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-6 h-6 bg-amber-100 dark:bg-amber-900/40 rounded-md flex items-center justify-center">
+                          <MessageSquare className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                        </div>
+                        <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 uppercase tracking-wider">
+                          Detail Pengaduan
+                        </h3>
+                        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="phone">
-                          No. Telepon <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                          id="phone"
-                          name="phone"
-                          type="tel"
-                          placeholder="08xxxxxxxxxx"
-                          value={formData.phone}
-                          onChange={handleChange}
-                          required
-                        />
+
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="subject" className="text-gray-700 dark:text-gray-300">
+                            Subjek Pengaduan <span className="text-red-500">*</span>
+                          </Label>
+                          <Select
+                            value={formData.subject}
+                            onValueChange={handleSubjectChange}
+                            required
+                          >
+                            <SelectTrigger className="dark:bg-gray-900 dark:border-gray-600">
+                              <SelectValue placeholder="Pilih subjek pengaduan" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {subjectOptions.map((option) => (
+                                <SelectItem key={option} value={option}>
+                                  {option}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="message" className="text-gray-700 dark:text-gray-300">
+                            Pesan <span className="text-red-500">*</span>
+                          </Label>
+                          <Textarea
+                            id="message"
+                            name="message"
+                            placeholder="Tuliskan pertanyaan, keluhan, atau saran Anda..."
+                            rows={5}
+                            value={formData.message}
+                            onChange={handleChange}
+                            required
+                            className="dark:bg-gray-900 dark:border-gray-600"
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="subject">
-                        Subjek <span className="text-red-500">*</span>
-                      </Label>
-                      <Select
-                        value={formData.subject}
-                        onValueChange={handleSubjectChange}
-                        required
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih subjek pengaduan" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {subjectOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                              {option}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                    {/* Info Box */}
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex gap-3">
+                      <Info className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                      <div className="text-sm text-green-800 dark:text-green-300">
+                        <p className="font-semibold mb-1">Waktu Respons</p>
+                        <p>
+                          Pengaduan Anda akan ditangani dalam waktu 1–3 hari kerja.
+                          Pastikan data kontak yang Anda berikan aktif dan dapat dihubungi.
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="message">
-                        Pesan <span className="text-red-500">*</span>
-                      </Label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        placeholder="Tuliskan pertanyaan, keluhan, atau saran Anda..."
-                        rows={5}
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
-                      <p>
-                        <strong>Catatan:</strong> Pengaduan Anda akan ditangani
-                        oleh tim kami dalam waktu 1-3 hari kerja. Pastikan data
-                        kontak yang Anda berikan aktif dan dapat dihubungi.
-                      </p>
+                    {/* Privacy note */}
+                    <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      <span>Data Anda dilindungi dan hanya digunakan untuk keperluan pengaduan</span>
                     </div>
 
                     <motion.div whileTap={{ scale: 0.98 }} className="block">
                       <Button
                         type="submit"
-                        className="w-full bg-green-700 hover:bg-green-800 font-semibold"
+                        className="w-full bg-green-700 hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700 font-semibold h-12 text-base"
                         disabled={isSubmitting}
                       >
                         {isSubmitting ? (
