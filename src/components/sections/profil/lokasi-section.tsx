@@ -59,7 +59,7 @@ const infoItems: InfoItem[] = [
     icon: Clock,
     label: "Jam Pelayanan",
     value: `${OPERATING_HOURS.weekdays.days}: ${OPERATING_HOURS.weekdays.hours}`,
-    subValue: `${OPERATING_HOURS.friday.days}: ${OPERATING_HOURS.friday.hours}`,
+    subValue: "Sabtu - Minggu: Tutup",
     subValueClass: "",
     iconBg: "bg-amber-100",
     iconColor: "text-amber-600",

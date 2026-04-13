@@ -59,7 +59,6 @@ const contactItems = [
     icon: Clock,
     label: "Jam Pelayanan",
     value: `${OPERATING_HOURS.weekdays.days}: ${OPERATING_HOURS.weekdays.hours}`,
-    value2: `${OPERATING_HOURS.friday.days}: ${OPERATING_HOURS.friday.hours}`,
   },
 ];
 
