@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Star, PenLine, CheckCircle2, Loader2, Phone, User, Briefcase, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -443,11 +443,11 @@ export function AddTestimoniWidget() {
     setOpen(true);
   }, []);
 
-  // Register listener
-  useState(() => {
+  // Register listener with proper cleanup
+  useEffect(() => {
     const unsub = onTestimoniDialogOpen(handleOpenRequest);
     return unsub;
-  });
+  }, [handleOpenRequest]);
 
   const handleSubmit = useCallback(async (data: FormData) => {
     setIsSubmitting(true);

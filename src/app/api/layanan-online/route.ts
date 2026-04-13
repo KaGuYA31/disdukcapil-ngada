@@ -1,4 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+
+// Helper to safely parse JSON strings
+function safeJsonParse(str: string | null | undefined): any[] {
+  if (!str) return [];
+  try {
+    const parsed = JSON.parse(str);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
 import { db } from "@/lib/db";
 import {
   validateNIK,
@@ -36,9 +47,9 @@ export async function GET(request: NextRequest) {
         success: true,
         data: layanan.map((l) => ({
           ...l,
-          requirements: l.requirements ? JSON.parse(l.requirements) : [],
-          procedures: l.procedures ? JSON.parse(l.procedures) : [],
-          forms: l.forms ? JSON.parse(l.forms) : [],
+          requirements: safeJsonParse(l.requirements),
+          procedures: safeJsonParse(l.procedures),
+          forms: safeJsonParse(l.forms),
         })),
       });
     }
@@ -116,9 +127,9 @@ export async function GET(request: NextRequest) {
       success: true,
       data: layanan.map((l) => ({
         ...l,
-        requirements: l.requirements ? JSON.parse(l.requirements) : [],
-        procedures: l.procedures ? JSON.parse(l.procedures) : [],
-        forms: l.forms ? JSON.parse(l.forms) : [],
+        requirements: safeJsonParse(l.requirements),
+        procedures: safeJsonParse(l.procedures),
+        forms: safeJsonParse(l.forms),
       })),
     });
   } catch (error) {

@@ -405,7 +405,7 @@ export function SearchCommand() {
 
           {/* Dialog container */}
           <motion.div
-            className="relative z-10 w-full max-w-2xl mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200/80"
+            className="relative z-10 w-full max-w-2xl mx-4 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-200/80 dark:border-gray-700/80"
             variants={dialogVariants}
             initial="hidden"
             animate="visible"
@@ -413,12 +413,12 @@ export function SearchCommand() {
             onKeyDown={handleKeyDown}
           >
             {/* Search input area */}
-            <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
-              <Search className="h-5 w-5 text-green-600 flex-shrink-0" />
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-100 dark:border-gray-700">
+              <Search className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
               <input
                 ref={inputRef}
                 type="text"
-                className="flex-1 bg-transparent text-gray-900 placeholder:text-gray-400 text-base outline-none"
+                className="flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base outline-none"
                 placeholder="Cari halaman, layanan, atau berita..."
                 value={query}
                 onChange={(e) => {
@@ -440,13 +440,13 @@ export function SearchCommand() {
                     setActiveIndex(-1);
                     inputRef.current?.focus();
                   }}
-                  className="p-1 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                   aria-label="Hapus pencarian"
                 >
                   <X className="h-4 w-4" />
                 </button>
               )}
-              <kbd className="hidden sm:inline-flex items-center gap-1 pointer-events-none select-none rounded-md border border-gray-200 bg-gray-50 px-2 py-1 font-mono text-[11px] font-medium text-gray-400">
+              <kbd className="hidden sm:inline-flex items-center gap-1 pointer-events-none select-none rounded-md border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-2 py-1 font-mono text-[11px] font-medium text-gray-400 dark:text-gray-500">
                 ESC
               </kbd>
             </div>
@@ -461,7 +461,7 @@ export function SearchCommand() {
               {/* Show default suggestions when no query */}
               {!hasQuery && (
                 <div className="p-4">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 mb-3">
+                  <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 mb-3">
                     Pintasan
                   </p>
                   <div className="space-y-1">
@@ -477,16 +477,16 @@ export function SearchCommand() {
                         className={cn(
                           "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-150 border-l-2 border-transparent",
                           activeIndex === idx
-                            ? "bg-green-50 border-l-2 border-green-500"
-                            : "hover:bg-gray-50"
+                            ? "bg-green-50 dark:bg-green-900/30 border-l-2 border-green-500"
+                            : "hover:bg-gray-50 dark:hover:bg-gray-700/60"
                         )}
                       >
                         <div
                           className={cn(
                             "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
                             activeIndex === idx
-                              ? "bg-green-100 text-green-600"
-                              : "bg-gray-100 text-gray-500"
+                              ? "bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                           )}
                         >
                           <page.icon className="h-4 w-4" />
@@ -496,13 +496,13 @@ export function SearchCommand() {
                             className={cn(
                               "text-sm font-medium truncate",
                               activeIndex === idx
-                                ? "text-green-700"
-                                : "text-gray-800"
+                                ? "text-green-700 dark:text-green-400"
+                                : "text-gray-800 dark:text-gray-200"
                             )}
                           >
                             {page.title}
                           </p>
-                          <p className="text-xs text-gray-400 truncate">
+                          <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
                             {page.description}
                           </p>
                         </div>
@@ -510,8 +510,8 @@ export function SearchCommand() {
                           className={cn(
                             "h-4 w-4 flex-shrink-0 transition-colors",
                             activeIndex === idx
-                              ? "text-green-500"
-                              : "text-gray-300"
+                              ? "text-green-500 dark:text-green-400"
+                              : "text-gray-300 dark:text-gray-600"
                           )}
                         />
                       </button>
@@ -529,7 +529,7 @@ export function SearchCommand() {
                       const CatIcon = categoryIcons[category] || FileText;
                       return (
                         <div key={category} className="mb-3 last:mb-0">
-                          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 mb-2 flex items-center gap-1.5">
+                          <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 mb-2 flex items-center gap-1.5">
                             <CatIcon className="h-3 w-3" />
                             {category}
                           </p>
@@ -550,16 +550,16 @@ export function SearchCommand() {
                                 className={cn(
                                   "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-150 border-l-2 border-transparent mb-0.5",
                                   activeIndex === idx
-                                    ? "bg-green-50 border-l-2 border-green-500"
-                                    : "hover:bg-gray-50"
+                                    ? "bg-green-50 dark:bg-green-900/30 border-l-2 border-green-500"
+                                    : "hover:bg-gray-50 dark:hover:bg-gray-700/60"
                                 )}
                               >
                                 <div
                                   className={cn(
                                     "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
                                     activeIndex === idx
-                                      ? "bg-green-100 text-green-600"
-                                      : "bg-gray-100 text-gray-500"
+                                      ? "bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400"
+                                      : "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                                   )}
                                 >
                                   <page.icon className="h-4 w-4" />
@@ -569,13 +569,13 @@ export function SearchCommand() {
                                     className={cn(
                                       "text-sm font-medium truncate",
                                       activeIndex === idx
-                                        ? "text-green-700"
-                                        : "text-gray-800"
+                                        ? "text-green-700 dark:text-green-400"
+                                        : "text-gray-800 dark:text-gray-200"
                                     )}
                                   >
                                     {page.title}
                                   </p>
-                                  <p className="text-xs text-gray-400 truncate">
+                                  <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
                                     {page.description}
                                   </p>
                                 </div>
@@ -583,8 +583,8 @@ export function SearchCommand() {
                                   className={cn(
                                     "h-4 w-4 flex-shrink-0 transition-colors",
                                     activeIndex === idx
-                                      ? "text-green-500"
-                                      : "text-gray-300"
+                                      ? "text-green-500 dark:text-green-400"
+                                      : "text-gray-300 dark:text-gray-600"
                                   )}
                                 />
                               </button>
@@ -598,12 +598,12 @@ export function SearchCommand() {
                   {/* Berita results */}
                   {(isSearching || beritaResults.length > 0) && (
                     <div className="mb-3">
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 mb-2 flex items-center gap-1.5">
+                      <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 mb-2 flex items-center gap-1.5">
                         <Newspaper className="h-3 w-3" />
                         Berita
                       </p>
                       {isSearching && (
-                        <div className="flex items-center gap-2 px-3 py-4 text-sm text-gray-400">
+                        <div className="flex items-center gap-2 px-3 py-4 text-sm text-gray-400 dark:text-gray-500">
                           <Loader2 className="h-4 w-4 animate-spin" />
                           Mencari berita...
                         </div>
@@ -628,16 +628,16 @@ export function SearchCommand() {
                               className={cn(
                                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-150 border-l-2 border-transparent mb-0.5",
                                 activeIndex === idx
-                                  ? "bg-green-50 border-l-2 border-green-500"
-                                  : "hover:bg-gray-50"
+                                  ? "bg-green-50 dark:bg-green-900/30 border-l-2 border-green-500"
+                                  : "hover:bg-gray-50 dark:hover:bg-gray-700/60"
                               )}
                             >
                               <div
                                 className={cn(
                                   "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
                                   activeIndex === idx
-                                    ? "bg-green-100 text-green-600"
-                                    : "bg-gray-100 text-gray-500"
+                                    ? "bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400"
+                                    : "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                                 )}
                               >
                                 <Sparkles className="h-4 w-4" />
@@ -647,13 +647,13 @@ export function SearchCommand() {
                                   className={cn(
                                     "text-sm font-medium truncate",
                                     activeIndex === idx
-                                      ? "text-green-700"
-                                      : "text-gray-800"
+                                      ? "text-green-700 dark:text-green-400"
+                                      : "text-gray-800 dark:text-gray-200"
                                   )}
                                 >
                                   {berita.title}
                                 </p>
-                                <p className="text-xs text-gray-400 truncate">
+                                <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
                                   {berita.category} &middot;{" "}
                                   {new Date(berita.createdAt).toLocaleDateString(
                                     "id-ID",
@@ -669,8 +669,8 @@ export function SearchCommand() {
                                 className={cn(
                                   "h-4 w-4 flex-shrink-0 transition-colors",
                                   activeIndex === idx
-                                    ? "text-green-500"
-                                    : "text-gray-300"
+                                    ? "text-green-500 dark:text-green-400"
+                                    : "text-gray-300 dark:text-gray-600"
                                 )}
                               />
                             </button>
@@ -682,15 +682,15 @@ export function SearchCommand() {
                   {/* Empty state */}
                   {showNoResults && (
                     <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
-                      <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                        <Search className="h-5 w-5 text-gray-300" />
+                      <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-3">
+                        <Search className="h-5 w-5 text-gray-300 dark:text-gray-500" />
                       </div>
-                      <p className="text-sm font-medium text-gray-500">
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Tidak ada hasil
                       </p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                         Tidak ditemukan halaman atau berita untuk &quot;
-                        <span className="text-gray-500">{query}</span>&quot;
+                        <span className="text-gray-500 dark:text-gray-300">{query}</span>&quot;
                       </p>
                     </div>
                   )}
@@ -699,26 +699,26 @@ export function SearchCommand() {
             </div>
 
             {/* Footer with hints */}
-            <div className="border-t border-gray-100 px-5 py-2.5 flex items-center justify-between text-[11px] text-gray-400">
+            <div className="border-t border-gray-100 dark:border-gray-700 px-5 py-2.5 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500">
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
-                  <kbd className="inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1 py-0.5 font-mono text-[10px]">
+                  <kbd className="inline-flex items-center rounded border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-1 py-0.5 font-mono text-[10px]">
                     ↑
                   </kbd>
-                  <kbd className="inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1 py-0.5 font-mono text-[10px]">
+                  <kbd className="inline-flex items-center rounded border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-1 py-0.5 font-mono text-[10px]">
                     ↓
                   </kbd>
                   <span className="ml-1">navigasi</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <kbd className="inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 font-mono text-[10px]">
+                  <kbd className="inline-flex items-center rounded border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-1.5 py-0.5 font-mono text-[10px]">
                     ↵
                   </kbd>
                   <span className="ml-1">buka</span>
                 </span>
               </div>
               <span className="hidden sm:inline">
-                <kbd className="inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 font-mono text-[10px]">
+                <kbd className="inline-flex items-center rounded border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-1.5 py-0.5 font-mono text-[10px]">
                   esc
                 </kbd>{" "}
                 untuk menutup

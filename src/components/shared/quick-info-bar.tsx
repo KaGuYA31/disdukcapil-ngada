@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, Users, MapPin, Building2 } from "lucide-react";
 
@@ -14,9 +13,7 @@ const quickInfoItems = [
   {
     icon: Users,
     label: "Total Penduduk",
-    value: null,
-    fallback: "171.027+",
-    apiEndpoint: "/api/statistics/population",
+    value: "171.027+",
   },
   {
     icon: MapPin,
@@ -31,28 +28,6 @@ const quickInfoItems = [
 ];
 
 export function QuickInfoBar() {
-  const [populationData, setPopulationData] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchPopulation() {
-      try {
-        const res = await fetch("/api/statistics/population");
-        if (res.ok) {
-          const data = await res.json();
-          if (data?.total) {
-            setPopulationData(
-              typeof data.total === "number"
-                ? data.total.toLocaleString("id-ID") + "+"
-                : data.total
-            );
-          }
-        }
-      } catch {
-        // Silently fall back to default value
-      }
-    }
-    fetchPopulation();
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -105,9 +80,7 @@ export function QuickInfoBar() {
                   {item.label}
                 </p>
                 <p className="text-sm md:text-base font-bold text-white dark:text-gray-100 truncate">
-                  {item.apiEndpoint
-                    ? populationData || item.fallback
-                    : item.value}
+                  {item.value}
                 </p>
                 {item.subValue && (
                   <p className="text-[11px] md:text-xs text-green-200/70 dark:text-green-300/60 hidden sm:block">

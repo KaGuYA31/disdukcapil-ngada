@@ -22,8 +22,6 @@ import {
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { OperatingHoursIndicator } from "@/components/shared/operating-hours-indicator";
-import { ScrollProgress } from "@/components/shared/scroll-progress";
-
 interface NavChild {
   title: string;
   href: string;
@@ -95,8 +93,8 @@ function MobileNavItem({
           className={cn(
             "w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
             isCurrentActive
-              ? "text-green-700 bg-green-50"
-              : "text-gray-700 hover:text-green-700 hover:bg-gray-50"
+              ? "text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/30"
+              : "text-gray-700 hover:text-green-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-green-400 dark:hover:bg-green-900/30"
           )}
         >
           <div className="text-left">
@@ -118,8 +116,8 @@ function MobileNavItem({
           className={cn(
             "block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
             isActive
-              ? "text-green-700 bg-green-50"
-              : "text-gray-700 hover:text-green-700 hover:bg-gray-50"
+              ? "text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/30"
+              : "text-gray-700 hover:text-green-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-green-400 dark:hover:bg-green-900/30"
           )}
         >
           {item.title}
@@ -135,10 +133,10 @@ function MobileNavItem({
         >
           {item.dropdownLabel && (
             <div className="ml-4 pl-3 mb-2">
-              <p className="text-xs font-semibold text-green-700 border-b border-green-100 pb-2">{item.dropdownLabel}</p>
+              <p className="text-xs font-semibold text-green-700 border-b border-green-100 pb-2 dark:text-green-400 dark:border-green-800">{item.dropdownLabel}</p>
             </div>
           )}
-          <div className={cn("pl-3 border-l-2 border-green-200 space-y-1", !item.dropdownLabel && "ml-4")}>
+          <div className={cn("pl-3 border-l-2 border-green-200 space-y-1 dark:border-green-700", !item.dropdownLabel && "ml-4")}>
             {item.children!.map((child) => (
               <Link
                 key={child.href}
@@ -146,8 +144,8 @@ function MobileNavItem({
                 className={cn(
                   "flex flex-col px-3 py-2.5 rounded-lg transition-colors",
                   pathname === child.href
-                    ? "text-green-700 bg-green-50 font-medium"
-                    : "text-gray-500 hover:text-green-700 hover:bg-gray-50"
+                    ? "text-green-700 bg-green-50 font-medium dark:text-green-400 dark:bg-green-900/30"
+                    : "text-gray-500 hover:text-green-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-green-400 dark:hover:bg-green-900/30"
                 )}
               >
                 <span className="flex items-center gap-2 text-sm">
@@ -194,8 +192,8 @@ export function Header() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-md"
-          : "bg-white border-b border-gray-100"
+          ? "bg-white/95 backdrop-blur-md shadow-md dark:bg-gray-900/95"
+          : "bg-white border-b border-gray-100 dark:bg-gray-900 dark:border-gray-800"
       )}
     >
       {/* Top bar */}
@@ -247,10 +245,10 @@ export function Header() {
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="font-bold text-green-800 text-sm md:text-base leading-tight">
+              <h1 className="font-bold text-green-800 text-sm md:text-base leading-tight dark:text-green-400">
                 Disdukcapil
               </h1>
-              <p className="text-xs text-gray-500">Kabupaten Ngada</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Kabupaten Ngada</p>
             </div>
           </Link>
 
@@ -264,8 +262,8 @@ export function Header() {
                       className={cn(
                         "px-4 py-2 text-sm font-medium rounded-md flex items-center gap-1 transition-colors",
                         isActive(item.href)
-                          ? "text-green-700 bg-green-50"
-                          : "text-gray-700 hover:text-green-700 hover:bg-green-50"
+                          ? "text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/30"
+                          : "text-gray-700 hover:text-green-700 hover:bg-green-50 dark:text-gray-300 dark:hover:text-green-400 dark:hover:bg-green-900/30"
                       )}
                     >
                       {item.title}
@@ -274,8 +272,8 @@ export function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className={cn(item.dropdownLabel ? "w-64" : "w-48")}>
                     {item.dropdownLabel && (
-                      <div className="px-2 py-1.5 border-b border-gray-100 mb-1">
-                        <p className="text-xs font-semibold text-green-700 leading-tight">{item.dropdownLabel}</p>
+                      <div className="px-2 py-1.5 border-b border-gray-100 mb-1 dark:border-gray-700">
+                        <p className="text-xs font-semibold text-green-700 leading-tight dark:text-green-400">{item.dropdownLabel}</p>
                       </div>
                     )}
                     {item.children.map((child) => (
@@ -300,8 +298,8 @@ export function Header() {
                   className={cn(
                     "px-4 py-2 text-sm font-medium rounded-md transition-colors",
                     isActive(item.href)
-                      ? "text-green-700 bg-green-50"
-                      : "text-gray-700 hover:text-green-700 hover:bg-green-50"
+                      ? "text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/30"
+                      : "text-gray-700 hover:text-green-700 hover:bg-green-50 dark:text-gray-300 dark:hover:text-green-400 dark:hover:bg-green-900/30"
                   )}
                 >
                   {item.title}
@@ -336,7 +334,7 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[340px] p-0 overflow-y-auto">
-                <SheetHeader className="border-b border-gray-100 px-4 py-4">
+                <SheetHeader className="border-b border-gray-100 px-4 py-4 dark:border-gray-700">
                   <SheetTitle className="flex items-center gap-3">
                     <div className="relative w-8 h-8 flex-shrink-0">
                       <Image
@@ -347,8 +345,8 @@ export function Header() {
                       />
                     </div>
                     <div>
-                      <p className="font-bold text-green-800 text-sm leading-tight">Disdukcapil</p>
-                      <p className="text-xs text-gray-500">Kabupaten Ngada</p>
+                      <p className="font-bold text-green-800 text-sm leading-tight dark:text-green-400">Disdukcapil</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Kabupaten Ngada</p>
                     </div>
                   </SheetTitle>
                 </SheetHeader>
@@ -365,31 +363,31 @@ export function Header() {
                   ))}
 
                   {/* Search in Mobile — opens command palette */}
-                  <div className="pt-4 mt-4 border-t border-gray-100">
+                  <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-700">
                     <button
                       onClick={openSearchCommand}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-500 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 hover:text-green-700 transition-all"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-500 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 hover:text-green-700 transition-all dark:text-gray-400 dark:border-gray-600 dark:hover:border-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400"
                     >
                       <Search className="h-4 w-4" />
                       <span>Cari halaman, layanan, atau berita...</span>
-                      <kbd className="ml-auto inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 font-mono text-[10px] text-gray-400">
+                      <kbd className="ml-auto inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 font-mono text-[10px] text-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
                         ⌘K
                       </kbd>
                     </button>
                   </div>
 
                   {/* Quick Links */}
-                  <div className="pt-4 mt-4 border-t border-gray-100 space-y-2">
+                  <div className="pt-4 mt-4 border-t border-gray-100 space-y-2 dark:border-gray-700">
                     <Link
                       href="/admin"
-                      className="block px-4 py-2.5 text-sm text-center border border-green-700 text-green-700 rounded-lg hover:bg-green-50 font-medium transition-colors"
+                      className="block px-4 py-2.5 text-sm text-center border border-green-700 text-green-700 rounded-lg hover:bg-green-50 font-medium transition-colors dark:border-green-500 dark:text-green-400 dark:hover:bg-green-900/30"
                     >
                       Login Admin
                     </Link>
                     {mounted && (
                       <button
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                        className="w-full px-4 py-2.5 text-sm text-center border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 font-medium transition-colors flex items-center justify-center gap-2"
+                        className="w-full px-4 py-2.5 text-sm text-center border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 font-medium transition-colors flex items-center justify-center gap-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                         aria-label="Toggle theme"
                       >
                         {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -406,8 +404,6 @@ export function Header() {
 
       </div>
 
-      {/* Scroll Progress Indicator - sits at the bottom of the header */}
-      <ScrollProgress />
     </header>
   );
 }
