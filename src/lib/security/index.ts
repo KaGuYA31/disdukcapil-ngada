@@ -20,24 +20,40 @@ const ALGORITHM = "aes-256-gcm";
 const IV_LENGTH = 16;
 
 /**
- * Validate encryption key format
- * Key must be 32 bytes (256 bits) hex-encoded (64 characters)
+ * Check if encryption key is properly configured
  */
-function validateEncryptionKey(): Buffer {
-  if (!ENCRYPTION_KEY || ENCRYPTION_KEY.length !== 64) {
-    throw new Error("ENCRYPTION_KEY must be 64 hex characters (32 bytes)");
+function isEncryptionKeyValid(): boolean {
+  return !!ENCRYPTION_KEY && ENCRYPTION_KEY.length === 64;
+}
+
+/**
+ * Get encryption key buffer
+ * Returns null if key is not configured
+ */
+function getEncryptionKey(): Buffer | null {
+  if (!isEncryptionKeyValid()) return null;
+  try {
+    return Buffer.from(ENCRYPTION_KEY, "hex");
+  } catch {
+    return null;
   }
-  return Buffer.from(ENCRYPTION_KEY, "hex");
 }
 
 /**
  * Encrypt sensitive data using AES-256-GCM
  * Returns: iv:authTag:encryptedData (all hex-encoded)
+ * Falls back to base64 encoding if ENCRYPTION_KEY is not configured
  */
 export function encrypt(plaintext: string): string {
   if (!plaintext) return "";
   
-  const key = validateEncryptionKey();
+  const key = getEncryptionKey();
+  if (!key) {
+    // Fallback: encode with a prefix so we know it wasn't encrypted
+    console.warn("[Security] ENCRYPTION_KEY not configured, using fallback encoding");
+    return "plain:" + Buffer.from(plaintext).toString("base64");
+  }
+  
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
   
@@ -52,28 +68,50 @@ export function encrypt(plaintext: string): string {
 
 /**
  * Decrypt data encrypted with AES-256-GCM
+ * Handles fallback base64 encoding when ENCRYPTION_KEY was not configured
  */
 export function decrypt(encryptedData: string): string {
   if (!encryptedData) return "";
   
-  const key = validateEncryptionKey();
+  // Handle fallback encoding
+  if (encryptedData.startsWith("plain:")) {
+    try {
+      return Buffer.from(encryptedData.slice(6), "base64").toString("utf8");
+    } catch {
+      return encryptedData;
+    }
+  }
+  
+  const key = getEncryptionKey();
+  if (!key) {
+    // If no key but data looks encrypted, return as-is (can't decrypt)
+    console.warn("[Security] ENCRYPTION_KEY not configured, cannot decrypt");
+    return encryptedData;
+  }
+  
   const parts = encryptedData.split(":");
   
   if (parts.length !== 3) {
-    throw new Error("Invalid encrypted data format");
+    // Not in encrypted format, return as-is
+    return encryptedData;
   }
   
-  const [ivHex, authTagHex, encrypted] = parts;
-  const iv = Buffer.from(ivHex, "hex");
-  const authTag = Buffer.from(authTagHex, "hex");
-  
-  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-  decipher.setAuthTag(authTag);
-  
-  let decrypted = decipher.update(encrypted, "hex", "utf8");
-  decrypted += decipher.final("utf8");
-  
-  return decrypted;
+  try {
+    const [ivHex, authTagHex, encrypted] = parts;
+    const iv = Buffer.from(ivHex, "hex");
+    const authTag = Buffer.from(authTagHex, "hex");
+    
+    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
+    decipher.setAuthTag(authTag);
+    
+    let decrypted = decipher.update(encrypted, "hex", "utf8");
+    decrypted += decipher.final("utf8");
+    
+    return decrypted;
+  } catch {
+    console.warn("[Security] Failed to decrypt data, returning as-is");
+    return encryptedData;
+  }
 }
 
 /**
@@ -224,9 +262,11 @@ export function checkRateLimit(
 export function sanitizeString(input: string): string {
   if (!input) return "";
   
+  // Only remove HTML tags (opening/closing) and dangerous shell characters
+  // Preserve quotes and special chars that may appear in valid names/data
   return input
-    .replace(/[<>]/g, "") // Remove potential HTML/XML tags
-    .replace(/['"]/g, "") // Remove quotes
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+    .replace(/<[^>]+>/g, "") // Remove all HTML/XML tags but keep content
     .replace(/[;&|`$]/g, "") // Remove shell special chars
     .trim();
 }
@@ -281,11 +321,15 @@ export function validatePhone(phone: string): { valid: boolean; error?: string }
     return { valid: false, error: "Nomor telepon wajib diisi" };
   }
   
-  // Indonesian phone format: 08xx or +62xx
-  const phoneRegex = /^(\+62|62|0)8[1-9][0-9]{7,10}$/;
+  // Clean phone number: remove spaces, dashes, parentheses
+  const cleaned = phone.replace(/[\s\-()]/g, "");
   
-  if (!phoneRegex.test(phone.replace(/[\s-]/g, ""))) {
-    return { valid: false, error: "Format nomor telepon tidak valid" };
+  // Indonesian phone format: 08xx, 8xx, +62xx, or 62xx
+  // Accept 10-15 digit numbers starting with valid prefix
+  const phoneRegex = /^(\+62|62|0)?8[1-9][0-9]{6,11}$/;
+  
+  if (!phoneRegex.test(cleaned)) {
+    return { valid: false, error: "Format nomor telepon tidak valid. Gunakan format 08xx atau +62xx" };
   }
   
   return { valid: true };

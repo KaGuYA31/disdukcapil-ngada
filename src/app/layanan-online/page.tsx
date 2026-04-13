@@ -22,6 +22,11 @@ import {
   MapPin,
   Calendar,
   ArrowRight,
+  Shield,
+  ScanLine,
+  Heart,
+  Baby,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -218,8 +223,17 @@ export default function LayananOnlinePage() {
     // Validation
     if (!formData.namaLengkap || !formData.nik || !formData.noTelepon) {
       toast({
-        title: "Error",
+        title: "Data Belum Lengkap",
         description: "Nama lengkap, NIK, dan nomor telepon wajib diisi",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (formData.namaLengkap.length < 3) {
+      toast({
+        title: "Data Tidak Valid",
+        description: "Nama lengkap minimal 3 karakter",
         variant: "destructive",
       });
       return;
@@ -227,8 +241,30 @@ export default function LayananOnlinePage() {
 
     if (!/^\d{16}$/.test(formData.nik)) {
       toast({
-        title: "Error",
-        description: "NIK harus 16 digit angka",
+        title: "NIK Tidak Valid",
+        description: "NIK harus terdiri dari 16 digit angka",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate phone format
+    const phoneClean = formData.noTelepon.replace(/[\s\-()]/g, "");
+    const phoneRegex = /^(\+62|62|0)?8[1-9][0-9]{6,11}$/;
+    if (!phoneRegex.test(phoneClean)) {
+      toast({
+        title: "Nomor Telepon Tidak Valid",
+        description: "Gunakan format 08xx atau +62xx (contoh: 081234567890)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate email format if provided
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      toast({
+        title: "Email Tidak Valid",
+        description: "Format email tidak benar",
         variant: "destructive",
       });
       return;
@@ -255,18 +291,29 @@ export default function LayananOnlinePage() {
       });
 
       const result = await response.json();
+      
+      // Handle rate limiting
+      if (response.status === 429) {
+        toast({
+          title: "Terlalu Banyak Permintaan",
+          description: result.error || `Silakan tunggu ${result.retryAfter || 60} detik sebelum mencoba lagi`,
+          variant: "destructive",
+        });
+        return;
+      }
+      
       if (result.success) {
         setNomorPengajuan(result.data.nomorPengajuan);
         setShowFormDialog(false);
         setSuccessDialog(true);
       } else {
-        throw new Error(result.error);
+        throw new Error(result.error || "Gagal mengirim pengajuan");
       }
     } catch (error) {
       console.error("Submit error:", error);
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Gagal mengirim pengajuan",
+        title: "Pengajuan Gagal",
+        description: error instanceof Error ? error.message : "Terjadi kesalahan saat mengirim pengajuan. Silakan coba lagi.",
         variant: "destructive",
       });
     } finally {
@@ -277,15 +324,17 @@ export default function LayananOnlinePage() {
   const getIconComponent = (iconName: string | null) => {
     const icons: { [key: string]: any } = {
       CreditCard: FileText,
-      Users: User,
-      Baby: User,
-      Heart: FileText,
+      Users: Users,
+      Baby: Baby,
+      Heart: Heart,
       MapPin: MapPin,
       FileText: FileText,
       RefreshCw: FileText,
       Stamp: FileText,
       Gavel: FileText,
-      MoveRight: ChevronRight,
+      MoveRight: ArrowRight,
+      Shield: Shield,
+      ScanLine: ScanLine,
     };
     return icons[iconName || "FileText"] || FileText;
   };
