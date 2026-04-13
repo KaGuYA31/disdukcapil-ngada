@@ -1,4 +1,31 @@
 ---
+Task ID: fix-inovasi-nav
+Agent: Main Coordinator
+Task: Fix missing Inovasi menu in public navigation, sync with admin, deploy to Vercel
+
+Work Log:
+- User reported that the "Inovasi" menu was missing from the public navigation
+- Investigated: found inovasi pages exist (/inovasi/page.tsx, /inovasi/[id]/page.tsx) and admin has "Kegiatan Inovasi" menu
+- Root cause: public header navigation array in header.tsx did NOT include Inovasi entry
+- Fix: Added `{ title: "Inovasi", href: "/inovasi" }` to the navigation array in header.tsx (between Statistik and Berita)
+- Also added Inovasi to footer quick links in footer.tsx for consistent discoverability
+- Search command (search-command.tsx) already included Inovasi — no change needed
+- Admin sidebar (admin-layout.tsx) already has "Kegiatan Inovasi" — confirmed synced
+
+Verification:
+- ESLint: 0 errors, 0 warnings
+- Local: /inovasi returns HTTP 200, / returns HTTP 200
+- Pushed to GitHub: commit 8539366
+- Vercel auto-deployed: https://disdukcapil-ngada.vercel.app/inovasi returns HTTP 200
+- Public nav now shows: Beranda, Profil, Layanan, Statistik Kependudukan, **Inovasi**, Berita, Pengaduan
+
+Stage Summary:
+- Menu Inovasi restored to public header navigation (desktop + mobile)
+- Inovasi added to footer quick links
+- Synced with admin sidebar ("Kegiatan Inovasi" → /admin/inovasi)
+- Deployed to Vercel via GitHub push
+
+---
 Task ID: 12b
 Agent: Subagent
 Task: Add document requirements checker to layanan page
