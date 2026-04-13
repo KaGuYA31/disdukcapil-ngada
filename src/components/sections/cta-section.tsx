@@ -103,7 +103,7 @@ export function CTASection() {
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" as const }}
-              className="text-green-100 text-lg mt-4 max-w-xl mx-auto lg:mx-0"
+              className="text-green-100 dark:text-green-300 text-lg mt-4 max-w-xl mx-auto lg:mx-0"
             >
               Tim kami siap membantu Anda dengan berbagai pertanyaan seputar
               layanan administrasi kependudukan. Jangan ragu untuk menghubungi
@@ -119,7 +119,7 @@ export function CTASection() {
                 <Link href="/pengaduan">
                   <Button
                     size="lg"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold shadow-lg shadow-yellow-500/20"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold shadow-lg shadow-yellow-500/20 dark:bg-yellow-400 dark:hover:bg-yellow-500 dark:text-gray-900"
                   >
                     Ajukan Pengaduan
                     <ArrowRight className="ml-2 h-5 w-5" />
@@ -136,7 +136,7 @@ export function CTASection() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-white/60 text-white hover:bg-white/10 hover:border-white"
+                    className="border-white/60 text-white hover:bg-white/10 hover:border-white dark:border-green-300/40 dark:text-green-100 dark:hover:bg-green-400/10 dark:hover:border-green-300/60"
                   >
                     <MapPin className="mr-2 h-5 w-5" />
                     Lokasi Kantor
@@ -156,7 +156,7 @@ export function CTASection() {
                 >
                   <Button
                     size="lg"
-                    className="bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg shadow-green-500/20"
+                    className="bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg shadow-green-500/20 dark:bg-green-400 dark:hover:bg-green-500 dark:text-gray-900 dark:shadow-green-400/20"
                   >
                     <MessageCircle className="mr-2 h-5 w-5" />
                     WhatsApp Kami
@@ -172,8 +172,8 @@ export function CTASection() {
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/15 shadow-xl shadow-black/10">
-              <h3 className="font-semibold text-xl mb-6">Informasi Kontak</h3>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/15 shadow-xl shadow-black/10 dark:bg-gray-800/30 dark:border-gray-700/50">
+              <h3 className="font-semibold text-xl mb-6 dark:text-gray-100">Informasi Kontak</h3>
               <div className="space-y-4">
                 {contactItems.map((item, index) => (
                   <motion.div
@@ -183,14 +183,14 @@ export function CTASection() {
                     initial="hidden"
                     animate={isInView ? "visible" : "hidden"}
                     whileHover={{ scale: 1.02, x: 4 }}
-                    className="flex items-start gap-4 p-2 -m-2 rounded-xl transition-colors hover:bg-white/5 cursor-default"
+                    className="flex items-start gap-4 p-2 -m-2 rounded-xl transition-colors hover:bg-white/5 dark:hover:bg-gray-700/30 cursor-default"
                   >
-                    <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 dark:bg-gray-700/40">
                       <item.icon className="h-6 w-6" />
                     </div>
                     <div>
-                      <p className="font-medium">{item.label}</p>
-                      <p className="text-green-100 text-sm mt-1">
+                      <p className="font-medium dark:text-gray-100">{item.label}</p>
+                      <p className="text-green-100 dark:text-green-300 text-sm mt-1">
                         {item.value}
                         {item.value2 && <br />}
                         {item.value2}

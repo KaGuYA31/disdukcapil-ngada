@@ -14,43 +14,75 @@ const plusJakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const SITE_URL = "https://disdukcapil-ngada.vercel.app";
+const SITE_NAME = "Disdukcapil Kabupaten Ngada";
+const SITE_DESCRIPTION =
+  "Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada - Portal layanan administrasi kependudukan online: KTP, KK, Akta Kelahiran, dan lainnya.";
+const OG_IMAGE = `${SITE_URL}/logo-kabupaten.png`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://disdukcapil-ngada.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Disdukcapil Kabupaten Ngada - Portal Layanan Kependudukan",
     template: "%s | Disdukcapil Ngada",
   },
-  description: "Portal resmi Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada. Layanan informasi KTP, KK, Akta Kelahiran, Akta Kematian, dan layanan kependudukan lainnya.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "Disdukcapil Ngada",
+    "Dinas Kependudukan Ngada",
     "KTP",
+    "KTP-el",
     "Kartu Keluarga",
+    "KK",
     "Akta Kelahiran",
     "Akta Kematian",
+    "Akta Perkawinan",
+    "Akta Perceraian",
+    "KIA",
     "Kependudukan",
     "Pencatatan Sipil",
     "Kabupaten Ngada",
     "NTT",
     "Nusa Tenggara Timur",
+    "Bajawa",
     "Layanan Publik",
     "Pemerintah",
+    "Administrasi Kependudukan",
+    "Layanan Online",
   ],
   authors: [{ name: "Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada" }],
+  creator: "Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
+  publisher: "Pemerintah Kabupaten Ngada",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/logo-kabupaten.png", sizes: "180x180" },
+    ],
   },
   openGraph: {
-    title: "Disdukcapil Kabupaten Ngada",
-    description: "Portal Layanan Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     type: "website",
     locale: "id_ID",
-    url: "https://disdukcapil-ngada.vercel.app",
-    siteName: "Disdukcapil Kabupaten Ngada",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    images: [
+      {
+        url: "/logo-kabupaten.png",
+        width: 512,
+        height: 512,
+        alt: "Logo Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Disdukcapil Kabupaten Ngada",
-    description: "Portal Layanan Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/logo-kabupaten.png"],
   },
   alternates: {
     canonical: "/",
@@ -58,7 +90,15 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
+  category: "government",
 };
 
 export default function RootLayout({
