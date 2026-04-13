@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -16,6 +16,8 @@ import {
   Save,
   Eye,
   EyeOff,
+  Tag,
+  AlertTriangle,
 } from "lucide-react";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { Button } from "@/components/ui/button";
@@ -30,6 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -41,6 +44,34 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { useToast } from "@/hooks/use-toast";
+
+const STORAGE_KEY = "inovasi_categories";
+const DEFAULT_CATEGORIES = [
+  "Jemput Bola",
+  "Sosialisasi",
+  "Pelayanan Keliling",
+  "Konsultasi",
+  "Lainnya",
+];
+
+function loadCategories(): string[] {
+  if (typeof window === "undefined") return DEFAULT_CATEGORIES;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {
+    // ignore parse errors
+  }
+  return DEFAULT_CATEGORIES;
+}
+
+function saveCategories(cats: string[]) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cats));
+}
 
 interface Inovasi {
   id: string;
@@ -69,35 +100,32 @@ interface FormData {
   author: string;
 }
 
-const initialFormData: FormData = {
-  title: "",
-  description: "",
-  content: "",
-  photo: "",
-  location: "",
-  date: "",
-  category: "Jemput Bola",
-  isPublished: true,
-  author: "",
-};
-
-const categories = [
-  "Jemput Bola",
-  "Sosialisasi",
-  "Pelayanan Keliling",
-  "Konsultasi",
-  "Lainnya",
-];
-
 export default function AdminInovasiPage() {
   const router = useRouter();
   const { toast } = useToast();
+
+  // Category management state
+  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [newCategoryInput, setNewCategoryInput] = useState("");
+  const [removeCategoryConfirm, setRemoveCategoryConfirm] = useState<string | null>(null);
+
+  // Activity management state
   const [activities, setActivities] = useState<Inovasi[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>({
+    title: "",
+    description: "",
+    content: "",
+    photo: "",
+    location: "",
+    date: "",
+    category: DEFAULT_CATEGORIES[0],
+    isPublished: true,
+    author: "",
+  });
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   // Auth check
@@ -115,11 +143,63 @@ export default function AdminInovasiPage() {
     }
   }, [authState.isAuthenticated, authState.isLoading, router]);
 
+  // Load categories from localStorage on mount
+  useEffect(() => {
+    const stored = loadCategories();
+    setCategories(stored);
+  }, []);
+
   useEffect(() => {
     if (authState.isAuthenticated) {
       fetchActivities();
     }
   }, [authState.isAuthenticated]);
+
+  // ---- Category management ----
+
+  const addCategory = useCallback(() => {
+    const trimmed = newCategoryInput.trim();
+    if (!trimmed) return;
+    if (categories.some((c) => c.toLowerCase() === trimmed.toLowerCase())) {
+      toast({
+        title: "Duplikat",
+        description: `Kategori "${trimmed}" sudah ada.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    const updated = [...categories, trimmed];
+    setCategories(updated);
+    saveCategories(updated);
+    setNewCategoryInput("");
+    toast({
+      title: "Berhasil",
+      description: `Kategori "${trimmed}" berhasil ditambahkan.`,
+    });
+  }, [newCategoryInput, categories, toast]);
+
+  const removeCategory = useCallback(
+    (cat: string) => {
+      const updated = categories.filter((c) => c !== cat);
+      setCategories(updated);
+      saveCategories(updated);
+      setRemoveCategoryConfirm(null);
+      // If the currently selected form category is the removed one, reset it
+      setFormData((prev) => {
+        if (prev.category === cat) {
+          return { ...prev, category: updated[0] || "" };
+        }
+        return prev;
+      });
+      toast({
+        title: "Berhasil",
+        description: `Kategori "${cat}" berhasil dihapus.`,
+      });
+    },
+    [categories, toast]
+  );
+
+  // ---- Activity CRUD ----
 
   const fetchActivities = async () => {
     try {
@@ -162,7 +242,17 @@ export default function AdminInovasiPage() {
           description: editingId ? "Kegiatan berhasil diperbarui" : "Kegiatan berhasil ditambahkan",
         });
         setIsDialogOpen(false);
-        setFormData(initialFormData);
+        setFormData({
+          title: "",
+          description: "",
+          content: "",
+          photo: "",
+          location: "",
+          date: "",
+          category: categories[0] || DEFAULT_CATEGORIES[0],
+          isPublished: true,
+          author: "",
+        });
         setEditingId(null);
         fetchActivities();
       } else {
@@ -234,7 +324,17 @@ export default function AdminInovasiPage() {
 
   const openAddDialog = () => {
     setEditingId(null);
-    setFormData(initialFormData);
+    setFormData({
+      title: "",
+      description: "",
+      content: "",
+      photo: "",
+      location: "",
+      date: "",
+      category: categories[0] || DEFAULT_CATEGORIES[0],
+      isPublished: true,
+      author: "",
+    });
     setIsDialogOpen(true);
   };
 
@@ -246,6 +346,15 @@ export default function AdminInovasiPage() {
       year: "numeric",
     });
   };
+
+  // Count activities per category for display
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const a of activities) {
+      counts[a.category] = (counts[a.category] || 0) + 1;
+    }
+    return counts;
+  }, [activities]);
 
   if (authState.isLoading) {
     return (
@@ -273,6 +382,76 @@ export default function AdminInovasiPage() {
             Tambah Kegiatan
           </Button>
         </div>
+
+        {/* Category Management Section */}
+        <Card>
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-2">
+              <Tag className="h-5 w-5 text-green-700" />
+              <CardTitle className="text-base">Kelola Kategori</CardTitle>
+              <Badge variant="secondary" className="ml-auto">
+                {categories.length} kategori
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Add new category */}
+            <div className="flex gap-2">
+              <Input
+                value={newCategoryInput}
+                onChange={(e) => setNewCategoryInput(e.target.value)}
+                placeholder="Nama kategori baru..."
+                className="max-w-xs"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addCategory();
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addCategory}
+                disabled={!newCategoryInput.trim()}
+                className="border-green-600 text-green-700 hover:bg-green-50"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Tambah
+              </Button>
+            </div>
+
+            {/* Category badges */}
+            <div className="flex flex-wrap gap-2">
+              {categories.map((cat) => (
+                <Badge
+                  key={cat}
+                  variant="outline"
+                  className="px-3 py-1.5 text-sm font-medium flex items-center gap-1.5 hover:bg-red-50 hover:border-red-200 group"
+                >
+                  <span>{cat}</span>
+                  <span className="text-xs text-gray-400 font-normal">
+                    ({categoryCounts[cat] || 0})
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setRemoveCategoryConfirm(cat)}
+                    className="ml-0.5 inline-flex items-center justify-center h-4 w-4 rounded-full text-gray-400 hover:text-red-600 hover:bg-red-100 transition-colors"
+                    aria-label={`Hapus kategori ${cat}`}
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              ))}
+              {categories.length === 0 && (
+                <p className="text-sm text-gray-400">
+                  Belum ada kategori. Tambahkan kategori pertama Anda.
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Activities Table */}
         <Card>
@@ -461,16 +640,27 @@ export default function AdminInovasiPage() {
                   onValueChange={(value) => setFormData({ ...formData, category: value })}
                 >
                   <SelectTrigger>
-                    <SelectValue />
+                    <SelectValue placeholder="Pilih kategori" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
-                        {cat}
+                    {categories.length > 0 ? (
+                      categories.map((cat) => (
+                        <SelectItem key={cat} value={cat}>
+                          {cat}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="Lainnya" disabled>
+                        Tidak ada kategori tersedia
                       </SelectItem>
-                    ))}
+                    )}
                   </SelectContent>
                 </Select>
+                {categories.length === 0 && (
+                  <p className="text-xs text-amber-600">
+                    Tambahkan kategori di bagian &quot;Kelola Kategori&quot; di atas.
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -523,15 +713,15 @@ export default function AdminInovasiPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Delete Activity Confirmation Dialog */}
       <Dialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Konfirmasi Hapus</DialogTitle>
+            <DialogDescription>
+              Apakah Anda yakin ingin menghapus kegiatan ini? Tindakan ini tidak dapat dibatalkan.
+            </DialogDescription>
           </DialogHeader>
-          <p className="text-gray-600">
-            Apakah Anda yakin ingin menghapus kegiatan ini? Tindakan ini tidak dapat dibatalkan.
-          </p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteConfirm(null)}>
               Batal
@@ -541,6 +731,38 @@ export default function AdminInovasiPage() {
               onClick={() => deleteConfirm && handleDelete(deleteConfirm)}
             >
               Hapus
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Remove Category Confirmation Dialog */}
+      <Dialog open={!!removeCategoryConfirm} onOpenChange={() => setRemoveCategoryConfirm(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              Hapus Kategori
+            </DialogTitle>
+            <DialogDescription>
+              Apakah Anda yakin ingin menghapus kategori &quot;{removeCategoryConfirm}&quot;?
+              {categoryCounts[removeCategoryConfirm || ""] ? (
+                <span className="block mt-1 text-amber-600 font-medium">
+                  Ada {categoryCounts[removeCategoryConfirm || ""]} kegiatan yang menggunakan
+                  kategori ini. Kategori pada kegiatan tersebut tidak akan berubah.
+                </span>
+              ) : null}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRemoveCategoryConfirm(null)}>
+              Batal
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => removeCategoryConfirm && removeCategory(removeCategoryConfirm)}
+            >
+              Hapus Kategori
             </Button>
           </DialogFooter>
         </DialogContent>

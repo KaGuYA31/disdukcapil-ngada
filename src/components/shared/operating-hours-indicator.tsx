@@ -13,12 +13,12 @@ const WITA_TZ = "Asia/Makassar";
 const OPEN_HOUR = 8;
 const OPEN_MINUTE = 0;
 const CLOSE_HOUR = 15;
-const CLOSE_MINUTE = 30;
+const CLOSE_MINUTE = 0;
 const CHECK_INTERVAL_MS = 60_000;
 
 /**
  * Returns whether the office is currently open based on WITA time.
- * Weekdays (Mon=1 .. Fri=5) 08:00–15:30 WITA.
+ * Weekdays (Mon=1 .. Fri=5) 08:00–15:00 WITA.
  */
 function getIsOpen(): boolean {
   const now = new Date();
@@ -113,7 +113,7 @@ export function OperatingHoursIndicator() {
       </TooltipTrigger>
       <TooltipContent side="bottom" sideOffset={6}>
         <p className="font-medium">Jam Operasional</p>
-        <p className="text-white/80 mt-0.5">Senin – Jumat: 08.00 – 15.30 WITA</p>
+        <p className="text-white/80 mt-0.5">Senin – Jumat: 08.00 – 15.00 WITA</p>
       </TooltipContent>
     </Tooltip>
   );

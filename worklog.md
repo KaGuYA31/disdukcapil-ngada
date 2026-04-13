@@ -1,4 +1,229 @@
 ---
+Task ID: 7
+Agent: Main Coordinator
+Task: Add dynamic inovasi category management in admin + public category filters
+
+Work Log:
+- Read worklog.md for project context (Rounds 2-17+ complete, site stable)
+- Read admin/inovasi/page.tsx (hardcoded categories: Jemput Bola, Sosialisasi, Pelayanan Keliling, Konsultasi, Lainnya)
+- Read inovasi/page.tsx (public listing, no category filters)
+- Read inovasi/[id]/page.tsx (detail page, no changes needed)
+- Read api/inovasi/route.ts (GET returns data + pagination, no categories field)
+
+CHANGES MADE:
+
+1. Inovasi API (`/api/inovasi/route.ts`):
+   - Added `db.inovasi.groupBy({ by: ["category"] })` query in parallel with findMany + count
+   - Returns `categories: string[]` field in GET list response
+   - Categories sorted alphabetically, filtered for non-null values
+   - Only returns categories from published items
+
+2. Admin Inovasi Page (`/admin/inovasi/page.tsx`):
+   - Removed hardcoded `categories` constant
+   - Added dynamic category state managed via localStorage (key: "inovasi_categories")
+   - Default categories preserved as fallback: Jemput Bola, Sosialisasi, Pelayanan Keliling, Konsultasi, Lainnya
+   - New "Kelola Kategori" Card section at top with:
+     - Tag icon + category count badge in header
+     - Input field + "Tambah" button to add new categories
+     - Enter key support for adding categories
+     - Duplicate detection with toast warning
+     - Category badges showing name + activity count (e.g., "Jemput Bola (3)")
+     - X button on each badge to remove (opens confirmation dialog)
+     - Empty state message when no categories exist
+   - New "Hapus Kategori" confirmation dialog with:
+     - AlertTriangle warning icon
+     - Shows if activities are using the category (with count)
+     - Warns that existing activities' categories won't be affected
+   - Form dialog category dropdown now uses dynamic categories
+   - Shows warning text when no categories exist
+   - Form default category resets to first available when current is removed
+   - Added DialogDescription to delete dialogs for accessibility
+
+3. Public Inovasi Page (`/inovasi/page.tsx`):
+   - Fetches categories from API response (`data.categories`)
+   - Stores allActivities separately for filtering
+   - Category filter buttons appear only when >1 category exists
+   - "Semua" button with total count as default active filter
+   - Per-category buttons with count badges
+   - Active filter: green background (bg-green-700), inactive: outline with hover green
+   - Count badges styled differently for active (white) vs inactive (gray)
+   - Filtered empty state with "Lihat Semua Kegiatan" button
+   - Category badge overlay on card images when filtering is active
+   - Hero description updated to be more generic (removed "Jemput Bola" specificity)
+
+FILES MODIFIED:
+- /home/z/my-project/src/app/api/inovasi/route.ts (added groupBy + categories field)
+- /home/z/my-project/src/app/admin/inovasi/page.tsx (complete rewrite with category management)
+- /home/z/my-project/src/app/inovasi/page.tsx (added category filters)
+
+FILES READ (no changes needed):
+- /home/z/my-project/src/app/inovasi/[id]/page.tsx
+
+Verification:
+- ESLint: 0 new errors (2 pre-existing in prisma-generated db.ts)
+- No database schema changes required
+- localStorage persistence ensures categories survive page reloads
+- Default categories always available as fallback
+
+Stage Summary:
+- 1 API enhancement (categories field in GET response via groupBy)
+- 1 admin page enhanced (dynamic category management with add/remove/confirm)
+- 1 public page enhanced (category filter buttons with counts)
+- All shadcn/ui components used (Card, Button, Input, Badge, Dialog, DialogDescription, Select)
+- Zero blue/purple colors (green/amber/gray palette throughout)
+
+---
+Task ID: 5
+Agent: Main Coordinator
+Task: Enable multiple photo uploads for Berita and Inovasi pages
+
+Work Log:
+- Read worklog.md for project context (Rounds 2-17+ complete, Supabase connected)
+- Read prisma/schema.prisma (Berita model with thumbnail, Inovasi model with photo)
+- Read admin pages, API routes, public detail pages, ImageUpload component
+
+CHANGES MADE:
+
+1. Prisma Schema (prisma/schema.prisma):
+   - Added `photos String?` to Berita model (JSON string array of additional photo URLs)
+   - Added `photos String?` to Inovasi model (JSON string array of additional photo URLs)
+   - Existing thumbnail/photo fields preserved for backward compatibility
+   - Generated Prisma client successfully
+
+2. API Routes - Berita:
+   - /api/berita/route.ts (POST): Accepts `photos` array, saves as JSON.stringify
+   - /api/berita/[slug]/route.ts (PUT): Accepts `photos` array, saves as JSON.stringify
+
+3. API Routes - Inovasi:
+   - /api/inovasi/route.ts (POST + PUT): Accepts `photos` array, saves as JSON.stringify
+
+4. Admin Berita Page (src/app/admin/berita/page.tsx):
+   - Added `photos: string[]` to formData state and NewsItem interface
+   - Added X icon import, helper functions: addPhotoSlot, removePhotoSlot, updatePhotoSlot
+   - Added "Foto Tambahan" section with "Tambah Foto" button and dynamic ImageUpload slots
+
+5. Admin Inovasi Page (src/app/admin/inovasi/page.tsx):
+   - Same multi-photo upload pattern as Berita
+   - Added to FormData interface, initialFormData, Inovasi interface
+   - "Foto Tambahan" section spanning full width in grid
+
+6. Public Berita Detail (news-detail.tsx):
+   - Added `photos` to NewsItem interface, Images icon import
+   - Photo gallery section below social share bar with framer-motion animations
+   - Responsive grid: 2 cols mobile, 3 cols desktop
+
+7. Public Inovasi Detail (inovasi/[id]/page.tsx):
+   - Added `photos` to InovasiDetail interface, Images icon import
+   - Photo gallery section below main content with next/image
+
+FILES MODIFIED (8 total):
+- prisma/schema.prisma, src/app/api/berita/route.ts, src/app/api/berita/[slug]/route.ts
+- src/app/api/inovasi/route.ts, src/app/admin/berita/page.tsx, src/app/admin/inovasi/page.tsx
+- src/components/sections/berita/news-detail.tsx, src/app/inovasi/[id]/page.tsx
+
+Verification:
+- ESLint: 0 new errors (2 pre-existing in prisma-generated db.ts)
+- Prisma client generated successfully
+- Backward compatible (existing thumbnail/photo fields preserved)
+
+Stage Summary:
+- 2 new schema fields (photos on Berita + Inovasi)
+- 4 API route handlers updated (berita POST/PUT + inovasi POST/PUT)
+- 2 admin pages enhanced with multi-photo upload (Foto Tambahan section)
+- 2 public detail pages enhanced with photo gallery display
+- Zero blue/purple colors (green/gray palette throughout)
+
+---
+Task ID: 6
+Agent: Main Coordinator
+Task: Add Excel template upload feature for bulk population data changes in the admin panel
+
+Work Log:
+- Read worklog.md for project context (Rounds 2-17+ complete, Supabase connected)
+- Read admin/statistik/page.tsx (manual input form for population data)
+- Read prisma/schema.prisma (PendudukKecamatan, UploadHistory, and 24 other tables)
+- Confirmed xlsx package installed (v0.18.5)
+
+NEW FEATURES:
+
+1. Excel Import API Route (`/api/admin/statistik/import-excel/route.ts`):
+   - POST handler: Accepts FormData with Excel file + type parameter
+   - Validates file format (.xlsx/.xls only), size (max 5MB), and content (non-empty)
+   - Parses Excel using `xlsx` library (sheet_to_json with Record<string,unknown>)
+   - Supports `pendudukKecamatan` import type with extensible pattern for future types
+   - Validates required column headers: kodeKec, kecamatan, lakiLaki, perempuan, total, rasioJK, periode
+   - Per-row validation: kodeKec/kecamatan required, non-negative numbers
+   - Skips invalid rows, reports them back in response
+   - Deletes old PendudukKecamatan records matching the imported period before inserting
+   - Batch inserts new records (50 per batch) for performance
+   - Logs upload to UploadHistory table (fileName, periode, totalRecords, uploadedBy)
+   - GET handler: Generates downloadable Excel template with 2 sample rows and proper column widths
+
+2. Admin Statistik Page Enhancement (`/admin/statistik/page.tsx`):
+   - Added "Import Data Excel" card section above the existing manual input form
+   - Drag & drop file upload area with visual states:
+     - Default: dashed border with upload icon + instructions
+     - Drag over: green highlighted border
+     - File selected: file name + size display with green border
+   - "Download Template" button in card header (green outline, Download icon)
+   - Column header info section showing required fields as Badge components (font-mono)
+   - Import progress/status with 4 states:
+     - idle: "Import Data" button + "Hapus file" option
+     - uploading: disabled button with spinner
+     - success: green checkmark + imported count + period + retry option
+     - error: red X + retry option
+   - Toast notifications for all actions (download, import success, import failure)
+   - Client-side file validation: .xlsx/.xls only, max 5MB
+   - Full dark mode support on all new elements (dark: variants on borders, backgrounds, text)
+   - Existing manual input form and save button preserved below
+
+3. Template Download Feature:
+   - API returns binary .xlsx file with Content-Disposition header
+   - Frontend creates blob URL, triggers download via programmatic anchor click
+   - Template includes 2 sample rows (Aesesa + Bajawa kecamatan with realistic data)
+   - Column widths pre-configured for readability
+
+FILES CREATED:
+- /home/z/my-project/src/app/api/admin/statistik/import-excel/route.ts (248 lines)
+
+FILES MODIFIED:
+- /home/z/my-project/src/app/admin/statistik/page.tsx (expanded from 405 to ~430 lines with import UI)
+
+Verification:
+- ESLint: 0 new errors (2 pre-existing in db.ts)
+- No prisma schema changes (reads/writes to existing PendudukKecamatan + UploadHistory tables)
+- API route follows existing patterns (NextRequest/NextResponse, db import from @/lib/db)
+
+Stage Summary:
+- 1 new API route (import-excel with GET template download + POST file import)
+- 1 admin page enhanced (drag & drop upload, template download, status indicators, dark mode)
+- Excel import: validates headers + rows, batch insert, period-based data replacement, upload logging
+- Template download: programmatic blob download with sample data
+- All shadcn/ui components used (Card, Button, Input, Label, Alert, Badge)
+- Zero blue/purple colors (green/teal/amber palette throughout)
+
+---
+Task ID: 3
+Agent: frontend-expert
+Task: Add Bupati & Wakil Bupati photo section to homepage hero
+
+Work Log:
+- Read hero-section.tsx to understand existing Kadis card structure
+- Added two small profile cards below the Kadis card in a 2-column grid
+- Bupati card: amber gradient placeholder icon (Building2), 64x64 photo size, rotating conic-gradient border
+- Wakil Bupati card: teal gradient placeholder icon (Users), 64x64 photo size, rotating conic-gradient border
+- Both cards use glass-morphism styling (bg-white/10 backdrop-blur-md border-white/20)
+- Both cards only visible on lg: screens (inside existing hidden lg:flex container)
+- Placeholder names: "Bupati Kabupaten Ngada" and "Wakil Bupati Kabupaten Ngada"
+
+Stage Summary:
+- Bupati and Wakil Bupati photo placeholders added to hero section below Kadis card
+- Only visible on lg screens (same as Kadis card)
+- Same design language: glass-morphism cards, rotating border animation, gradient placeholder icons
+- Smaller photo size (64x64 vs 128x128 for Kadis)
+- ESLint: 0 new errors (2 pre-existing in prisma-generated db.ts)
+
+---
 Task ID: round-17-styling-features-ux
 Agent: Main Coordinator
 Task: Round 17 - Styling polish, new features, UX enhancements

@@ -1,13 +1,27 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Loader2, Users, IdCard, Baby, FileText, AlertCircle } from "lucide-react";
+import {
+  Save,
+  Loader2,
+  Users,
+  IdCard,
+  Baby,
+  FileText,
+  AlertCircle,
+  Upload,
+  Download,
+  FileSpreadsheet,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -39,12 +53,25 @@ const initialData: StatistikData = {
   kiaBelum: 0,
 };
 
+type ImportStatus = "idle" | "uploading" | "success" | "error";
+
 export default function AdminStatistikPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [data, setData] = useState<StatistikData>(initialData);
+
+  // Import state
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [importStatus, setImportStatus] = useState<ImportStatus>("idle");
+  const [importResult, setImportResult] = useState<{
+    imported: number;
+    period: string;
+    errors?: string[];
+  } | null>(null);
+  const [dragOver, setDragOver] = useState(false);
 
   // Auth check
   const authState = useMemo(() => {
@@ -174,6 +201,137 @@ export default function AdminStatistikPage() {
     }
   };
 
+  // ======== EXCEL IMPORT FUNCTIONS ========
+
+  const handleDownloadTemplate = async () => {
+    try {
+      const response = await fetch("/api/admin/statistik/import-excel");
+      if (!response.ok) {
+        throw new Error("Gagal mengunduh template");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "template_penduduk_kecamatan.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast({
+        title: "Template berhasil diunduh",
+        description: "Isi data sesuai kolom yang tersedia, lalu unggah kembali.",
+      });
+    } catch (error) {
+      console.error("Error downloading template:", error);
+      toast({
+        title: "Gagal mengunduh template",
+        description: "Terjadi kesalahan saat mengunduh template Excel",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleFileSelect = (file: File | undefined) => {
+    if (!file) return;
+
+    if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
+      toast({
+        title: "Format tidak didukung",
+        description: "Harap unggah file dengan format .xlsx atau .xls",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Ukuran file terlalu besar",
+        description: "Ukuran file maksimal 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSelectedFile(file);
+    setImportStatus("idle");
+    setImportResult(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    handleFileSelect(file);
+  };
+
+  const handleImport = async () => {
+    if (!selectedFile) return;
+
+    try {
+      setImportStatus("uploading");
+      setImportResult(null);
+
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("type", "pendudukKecamatan");
+
+      const response = await fetch("/api/admin/statistik/import-excel", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setImportStatus("success");
+        setImportResult(result.data);
+        toast({
+          title: "Import berhasil",
+          description: `${result.data.imported} data kecamatan berhasil diimpor`,
+        });
+        // Refresh data
+        fetchData();
+      } else {
+        setImportStatus("error");
+        toast({
+          title: "Import gagal",
+          description: result.error || "Terjadi kesalahan saat mengimpor data",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error importing Excel:", error);
+      setImportStatus("error");
+      toast({
+        title: "Import gagal",
+        description: "Terjadi kesalahan saat mengimpor data",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const resetImport = () => {
+    setSelectedFile(null);
+    setImportStatus("idle");
+    setImportResult(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   if (authState.isLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -191,8 +349,8 @@ export default function AdminStatistikPage() {
       <div className="space-y-6">
         {/* Page Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Kelola Data Kependudukan</h1>
-          <p className="text-gray-500">Edit data kependudukan yang ditampilkan di website</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Kelola Data Kependudukan</h1>
+          <p className="text-gray-500 dark:text-gray-400">Edit data kependudukan yang ditampilkan di website</p>
         </div>
 
         {/* Info Alert */}
@@ -205,7 +363,152 @@ export default function AdminStatistikPage() {
           </AlertDescription>
         </Alert>
 
-        {/* Form */}
+        {/* ======== EXCEL IMPORT SECTION ======== */}
+        <Card className="border-green-200 dark:border-green-800">
+          <CardHeader className="pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <FileSpreadsheet className="h-5 w-5 text-green-700 dark:text-green-400" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Import Data Excel</CardTitle>
+                  <CardDescription>
+                    Unggah file Excel untuk memperbarui data penduduk per kecamatan secara massal
+                  </CardDescription>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDownloadTemplate}
+                className="border-green-300 text-green-700 hover:bg-green-50 dark:border-green-700 dark:text-green-400 dark:hover:bg-green-900/20"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Download Template
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Drag & Drop Area */}
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className={`
+                relative border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer
+                ${
+                  dragOver
+                    ? "border-green-500 bg-green-50 dark:bg-green-900/10"
+                    : selectedFile
+                      ? "border-green-400 bg-green-50/50 dark:bg-green-900/5"
+                      : "border-gray-300 dark:border-gray-600 hover:border-green-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                }
+              `}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".xlsx,.xls"
+                className="hidden"
+                onChange={(e) => handleFileSelect(e.target.files?.[0])}
+              />
+
+              {selectedFile ? (
+                <div className="flex items-center justify-center gap-3">
+                  <FileSpreadsheet className="h-8 w-8 text-green-600" />
+                  <div className="text-left">
+                    <p className="font-medium text-gray-900 dark:text-gray-100">{selectedFile.name}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {(selectedFile.size / 1024).toFixed(1)} KB
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Seret & lepas file Excel di sini, atau <span className="text-green-600 dark:text-green-400 font-medium">klik untuk memilih file</span>
+                  </p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                    Format: .xlsx, .xls — Maks: 5MB
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Column Info */}
+            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
+              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Kolom yang diperlukan:</p>
+              <div className="flex flex-wrap gap-1.5">
+                {["kodeKec", "kecamatan", "lakiLaki", "perempuan", "total", "rasioJK", "periode"].map((col) => (
+                  <Badge key={col} variant="secondary" className="text-xs font-mono">
+                    {col}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Import Actions & Result */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              {selectedFile && importStatus === "idle" && (
+                <Button
+                  onClick={handleImport}
+                  className="bg-green-700 hover:bg-green-800 text-white"
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  Import Data
+                </Button>
+              )}
+
+              {importStatus === "uploading" && (
+                <Button disabled className="bg-green-700 text-white">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Mengimpor...
+                </Button>
+              )}
+
+              {importStatus === "success" && importResult && (
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full">
+                  <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
+                    <CheckCircle2 className="h-5 w-5" />
+                    <span className="font-medium text-sm">
+                      {importResult.imported} data berhasil diimpor
+                      {importResult.period ? ` (Periode: ${importResult.period})` : ""}
+                    </span>
+                  </div>
+                  {importResult.errors && importResult.errors.length > 0 && (
+                    <div className="text-xs text-amber-600 dark:text-amber-400 mt-1 sm:mt-0">
+                      {importResult.errors.length} baris dilewati karena error
+                    </div>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={resetImport} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    Import lagi
+                  </Button>
+                </div>
+              )}
+
+              {importStatus === "error" && (
+                <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
+                  <XCircle className="h-5 w-5" />
+                  <span className="font-medium text-sm">Import gagal. Periksa format file dan coba lagi.</span>
+                  <Button variant="ghost" size="sm" onClick={resetImport} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    Coba lagi
+                  </Button>
+                </div>
+              )}
+
+              {selectedFile && importStatus === "idle" && (
+                <Button variant="ghost" size="sm" onClick={resetImport} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  Hapus file
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ======== MANUAL INPUT FORM ======== */}
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Data Penduduk */}
           <Card>
@@ -285,8 +588,8 @@ export default function AdminStatistikPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               {/* E-KTP */}
-              <div className="p-4 bg-green-50 rounded-lg space-y-3">
-                <div className="flex items-center gap-2 font-semibold text-green-800">
+              <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg space-y-3">
+                <div className="flex items-center gap-2 font-semibold text-green-800 dark:text-green-300">
                   <IdCard className="h-5 w-5" />
                   E-KTP
                 </div>
@@ -308,7 +611,7 @@ export default function AdminStatistikPage() {
                     />
                   </div>
                 </div>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Cakupan: {data.ektpCetak + data.ektpBelum > 0 
                     ? ((data.ektpCetak / (data.ektpCetak + data.ektpBelum)) * 100).toFixed(1) 
                     : 0}%
@@ -316,8 +619,8 @@ export default function AdminStatistikPage() {
               </div>
 
               {/* Akta Kelahiran */}
-              <div className="p-4 bg-teal-50 rounded-lg space-y-3">
-                <div className="flex items-center gap-2 font-semibold text-teal-800">
+              <div className="p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg space-y-3">
+                <div className="flex items-center gap-2 font-semibold text-teal-800 dark:text-teal-300">
                   <FileText className="h-5 w-5" />
                   Akta Kelahiran
                 </div>
@@ -339,7 +642,7 @@ export default function AdminStatistikPage() {
                     />
                   </div>
                 </div>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Cakupan: {data.aktaLahir + data.aktaBelum > 0 
                     ? ((data.aktaLahir / (data.aktaLahir + data.aktaBelum)) * 100).toFixed(1) 
                     : 0}%
@@ -347,8 +650,8 @@ export default function AdminStatistikPage() {
               </div>
 
               {/* KIA */}
-              <div className="p-4 bg-amber-50 rounded-lg space-y-3">
-                <div className="flex items-center gap-2 font-semibold text-amber-800">
+              <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg space-y-3">
+                <div className="flex items-center gap-2 font-semibold text-amber-800 dark:text-amber-300">
                   <Baby className="h-5 w-5" />
                   KIA (Kartu Identitas Anak)
                 </div>
@@ -370,7 +673,7 @@ export default function AdminStatistikPage() {
                     />
                   </div>
                 </div>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Cakupan: {data.kiaMiliki + data.kiaBelum > 0 
                     ? ((data.kiaMiliki / (data.kiaMiliki + data.kiaBelum)) * 100).toFixed(1) 
                     : 0}%

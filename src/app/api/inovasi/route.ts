@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    const [inovasi, total] = await Promise.all([
+    const [inovasi, total, categoriesResult] = await Promise.all([
       db.inovasi.findMany({
         where,
         orderBy: { date: "desc" },
@@ -60,11 +60,21 @@ export async function GET(request: NextRequest) {
         take: limit,
       }),
       db.inovasi.count({ where }),
+      db.inovasi.groupBy({
+        by: ["category"],
+        where: { isPublished: true },
+        orderBy: { category: "asc" },
+      }),
     ]);
+
+    const categories = categoriesResult
+      .map((r) => r.category)
+      .filter(Boolean);
 
     return NextResponse.json({
       success: true,
       data: inovasi,
+      categories,
       pagination: {
         total,
         page,
@@ -90,6 +100,7 @@ export async function POST(request: NextRequest) {
       description,
       content,
       photo,
+      photos,
       location,
       date,
       category,
@@ -123,6 +134,7 @@ export async function POST(request: NextRequest) {
         description,
         content,
         photo: photo || null,
+        photos: photos && Array.isArray(photos) && photos.length > 0 ? JSON.stringify(photos) : null,
         location: location || null,
         date: date ? new Date(date) : null,
         category: category || "Jemput Bola",
@@ -155,6 +167,7 @@ export async function PUT(request: NextRequest) {
       description,
       content,
       photo,
+      photos,
       location,
       date,
       category,
@@ -199,6 +212,7 @@ export async function PUT(request: NextRequest) {
         description: description || existing.description,
         content: content || existing.content,
         photo: photo !== undefined ? photo : existing.photo,
+        photos: photos !== undefined ? (Array.isArray(photos) && photos.length > 0 ? JSON.stringify(photos) : null) : existing.photos,
         location: location !== undefined ? location : existing.location,
         date: date ? new Date(date) : existing.date,
         category: category || existing.category,

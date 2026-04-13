@@ -50,7 +50,7 @@ export async function PUT(
   try {
     const { slug } = await params;
     const body = await request.json();
-    const { title, excerpt, content, category, thumbnail, author, isPublished } = body;
+    const { title, excerpt, content, category, thumbnail, photos, author, isPublished } = body;
 
     // Find news by slug or id
     let existing = await db.berita.findUnique({
@@ -94,6 +94,7 @@ export async function PUT(
         ...(content && { content }),
         ...(category && { category }),
         ...(thumbnail !== undefined && { thumbnail }),
+        ...(photos !== undefined && { photos: Array.isArray(photos) && photos.length > 0 ? JSON.stringify(photos) : null }),
         ...(author !== undefined && { author }),
         ...(isPublished !== undefined && { isPublished }),
       },

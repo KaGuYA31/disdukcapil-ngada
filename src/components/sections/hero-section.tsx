@@ -188,7 +188,7 @@ export function HeroSection() {
         <Globe className="h-[500px] w-[500px] text-white" strokeWidth={0.5} />
       </div>
 
-      {/* Visitor Counter Badge - Real-time Data */}
+      {/* Visitor Counter Badge */}
       <motion.div
         className="hidden lg:flex absolute top-6 right-6 z-10 items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-4 py-2 border border-white/20"
         initial={{ opacity: 0, x: 20 }}
@@ -203,7 +203,7 @@ export function HeroSection() {
           <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
           <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400" />
         </motion.span>
-        <span className="text-sm font-medium text-green-100">Data Kependudukan Real-time</span>
+        <span className="text-sm font-medium text-green-100">Data Kependudukan</span>
       </motion.div>
 
       <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32 relative">
@@ -431,6 +431,53 @@ export function HeroSection() {
                       Komitmen kami untuk pelayanan terbaik
                     </p>
                   </div>
+                </div>
+              </div>
+
+              {/* Bupati & Wakil Bupati Cards */}
+              <div className="grid grid-cols-2 gap-3 mt-4">
+                {/* Bupati Card */}
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 shadow-lg shadow-black/10 text-center hover:bg-white/15 transition-colors">
+                  <div className="w-16 h-16 mx-auto mb-2">
+                    <div className="relative w-full h-full">
+                      <motion.div
+                        className="absolute -inset-0.5 rounded-full"
+                        style={{
+                          background: "conic-gradient(from 0deg, #4ade80, #22d3ee, #facc15, #4ade80)",
+                        }}
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                      />
+                      <div className="absolute inset-0 rounded-full bg-green-800" />
+                      <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-amber-400/30">
+                        <Building2 className="h-8 w-8 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                  <h4 className="font-semibold text-sm leading-tight">Bupati Kabupaten Ngada</h4>
+                  <p className="text-green-200 text-xs mt-0.5">Bupati</p>
+                </div>
+
+                {/* Wakil Bupati Card */}
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 shadow-lg shadow-black/10 text-center hover:bg-white/15 transition-colors">
+                  <div className="w-16 h-16 mx-auto mb-2">
+                    <div className="relative w-full h-full">
+                      <motion.div
+                        className="absolute -inset-0.5 rounded-full"
+                        style={{
+                          background: "conic-gradient(from 0deg, #4ade80, #22d3ee, #facc15, #4ade80)",
+                        }}
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                      />
+                      <div className="absolute inset-0 rounded-full bg-green-800" />
+                      <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-teal-400/30">
+                        <Users className="h-8 w-8 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                  <h4 className="font-semibold text-sm leading-tight">Wakil Bupati Kabupaten Ngada</h4>
+                  <p className="text-green-200 text-xs mt-0.5">Wakil Bupati</p>
                 </div>
               </div>
             </div>

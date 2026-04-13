@@ -21,14 +21,9 @@ export const CONTACT_INFO = {
 
 export const OPERATING_HOURS = {
   weekdays: {
-    days: "Senin - Kamis",
-    hours: "08.00 - 15.30 WITA",
-    shortHours: "08.00 - 15.30",
-  },
-  friday: {
-    days: "Jumat",
-    hours: "08.00 - 16.00 WITA",
-    shortHours: "08.00 - 16.00",
+    days: "Senin - Jumat",
+    hours: "08.00 - 15.00 WITA",
+    shortHours: "08.00 - 15.00",
   },
   saturday: {
     days: "Sabtu",
@@ -40,7 +35,7 @@ export const OPERATING_HOURS = {
     hours: "Tutup",
     shortHours: "Tutup",
   },
-  fullText: "Senin - Kamis: 08.00 - 15.30 WITA, Jumat: 08.00 - 16.00 WITA",
+  fullText: "Senin - Jumat: 08.00 - 15.00 WITA",
 };
 
 export const SOCIAL_MEDIA = {

@@ -16,6 +16,7 @@ import {
   Newspaper,
   ArrowRight,
   Link2 as LinkIcon,
+  Images,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
@@ -39,6 +40,8 @@ interface NewsItem {
   category: string;
   slug: string;
   author: string | null;
+  thumbnail: string | null;
+  photos: string | null;
   viewCount: number;
   createdAt: string;
 }
@@ -256,6 +259,14 @@ export function NewsDetail() {
   const readingTime = getReadingTime(news.content);
   const categoryColor = getCategoryIcon(news.category);
 
+  // Parse additional photos
+  let additionalPhotos: string[] = [];
+  try {
+    additionalPhotos = news.photos ? JSON.parse(news.photos) : [];
+  } catch {
+    additionalPhotos = [];
+  }
+
   return (
     <>
       {/* Hero Banner */}
@@ -413,6 +424,39 @@ export function NewsDetail() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Photo Gallery */}
+                  {additionalPhotos.length > 0 && (
+                    <motion.div
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, margin: "-50px" }}
+                      variants={staggerContainer}
+                      className="mt-8 pt-6 border-t border-gray-200"
+                    >
+                      <motion.div variants={fadeInUp} className="flex items-center gap-2 mb-4">
+                        <Images className="h-5 w-5 text-green-700" />
+                        <h3 className="text-lg font-semibold text-gray-900">Foto Galeri</h3>
+                      </motion.div>
+                      <motion.div
+                        variants={fadeInUp}
+                        className="grid grid-cols-2 md:grid-cols-3 gap-3"
+                      >
+                        {additionalPhotos.map((photo, index) => (
+                          <div
+                            key={index}
+                            className="relative aspect-[4/3] rounded-lg overflow-hidden border border-gray-200 bg-gray-100"
+                          >
+                            <img
+                              src={photo}
+                              alt={`${news.title} - Foto ${index + 1}`}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                        ))}
+                      </motion.div>
+                    </motion.div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>

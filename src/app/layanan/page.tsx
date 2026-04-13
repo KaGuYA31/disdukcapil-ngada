@@ -167,6 +167,7 @@ export default function LayananPage() {
                   </h3>
                   <ul className="text-sm text-green-100 space-y-1.5">
                     <li>• UU No. 24 Tahun 2013 tentang Administrasi Kependudukan</li>
+                    <li>• Permendagri No. 2 Tahun 2026</li>
                     <li>• Permendagri No. 3 Tahun 2024</li>
                     <li>• SE Menpan RB Tahun 2024 - Pelayanan Publik Gratis</li>
                   </ul>
@@ -179,7 +180,7 @@ export default function LayananPage() {
                   <ul className="text-sm text-green-100 space-y-1.5">
                     <li className="flex items-start gap-2">
                       <Clock className="h-3.5 w-3.5 mt-0.5 flex-shrink-0 text-green-300" />
-                      Layanan selesai di tempat (kecuali rekam baru KTP-el)
+                      Layanan selesai di tempat
                     </li>
                     <li>• Bawa dokumen asli dan fotokopi</li>
                     <li>• Datang langsung ke kantor Disdukcapil</li>
@@ -194,8 +195,7 @@ export default function LayananPage() {
               >
                 <p className="text-green-100 text-sm">
                   <strong>Catatan:</strong> Seluruh layanan dapat diselesaikan pada hari yang sama 
-                  selama semua persyaratan terpenuhi. Untuk rekam baru KTP-el, diperlukan waktu 
-                  3-5 hari kerja karena proses perekaman biometrik dan sinkronisasi data ke pusat.
+                  selama semua persyaratan terpenuhi.
                 </p>
               </motion.div>
             </div>

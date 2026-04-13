@@ -11,6 +11,7 @@ import {
   MoreHorizontal,
   Loader2,
   Image as ImageIcon,
+  X,
 } from "lucide-react";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { Card, CardContent } from "@/components/ui/card";
@@ -62,6 +63,7 @@ interface NewsItem {
   isPublished: boolean;
   author: string | null;
   thumbnail: string | null;
+  photos: string | null;
   viewCount: number;
   createdAt: string;
   updatedAt: string;
@@ -87,6 +89,7 @@ function AdminBeritaContent() {
     category: "Informasi",
     isPublished: true,
     thumbnail: "",
+    photos: [] as string[],
   });
 
   // Fetch news from API
@@ -123,6 +126,12 @@ function AdminBeritaContent() {
   const handleOpenDialog = (item?: NewsItem) => {
     if (item) {
       setEditingNews(item);
+      let parsedPhotos: string[] = [];
+      try {
+        parsedPhotos = item.photos ? JSON.parse(item.photos) : [];
+      } catch {
+        parsedPhotos = [];
+      }
       setFormData({
         title: item.title,
         excerpt: item.excerpt || "",
@@ -130,6 +139,7 @@ function AdminBeritaContent() {
         category: item.category,
         isPublished: item.isPublished,
         thumbnail: item.thumbnail || "",
+        photos: parsedPhotos,
       });
     } else {
       setEditingNews(null);
@@ -140,9 +150,29 @@ function AdminBeritaContent() {
         category: "Informasi",
         isPublished: true,
         thumbnail: "",
+        photos: [],
       });
     }
     setIsDialogOpen(true);
+  };
+
+  const addPhotoSlot = () => {
+    setFormData((prev) => ({ ...prev, photos: [...prev.photos, ""] }));
+  };
+
+  const removePhotoSlot = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== index),
+    }));
+  };
+
+  const updatePhotoSlot = (index: number, url: string) => {
+    setFormData((prev) => {
+      const newPhotos = [...prev.photos];
+      newPhotos[index] = url;
+      return { ...prev, photos: newPhotos };
+    });
   };
 
   const handleSave = async () => {
@@ -366,6 +396,51 @@ function AdminBeritaContent() {
                 onChange={(url) => setFormData((prev) => ({ ...prev, thumbnail: url }))}
               />
               <p className="text-xs text-gray-500">Upload foto langsung dari komputer</p>
+            </div>
+            {/* Foto Tambahan */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label>Foto Tambahan</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addPhotoSlot}
+                  className="text-green-700 border-green-300 hover:bg-green-50"
+                >
+                  <Plus className="h-3.5 w-3.5 mr-1" />
+                  Tambah Foto
+                </Button>
+              </div>
+              {formData.photos.length > 0 && (
+                <div className="space-y-3">
+                  {formData.photos.map((photo, index) => (
+                    <div key={index} className="relative group">
+                      <div className="flex items-start gap-2">
+                        <div className="flex-1">
+                          <ImageUpload
+                            value={photo}
+                            onChange={(url) => updatePhotoSlot(index, url)}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="mt-1 shrink-0"
+                          onClick={() => removePhotoSlot(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">Foto {index + 1}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {formData.photos.length === 0 && (
+                <p className="text-xs text-gray-400 italic">Belum ada foto tambahan</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="excerpt">Ringkasan</Label>

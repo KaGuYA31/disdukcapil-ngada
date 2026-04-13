@@ -7,8 +7,7 @@ const quickInfoItems = [
   {
     icon: Clock,
     label: "Jam Operasional",
-    value: "Sen-Kam 08:00-15:30 WITA",
-    subValue: "Jum 08:00-16:00 WITA",
+    value: "Sen-Jum 08:00-15:00 WITA",
   },
   {
     icon: Users,

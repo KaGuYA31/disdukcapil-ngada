@@ -13,6 +13,7 @@ import {
   ArrowLeft,
   Loader2,
   Share2,
+  Images,
 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -25,6 +26,7 @@ interface InovasiDetail {
   description: string;
   content: string;
   photo: string | null;
+  photos: string | null;
   location: string | null;
   date: string | null;
   category: string;
@@ -247,6 +249,40 @@ export default function InovasiDetailPage() {
                   </div>
                 </div>
               )}
+
+              {/* Photo Gallery */}
+              {(() => {
+                let additionalPhotos: string[] = [];
+                try {
+                  additionalPhotos = activity.photos ? JSON.parse(activity.photos) : [];
+                } catch {
+                  additionalPhotos = [];
+                }
+                if (additionalPhotos.length === 0) return null;
+                return (
+                  <div className="mt-8 pt-6 border-t border-gray-200">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Images className="h-5 w-5 text-green-700" />
+                      <h3 className="text-lg font-semibold text-gray-900">Foto Galeri</h3>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {additionalPhotos.map((photo, index) => (
+                        <div
+                          key={index}
+                          className="relative aspect-[4/3] rounded-lg overflow-hidden border border-gray-200 bg-gray-100"
+                        >
+                          <Image
+                            src={photo}
+                            alt={`${activity.title} - Foto ${index + 1}`}
+                            fill
+                            className="object-cover hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </section>

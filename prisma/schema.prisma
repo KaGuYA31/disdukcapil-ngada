@@ -261,6 +261,7 @@ model Berita {
   content     String   @db.Text
   excerpt     String?  @db.Text
   thumbnail   String?
+  photos      String?  // JSON string array of additional photo URLs
   category    String   @default("Umum")
   isPublished Boolean  @default(true)
   authorId    String?
@@ -402,6 +403,7 @@ model Inovasi {
   description String   @db.Text
   content     String   @db.Text
   photo       String?  // URL foto kegiatan
+  photos      String?  // JSON string array of additional photo URLs
   location    String?  // Lokasi kegiatan
   date        DateTime? // Tanggal kegiatan
   category    String   @default("Jemput Bola") // Kategori inovasi

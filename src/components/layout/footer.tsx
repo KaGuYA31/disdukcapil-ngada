@@ -435,7 +435,7 @@ export function Footer() {
               <Clock className="h-4 w-4 text-amber-400 group-hover:text-white transition-colors duration-200" />
             </div>
             <span className="text-sm">
-              Jam Operasional: {OPERATING_HOURS.weekdays.days}, {OPERATING_HOURS.weekdays.hours} | {OPERATING_HOURS.friday.days}: {OPERATING_HOURS.friday.hours}
+              Jam Operasional: {OPERATING_HOURS.weekdays.days}, {OPERATING_HOURS.weekdays.hours} | Sabtu-Minggu: Tutup
             </span>
           </div>
         </div>

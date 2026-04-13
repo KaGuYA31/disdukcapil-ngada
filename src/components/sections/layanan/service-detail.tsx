@@ -579,12 +579,8 @@ function OfficeHours() {
       <CardContent>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-600">Senin - Kamis</span>
-            <span className="font-medium">08.00 - 15.30 WITA</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Jumat</span>
-            <span className="font-medium">08.00 - 16.00 WITA</span>
+            <span className="text-gray-600">Senin - Jumat</span>
+            <span className="font-medium">08.00 - 15.00 WITA</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Sabtu - Minggu</span>

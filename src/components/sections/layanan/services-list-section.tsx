@@ -431,9 +431,7 @@ function ServicesListContent() {
               </p>
               <p className="text-sm text-green-700 mt-1">
                 Seluruh layanan kependudukan dapat diselesaikan pada hari yang
-                sama selama persyaratan sudah lengkap dan benar. Kecuali untuk
-                rekam baru KTP-el yang memerlukan waktu 3-5 hari kerja untuk
-                proses data ke pusat.
+                sama selama persyaratan sudah lengkap dan benar.
               </p>
             </div>
           </div>

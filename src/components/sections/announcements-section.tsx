@@ -30,7 +30,7 @@ const fallbackAnnouncements: AnnouncementItem[] = [
     id: "1",
     title: "Jadwal Pelayanan Bulan Ini",
     content:
-      "Pelayanan Disdukcapil Ngada beroperasi sesuai jadwal: Senin-Kamis 08.00-15.30 WITA, Jumat 08.00-16.00 WITA.",
+      "Pelayanan Disdukcapil Ngada beroperasi sesuai jadwal: Senin-Jumat 08.00-15.00 WITA.",
     type: "Info",
     date: "2024-01-15",
   },
@@ -41,14 +41,6 @@ const fallbackAnnouncements: AnnouncementItem[] = [
       "Akan dilakukan pemeliharaan sistem pada tanggal 20 Januari 2024 pukul 22.00-06.00 WITA. Mohon pengertiannya.",
     type: "Maintenance",
     date: "2024-01-12",
-  },
-  {
-    id: "3",
-    title: "Pendaftaran KTP-el Gratis",
-    content:
-      "Pendaftaran KTP-el untuk pertama kali GRATIS. Pastikan membawa berkas lengkap untuk mempercepat proses.",
-    type: "Info",
-    date: "2024-01-10",
   },
 ];
 
