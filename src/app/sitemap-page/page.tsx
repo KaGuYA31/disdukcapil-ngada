@@ -170,7 +170,7 @@ const sitemapCategories: SitemapCategory[] = [
   },
   {
     title: "Informasi",
-    description: "Berita, statistik, dan informasi publik terkini",
+    description: "Berita, data kependudukan, dan informasi publik terkini",
     links: [
       {
         title: "Berita",
@@ -179,9 +179,9 @@ const sitemapCategories: SitemapCategory[] = [
         icon: Newspaper,
       },
       {
-        title: "Statistik",
+        title: "Data Kependudukan",
         href: "/statistik",
-        description: "Data statistik kependudukan Kabupaten Ngada",
+        description: "Data kependudukan Kabupaten Ngada",
         icon: BarChart3,
       },
       {

@@ -183,14 +183,14 @@ export default function StatistikPage() {
                 variants={staggerContainer}
               >
                 <motion.div variants={fadeInUp} className="mb-4">
-                  <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Statistik Kependudukan" }]} />
+                  <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Data Kependudukan" }]} />
                 </motion.div>
                 <motion.h1
                   variants={fadeInUp}
                   className="text-3xl md:text-4xl font-bold mb-4 flex items-center gap-3"
                 >
                   <BarChart3 className="h-9 w-9 md:h-10 md:w-10 text-green-200" />
-                  Statistik Kependudukan
+                  Data Kependudukan
                 </motion.h1>
                 <motion.p variants={fadeInUp} className="text-green-100 text-lg">
                   Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada

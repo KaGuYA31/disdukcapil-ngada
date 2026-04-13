@@ -58,7 +58,7 @@ const navigation: NavItem[] = [
       { title: "Layanan Online", href: "/layanan-online", description: "Ajukan layanan secara daring" },
     ],
   },
-  { title: "Statistik Kependudukan", href: "/statistik" },
+  { title: "Data Kependudukan", href: "/statistik" },
   { title: "Inovasi", href: "/inovasi" },
   { title: "Berita", href: "/berita" },
   { title: "Pengaduan", href: "/pengaduan" },

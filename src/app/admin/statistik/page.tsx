@@ -94,7 +94,7 @@ export default function AdminStatistikPage() {
       console.error("Error fetching statistik:", error);
       toast({
         title: "Error",
-        description: "Gagal memuat data statistik",
+        description: "Gagal memuat data kependudukan",
         variant: "destructive",
       });
     } finally {
@@ -139,7 +139,7 @@ export default function AdminStatistikPage() {
       if (ringkasanResult.success && dokumenResult.success) {
         toast({
           title: "Berhasil",
-          description: "Data statistik berhasil disimpan",
+          description: "Data kependudukan berhasil disimpan",
         });
         fetchData();
       } else {
@@ -149,7 +149,7 @@ export default function AdminStatistikPage() {
       console.error("Error saving statistik:", error);
       toast({
         title: "Error",
-        description: "Gagal menyimpan data statistik",
+        description: "Gagal menyimpan data kependudukan",
         variant: "destructive",
       });
     } finally {
@@ -191,8 +191,8 @@ export default function AdminStatistikPage() {
       <div className="space-y-6">
         {/* Page Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Kelola Data Statistik</h1>
-          <p className="text-gray-500">Edit data statistik kependudukan yang ditampilkan di website</p>
+          <h1 className="text-2xl font-bold text-gray-900">Kelola Data Kependudukan</h1>
+          <p className="text-gray-500">Edit data kependudukan yang ditampilkan di website</p>
         </div>
 
         {/* Info Alert */}
@@ -200,7 +200,7 @@ export default function AdminStatistikPage() {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Petunjuk</AlertTitle>
           <AlertDescription>
-            Data yang diubah di halaman ini akan langsung ditampilkan di halaman Statistik website. 
+            Data yang diubah di halaman ini akan langsung ditampilkan di halaman Data Kependudukan website. 
             Pastikan data yang dimasukkan sudah benar sebelum menyimpan.
           </AlertDescription>
         </Alert>

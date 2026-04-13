@@ -68,9 +68,9 @@ const staticPages: StaticPage[] = [
     category: "Layanan",
   },
   {
-    id: "statistik",
-    title: "Statistik Kependudukan",
-    description: "Data statistik penduduk Kabupaten Ngada",
+    id: "data-kependudukan",
+    title: "Data Kependudukan",
+    description: "Data kependudukan Kabupaten Ngada",
     href: "/statistik",
     icon: BarChart3,
     category: "Halaman",

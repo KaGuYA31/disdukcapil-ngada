@@ -415,7 +415,7 @@ export default function AdminDashboardPage() {
               <Link href="/admin/statistik">
                 <Button className="w-full bg-green-700 hover:bg-green-800">
                   <FileText className="mr-2 h-4 w-4" />
-                  Kelola Data Statistik
+                  Kelola Data Kependudukan
                 </Button>
               </Link>
               <Link href="/admin/pengaturan">
@@ -439,7 +439,7 @@ export default function AdminDashboardPage() {
               <Link href="/statistik" target="_blank">
                 <Button variant="outline" className="w-full">
                   <Users className="mr-2 h-4 w-4" />
-                  Lihat Statistik Publik
+                  Lihat Data Publik
                 </Button>
               </Link>
             </div>

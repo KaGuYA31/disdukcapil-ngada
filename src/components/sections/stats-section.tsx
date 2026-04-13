@@ -235,7 +235,7 @@ export function StatsSection() {
             Data Kependudukan
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">
-            Ringkasan Statistik
+            Ringkasan Data Kependudukan
           </h2>
           <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
             Data kependudukan Kabupaten Ngada berdasarkan periode terbaru
@@ -277,7 +277,7 @@ export function StatsSection() {
             href="/statistik"
             className="inline-flex items-center gap-2 text-green-700 hover:text-green-800 font-medium transition-colors"
           >
-            Lihat Statistik Lengkap
+            Lihat Data Lengkap
             <ArrowRight className="h-4 w-4" />
           </Link>
         </motion.div>

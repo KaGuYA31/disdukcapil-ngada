@@ -52,7 +52,7 @@ const datasets = [
     description: "Data demografis penduduk berdasarkan kecamatan",
   },
   {
-    title: "Statistik KTP-el",
+    title: "Data KTP-el",
     icon: CreditCard,
     theme: "emerald",
     bgIcon: "bg-emerald-100",
@@ -61,7 +61,7 @@ const datasets = [
     description: "Data pembuatan dan penerbitan KTP-el",
   },
   {
-    title: "Statistik Akta Kelahiran",
+    title: "Data Akta Kelahiran",
     icon: Baby,
     theme: "amber",
     bgIcon: "bg-amber-100",
@@ -70,7 +70,7 @@ const datasets = [
     description: "Data pencatatan akta kelahiran",
   },
   {
-    title: "Statistik Kartu Keluarga",
+    title: "Data Kartu Keluarga",
     icon: Users,
     theme: "rose",
     bgIcon: "bg-rose-100",
@@ -79,7 +79,7 @@ const datasets = [
     description: "Data kepemilikan dan pembuatan KK",
   },
   {
-    title: "Statistik Perpindahan",
+    title: "Data Perpindahan Penduduk",
     icon: MoveRight,
     theme: "teal",
     bgIcon: "bg-teal-100",
@@ -88,7 +88,7 @@ const datasets = [
     description: "Data perpindahan penduduk",
   },
   {
-    title: "Statistik Akta Perkawinan",
+    title: "Data Akta Perkawinan",
     icon: Heart,
     theme: "amber",
     bgIcon: "bg-amber-100",
@@ -121,7 +121,7 @@ export default function OpenDataPage() {
                   <Breadcrumb
                     items={[
                       { label: "Beranda", href: "/" },
-                      { label: "Info Kependudukan", href: "/statistik" },
+                      { label: "Data Kependudukan", href: "/statistik" },
                       { label: "Open Data" },
                     ]}
                   />

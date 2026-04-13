@@ -41,7 +41,7 @@ const menuItems: AdminMenuItem[] = [
     icon: LayoutDashboard,
   },
   {
-    title: "Data Statistik",
+    title: "Data Kependudukan",
     href: "/admin/statistik",
     icon: BarChart3,
   },

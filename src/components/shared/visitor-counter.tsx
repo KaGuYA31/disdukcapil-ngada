@@ -161,7 +161,7 @@ export function VisitorCounter() {
 
   if (!state.isReady) {
     return (
-      <div className="flex items-center gap-4 text-xs" aria-label="Statistik pengunjung sedang dimuat">
+      <div className="flex items-center gap-4 text-xs" aria-label="Data pengunjung sedang dimuat">
         <span className="inline-flex items-center gap-1.5 text-gray-500">
           <Eye className="h-3 w-3" />
           <span className="inline-block w-12 h-3 animate-pulse bg-gray-700 rounded" />
@@ -176,7 +176,7 @@ export function VisitorCounter() {
   }
 
   return (
-    <div className="flex items-center gap-4 text-xs" aria-label="Statistik pengunjung">
+    <div className="flex items-center gap-4 text-xs" aria-label="Data pengunjung">
       <span className="inline-flex items-center gap-1.5 text-gray-400">
         <Eye className="h-3 w-3 text-green-400/70" />
         <span>Pengunjung Hari Ini: <strong className="font-semibold text-gray-300">{formatNumber(animatedToday)}</strong></span>
