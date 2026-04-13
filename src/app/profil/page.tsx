@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Building2, Target, Users, History, MapPin } from "lucide-react";
+import { Building2, Target, Users, History, MapPin, Printer } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
@@ -57,6 +59,7 @@ function getTabFromHash(): TabValue {
 }
 
 export default function ProfilPage() {
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<TabValue>(() => getTabFromHash());
 
   // Sync tab with URL hash changes
@@ -132,6 +135,23 @@ export default function ProfilPage() {
             </div>
           </div>
         </section>
+
+        {/* Print Button */}
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-end">
+            <Button
+              onClick={() => {
+                window.print();
+                toast({ title: "Mencetak...", description: "Dialog cetak akan muncul", duration: 2000 });
+              }}
+              variant="outline"
+              className="gap-2 print:hidden"
+            >
+              <Printer className="h-4 w-4" />
+              Cetak Halaman
+            </Button>
+          </div>
+        </div>
 
         {/* Tabs Navigation */}
         <div

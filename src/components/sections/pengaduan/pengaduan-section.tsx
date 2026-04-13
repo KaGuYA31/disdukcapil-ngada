@@ -18,6 +18,7 @@ import {
   MessageSquare,
   ShieldCheck,
   Info,
+  RotateCcw,
 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -128,28 +129,109 @@ export function PengaduanSection() {
     message: "",
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const validateField = (name: string, value: string): string | undefined => {
+    switch (name) {
+      case "name":
+        if (value.length === 0) return "Nama wajib diisi";
+        if (value.length < 3) return "Nama minimal 3 karakter";
+        return undefined;
+      case "email":
+        if (value.length === 0) return "Email wajib diisi";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+          return "Format email tidak valid";
+        return undefined;
+      case "phone": {
+        const cleaned = value.replace(/[\s\-()]/g, "");
+        if (cleaned.length === 0) return "No. telepon wajib diisi";
+        if (!/^(\+62|62|08)\d{8,13}$/.test(cleaned))
+          return "Format tidak valid (08xx atau +62xx)";
+        return undefined;
+      }
+      case "subject":
+        if (!value) return "Silakan pilih subjek pengaduan";
+        if (value.length < 5) return "Subjek tidak valid";
+        return undefined;
+      case "message":
+        if (value.length === 0) return "Pesan wajib diisi";
+        if (value.length < 20) return "Pesan minimal 20 karakter";
+        if (value.length > 1000) return "Pesan maksimal 1000 karakter";
+        return undefined;
+      default:
+        return undefined;
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    const fields = ["name", "email", "phone", "subject", "message"] as const;
+    for (const field of fields) {
+      const error = validateField(field, formData[field]);
+      if (error) newErrors[field] = error;
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error on change if field was touched
+    if (touched[name]) {
+      const error = validateField(name, value);
+      setErrors((prev) => {
+        if (error) return { ...prev, [name]: error };
+        const { [name]: _, ...rest } = prev;
+        return rest;
+      });
+    }
+  };
+
+  const handleBlur = (name: string) => {
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const error = validateField(name, formData[name as keyof typeof formData]);
+    setErrors((prev) => {
+      if (error) return { ...prev, [name]: error };
+      const { [name]: _, ...rest } = prev;
+      return rest;
+    });
   };
 
   const handleSubjectChange = (value: string) => {
     setFormData((prev) => ({ ...prev, subject: value }));
+    setTouched((prev) => ({ ...prev, subject: true }));
+    const error = validateField("subject", value);
+    setErrors((prev) => {
+      if (error) return { ...prev, subject: error };
+      const { subject: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const handleReset = () => {
+    setFormData({
+      name: "",
+      nik: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    });
+    setErrors({});
+    setTouched({});
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.subject) {
-      toast({
-        title: "Error",
-        description: "Silakan pilih subjek pengaduan",
-        variant: "destructive",
-      });
-      return;
-    }
+    // Mark all fields as touched
+    setTouched({ name: true, email: true, phone: true, subject: true, message: true });
+
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
 
@@ -317,6 +399,8 @@ export function PengaduanSection() {
                       subject: "",
                       message: "",
                     });
+                    setErrors({});
+                    setTouched({});
                   }}
                   className="bg-green-700 hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700 w-full"
                 >
@@ -491,10 +575,16 @@ export function PengaduanSection() {
                               placeholder="Masukkan nama lengkap"
                               value={formData.name}
                               onChange={handleChange}
-                              required
-                              className="pl-9 dark:bg-gray-900 dark:border-gray-600"
+                              onBlur={() => handleBlur("name")}
+                              className={`pl-9 dark:bg-gray-900 dark:border-gray-600 ${touched.name && errors.name ? "border-red-500 dark:border-red-500 focus-visible:ring-red-500" : ""}`}
                             />
                           </div>
+                          {touched.name && errors.name && (
+                            <p className="text-sm text-red-500 flex items-center gap-1.5 mt-1.5">
+                              <span className="inline-block w-1 h-1 bg-red-500 rounded-full flex-shrink-0" />
+                              {errors.name}
+                            </p>
+                          )}
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="nik" className="text-gray-700 dark:text-gray-300">
@@ -529,10 +619,16 @@ export function PengaduanSection() {
                               placeholder="email@contoh.com"
                               value={formData.email}
                               onChange={handleChange}
-                              required
-                              className="pl-9 dark:bg-gray-900 dark:border-gray-600"
+                              onBlur={() => handleBlur("email")}
+                              className={`pl-9 dark:bg-gray-900 dark:border-gray-600 ${touched.email && errors.email ? "border-red-500 dark:border-red-500 focus-visible:ring-red-500" : ""}`}
                             />
                           </div>
+                          {touched.email && errors.email && (
+                            <p className="text-sm text-red-500 flex items-center gap-1.5 mt-1.5">
+                              <span className="inline-block w-1 h-1 bg-red-500 rounded-full flex-shrink-0" />
+                              {errors.email}
+                            </p>
+                          )}
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="phone" className="text-gray-700 dark:text-gray-300">
@@ -547,10 +643,16 @@ export function PengaduanSection() {
                               placeholder="08xxxxxxxxxx"
                               value={formData.phone}
                               onChange={handleChange}
-                              required
-                              className="pl-9 dark:bg-gray-900 dark:border-gray-600"
+                              onBlur={() => handleBlur("phone")}
+                              className={`pl-9 dark:bg-gray-900 dark:border-gray-600 ${touched.phone && errors.phone ? "border-red-500 dark:border-red-500 focus-visible:ring-red-500" : ""}`}
                             />
                           </div>
+                          {touched.phone && errors.phone && (
+                            <p className="text-sm text-red-500 flex items-center gap-1.5 mt-1.5">
+                              <span className="inline-block w-1 h-1 bg-red-500 rounded-full flex-shrink-0" />
+                              {errors.phone}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -575,9 +677,8 @@ export function PengaduanSection() {
                           <Select
                             value={formData.subject}
                             onValueChange={handleSubjectChange}
-                            required
                           >
-                            <SelectTrigger className="dark:bg-gray-900 dark:border-gray-600">
+                            <SelectTrigger className={`dark:bg-gray-900 dark:border-gray-600 ${touched.subject && errors.subject ? "border-red-500 dark:border-red-500" : ""}`}>
                               <SelectValue placeholder="Pilih subjek pengaduan" />
                             </SelectTrigger>
                             <SelectContent>
@@ -588,22 +689,40 @@ export function PengaduanSection() {
                               ))}
                             </SelectContent>
                           </Select>
+                          {touched.subject && errors.subject && (
+                            <p className="text-sm text-red-500 flex items-center gap-1.5 mt-1.5">
+                              <span className="inline-block w-1 h-1 bg-red-500 rounded-full flex-shrink-0" />
+                              {errors.subject}
+                            </p>
+                          )}
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="message" className="text-gray-700 dark:text-gray-300">
-                            Pesan <span className="text-red-500">*</span>
-                          </Label>
+                          <div className="flex items-center justify-between">
+                            <Label htmlFor="message" className="text-gray-700 dark:text-gray-300">
+                              Pesan <span className="text-red-500">*</span>
+                            </Label>
+                            <span className={`text-xs tabular-nums ${formData.message.length > 1000 ? "text-red-500 font-semibold" : formData.message.length > 800 ? "text-amber-500" : "text-gray-400 dark:text-gray-500"}`}>
+                              {formData.message.length}/1000
+                            </span>
+                          </div>
                           <Textarea
                             id="message"
                             name="message"
                             placeholder="Tuliskan pertanyaan, keluhan, atau saran Anda..."
                             rows={5}
+                            maxLength={1000}
                             value={formData.message}
                             onChange={handleChange}
-                            required
-                            className="dark:bg-gray-900 dark:border-gray-600"
+                            onBlur={() => handleBlur("message")}
+                            className={`dark:bg-gray-900 dark:border-gray-600 ${touched.message && errors.message ? "border-red-500 dark:border-red-500 focus-visible:ring-red-500" : ""}`}
                           />
+                          {touched.message && errors.message && (
+                            <p className="text-sm text-red-500 flex items-center gap-1.5 mt-1.5">
+                              <span className="inline-block w-1 h-1 bg-red-500 rounded-full flex-shrink-0" />
+                              {errors.message}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -626,25 +745,37 @@ export function PengaduanSection() {
                       <span>Data Anda dilindungi dan hanya digunakan untuk keperluan pengaduan</span>
                     </div>
 
-                    <motion.div whileTap={{ scale: 0.98 }} className="block">
+                    <div className="flex gap-3">
+                      <motion.div whileTap={{ scale: 0.98 }} className="flex-1">
+                        <Button
+                          type="submit"
+                          className="w-full bg-green-700 hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700 font-semibold h-12 text-base"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Mengirim...
+                            </>
+                          ) : (
+                            <>
+                              <Send className="mr-2 h-4 w-4" />
+                              Kirim Pengaduan
+                            </>
+                          )}
+                        </Button>
+                      </motion.div>
                       <Button
-                        type="submit"
-                        className="w-full bg-green-700 hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700 font-semibold h-12 text-base"
+                        type="button"
+                        variant="outline"
+                        onClick={handleReset}
+                        className="h-12 px-5 border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Mengirim...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="mr-2 h-4 w-4" />
-                            Kirim Pengaduan
-                          </>
-                        )}
+                        <RotateCcw className="mr-2 h-4 w-4" />
+                        Reset
                       </Button>
-                    </motion.div>
+                    </div>
                   </form>
                 </CardContent>
               </Card>

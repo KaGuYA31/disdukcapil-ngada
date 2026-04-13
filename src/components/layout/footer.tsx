@@ -155,9 +155,9 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-gray-900 text-gray-300">
+    <footer className="relative bg-gray-900 dark:bg-gray-950 text-gray-300">
       {/* Gradient overlay from gray-900 to gray-950 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 dark:from-gray-950 via-gray-900 dark:via-gray-950 to-gray-950 dark:to-black pointer-events-none" />
 
       {/* Main Footer Content */}
       <div className="relative container mx-auto px-4 py-12">
@@ -165,7 +165,7 @@ export function Footer() {
           {/* About Section - spans 4 cols */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="relative w-12 h-12 bg-white rounded-lg p-1 flex-shrink-0">
+              <div className="relative w-12 h-12 bg-white dark:bg-gray-800/60 rounded-lg p-1 flex-shrink-0">
                 <Image
                   src="/logo-kabupaten.png"
                   alt="Logo Kabupaten Ngada"
@@ -190,7 +190,7 @@ export function Footer() {
                 <a
                   key={social.title}
                   href={social.href}
-                  className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-green-600 hover:scale-110 transition-all duration-200"
+                  className="w-10 h-10 bg-gray-800 dark:bg-gray-700/50 rounded-lg flex items-center justify-center hover:bg-green-600 dark:hover:bg-green-500 hover:scale-110 transition-all duration-200"
                   aria-label={social.title}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -299,14 +299,14 @@ export function Footer() {
           transition={{ duration: 0.6, ease: "easeOut" as const }}
           className="mt-10"
         >
-          <div className="rounded-2xl bg-gray-800/50 border border-gray-700/50 p-5 md:p-6">
+          <div className="rounded-2xl bg-gray-800/50 dark:bg-gray-900/80 border border-gray-700/50 dark:border-gray-600/40 p-5 md:p-6">
             {/* Section header */}
             <div className="flex items-center gap-2.5 mb-5">
               <Users className="h-5 w-5 text-green-400" />
               <h4 className="font-semibold text-white text-base">
                 Media Sosial
               </h4>
-              <span className="text-xs text-gray-500 hidden sm:inline">
+              <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
                 — Ikuti kami untuk informasi terkini
               </span>
             </div>
@@ -319,7 +319,7 @@ export function Footer() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center gap-3 p-3 rounded-xl bg-gray-800/80 border ${item.accentColor} hover:bg-gray-750 transition-all duration-300 group`}
+                  className={`flex items-center gap-3 p-3 rounded-xl bg-gray-800/80 dark:bg-gray-700/40 border ${item.accentColor} hover:bg-gray-750 dark:hover:bg-gray-700/60 transition-all duration-300 group`}
                   aria-label={`Ikuti ${item.name}`}
                 >
                   {/* Brand-colored icon container */}
@@ -335,10 +335,10 @@ export function Footer() {
                       {item.name}
                     </p>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs text-gray-500 truncate">
+                      <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
                         {item.handle}
                       </span>
-                      <span className="text-gray-700 hidden sm:inline">·</span>
+                      <span className="text-gray-700 dark:text-gray-300 hidden sm:inline">·</span>
                       <span
                         className={`text-xs font-medium ${item.accentText} hidden sm:inline`}
                       >
@@ -366,11 +366,11 @@ export function Footer() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
             {/* Phone */}
             <div className="flex items-start gap-3 group cursor-default">
-              <div className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-green-600 transition-colors duration-200 flex-shrink-0">
+              <div className="w-9 h-9 bg-gray-800 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors duration-200 flex-shrink-0">
                 <Phone className="h-4 w-4 text-green-400 group-hover:text-white transition-colors duration-200" />
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Telepon</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-0.5">Telepon</p>
                 <a
                   href={`tel:${CONTACT_INFO.phoneRaw}`}
                   className="text-sm hover:text-green-400 transition-colors"
@@ -382,11 +382,11 @@ export function Footer() {
 
             {/* WhatsApp */}
             <div className="flex items-start gap-3 group cursor-pointer">
-              <div className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-green-600 transition-colors duration-200 flex-shrink-0">
+              <div className="w-9 h-9 bg-gray-800 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors duration-200 flex-shrink-0">
                 <MessageCircle className="h-4 w-4 text-green-400 group-hover:text-white transition-colors duration-200" />
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-0.5">WhatsApp</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-0.5">WhatsApp</p>
                 <a
                   href={CONTACT_INFO.whatsappUrl}
                   target="_blank"
@@ -401,11 +401,11 @@ export function Footer() {
 
             {/* Email */}
             <div className="flex items-start gap-3 group cursor-default">
-              <div className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-green-600 transition-colors duration-200 flex-shrink-0">
+              <div className="w-9 h-9 bg-gray-800 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors duration-200 flex-shrink-0">
                 <Mail className="h-4 w-4 text-green-400 group-hover:text-white transition-colors duration-200" />
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Email</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-0.5">Email</p>
                 <a
                   href={`mailto:${CONTACT_INFO.email}`}
                   className="text-sm hover:text-green-400 transition-colors"
@@ -417,11 +417,11 @@ export function Footer() {
 
             {/* Address */}
             <div className="flex items-start gap-3 group cursor-default sm:col-span-2 lg:col-span-2">
-              <div className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-green-600 transition-colors duration-200 flex-shrink-0">
+              <div className="w-9 h-9 bg-gray-800 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors duration-200 flex-shrink-0">
                 <MapPin className="h-4 w-4 text-green-400 group-hover:text-white transition-colors duration-200" />
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Alamat</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-0.5">Alamat</p>
                 <span className="text-sm">
                   {CONTACT_INFO.address}
                 </span>
@@ -431,7 +431,7 @@ export function Footer() {
 
           {/* Operating Hours */}
           <div className="mt-5 flex items-center gap-3 group cursor-default">
-            <div className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-amber-600 transition-colors duration-200 flex-shrink-0">
+            <div className="w-9 h-9 bg-gray-800 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-amber-600 dark:group-hover:bg-amber-500 transition-colors duration-200 flex-shrink-0">
               <Clock className="h-4 w-4 text-amber-400 group-hover:text-white transition-colors duration-200" />
             </div>
             <span className="text-sm">
@@ -442,7 +442,7 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="relative border-t border-gray-800 bg-gray-950">
+      <div className="relative border-t border-gray-800 dark:border-gray-700/60 bg-gray-950 dark:bg-black">
         <div className="container mx-auto px-4 py-5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-3">
             {/* Scroll to Top + Copyright */}
@@ -452,12 +452,12 @@ export function Footer() {
                 className="inline-flex items-center gap-1.5 hover:text-green-400 transition-colors group"
                 aria-label="Kembali ke atas"
               >
-                <span className="w-7 h-7 bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-green-600 transition-colors duration-200">
+                <span className="w-7 h-7 bg-gray-800 dark:bg-gray-700/50 rounded-full flex items-center justify-center group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors duration-200">
                   <ArrowUp className="h-3.5 w-3.5" />
                 </span>
                 <span className="hidden sm:inline">Kembali ke Atas</span>
               </button>
-              <span className="text-gray-600 hidden sm:inline">|</span>
+              <span className="text-gray-600 dark:text-gray-500 hidden sm:inline">|</span>
               <p className="text-gray-400 text-center">
                 © {currentYear} Dinas Kependudukan dan Pencatatan Sipil
                 Kabupaten Ngada
@@ -480,7 +480,7 @@ export function Footer() {
                 Pemerintah Kabupaten Ngada
                 <ExternalLink className="h-3 w-3" />
               </Link>
-              <span className="text-gray-600">|</span>
+              <span className="text-gray-600 dark:text-gray-500">|</span>
               <Link
                 href="https://nttprov.go.id"
                 className="hover:text-green-400 inline-flex items-center gap-1 transition-colors"

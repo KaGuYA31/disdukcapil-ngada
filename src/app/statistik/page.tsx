@@ -9,7 +9,10 @@ import {
   Baby,
   IdCard,
   BarChart3,
+  Printer,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -107,6 +110,7 @@ function StatistikLoadingSkeleton() {
 }
 
 export default function StatistikPage() {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<StatistikData>({
     ringkasan: null,
@@ -203,6 +207,23 @@ export default function StatistikPage() {
             </div>
           </div>
         </section>
+
+        {/* Print Button */}
+        <div className="container mx-auto px-4 pt-6">
+          <div className="flex justify-end">
+            <Button
+              onClick={() => {
+                window.print();
+                toast({ title: "Mencetak...", description: "Dialog cetak akan muncul", duration: 2000 });
+              }}
+              variant="outline"
+              className="gap-2 print:hidden"
+            >
+              <Printer className="h-4 w-4" />
+              Cetak Halaman
+            </Button>
+          </div>
+        </div>
 
         <div className="container mx-auto px-4 py-10">
           <motion.div
