@@ -702,7 +702,7 @@ export async function GET() {
   } catch (error) {
     console.error("Error fetching statistics:", error);
     return NextResponse.json(
-      { success: false, error: "Gagal mengambil data statistik" },
+      { success: false, error: "Gagal mengambil data kependudukan" },
       { status: 500 }
     );
   }

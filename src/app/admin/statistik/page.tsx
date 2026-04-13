@@ -91,7 +91,7 @@ export default function AdminStatistikPage() {
         });
       }
     } catch (error) {
-      console.error("Error fetching statistik:", error);
+      console.error("Error fetching data kependudukan:", error);
       toast({
         title: "Error",
         description: "Gagal memuat data kependudukan",
@@ -146,7 +146,7 @@ export default function AdminStatistikPage() {
         throw new Error("Gagal menyimpan data");
       }
     } catch (error) {
-      console.error("Error saving statistik:", error);
+      console.error("Error saving data kependudukan:", error);
       toast({
         title: "Error",
         description: "Gagal menyimpan data kependudukan",

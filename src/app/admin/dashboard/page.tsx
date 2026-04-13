@@ -102,7 +102,7 @@ export default function AdminDashboardPage() {
         });
       }
     } catch (error) {
-      console.error("Error fetching statistik:", error);
+      console.error("Error fetching data kependudukan:", error);
     } finally {
       setLoading(false);
     }

@@ -127,7 +127,7 @@ export default function StatistikPage() {
           });
         }
       } catch (error) {
-        console.error("Error fetching statistics:", error);
+        console.error("Error fetching data kependudukan:", error);
       } finally {
         setLoading(false);
       }
