@@ -59,6 +59,7 @@ const navigation: NavItem[] = [
     ],
   },
   { title: "Statistik Kependudukan", href: "/statistik" },
+  { title: "Inovasi", href: "/inovasi" },
   { title: "Berita", href: "/berita" },
   { title: "Pengaduan", href: "/pengaduan" },
 ];
