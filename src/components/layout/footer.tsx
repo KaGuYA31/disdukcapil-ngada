@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import {
   MapPin,
   Mail,
@@ -19,6 +20,7 @@ import {
   Star,
   ArrowUp,
   ChevronRight,
+  Users,
 } from "lucide-react";
 import { VisitorCounter } from "@/components/shared/visitor-counter";
 import { CONTACT_INFO, OPERATING_HOURS, SOCIAL_MEDIA } from "@/lib/constants";
@@ -63,6 +65,88 @@ const socialLinks = [
   { title: "YouTube", href: SOCIAL_MEDIA.youtube, icon: Youtube },
 ];
 
+interface SocialFeedItem {
+  name: string;
+  handle: string;
+  icon: typeof Facebook;
+  followers: string;
+  href: string;
+  iconBg: string;
+  iconHoverBg: string;
+  iconRing: string;
+  iconRingHover: string;
+  accentColor: string;
+  accentText: string;
+}
+
+const socialFeedItems: SocialFeedItem[] = [
+  {
+    name: "Facebook",
+    handle: "@disdukcapilngada",
+    icon: Facebook,
+    followers: "12.4K",
+    href: SOCIAL_MEDIA.facebook,
+    iconBg: "bg-blue-600",
+    iconHoverBg: "hover:bg-blue-500",
+    iconRing: "ring-blue-600/20",
+    iconRingHover: "hover:ring-blue-500/30",
+    accentColor: "border-blue-500/20",
+    accentText: "text-blue-400",
+  },
+  {
+    name: "Instagram",
+    handle: "@disdukcapilngada",
+    icon: Instagram,
+    followers: "8.7K",
+    href: SOCIAL_MEDIA.instagram,
+    iconBg: "bg-gradient-to-br from-purple-500 to-pink-500",
+    iconHoverBg: "hover:from-purple-400 hover:to-pink-400",
+    iconRing: "ring-pink-500/20",
+    iconRingHover: "hover:ring-pink-500/30",
+    accentColor: "border-pink-500/20",
+    accentText: "text-pink-400",
+  },
+  {
+    name: "X (Twitter)",
+    handle: "@disdukcapilngada",
+    icon: Twitter,
+    followers: "5.2K",
+    href: SOCIAL_MEDIA.twitter,
+    iconBg: "bg-gray-800",
+    iconHoverBg: "hover:bg-gray-700",
+    iconRing: "ring-gray-600/20",
+    iconRingHover: "hover:ring-gray-500/30",
+    accentColor: "border-gray-500/20",
+    accentText: "text-gray-300",
+  },
+  {
+    name: "TikTok",
+    handle: "@disdukcapilngada",
+    icon: Music2,
+    followers: "15.1K",
+    href: SOCIAL_MEDIA.tiktok,
+    iconBg: "bg-gray-900",
+    iconHoverBg: "hover:bg-gray-800",
+    iconRing: "ring-gray-600/20",
+    iconRingHover: "hover:ring-gray-500/30",
+    accentColor: "border-gray-500/20",
+    accentText: "text-gray-300",
+  },
+  {
+    name: "YouTube",
+    handle: "@disdukcapilngada",
+    icon: Youtube,
+    followers: "3.8K",
+    href: SOCIAL_MEDIA.youtube,
+    iconBg: "bg-red-600",
+    iconHoverBg: "hover:bg-red-500",
+    iconRing: "ring-red-600/20",
+    iconRingHover: "hover:ring-red-500/30",
+    accentColor: "border-red-500/20",
+    accentText: "text-red-400",
+  },
+];
+
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -100,7 +184,7 @@ export function Footer() {
               profesional, transparan, dan mudah diakses oleh seluruh
               masyarakat.
             </p>
-            {/* Social Media Links */}
+            {/* Social Media Links (compact) */}
             <div className="flex gap-2.5">
               {socialLinks.map((social) => (
                 <a
@@ -206,6 +290,73 @@ export function Footer() {
             </ul>
           </div>
         </div>
+
+        {/* ==================== SOCIAL MEDIA FEED WIDGET ==================== */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" as const }}
+          className="mt-10"
+        >
+          <div className="rounded-2xl bg-gray-800/50 border border-gray-700/50 p-5 md:p-6">
+            {/* Section header */}
+            <div className="flex items-center gap-2.5 mb-5">
+              <Users className="h-5 w-5 text-green-400" />
+              <h4 className="font-semibold text-white text-base">
+                Media Sosial
+              </h4>
+              <span className="text-xs text-gray-500 hidden sm:inline">
+                — Ikuti kami untuk informasi terkini
+              </span>
+            </div>
+
+            {/* Social feed items — horizontal on desktop, stacked on mobile */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              {socialFeedItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center gap-3 p-3 rounded-xl bg-gray-800/80 border ${item.accentColor} hover:bg-gray-750 transition-all duration-300 group`}
+                  aria-label={`Ikuti ${item.name}`}
+                >
+                  {/* Brand-colored icon container */}
+                  <div
+                    className={`w-10 h-10 ${item.iconBg} ${item.iconHoverBg} rounded-xl flex items-center justify-center ring-1 ${item.iconRing} ${item.iconRingHover} transition-all duration-300 group-hover:scale-110 flex-shrink-0`}
+                  >
+                    <item.icon className="h-5 w-5 text-white" />
+                  </div>
+
+                  {/* Text content */}
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-white truncate">
+                      {item.name}
+                    </p>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs text-gray-500 truncate">
+                        {item.handle}
+                      </span>
+                      <span className="text-gray-700 hidden sm:inline">·</span>
+                      <span
+                        className={`text-xs font-medium ${item.accentText} hidden sm:inline`}
+                      >
+                        {item.followers}
+                      </span>
+                    </div>
+                    {/* Mobile follower count */}
+                    <span
+                      className={`text-xs font-medium ${item.accentText} sm:hidden`}
+                    >
+                      {item.followers} pengikut
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </motion.div>
 
         {/* Green-600 gradient separator line */}
         <div className="mt-10 h-[2px] bg-gradient-to-r from-transparent via-green-600 to-transparent opacity-60" />

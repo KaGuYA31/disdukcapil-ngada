@@ -97,7 +97,7 @@ export function CookieConsent() {
           className="fixed bottom-0 left-0 right-0 z-50"
         >
           <div className="w-full px-4 pb-4 sm:px-6">
-            <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
               {/* Gradient top border */}
               <div className="bg-gradient-to-r from-green-500 via-teal-500 to-green-500 h-1 rounded-t-2xl" />
 
@@ -106,24 +106,24 @@ export function CookieConsent() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   {/* Icon */}
                   <div className="flex-shrink-0 self-center sm:self-start">
-                    <div className="w-11 h-11 rounded-full bg-amber-50 flex items-center justify-center">
+                    <div className="w-11 h-11 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
                       <Cookie className="h-5 w-5 text-amber-600" />
                     </div>
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0 text-center sm:text-left">
-                    <h3 className="font-semibold text-gray-900 text-sm">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
                       Informasi Cookie
                     </h3>
-                    <p className="text-gray-500 text-xs mt-1.5 leading-relaxed">
+                    <p className="text-gray-500 dark:text-gray-400 text-xs mt-1.5 leading-relaxed">
                       Kami menggunakan cookie untuk meningkatkan pengalaman Anda.
                       Dengan melanjutkan, Anda menyetujui penggunaan cookie kami.
                     </p>
                     {/* Pelajari Lebih Lanjut link */}
                     <button
                       onClick={() => setIsExpanded(true)}
-                      className="text-teal-600 hover:text-teal-700 text-xs font-medium mt-2 inline-flex items-center gap-1 transition-colors cursor-pointer"
+                      className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 text-xs font-medium mt-2 inline-flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       Pelajari Lebih Lanjut
                       <motion.span
@@ -142,7 +142,7 @@ export function CookieConsent() {
                       onClick={() => setIsExpanded(!isExpanded)}
                       variant="outline"
                       size="sm"
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900 text-xs"
+                      className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 text-xs"
                     >
                       Pengaturan
                     </Button>
@@ -167,13 +167,13 @@ export function CookieConsent() {
                     transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
                     className="overflow-hidden"
                   >
-                    <div className="border-t border-gray-100">
+                    <div className="border-t border-gray-100 dark:border-gray-800">
                       <div className="px-5 md:px-6 py-5">
                         {/* Section title */}
-                        <h4 className="text-sm font-semibold text-gray-900 mb-1">
+                        <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">
                           Kelola Preferensi Cookie
                         </h4>
-                        <p className="text-xs text-gray-500 mb-5">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-5">
                           Sesuaikan penggunaan cookie berdasarkan preferensi Anda. Cookie
                           penting tidak dapat dimatikan.
                         </p>
@@ -194,16 +194,16 @@ export function CookieConsent() {
                                   delay: index * 0.08,
                                   ease: "easeOut",
                                 }}
-                                className="flex items-start gap-3 p-3 rounded-xl bg-gray-50/80 border border-gray-100"
+                                className="flex items-start gap-3 p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700"
                               >
                                 {/* Category icon */}
                                 <div
                                   className={`flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300 ${
                                     category.disabled
-                                      ? "bg-green-100"
+                                      ? "bg-green-100 dark:bg-green-900/30"
                                       : isChecked
-                                        ? "bg-teal-50"
-                                        : "bg-gray-100"
+                                        ? "bg-teal-50 dark:bg-teal-900/30"
+                                        : "bg-gray-100 dark:bg-gray-700"
                                   }`}
                                 >
                                   <Icon
@@ -220,16 +220,16 @@ export function CookieConsent() {
                                 {/* Text */}
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-gray-900">
+                                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                       {category.label}
                                     </span>
                                     {category.disabled && (
-                                      <span className="text-[10px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full leading-none">
+                                      <span className="text-[10px] font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full leading-none">
                                         Selalu Aktif
                                       </span>
                                     )}
                                   </div>
-                                  <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">
                                     {category.description}
                                   </p>
                                 </div>
@@ -242,7 +242,7 @@ export function CookieConsent() {
                                     onCheckedChange={() =>
                                       togglePreference(category.key)
                                     }
-                                    className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-gray-300 transition-colors duration-300"
+                                    className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-gray-300 dark:data-[state=unchecked]:bg-gray-600 transition-colors duration-300"
                                   />
                                 </div>
                               </motion.div>
@@ -255,13 +255,13 @@ export function CookieConsent() {
                           initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.25, delay: 0.3 }}
-                          className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-5 pt-4 border-t border-gray-100"
+                          className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-5 pt-4 border-t border-gray-100 dark:border-gray-800"
                         >
                           <Button
                             onClick={handleRejectOptional}
                             variant="ghost"
                             size="sm"
-                            className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 text-xs order-3 sm:order-1"
+                            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 text-xs order-3 sm:order-1"
                           >
                             Tolak Opsional
                           </Button>
@@ -271,7 +271,7 @@ export function CookieConsent() {
                               onClick={() => setIsExpanded(false)}
                               variant="outline"
                               size="sm"
-                              className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900 text-xs"
+                              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 text-xs"
                             >
                               Kembali
                             </Button>

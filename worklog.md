@@ -1,4 +1,63 @@
 ---
+Task ID: system-status-widget-dark-mode
+Agent: Main Coordinator
+Task: Create System Status Widget + Dark Mode Polish for multiple components
+
+Work Log:
+- Read worklog.md for project context (Round 11+ complete, Vercel deployed)
+- Read 5 existing components to assess dark mode needs
+
+Feature 1 - System Status Widget:
+- Created `/home/z/my-project/src/components/shared/system-status-widget.tsx` as "use client" component
+- 4 services monitored: Cetak KTP-el, Pendaftaran Online, Pengaduan Online, Database Kependudukan
+- Fetches blanko E-KTP availability from /api/blanko-ektp on mount with AbortController cleanup
+- Status logic: jumlahTersedia > 50 = "Aktif" (green), 1-50 = "Terbatas" (amber), 0 = "Tidak Tersedia" (red)
+- Graceful fallback: if API fails, Cetak KTP-el defaults to "Aktif" status
+- Compact 4-column grid (2-col mobile, 4-col desktop) with card design
+- Each card: icon, service name, description, status badge with color-coded dot
+- Green pulsing dot animation for "Aktif" services
+- framer-motion fade-in + stagger animations
+- Full dark mode support with dark:bg-gray-800/80, dark:border-gray-700/60, dark:text-gray-100/300/400
+- Section background: bg-gray-50 dark:bg-gray-900/50
+- Integrated into homepage between StatsSection and ServicesSection
+
+Feature 2 - Dark Mode Polish:
+1. scroll-progress.tsx - NO changes needed (green gradient bar works in both light/dark)
+2. quick-access-panel.tsx - ADDED dark mode support:
+   - Panel: dark:bg-gray-900/80, dark:border-gray-700/40
+   - Header: dark:border-gray-700/60, dark:text-gray-100
+   - Close button: dark:text-gray-500, dark:hover:text-gray-300, dark:hover:bg-gray-800/60
+   - Links: dark:text-gray-300, dark:hover:from-green-900/30, dark:hover:text-green-300
+   - Link icons: dark:text-gray-500, dark:group-hover:text-green-400
+   - Footer divider: dark:via-gray-700
+   - Keyboard hint: dark:border-gray-600, dark:bg-gray-800, dark:text-gray-400
+3. back-to-top.tsx - NO changes needed (green rounded button with white icon works in both modes)
+4. cookie-banner.tsx - NO changes needed (already uses bg-gray-900 text-white dark theme built-in)
+5. cookie-consent.tsx - ADDED dark mode support:
+   - Main card: dark:bg-gray-900, dark:border-gray-700
+   - Icon bg: dark:bg-amber-900/30
+   - Text: dark:text-gray-100/300/400 throughout
+   - Links: dark:text-teal-400, dark:hover:text-teal-300
+   - Buttons: dark:border-gray-600, dark:text-gray-300, dark:hover:bg-gray-800
+   - Category rows: dark:bg-gray-800/50, dark:border-gray-700
+   - Category icons: dark:bg-green-900/30, dark:bg-teal-900/30, dark:bg-gray-700
+   - Switch: dark:data-[state=unchecked]:bg-gray-600
+   - Badges: dark:bg-green-900/30, dark:text-green-400
+
+Verification:
+- ESLint: 0 errors, 0 warnings
+- Dev server: compiled successfully (GET / 200)
+- Homepage section order: Hero → Stats → System Status → Services → Featured Services → Announcements → FAQ → Keunggulan → Testimoni → WhyChooseUs → News → CTA
+
+Stage Summary:
+- 1 new component created (system-status-widget.tsx)
+- 2 components received dark mode polish (quick-access-panel.tsx, cookie-consent.tsx)
+- 3 components verified as already dark-mode compatible (scroll-progress, back-to-top, cookie-banner)
+- 1 file modified for integration (page.tsx)
+- Total: 4 files created/modified
+- Zero blue/purple colors used throughout
+
+---
 Task ID: fix-inovasi-nav
 Agent: Main Coordinator
 Task: Fix missing Inovasi menu in public navigation, sync with admin, deploy to Vercel

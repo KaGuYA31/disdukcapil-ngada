@@ -4,6 +4,7 @@ import { AnnouncementTicker } from "@/components/shared/announcement-ticker";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { BackToTop } from "@/components/shared/back-to-top";
 import { QuickAccessPanel } from "@/components/shared/quick-access-panel";
+import { SystemStatusWidget } from "@/components/shared/system-status-widget";
 import { HeroSection } from "@/components/sections/hero-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { ServicesSection } from "@/components/sections/services-section";
@@ -15,6 +16,7 @@ import { KeunggulanSection } from "@/components/sections/keunggulan-section";
 import { TestimoniSection } from "@/components/sections/testimoni-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
+import { GaleriInovasiSection } from "@/components/sections/galeri-inovasi-section";
 
 export default function HomePage() {
   return (
@@ -24,6 +26,7 @@ export default function HomePage() {
       <main id="main-content" className="flex-1">
         <HeroSection />
         <StatsSection />
+        <SystemStatusWidget />
         <ServicesSection />
         <FeaturedServicesSection />
         <AnnouncementsSection />
@@ -31,6 +34,7 @@ export default function HomePage() {
         <KeunggulanSection />
         <TestimoniSection />
         <WhyChooseUsSection />
+        <GaleriInovasiSection />
         <NewsSection />
         <CTASection />
       </main>

@@ -132,11 +132,24 @@ function subscribe(listener: () => void): () => void {
   };
 }
 
+// Cache the snapshot to avoid creating new objects on every call
+// useSyncExternalStore requires referentially stable return values
+let cachedSnapshot: TimerState | null = null;
+
 function getSnapshot(): TimerState {
-  return getTimerState();
+  const next = getTimerState();
+  if (
+    cachedSnapshot &&
+    cachedSnapshot.status === next.status &&
+    cachedSnapshot.display === next.display
+  ) {
+    return cachedSnapshot;
+  }
+  cachedSnapshot = next;
+  return next;
 }
 
-const SERVER_SNAPSHOT: TimerState = { status: "closed", display: "--:--:--" };
+const SERVER_SNAPSHOT: TimerState = Object.freeze({ status: "closed", display: "--:--:--" });
 
 function getServerSnapshot(): TimerState {
   return SERVER_SNAPSHOT;

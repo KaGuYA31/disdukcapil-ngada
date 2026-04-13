@@ -1,139 +1,62 @@
-import { MetadataRoute } from "next";
-
-const BASE_URL = "https://disdukcapil-ngada.vercel.app";
+import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  const baseUrl = "https://disdukcapil-ngada.vercel.app";
 
-  // Static pages with their SEO priorities and change frequencies
-  const staticPages: MetadataRoute.Sitemap = [
+  return [
     {
-      url: BASE_URL,
-      lastModified: now,
+      url: baseUrl,
+      lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1.0,
     },
     {
-      url: `${BASE_URL}/profil`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/layanan`,
-      lastModified: now,
+      url: `${baseUrl}/layanan`,
+      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/layanan/ktp-el`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/layanan/kartu-keluarga`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/layanan/perubahan-data`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/layanan/legalisasi`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/layanan/akta-kelahiran`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/layanan/akta-kematian`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/layanan/akta-perkawinan`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/layanan/akta-perceraian`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/layanan/pindah-penduduk`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/layanan-online`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/layanan-online/cek-status`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/berita`,
-      lastModified: now,
+      url: `${baseUrl}/berita`,
+      lastModified: new Date(),
       changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/profil`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/statistik`,
-      lastModified: now,
+      url: `${baseUrl}/pengaduan`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/transparansi`,
+      lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.7,
+      priority: 0.8,
     },
     {
-      url: `${BASE_URL}/statistik/open-data`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/inovasi`,
-      lastModified: now,
+      url: `${baseUrl}/statistik`,
+      lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.7,
+      priority: 0.8,
     },
     {
-      url: `${BASE_URL}/transparansi`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
+      url: `${baseUrl}/inovasi`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
-      url: `${BASE_URL}/pengaduan`,
-      lastModified: now,
+      url: `${baseUrl}/layanan-online`,
+      lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/sitemap-page`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.5,
+      priority: 0.8,
     },
   ];
-
-  return staticPages;
 }

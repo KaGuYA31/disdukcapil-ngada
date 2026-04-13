@@ -161,7 +161,7 @@ export function QuickAccessPanel() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="fixed top-0 left-0 z-50 h-full w-64 bg-white/80 backdrop-blur-xl rounded-r-2xl shadow-2xl flex flex-col border-r border-white/20 overflow-hidden"
+              className="fixed top-0 left-0 z-50 h-full w-64 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-r-2xl shadow-2xl flex flex-col border-r border-white/20 dark:border-gray-700/40 overflow-hidden"
               role="dialog"
               aria-modal="true"
               aria-label="Panel Akses Cepat"
@@ -170,7 +170,7 @@ export function QuickAccessPanel() {
               <div className="h-1 bg-gradient-to-r from-green-500 via-teal-400 to-emerald-500 shrink-0" />
 
               {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100/60">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100/60 dark:border-gray-700/60">
                 <div className="flex items-center gap-2.5">
                   {/* Green dot indicator */}
                   <span className="relative flex h-2.5 w-2.5">
@@ -178,17 +178,17 @@ export function QuickAccessPanel() {
                     <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
                   </span>
                   <div>
-                    <h2 className="text-base font-semibold text-gray-800 leading-tight">
+                    <h2 className="text-base font-semibold text-gray-800 dark:text-gray-100 leading-tight">
                       Akses Cepat
                     </h2>
-                    <p className="text-[11px] text-gray-400 leading-snug">
+                    <p className="text-[11px] text-gray-400 dark:text-gray-500 leading-snug">
                       Navigasi cepat ke halaman utama
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={close}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100/60 transition-colors cursor-pointer"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100/60 dark:hover:bg-gray-800/60 transition-colors cursor-pointer"
                   aria-label="Tutup panel akses cepat"
                 >
                   <X className="h-4 w-4" />
@@ -210,9 +210,9 @@ export function QuickAccessPanel() {
                       <Link
                         href={link.href}
                         onClick={handleLinkClick}
-                        className="group flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 text-sm font-medium transition-all duration-200 border-l-2 border-transparent hover:border-l-green-500 hover:bg-gradient-to-r hover:from-green-50/80 hover:to-transparent hover:text-green-800"
+                        className="group flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 text-sm font-medium transition-all duration-200 border-l-2 border-transparent hover:border-l-green-500 hover:bg-gradient-to-r hover:from-green-50/80 dark:hover:from-green-900/30 hover:to-transparent hover:text-green-800 dark:hover:text-green-300"
                       >
-                        <Icon className="h-[18px] w-[18px] text-gray-400 group-hover:text-green-600 transition-colors duration-200 shrink-0" />
+                        <Icon className="h-[18px] w-[18px] text-gray-400 dark:text-gray-500 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200 shrink-0" />
                         <span>{link.label}</span>
                       </Link>
                     </motion.div>
@@ -232,12 +232,12 @@ export function QuickAccessPanel() {
               {/* Footer */}
               <div className="relative shrink-0 px-5 py-3">
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-2.5" />
-                <div className="flex items-center justify-center gap-1.5 text-gray-400">
+                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent mb-2.5" />
+                <div className="flex items-center justify-center gap-1.5 text-gray-400 dark:text-gray-500">
                   <Keyboard className="h-3 w-3" />
                   <p className="text-[11px]">
                     Tekan{" "}
-                    <kbd className="px-1 py-0.5 rounded border border-gray-300 bg-gray-50 text-[10px] font-mono text-gray-500">
+                    <kbd className="px-1 py-0.5 rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-[10px] font-mono text-gray-500 dark:text-gray-400">
                       ESC
                     </kbd>{" "}
                     untuk menutup
