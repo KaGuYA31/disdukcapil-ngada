@@ -6,12 +6,13 @@ import { withRetry } from "@/lib/retry";
 export async function GET() {
   try {
     // Fetch all data in parallel with retry
-    const [ringkasan, ringkasanDokumen, kepalaDinas, blankoEKTP] = await withRetry(
+    const [ringkasan, ringkasanDokumen, kepalaDinas, blankoEKTP, pimpinanList] = await withRetry(
       () => Promise.all([
         db.dataRingkasan.findFirst({ orderBy: { createdAt: "desc" } }),
         db.ringkasanDokumen.findFirst({ orderBy: { createdAt: "desc" } }),
         db.strukturOrganisasi.findFirst({ where: { position: "Kepala Dinas" } }),
         db.blankoEKTP.findFirst({ orderBy: { updatedAt: "desc" } }),
+        db.pimpinan.findMany({ orderBy: { role: "asc" } }),
       ]),
       { context: "Beranda GET", maxRetries: 2, delayMs: 300 }
     );
@@ -51,6 +52,16 @@ export async function GET() {
           jumlahTersedia: blankoEKTP.jumlahTersedia,
           keterangan: blankoEKTP.keterangan,
           updatedAt: blankoEKTP.updatedAt,
+        } : null,
+        bupati: pimpinanList.find(p => p.role === "Bupati") ? {
+          name: pimpinanList.find(p => p.role === "Bupati")!.name,
+          photo: pimpinanList.find(p => p.role === "Bupati")!.photo,
+          periode: pimpinanList.find(p => p.role === "Bupati")!.periode,
+        } : null,
+        wakilBupati: pimpinanList.find(p => p.role === "Wakil Bupati") ? {
+          name: pimpinanList.find(p => p.role === "Wakil Bupati")!.name,
+          photo: pimpinanList.find(p => p.role === "Wakil Bupati")!.photo,
+          periode: pimpinanList.find(p => p.role === "Wakil Bupati")!.periode,
         } : null,
       },
     });

@@ -36,6 +36,16 @@ interface BerandaData {
     jumlahTersedia: number;
     keterangan: string | null;
   } | null;
+  bupati: {
+    name: string;
+    photo: string | null;
+    periode: string | null;
+  } | null;
+  wakilBupati: {
+    name: string;
+    photo: string | null;
+    periode: string | null;
+  } | null;
 }
 
 const formatNumber = (num: number) => {
@@ -176,6 +186,8 @@ export function HeroSection() {
   ];
 
   const kepalaDinas = data?.kepalaDinas;
+  const bupati = data?.bupati;
+  const wakilBupati = data?.wakilBupati;
 
   return (
     <section className="relative overflow-hidden text-white">
@@ -406,13 +418,29 @@ export function HeroSection() {
                         transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                       />
                       <div className="absolute inset-0 rounded-full bg-green-800" />
-                      <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-amber-400/30">
-                        <Building2 className="h-8 w-8 text-white" />
-                      </div>
+                      {bupati?.photo ? (
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-green-800 ring-amber-400/30">
+                          <Image
+                            src={bupati.photo}
+                            alt={bupati.name || "Bupati"}
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : loading ? (
+                        <div className="relative w-16 h-16 rounded-full bg-green-700/50 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-amber-400/30">
+                          <Loader2 className="h-6 w-6 animate-spin text-white/60" />
+                        </div>
+                      ) : (
+                        <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-amber-400/30">
+                          <Building2 className="h-8 w-8 text-white" />
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <h4 className="font-semibold text-sm leading-tight">Bupati Kabupaten Ngada</h4>
-                  <p className="text-green-200 text-xs mt-0.5">Bupati</p>
+                  <h4 className="font-semibold text-sm leading-tight">{bupati?.name || "Bupati Kabupaten Ngada"}</h4>
+                  <p className="text-green-200 text-xs mt-0.5">Bupati{bupati?.periode ? ` (${bupati.periode})` : ""}</p>
                 </div>
 
                 {/* Wakil Bupati Card */}
@@ -428,13 +456,29 @@ export function HeroSection() {
                         transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                       />
                       <div className="absolute inset-0 rounded-full bg-green-800" />
-                      <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-teal-400/30">
-                        <Users className="h-8 w-8 text-white" />
-                      </div>
+                      {wakilBupati?.photo ? (
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-green-800 ring-teal-400/30">
+                          <Image
+                            src={wakilBupati.photo}
+                            alt={wakilBupati.name || "Wakil Bupati"}
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : loading ? (
+                        <div className="relative w-16 h-16 rounded-full bg-green-700/50 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-teal-400/30">
+                          <Loader2 className="h-6 w-6 animate-spin text-white/60" />
+                        </div>
+                      ) : (
+                        <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-teal-400/30">
+                          <Users className="h-8 w-8 text-white" />
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <h4 className="font-semibold text-sm leading-tight">Wakil Bupati Kabupaten Ngada</h4>
-                  <p className="text-green-200 text-xs mt-0.5">Wakil Bupati</p>
+                  <h4 className="font-semibold text-sm leading-tight">{wakilBupati?.name || "Wakil Bupati Kabupaten Ngada"}</h4>
+                  <p className="text-green-200 text-xs mt-0.5">Wakil Bupati{wakilBupati?.periode ? ` (${wakilBupati.periode})` : ""}</p>
                 </div>
               </div>
 

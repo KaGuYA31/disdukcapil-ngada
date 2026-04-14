@@ -503,3 +503,16 @@ model BlankoEKTP {
 
   @@map("blanko_ektp")
 }
+
+// Pimpinan Daerah (Bupati & Wakil Bupati)
+model Pimpinan {
+  id        String   @id @default(cuid())
+  role      String   @unique // "Bupati" or "Wakil Bupati"
+  name      String
+  photo     String?  // URL foto pimpinan
+  periode   String?  // e.g. "2024-2029"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pimpinan")
+}

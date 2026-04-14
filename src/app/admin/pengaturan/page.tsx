@@ -9,12 +9,30 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { useToast } from "@/hooks/use-toast";
-import { Save, User, Lock, Building2, IdCard, Loader2, RefreshCw } from "lucide-react";
+import { ImageUpload } from "@/components/ui/image-upload";
+import {
+  Save,
+  User,
+  Lock,
+  Building2,
+  IdCard,
+  Loader2,
+  RefreshCw,
+  Camera,
+} from "lucide-react";
 
 interface BlankoData {
   jumlahTersedia: number;
   keterangan: string | null;
   updatedAt: string | null;
+}
+
+interface PimpinanData {
+  id: string;
+  role: string;
+  name: string;
+  photo: string | null;
+  periode: string | null;
 }
 
 export default function PengaturanPage() {
@@ -28,6 +46,16 @@ export default function PengaturanPage() {
   const [blankoSaving, setBlankoSaving] = useState(false);
   const [blankoLastUpdated, setBlankoLastUpdated] = useState<string>("-");
 
+  // Pimpinan state
+  const [pimpinanLoading, setPimpinanLoading] = useState(true);
+  const [pimpinanSaving, setPimpinanSaving] = useState<string | null>(null); // "Bupati" or "Wakil Bupati"
+  const [bupatiName, setBupatiName] = useState("");
+  const [bupatiPhoto, setBupatiPhoto] = useState("");
+  const [bupatiPeriode, setBupatiPeriode] = useState("");
+  const [wakilName, setWakilName] = useState("");
+  const [wakilPhoto, setWakilPhoto] = useState("");
+  const [wakilPeriode, setWakilPeriode] = useState("");
+
   const authState = useMemo(() => {
     if (typeof document === "undefined")
       return { isAuthenticated: false, isLoading: true };
@@ -39,10 +67,11 @@ export default function PengaturanPage() {
     return { isAuthenticated: isLoggedIn, isLoading: false };
   }, []);
 
-  // Fetch blanko E-KTP data
+  // Fetch data on mount
   useEffect(() => {
     if (authState.isAuthenticated) {
       fetchBlankoData();
+      fetchPimpinanData();
     }
   }, [authState.isAuthenticated]);
 
@@ -69,6 +98,32 @@ export default function PengaturanPage() {
       console.error("Error fetching blanko data:", error);
     } finally {
       setBlankoLoading(false);
+    }
+  };
+
+  const fetchPimpinanData = async () => {
+    try {
+      const response = await fetch("/api/pimpinan");
+      const result = await response.json();
+      if (result.success && result.data) {
+        const list: PimpinanData[] = result.data;
+        const bupati = list.find((p) => p.role === "Bupati");
+        const wakil = list.find((p) => p.role === "Wakil Bupati");
+        if (bupati) {
+          setBupatiName(bupati.name);
+          setBupatiPhoto(bupati.photo || "");
+          setBupatiPeriode(bupati.periode || "");
+        }
+        if (wakil) {
+          setWakilName(wakil.name);
+          setWakilPhoto(wakil.photo || "");
+          setWakilPeriode(wakil.periode || "");
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching pimpinan data:", error);
+    } finally {
+      setPimpinanLoading(false);
     }
   };
 
@@ -121,6 +176,55 @@ export default function PengaturanPage() {
     }
   };
 
+  const handleSavePimpinan = async (role: string, name: string, photo: string, periode: string) => {
+    if (!name.trim()) {
+      toast({
+        title: "Error",
+        description: `Nama ${role} wajib diisi`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setPimpinanSaving(role);
+    try {
+      const response = await fetch("/api/pimpinan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          role,
+          name: name.trim(),
+          photo: photo || null,
+          periode: periode.trim() || null,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        toast({
+          title: "Berhasil",
+          description: `Data ${role} berhasil diperbarui`,
+        });
+        await fetchPimpinanData();
+      } else {
+        toast({
+          title: "Gagal",
+          description: result.error || "Terjadi kesalahan saat menyimpan",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error saving pimpinan data:", error);
+      toast({
+        title: "Gagal",
+        description: "Terjadi kesalahan koneksi",
+        variant: "destructive",
+      });
+    } finally {
+      setPimpinanSaving(null);
+    }
+  };
+
   if (authState.isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -150,7 +254,116 @@ export default function PengaturanPage() {
           <p className="text-gray-500">Kelola pengaturan website dan akun admin</p>
         </div>
 
-        {/* Blanko E-KTP Management - Top Priority */}
+        {/* Pimpinan Daerah - Bupati & Wakil Bupati */}
+        <Card className="border-gray-200 border-l-4 border-l-green-600">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Camera className="h-5 w-5 text-green-600" />
+              Foto & Data Pimpinan Daerah
+            </CardTitle>
+            <p className="text-sm text-gray-500 mt-1">
+              Atur foto, nama, dan periode Bupati serta Wakil Bupati yang akan ditampilkan di halaman utama website.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {pimpinanLoading ? (
+              <div className="flex items-center gap-2 py-4">
+                <Loader2 className="h-5 w-5 animate-spin text-green-600" />
+                <span className="text-gray-500">Memuat data pimpinan...</span>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Bupati */}
+                <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <h3 className="font-semibold text-gray-800 text-sm uppercase tracking-wider">Bupati Kabupaten Ngada</h3>
+                  <div className="space-y-2">
+                    <Label htmlFor="bupati-name">Nama Bupati *</Label>
+                    <Input
+                      id="bupati-name"
+                      value={bupatiName}
+                      onChange={(e) => setBupatiName(e.target.value)}
+                      placeholder="Masukkan nama Bupati"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="bupati-periode">Periode Jabatan</Label>
+                    <Input
+                      id="bupati-periode"
+                      value={bupatiPeriode}
+                      onChange={(e) => setBupatiPeriode(e.target.value)}
+                      placeholder="Contoh: 2024 - 2029"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Foto Bupati</Label>
+                    <ImageUpload
+                      value={bupatiPhoto}
+                      onChange={(url) => setBupatiPhoto(url)}
+                    />
+                    <p className="text-xs text-gray-500">Upload foto langsung dari komputer (JPG/PNG, maks. 5MB)</p>
+                  </div>
+                  <Button
+                    onClick={() => handleSavePimpinan("Bupati", bupatiName, bupatiPhoto, bupatiPeriode)}
+                    disabled={pimpinanSaving === "Bupati"}
+                    className="bg-green-700 hover:bg-green-800 w-full"
+                  >
+                    {pimpinanSaving === "Bupati" ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Save className="mr-2 h-4 w-4" />
+                    )}
+                    Simpan Data Bupati
+                  </Button>
+                </div>
+
+                {/* Wakil Bupati */}
+                <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <h3 className="font-semibold text-gray-800 text-sm uppercase tracking-wider">Wakil Bupati Kabupaten Ngada</h3>
+                  <div className="space-y-2">
+                    <Label htmlFor="wakil-name">Nama Wakil Bupati *</Label>
+                    <Input
+                      id="wakil-name"
+                      value={wakilName}
+                      onChange={(e) => setWakilName(e.target.value)}
+                      placeholder="Masukkan nama Wakil Bupati"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="wakil-periode">Periode Jabatan</Label>
+                    <Input
+                      id="wakil-periode"
+                      value={wakilPeriode}
+                      onChange={(e) => setWakilPeriode(e.target.value)}
+                      placeholder="Contoh: 2024 - 2029"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Foto Wakil Bupati</Label>
+                    <ImageUpload
+                      value={wakilPhoto}
+                      onChange={(url) => setWakilPhoto(url)}
+                    />
+                    <p className="text-xs text-gray-500">Upload foto langsung dari komputer (JPG/PNG, maks. 5MB)</p>
+                  </div>
+                  <Button
+                    onClick={() => handleSavePimpinan("Wakil Bupati", wakilName, wakilPhoto, wakilPeriode)}
+                    disabled={pimpinanSaving === "Wakil Bupati"}
+                    className="bg-green-700 hover:bg-green-800 w-full"
+                  >
+                    {pimpinanSaving === "Wakil Bupati" ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Save className="mr-2 h-4 w-4" />
+                    )}
+                    Simpan Data Wakil Bupati
+                  </Button>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Blanko E-KTP Management */}
         <Card className="border-gray-200 border-l-4 border-l-teal-600">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -370,8 +583,8 @@ export default function PengaturanPage() {
               <h3 className="font-semibold text-teal-800 mb-2">Informasi</h3>
               <p className="text-sm text-teal-700">
                 Halaman ini berisi pengaturan dasar untuk website dan akun
-                administrator. Data blanko E-KTP yang disimpan akan langsung
-                ditampilkan di halaman utama website publik.
+                administrator. Data blanko E-KTP dan foto pimpinan yang disimpan
+                akan langsung ditampilkan di halaman utama website publik.
               </p>
             </CardContent>
           </Card>
