@@ -3215,3 +3215,77 @@ Stage Summary:
 - 2 TypeScript build errors fixed
 - Deployment successful, all pages online
 - Cron job re-established for ongoing QA
+
+---
+Task ID: round-18-critical-fixes-enhancements
+Agent: Main Coordinator
+Task: Critical database connection fix + page bug fixes + UX enhancements
+
+Work Log:
+- QA testing revealed 6 critical issues across the production site
+- Root cause: ALL API routes failing due to Supabase database connection issues
+- Fixed DATABASE_URL on Vercel: changed from port 5432 (session mode, max clients) to port 6543 (transaction mode)
+- Fixed profil page tabs: replaced dual Radix Tabs context with native buttons + ARIA roles
+- Enhanced hero section, statistik, berita, and pengaduan pages
+
+CRITICAL FIXES:
+
+1. Database Connection (Vercel):
+   - Problem: Supabase session pooler (port 5432) returning "MaxClientsInSessionMode: max clients reached"
+   - Root cause: Two conflicting DATABASE_URL entries on Vercel - production had encrypted wrong value, preview/dev had correct pgbouncer URL
+   - Fix: Deleted wrong production DATABASE_URL (id: l3yxVunPb594qwEg), updated remaining to use port 6543 (transaction mode)
+   - Result: All 8 API endpoints now return successful responses
+
+2. Profil Page Tab Navigation:
+   - Problem: Tabs split into two separate Radix Tabs components (triggers in context #1, content in context #2)
+   - Fix: Replaced with native button elements + manual state management
+   - Added ARIA roles (tablist, tab, tabpanel) for accessibility
+   - Added dark mode support to sticky tab bar
+
+3. TypeScript Build Errors:
+   - add-testimoni-widget.tsx: useEffect cleanup returning boolean → wrapped in block statement
+   - quick-info-bar.tsx: Missing subValue type → added explicit type annotation
+
+HERO SECTION ENHANCEMENTS:
+- Fixed greeting timezone normalization (24h → 0h edge case at midnight)
+- Added live data badge showing "melayani 171.027+ penduduk · 12 kecamatan · 206 kelurahan"
+- Added CSS floating particles (4 animated circles, 18-25s durations)
+- Search bar now functional - triggers global SearchCommand palette
+
+PAGE IMPROVEMENTS:
+- Statistik: 10s timeout, error state with retry, dark mode skeletons
+- Berita: Featured article card, reading time, enhanced empty states, Load More pagination
+- Pengaduan: 10s timeout, friendly empty state, error handling, no more perpetual spinner
+
+FILES MODIFIED:
+- src/app/profil/page.tsx (rewritten: native buttons + ARIA)
+- src/components/sections/hero-section.tsx (greeting fix, data badge, particles, search)
+- src/components/shared/search-command.tsx (query pre-fill support)
+- src/app/globals.css (4 float keyframe animations)
+- src/app/statistik/page.tsx (timeout, error state, dark mode)
+- src/components/sections/berita/news-list-section.tsx (featured, reading time, load more)
+- src/components/sections/pengaduan/recent-submissions.tsx (timeout, empty/error states)
+- src/components/shared/add-testimoni-widget.tsx (useEffect cleanup fix)
+- src/components/shared/quick-info-bar.tsx (subValue type fix)
+
+VERCEL ENVIRONMENT:
+- Deleted: DATABASE_URL (l3yxVunPb594qwEg) - production-only, encrypted, wrong value
+- Updated: DATABASE_URL (HkMWoxaJRSljmBSd) - all targets, port 6543 transaction mode
+- Unchanged: DIRECT_DATABASE_URL, ENCRYPTION_KEY, NEXTAUTH_*, ADMIN_*
+
+Verification:
+- Build: ✅ 44 routes, 0 errors
+- Production: ✅ https://disdukcapil-ngada.vercel.app (HTTP 200)
+- All 7 public routes: ✅ HTTP 200
+- All 8 API endpoints: ✅ success=true
+- API data: 3 berita, 1 inovasi, 171,027 penduduk, 1,242 blanko E-KTP
+- GitHub: pushed commits 923eb37, 6dec628, 44c2b76
+- Vercel: auto-deployed from GitHub
+
+Stage Summary:
+- 1 critical infrastructure fix (DATABASE_URL port 6543 transaction mode)
+- 1 critical component fix (profil tabs - dual context → native buttons)
+- 2 TypeScript build fixes (useEffect cleanup, type annotation)
+- 4 page enhancements (hero, statistik, berita, pengaduan)
+- 10 files modified, 718 insertions, 212 deletions
+- All routes and APIs verified working on production
