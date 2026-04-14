@@ -90,6 +90,8 @@ export function NewsListSection() {
   }, [urlQuery]);
 
   const fetchNews = useCallback(async () => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
     try {
       setIsLoading(true);
       setError(false);
@@ -97,7 +99,7 @@ export function NewsListSection() {
       const params = new URLSearchParams();
       params.append("limit", "100");
 
-      const response = await fetch(`/api/berita?${params.toString()}`);
+      const response = await fetch(`/api/berita?${params.toString()}`, { signal: controller.signal });
       const result = await response.json();
       if (result.success) {
         setAllNews(result.data || []);
@@ -105,9 +107,13 @@ export function NewsListSection() {
       } else {
         setError(true);
       }
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        console.error('Berita fetch timed out');
+      }
       setError(true);
     } finally {
+      clearTimeout(timeoutId);
       setIsLoading(false);
     }
   }, []);

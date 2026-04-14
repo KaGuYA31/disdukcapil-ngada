@@ -79,14 +79,10 @@ export default function ProfilPage() {
   }, []);
 
   const handleTabChange = useCallback((value: TabValue) => {
+    if (value === activeTab) return;
     setActiveTab(value);
     window.history.replaceState(null, "", `#${value}`);
-    // Scroll to tabs area smoothly
-    const tabsEl = document.getElementById("profil-tabs");
-    if (tabsEl) {
-      tabsEl.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, []);
+  }, [activeTab]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -189,13 +185,14 @@ export default function ProfilPage() {
                     <tab.icon className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
                     <span>{tab.label}</span>
                     {/* Active bottom indicator */}
-                    {isActive && (
-                      <motion.div
-                        layoutId="active-tab-indicator"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-600 dark:bg-green-500"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      />
-                    )}
+                    <span
+                      className={`absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-300 ${
+                        isActive
+                          ? "bg-green-600 dark:bg-green-500 scale-x-100"
+                          : "bg-transparent scale-x-0"
+                      }`}
+                      aria-hidden="true"
+                    />
                   </button>
                 );
               })}
