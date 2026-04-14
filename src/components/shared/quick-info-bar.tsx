@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Clock, Users, MapPin, Building2 } from "lucide-react";
 
-const quickInfoItems = [
+const quickInfoItems: { icon: typeof Clock; label: string; value: string; subValue?: string }[] = [
   {
     icon: Clock,
     label: "Jam Operasional",

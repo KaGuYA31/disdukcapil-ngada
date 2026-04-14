@@ -446,7 +446,7 @@ export function AddTestimoniWidget() {
   // Register listener with proper cleanup
   useEffect(() => {
     const unsub = onTestimoniDialogOpen(handleOpenRequest);
-    return () => unsub();
+    return () => { unsub(); };
   }, [handleOpenRequest]);
 
   const handleSubmit = useCallback(async (data: FormData) => {
