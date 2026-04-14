@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { withRetry } from "@/lib/retry";
 
 // GET - Fetch all news
 export async function GET(request: NextRequest) {
@@ -26,15 +27,18 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    const [news, total] = await Promise.all([
-      db.berita.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      db.berita.count({ where }),
-    ]);
+    const [news, total] = await withRetry(
+      () => Promise.all([
+        db.berita.findMany({
+          where,
+          orderBy: { createdAt: "desc" },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        db.berita.count({ where }),
+      ]),
+      { context: "Berita GET", maxRetries: 2, delayMs: 300 }
+    );
 
     return NextResponse.json({
       success: true,

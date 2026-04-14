@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { withRetry } from "@/lib/retry";
 
 // GET - Fetch all published innovation activities or single by ID
 export async function GET(request: NextRequest) {
@@ -52,20 +53,23 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    const [inovasi, total, categoriesResult] = await Promise.all([
-      db.inovasi.findMany({
-        where,
-        orderBy: { date: "desc" },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      db.inovasi.count({ where }),
-      db.inovasi.groupBy({
-        by: ["category"],
-        where: { isPublished: true },
-        orderBy: { category: "asc" },
-      }),
-    ]);
+    const [inovasi, total, categoriesResult] = await withRetry(
+      () => Promise.all([
+        db.inovasi.findMany({
+          where,
+          orderBy: { date: "desc" },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        db.inovasi.count({ where }),
+        db.inovasi.groupBy({
+          by: ["category"],
+          where: { isPublished: true },
+          orderBy: { category: "asc" },
+        }),
+      ]),
+      { context: "Inovasi GET", maxRetries: 2, delayMs: 300 }
+    );
 
     const categories = categoriesResult
       .map((r) => r.category)

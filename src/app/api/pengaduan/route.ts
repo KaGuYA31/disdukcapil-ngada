@@ -10,6 +10,7 @@ import {
   logSecurityEvent,
   secureResponse,
 } from "@/lib/security";
+import { withRetry } from "@/lib/retry";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
@@ -31,15 +32,18 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const [complaints, total] = await Promise.all([
-      db.pengaduan.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      }),
-      db.pengaduan.count({ where }),
-    ]);
+    const [complaints, total] = await withRetry(
+      () => Promise.all([
+        db.pengaduan.findMany({
+          where,
+          orderBy: { createdAt: "desc" },
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+        }),
+        db.pengaduan.count({ where }),
+      ]),
+      { context: "Pengaduan GET", maxRetries: 2, delayMs: 300 }
+    );
 
     // Mask NIK in response (decrypt first if encrypted)
     const maskedComplaints = complaints.map((c: any) => {

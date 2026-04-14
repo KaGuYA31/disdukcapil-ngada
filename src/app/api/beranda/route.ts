@@ -1,30 +1,20 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { withRetry } from "@/lib/retry";
 
 // GET - Fetch data for homepage
 export async function GET() {
   try {
-    // Fetch ringkasan data
-    const ringkasan = await db.dataRingkasan.findFirst({
-      orderBy: { createdAt: "desc" },
-    });
-
-    // Fetch ringkasan dokumen
-    const ringkasanDokumen = await db.ringkasanDokumen.findFirst({
-      orderBy: { createdAt: "desc" },
-    });
-
-    // Fetch kepala dinas from struktur organisasi
-    const kepalaDinas = await db.strukturOrganisasi.findFirst({
-      where: {
-        position: "Kepala Dinas",
-      },
-    });
-
-    // Fetch blanko E-KTP availability
-    const blankoEKTP = await db.blankoEKTP.findFirst({
-      orderBy: { updatedAt: "desc" },
-    });
+    // Fetch all data in parallel with retry
+    const [ringkasan, ringkasanDokumen, kepalaDinas, blankoEKTP] = await withRetry(
+      () => Promise.all([
+        db.dataRingkasan.findFirst({ orderBy: { createdAt: "desc" } }),
+        db.ringkasanDokumen.findFirst({ orderBy: { createdAt: "desc" } }),
+        db.strukturOrganisasi.findFirst({ where: { position: "Kepala Dinas" } }),
+        db.blankoEKTP.findFirst({ orderBy: { updatedAt: "desc" } }),
+      ]),
+      { context: "Beranda GET", maxRetries: 2, delayMs: 300 }
+    );
 
     // Calculate cakupan akta
     const totalAkta = (ringkasanDokumen?.aktaLahir || 0) + (ringkasanDokumen?.aktaBelum || 0);
