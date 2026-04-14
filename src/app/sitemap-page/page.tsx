@@ -103,8 +103,8 @@ const sitemapCategories: SitemapCategory[] = [
     ],
   },
   {
-    title: "Layanan Kependudukan",
-    description: "Layanan terkait dokumen identitas dan data kependudukan",
+    title: "Persyaratan Layanan",
+    description: "Layanan administrasi kependudukan dan pencatatan sipil",
     links: [
       {
         title: "KTP-el",
@@ -130,12 +130,6 @@ const sitemapCategories: SitemapCategory[] = [
         description: "Legalisasi dokumen kependudukan yang telah diterbitkan",
         icon: Stamp,
       },
-    ],
-  },
-  {
-    title: "Pencatatan Sipil",
-    description: "Layanan pencatatan peristiwa kependudukan dan perpindahan",
-    links: [
       {
         title: "Akta Kelahiran",
         href: "/layanan/akta-kelahiran",

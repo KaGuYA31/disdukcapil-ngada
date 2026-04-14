@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Search, FileText, Users, Building2, Loader2, Globe, ClipboardList, BookOpen, ChevronDown, IdCard, FileCheck, Sun, Sunset, Moon } from "lucide-react";
+import { Search, FileText, Users, Building2, Loader2, Globe, ChevronDown, IdCard, FileCheck, Sun, Sunset, Moon } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -356,8 +356,7 @@ export function HeroSection() {
                 <Link href="/layanan-online">
                   <Button
                     size="lg"
-                    variant="outline"
-                    className="border-white text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10"
+                    className="bg-white/15 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10 transition-all duration-200"
                   >
                     <Globe className="mr-2 h-5 w-5" />
                     Layanan Online
@@ -377,34 +376,7 @@ export function HeroSection() {
               </motion.div>
             </motion.div>
 
-            {/* Category Quick Links */}
-            <motion.div
-              variants={fadeIn}
-              className="flex flex-wrap gap-3 justify-center lg:justify-start pt-2"
-            >
-              <Link href="/layanan?kategori=Pendaftaran+Penduduk">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 h-10 px-4 bg-transparent"
-                >
-                  <ClipboardList className="mr-2 h-4 w-4" />
-                  Pendaftaran Penduduk
-                  <ArrowRight className="ml-1 h-3 w-3" />
-                </Button>
-              </Link>
-              <Link href="/layanan?kategori=Pencatatan+Sipil">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 h-10 px-4 bg-transparent"
-                >
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Pencatatan Sipil
-                  <ArrowRight className="ml-1 h-3 w-3" />
-                </Button>
-              </Link>
-            </motion.div>
+
           </motion.div>
 
           {/* Right Content - Head of Dinas */}

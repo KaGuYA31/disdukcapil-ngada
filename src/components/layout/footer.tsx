@@ -16,7 +16,6 @@ import {
   Music2,
   ExternalLink,
   ClipboardList,
-  BookOpen,
   Star,
   ArrowUp,
   ChevronRight,
@@ -42,14 +41,11 @@ const layananUnggulanLinks = [
   { title: "Pendaftaran Online", href: "/layanan-online" },
 ];
 
-const pendaftaranPendudukLinks = [
+const persyaratanLayananLinks = [
   { title: "KTP-el", href: "/layanan/ktp-el" },
   { title: "Kartu Keluarga", href: "/layanan/kartu-keluarga" },
   { title: "Perubahan Data", href: "/layanan/perubahan-data" },
   { title: "Legalisasi", href: "/layanan/legalisasi" },
-];
-
-const pencatatanSipilLinks = [
   { title: "Akta Kelahiran", href: "/layanan/akta-kelahiran" },
   { title: "Akta Kematian", href: "/layanan/akta-kematian" },
   { title: "Akta Perkawinan", href: "/layanan/akta-perkawinan" },
@@ -244,50 +240,42 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Pendaftaran Penduduk - spans 2 cols */}
-          <div className="lg:col-span-2">
+          {/* Persyaratan Layanan - spans 4 cols (merged) */}
+          <div className="lg:col-span-4">
             <div className="flex items-center gap-2 mb-4">
               <ClipboardList className="h-4.5 w-4.5 text-teal-400" />
               <h4 className="font-semibold text-white text-base">
-                Pendaftaran Penduduk
+                Persyaratan Layanan
               </h4>
             </div>
-            <ul className="space-y-2.5">
-              {pendaftaranPendudukLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm hover:text-green-400 transition-all duration-200 inline-flex items-center gap-1 group"
-                  >
-                    <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-green-400" />
-                    {link.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Pencatatan Sipil - spans 2 cols */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <BookOpen className="h-4.5 w-4.5 text-teal-400" />
-              <h4 className="font-semibold text-white text-base">
-                Pencatatan Sipil
-              </h4>
+            <div className="grid grid-cols-2 gap-x-4">
+              <ul className="space-y-2.5">
+                {persyaratanLayananLinks.slice(0, Math.ceil(persyaratanLayananLinks.length / 2)).map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm hover:text-green-400 transition-all duration-200 inline-flex items-center gap-1 group"
+                    >
+                      <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-green-400" />
+                      {link.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <ul className="space-y-2.5">
+                {persyaratanLayananLinks.slice(Math.ceil(persyaratanLayananLinks.length / 2)).map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm hover:text-green-400 transition-all duration-200 inline-flex items-center gap-1 group"
+                    >
+                      <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-green-400" />
+                      {link.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="space-y-2.5">
-              {pencatatanSipilLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm hover:text-green-400 transition-all duration-200 inline-flex items-center gap-1 group"
-                  >
-                    <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-green-400" />
-                    {link.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
