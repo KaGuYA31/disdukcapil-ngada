@@ -1,6 +1,5 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { AnnouncementTicker } from "@/components/shared/announcement-ticker";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { BackToTop } from "@/components/shared/back-to-top";
 import { QuickAccessPanel } from "@/components/shared/quick-access-panel";
@@ -26,7 +25,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <AnnouncementTicker />
       <main id="main-content" className="flex-1">
         <HeroSection />
         <LiveVisitorCounter />
