@@ -3187,3 +3187,31 @@ Stage Summary:
 - Consistent dark mode pattern applied: gray-900 for white/gray-50 backgrounds, gray-800/gray-700 for borders, gray-100/gray-200/gray-300 for text, -950/50 variants for light-colored badges/accents
 - All dynamic class functions (getCategoryColor, getTypeColor) updated with dark variants
 - No blue or purple colors introduced in dark mode
+
+---
+Task ID: build-fix-deploy
+Agent: Main Coordinator
+Task: Fix TypeScript build errors causing Vercel deployment failure
+
+Work Log:
+- User reported deployment not successful, still has errors
+- Ran `npx next build` to identify build failures
+- Found 2 TypeScript errors:
+  1. `add-testimoni-widget.tsx:447` - useEffect cleanup returns boolean instead of void
+  2. `quick-info-bar.tsx:84` - Property 'subValue' does not exist on quickInfoItems type
+- Fixed useEffect cleanup: `return () => unsub()` → `return () => { unsub(); }` 
+- Fixed quickInfoItems: added explicit type `{ icon: typeof Clock; label: string; value: string; subValue?: string }[]`
+- Rebuild: ✅ Compiled successfully (44 routes)
+- Committed and pushed to GitHub (54fd1df)
+- Vercel auto-deployed successfully
+
+Verification:
+- Build: ✅ 44 routes, no TypeScript errors
+- Production: ✅ https://disdukcapil-ngada.vercel.app (HTTP 200)
+- All routes verified: Homepage, Layanan, Berita, Inovasi, Statistik, Pengaduan, Profil
+- Cron Job: Job ID 87826 (every 15 min, webDevReview)
+
+Stage Summary:
+- 2 TypeScript build errors fixed
+- Deployment successful, all pages online
+- Cron job re-established for ongoing QA
