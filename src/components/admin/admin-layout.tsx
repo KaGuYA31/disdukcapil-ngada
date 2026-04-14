@@ -20,9 +20,9 @@ import {
   Globe,
   Clock,
   ChevronRight,
-  Separator,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
   DropdownMenuContent,
