@@ -3376,3 +3376,35 @@ Stage Summary:
 - 3 new features (visitor counter, stats cards, pengumuman section)
 - 12 files modified, 878 insertions, 88 deletions
 - All routes and APIs verified working on production
+
+---
+Task ID: round-19-menu-sync-fixes
+Agent: Main Coordinator
+Task: Fix Layanan Online button visibility, remove Pendaftaran/Pencatatan shortcuts, sync all references
+
+Work Log:
+- User reported 2 issues: (1) Layanan Online button text invisible on hero background, (2) Pendaftaran Penduduk & Pencatatan Sipil shortcut buttons should be removed since menus were merged
+- Investigated hero-section.tsx: "Layanan Online" button used variant="outline" which was overriding text-white with dark foreground color via CSS specificity
+- Fixed button: removed variant="outline", applied explicit className "bg-white/15 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-green-700"
+- Removed entire "Category Quick Links" section (Pendaftaran Penduduk + Pencatatan Sipil buttons with ClipboardList/BookOpen icons)
+- Cleaned up unused imports: ArrowRight, ClipboardList, BookOpen from hero-section.tsx
+- Merged footer.tsx two separate columns (Pendaftaran Penduduk lg:col-span-2 + Pencatatan Sipil lg:col-span-2) into single "Persyaratan Layanan" lg:col-span-4 with 2-column grid for all 9 links
+- Merged sitemap-page/page.tsx two sections ("Layanan Kependudukan" + "Pencatatan Sipil") into single "Persyaratan Layanan" section with all 9 links
+- Cleaned up unused BookOpen import from footer.tsx
+- Merged pendaftaranPendudukLinks + pencatatanSipilLinks arrays into single persyaratanLayananLinks
+
+FILES MODIFIED:
+- src/components/sections/hero-section.tsx (fixed button + removed shortcuts + cleaned imports)
+- src/components/layout/footer.tsx (merged columns into Persyaratan Layanan + cleaned imports)
+- src/app/sitemap-page/page.tsx (merged two sections into one)
+
+Verification:
+- ESLint: 0 new errors (4 pre-existing: 3 in live-visitor-counter/db.ts, 1 warning)
+- Production: https://disdukcapil-ngada.vercel.app (HTTP 200)
+- GitHub: commit 85e5287 pushed, Vercel auto-deployed
+
+Stage Summary:
+- 1 button visibility fix (Layanan Online text now visible with white text on semi-transparent bg)
+- 1 section removed (Category Quick Links from hero)
+- 2 files merged (footer columns + sitemap sections)
+- All references synchronized: header nav, search command, footer, sitemap page, hero section
