@@ -18,6 +18,7 @@ import { CTASection } from "@/components/sections/cta-section";
 import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
 import { GaleriInovasiSection } from "@/components/sections/galeri-inovasi-section";
 import { QuickInfoBar } from "@/components/shared/quick-info-bar";
+import { LiveVisitorCounter } from "@/components/shared/live-visitor-counter";
 import { AboutUsSection } from "@/components/sections/about-us-section";
 import { AddTestimoniWidget } from "@/components/shared/add-testimoni-widget";
 
@@ -28,6 +29,7 @@ export default function HomePage() {
       <AnnouncementTicker />
       <main id="main-content" className="flex-1">
         <HeroSection />
+        <LiveVisitorCounter />
         <StatsSection />
         <SystemStatusWidget />
         <ServicesSection />
