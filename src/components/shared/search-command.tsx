@@ -53,8 +53,8 @@ const staticPages: StaticPage[] = [
   },
   {
     id: "layanan",
-    title: "Layanan",
-    description: "Daftar layanan kependudukan dan pencatatan sipil",
+    title: "Persyaratan Layanan",
+    description: "Daftar persyaratan layanan kependudukan dan pencatatan sipil",
     href: "/layanan",
     icon: FileText,
     category: "Layanan",

@@ -47,15 +47,8 @@ const navigation: NavItem[] = [
       { title: "Lokasi", href: "/profil#lokasi" },
     ],
   },
-  {
-    title: "Layanan",
-    href: "/layanan",
-    children: [
-      { title: "Pendaftaran Penduduk", href: "/layanan?kategori=Pendaftaran+Penduduk", description: "KTP, KK, dan data penduduk" },
-      { title: "Pencatatan Sipil", href: "/layanan?kategori=Pencatatan+Sipil", description: "Akta nikah, cerai, kelahiran" },
-      { title: "Layanan Online", href: "/layanan-online", description: "Ajukan layanan secara daring" },
-    ],
-  },
+  { title: "Persyaratan Layanan", href: "/layanan" },
+  { title: "Layanan Online", href: "/layanan-online" },
   { title: "Data Kependudukan", href: "/statistik" },
   { title: "Inovasi", href: "/inovasi" },
   { title: "Berita", href: "/berita" },
