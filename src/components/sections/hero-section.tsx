@@ -78,7 +78,7 @@ const fadeIn = {
 
 function getTimeGreeting() {
   const now = new Date();
-  const hour = parseInt(
+  const rawHour = parseInt(
     new Intl.DateTimeFormat("en-US", {
       hour: "numeric",
       hour12: false,
@@ -86,6 +86,8 @@ function getTimeGreeting() {
     }).format(now),
     10
   );
+  // Some Intl implementations return 24 for midnight — normalize to 0
+  const hour = rawHour === 24 ? 0 : rawHour;
 
   if (hour >= 5 && hour < 11) {
     return { text: "Selamat Pagi", Icon: Sun, colorClass: "text-amber-300" };
@@ -96,7 +98,7 @@ function getTimeGreeting() {
   if (hour >= 15 && hour < 18) {
     return { text: "Selamat Sore", Icon: Sunset, colorClass: "text-orange-400" };
   }
-  return { text: "Selamat Malam", Icon: Moon, colorClass: "text-blue-200" };
+  return { text: "Selamat Malam", Icon: Moon, colorClass: "text-teal-200" };
 }
 
 export function HeroSection() {
@@ -130,8 +132,15 @@ export function HeroSection() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      window.location.href = `/layanan?q=${encodeURIComponent(searchQuery)}`;
+      // Open the global search command palette and pre-fill the query
+      window.dispatchEvent(new CustomEvent("open-search-command", { detail: { query: searchQuery } }));
+      setSearchQuery("");
     }
+  };
+
+  // Also allow clicking the search input directly to open global search
+  const handleSearchInputFocus = () => {
+    window.dispatchEvent(new CustomEvent("open-search-command"));
   };
 
   // Data dari database
@@ -172,6 +181,14 @@ export function HeroSection() {
     <section className="relative overflow-hidden text-white">
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-700 via-green-800 to-green-900 animate-hero-gradient" />
+
+      {/* Floating Particles - CSS animated for performance */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <div className="absolute top-[15%] left-[10%] w-32 h-32 rounded-full bg-green-400/[0.07] animate-float-1 blur-xl" />
+        <div className="absolute top-[60%] left-[70%] w-40 h-40 rounded-full bg-teal-400/[0.06] animate-float-2 blur-xl" />
+        <div className="absolute top-[30%] left-[80%] w-24 h-24 rounded-full bg-yellow-400/[0.05] animate-float-3 blur-xl" />
+        <div className="absolute top-[75%] left-[25%] w-28 h-28 rounded-full bg-green-300/[0.06] animate-float-4 blur-xl" />
+      </div>
 
       {/* Subtle Dot Grid Pattern Overlay */}
       <div
@@ -241,6 +258,35 @@ export function HeroSection() {
               Pencatatan Sipil
             </motion.h1>
 
+            {/* Live Data Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              className="flex justify-center lg:justify-start"
+            >
+              <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 text-xs sm:text-sm text-green-100/90 border border-white/15">
+                <motion.span
+                  className="relative flex h-2 w-2"
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+                </motion.span>
+                {loading ? (
+                  <span className="flex items-center gap-1.5">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Memuat data...
+                  </span>
+                ) : (
+                  <span>
+                    melayani <strong className="text-yellow-300">{formatNumber(totalPenduduk)}+</strong> penduduk&nbsp;&middot;&nbsp;12 kecamatan&nbsp;&middot;&nbsp;206 kelurahan
+                  </span>
+                )}
+              </span>
+            </motion.div>
+
             <motion.p
               variants={fadeIn}
               className="text-lg md:text-xl text-green-100 max-w-xl mx-auto lg:mx-0"
@@ -257,7 +303,7 @@ export function HeroSection() {
               <CountdownTimer />
             </motion.div>
 
-            {/* Search Bar */}
+            {/* Search Bar - opens global search command */}
             <motion.form
               variants={fadeIn}
               onSubmit={handleSearch}
@@ -267,10 +313,12 @@ export function HeroSection() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="search"
-                  placeholder="Cari layanan..."
+                  placeholder="Cari layanan, berita, halaman..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white text-gray-900 placeholder:text-gray-500 h-12 shadow-lg shadow-black/20 focus:ring-2 focus:ring-yellow-400/50"
+                  onFocus={handleSearchInputFocus}
+                  className="pl-10 bg-white text-gray-900 placeholder:text-gray-500 h-12 shadow-lg shadow-black/20 focus:ring-2 focus:ring-yellow-400/50 cursor-pointer"
+                  readOnly
                 />
               </div>
               <Button
@@ -280,6 +328,10 @@ export function HeroSection() {
               >
                 Cari
               </Button>
+              <span className="hidden sm:inline-flex items-center self-center text-xs text-green-200/70 select-none ml-1">
+                <kbd className="inline-flex items-center rounded border border-white/20 bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">⌘</kbd>
+                <kbd className="inline-flex items-center rounded border border-white/20 bg-white/10 px-1.5 py-0.5 font-mono text-[10px] ml-0.5">K</kbd>
+              </span>
             </motion.form>
 
             {/* Quick Actions */}

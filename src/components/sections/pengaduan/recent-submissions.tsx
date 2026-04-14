@@ -12,9 +12,13 @@ import {
   Calendar,
   User,
   ChevronRight,
+  RefreshCw,
+  WifiOff,
+  ShieldCheck,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface PengaduanItem {
   id: string;
@@ -24,6 +28,8 @@ interface PengaduanItem {
   status: string;
   createdAt: string;
 }
+
+const FETCH_TIMEOUT_MS = 10_000;
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -97,7 +103,6 @@ function EmptyState() {
       className="text-center py-8"
     >
       <motion.div
-        initial={{ y: 0 }}
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         className="w-20 h-20 bg-gradient-to-br from-green-100 to-teal-100 dark:from-green-900/40 dark:to-teal-900/40 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm"
@@ -107,9 +112,46 @@ function EmptyState() {
       <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
         Belum Ada Pengaduan
       </h3>
-      <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
+      <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-3">
         Pengaduan yang Anda kirim akan muncul di sini. Silakan isi formulir di bawah untuk menyampaikan keluhan atau saran Anda.
       </p>
+      <div className="flex items-center justify-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+        <ShieldCheck className="h-3.5 w-3.5" />
+        <span>Data pengaduan Anda terjamin kerahasiaannya</span>
+      </div>
+    </motion.div>
+  );
+}
+
+function ErrorState({ onRetry }: { onRetry: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" as const }}
+      className="text-center py-8"
+    >
+      <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+        <AlertCircle className="h-8 w-8 text-red-500 dark:text-red-400" />
+      </div>
+      <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+        Gagal Memuat Data
+      </h3>
+      <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-2">
+        Tidak dapat memuat data pengaduan. Periksa koneksi internet Anda.
+      </p>
+      <div className="flex items-center justify-center gap-2 text-xs text-gray-400 dark:text-gray-500 mb-4">
+        <WifiOff className="h-3.5 w-3.5" />
+        <span>Koneksi mungkin terputus atau server sedang gangguan</span>
+      </div>
+      <Button
+        onClick={onRetry}
+        variant="outline"
+        className="border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 gap-2"
+      >
+        <RefreshCw className="h-4 w-4" />
+        Coba Lagi
+      </Button>
     </motion.div>
   );
 }
@@ -118,19 +160,30 @@ export function RecentSubmissions() {
   const [submissions, setSubmissions] = useState<PengaduanItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
   const fetchSubmissions = useCallback(async () => {
+    setLoading(true);
+    setError(false);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+      setError(true);
+    }, FETCH_TIMEOUT_MS);
+
     try {
-      setLoading(true);
-      setError(false);
-      const response = await fetch("/api/pengaduan?pageSize=5");
+      const response = await fetch("/api/pengaduan?pageSize=5", {
+        signal: controller.signal,
+      });
       const result = await response.json();
       if (result.success) {
         setSubmissions(result.data || []);
+      } else {
+        setError(true);
       }
     } catch {
       setError(true);
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
     }
   }, []);
@@ -138,6 +191,8 @@ export function RecentSubmissions() {
   useEffect(() => {
     fetchSubmissions();
   }, [fetchSubmissions]);
+
+  const isFailed = error;
 
   return (
     <section className="py-8 bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800">
@@ -167,20 +222,24 @@ export function RecentSubmissions() {
 
           {/* Content */}
           {loading ? (
-            <div className="flex items-center justify-center py-8">
-              <Loader2 className="h-6 w-6 animate-spin text-green-500" />
-              <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
-                Memuat pengaduan terbaru...
-              </span>
-            </div>
-          ) : error ? (
             <motion.div variants={fadeInUp}>
-              <Card className="border-gray-200 dark:border-gray-700">
-                <CardContent className="py-6 text-center">
-                  <AlertCircle className="h-8 w-8 mx-auto mb-3 text-gray-400 dark:text-gray-500" />
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Gagal memuat data pengaduan. Silakan coba lagi.
-                  </p>
+              <Card className="border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                <CardContent className="py-8 flex flex-col items-center justify-center gap-3">
+                  <Loader2 className="h-6 w-6 animate-spin text-green-500" />
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    Memuat pengaduan terbaru...
+                  </span>
+                  <span className="text-xs text-gray-400 dark:text-gray-600">
+                    Maksimal 10 detik
+                  </span>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ) : isFailed ? (
+            <motion.div variants={fadeInUp}>
+              <Card className="border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                <CardContent className="py-4">
+                  <ErrorState onRetry={fetchSubmissions} />
                 </CardContent>
               </Card>
             </motion.div>

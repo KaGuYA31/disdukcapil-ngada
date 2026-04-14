@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   Users,
@@ -10,6 +10,9 @@ import {
   IdCard,
   BarChart3,
   Printer,
+  AlertTriangle,
+  RefreshCw,
+  WifiOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -72,9 +75,11 @@ const scaleIn = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
+const FETCH_TIMEOUT_MS = 10_000;
+
 function StatistikLoadingSkeleton() {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
@@ -91,15 +96,76 @@ function StatistikLoadingSkeleton() {
 
         <div className="container mx-auto px-4 py-10 space-y-8">
           {/* Total Penduduk Skeleton */}
-          <div className="h-52 bg-white rounded-xl shadow animate-pulse" />
+          <div className="h-52 bg-white dark:bg-gray-800 rounded-xl shadow dark:shadow-gray-900/50 animate-pulse" />
           {/* Distribusi JK Skeleton */}
-          <div className="h-64 bg-white rounded-xl shadow animate-pulse" />
+          <div className="h-64 bg-white dark:bg-gray-800 rounded-xl shadow dark:shadow-gray-900/50 animate-pulse" />
           {/* 3-column cards skeleton */}
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="h-64 bg-white rounded-xl shadow animate-pulse" />
-            <div className="h-64 bg-white rounded-xl shadow animate-pulse" />
-            <div className="h-64 bg-white rounded-xl shadow animate-pulse" />
+            <div className="h-64 bg-white dark:bg-gray-800 rounded-xl shadow dark:shadow-gray-900/50 animate-pulse" />
+            <div className="h-64 bg-white dark:bg-gray-800 rounded-xl shadow dark:shadow-gray-900/50 animate-pulse" />
+            <div className="h-64 bg-white dark:bg-gray-800 rounded-xl shadow dark:shadow-gray-900/50 animate-pulse" />
           </div>
+        </div>
+      </main>
+      <Footer />
+      <WhatsAppButton />
+      <BackToTop />
+    </div>
+  );
+}
+
+function StatistikErrorState({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
+      <Header />
+      <main id="main-content" className="flex-1">
+        {/* Hero Banner */}
+        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl">
+              <div className="mb-4">
+                <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Data Kependudukan" }]} />
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 flex items-center gap-3">
+                <BarChart3 className="h-9 w-9 md:h-10 md:w-10 text-green-200" />
+                Data Kependudukan
+              </h1>
+              <p className="text-green-100 text-lg">
+                Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-4 py-16">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" as const }}
+            className="max-w-lg mx-auto text-center"
+          >
+            <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+              <AlertTriangle className="h-10 w-10 text-red-500 dark:text-red-400" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+              Gagal Memuat Data
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-2 leading-relaxed">
+              Data kependudukan tidak dapat dimuat saat ini. Hal ini mungkin disebabkan oleh koneksi internet yang lambat atau sedang terjadi gangguan pada server.
+            </p>
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-500 mb-8">
+              <WifiOff className="h-4 w-4" />
+              <span>Periksa koneksi internet Anda dan coba lagi</span>
+            </div>
+            <Button
+              onClick={onRetry}
+              className="bg-green-700 hover:bg-green-800 text-white gap-2"
+              size="lg"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Coba Lagi
+            </Button>
+          </motion.div>
         </div>
       </main>
       <Footer />
@@ -112,33 +178,57 @@ function StatistikLoadingSkeleton() {
 export default function StatistikPage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [data, setData] = useState<StatistikData>({
     ringkasan: null,
     dokumen: [],
     ringkasanDokumen: null,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/admin/statistik");
-        const result = await response.json();
-        if (result.success) {
-          setData({
-            ringkasan: result.data.ringkasan,
-            dokumen: result.data.dokumen || [],
-            ringkasanDokumen: result.data.ringkasanDokumen || null,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching data kependudukan:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(false);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+    try {
+      const response = await fetch("/api/admin/statistik", {
+        signal: controller.signal,
+      });
+      const result = await response.json();
+      if (result.success) {
+        setData({
+          ringkasan: result.data.ringkasan,
+          dokumen: result.data.dokumen || [],
+          ringkasanDokumen: result.data.ringkasanDokumen || null,
+        });
+      } else {
+        setError(true);
+      }
+    } catch (err: unknown) {
+      console.error("Error fetching data kependudukan:", err);
+      // Only show error for real failures, not aborted component unmounts
+      if (err instanceof DOMException && err.name === "AbortError") {
+        setError(true);
+        toast({
+          title: "Waktu habis",
+          description: "Data tidak dapat dimuat dalam waktu 10 detik. Silakan coba lagi.",
+          variant: "destructive",
+          duration: 5000,
+        });
+      } else {
+        setError(true);
+      }
+    } finally {
+      clearTimeout(timeoutId);
+      setLoading(false);
+    }
+  }, [toast]);
+
+  useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("id-ID").format(num);
@@ -159,6 +249,10 @@ export default function StatistikPage() {
 
   if (loading) {
     return <StatistikLoadingSkeleton />;
+  }
+
+  if (error) {
+    return <StatistikErrorState onRetry={fetchData} />;
   }
 
   const ringkasan = data.ringkasan || {

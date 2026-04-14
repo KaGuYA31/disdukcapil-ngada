@@ -220,12 +220,22 @@ export function SearchCommand() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open, openPalette, closePalette]);
 
-  // ── Custom event listener ──
+  // ── Custom event listener (supports pre-filled query via detail.query) ──
   useEffect(() => {
-    const handleOpenEvent = () => openPalette();
+    const handleOpenEvent = ((e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      const prefillQuery = detail?.query || "";
+      setOpen(true);
+      setQuery(prefillQuery);
+      setActiveIndex(-1);
+      setBeritaResults([]);
+      requestAnimationFrame(() => {
+        inputRef.current?.focus();
+      });
+    }) as EventListener;
     window.addEventListener("open-search-command", handleOpenEvent);
     return () => window.removeEventListener("open-search-command", handleOpenEvent);
-  }, [openPalette]);
+  }, []);
 
   // ── Lock body scroll when open ──
   useEffect(() => {
