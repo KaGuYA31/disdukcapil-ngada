@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, Target, Users, History, MapPin, Printer } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Header } from "@/components/layout/header";
@@ -51,6 +50,13 @@ const tabContentVariants = {
 const validTabs = ["visi-misi", "struktur", "sejarah", "lokasi"] as const;
 type TabValue = (typeof validTabs)[number];
 
+const tabItems: { value: TabValue; icon: typeof Target; label: string }[] = [
+  { value: "visi-misi", icon: Target, label: "Visi & Misi" },
+  { value: "struktur", icon: Users, label: "Struktur Organisasi" },
+  { value: "sejarah", icon: History, label: "Sejarah" },
+  { value: "lokasi", icon: MapPin, label: "Lokasi Kantor" },
+];
+
 function getTabFromHash(): TabValue {
   if (typeof window === "undefined") return "visi-misi";
   const hash = window.location.hash.replace("#", "");
@@ -72,8 +78,8 @@ export default function ProfilPage() {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
-  const handleTabChange = useCallback((value: string) => {
-    setActiveTab(value as TabValue);
+  const handleTabChange = useCallback((value: TabValue) => {
+    setActiveTab(value);
     window.history.replaceState(null, "", `#${value}`);
     // Scroll to tabs area smoothly
     const tabsEl = document.getElementById("profil-tabs");
@@ -156,157 +162,112 @@ export default function ProfilPage() {
         {/* Tabs Navigation */}
         <div
           id="profil-tabs"
-          className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm"
+          className="sticky top-0 z-30 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 shadow-sm"
         >
           <div className="container mx-auto px-4">
-            <Tabs
-              value={activeTab}
-              onValueChange={handleTabChange}
-              className="w-full"
-            >
-              <TabsList className="w-full h-auto bg-transparent p-0 overflow-x-auto rounded-none gap-0">
-                <TabTriggerItem
-                  value="visi-misi"
-                  icon={Target}
-                  label="Visi & Misi"
-                  isActive={activeTab === "visi-misi"}
-                />
-                <TabTriggerItem
-                  value="struktur"
-                  icon={Users}
-                  label="Struktur Organisasi"
-                  isActive={activeTab === "struktur"}
-                />
-                <TabTriggerItem
-                  value="sejarah"
-                  icon={History}
-                  label="Sejarah"
-                  isActive={activeTab === "sejarah"}
-                />
-                <TabTriggerItem
-                  value="lokasi"
-                  icon={MapPin}
-                  label="Lokasi Kantor"
-                  isActive={activeTab === "lokasi"}
-                />
-              </TabsList>
-            </Tabs>
+            <nav className="flex w-full overflow-x-auto rounded-none" role="tablist">
+              {tabItems.map((tab) => {
+                const isActive = activeTab === tab.value;
+                return (
+                  <button
+                    key={tab.value}
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={`panel-${tab.value}`}
+                    onClick={() => handleTabChange(tab.value)}
+                    className={`
+                      relative flex items-center gap-2 px-4 md:px-6 py-4 text-sm md:text-base font-medium whitespace-nowrap
+                      rounded-none border-0 shadow-none bg-transparent cursor-pointer
+                      transition-colors duration-200 outline-none
+                      ${
+                        isActive
+                          ? "text-green-700 dark:text-green-400"
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                      }
+                    `}
+                  >
+                    <tab.icon className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+                    <span>{tab.label}</span>
+                    {/* Active bottom indicator */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="active-tab-indicator"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-600 dark:bg-green-500"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
           </div>
         </div>
 
         {/* Tab Content */}
-        <div className="bg-white">
-          <Tabs
-            value={activeTab}
-            onValueChange={handleTabChange}
-            className="w-full"
-          >
-            <AnimatePresence mode="wait">
-              {activeTab === "visi-misi" && (
-                <TabsContent value="visi-misi" forceMount asChild>
-                  <motion.div
-                    key="visi-misi"
-                    variants={tabContentVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    <VisiMisiSection />
-                  </motion.div>
-                </TabsContent>
-              )}
+        <div className="bg-white dark:bg-gray-950">
+          <AnimatePresence mode="wait">
+            {activeTab === "visi-misi" && (
+              <motion.div
+                key="visi-misi"
+                id="panel-visi-misi"
+                role="tabpanel"
+                variants={tabContentVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <VisiMisiSection />
+              </motion.div>
+            )}
 
-              {activeTab === "struktur" && (
-                <TabsContent value="struktur" forceMount asChild>
-                  <motion.div
-                    key="struktur"
-                    variants={tabContentVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    <StrukturOrganisasiSection />
-                    <StrukturSection />
-                  </motion.div>
-                </TabsContent>
-              )}
+            {activeTab === "struktur" && (
+              <motion.div
+                key="struktur"
+                id="panel-struktur"
+                role="tabpanel"
+                variants={tabContentVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <StrukturOrganisasiSection />
+                <StrukturSection />
+              </motion.div>
+            )}
 
-              {activeTab === "sejarah" && (
-                <TabsContent value="sejarah" forceMount asChild>
-                  <motion.div
-                    key="sejarah"
-                    variants={tabContentVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    <SejarahSection />
-                  </motion.div>
-                </TabsContent>
-              )}
+            {activeTab === "sejarah" && (
+              <motion.div
+                key="sejarah"
+                id="panel-sejarah"
+                role="tabpanel"
+                variants={tabContentVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <SejarahSection />
+              </motion.div>
+            )}
 
-              {activeTab === "lokasi" && (
-                <TabsContent value="lokasi" forceMount asChild>
-                  <motion.div
-                    key="lokasi"
-                    variants={tabContentVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    <LokasiSection />
-                  </motion.div>
-                </TabsContent>
-              )}
-            </AnimatePresence>
-          </Tabs>
+            {activeTab === "lokasi" && (
+              <motion.div
+                key="lokasi"
+                id="panel-lokasi"
+                role="tabpanel"
+                variants={tabContentVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <LokasiSection />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
       <Footer />
       <WhatsAppButton />
       <BackToTop />
     </div>
-  );
-}
-
-/** Custom tab trigger item with icon and active styling */
-function TabTriggerItem({
-  value,
-  icon: Icon,
-  label,
-  isActive,
-}: {
-  value: string;
-  icon: typeof Target;
-  label: string;
-  isActive: boolean;
-}) {
-  return (
-    <TabsTrigger
-      value={value}
-      className={`
-        relative flex items-center gap-2 px-4 md:px-6 py-4 text-sm md:text-base font-medium whitespace-nowrap
-        rounded-none border-0 shadow-none bg-transparent
-        transition-colors duration-200
-        ${
-          isActive
-            ? "text-green-700"
-            : "text-gray-500 hover:text-gray-700"
-        }
-        data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-0
-        focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0
-      `}
-    >
-      <Icon className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
-      <span>{label}</span>
-      {/* Active bottom indicator */}
-      {isActive && (
-        <motion.div
-          layoutId="active-tab-indicator"
-          className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-600"
-          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        />
-      )}
-    </TabsTrigger>
   );
 }
