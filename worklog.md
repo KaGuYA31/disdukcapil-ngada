@@ -71,6 +71,43 @@ Stage Summary:
 - Deployed to: https://disdukcapil-ngada.vercel.app
 
 ---
+Task ID: 5
+Agent: Main Developer
+Task: Update Layanan Service Requirements Based on Permendagri No. 6 Tahun 2026
+
+Work Log:
+- Created POST /api/layanan/sync-permendagri route with all 12 service categories from Permendagri No. 6 Tahun 2026
+- Defined complete persyaratan, procedures, FAQ, and form codes for each service:
+  A. PENDAFTARAN PENDUDUK: KTP-el, KK, KIA, Surat Keterangan Pindah, SKPLN
+  B. PENCATATAN SIPIL: Akta Kelahiran, Akta Kematian, Akta Perkawinan, Akta Perceraian, Pengakuan Anak, Pembetulan Akta, Perubahan Nama/Kewarganegaraan
+- Route is idempotent: uses upsert logic (update existing layanan by slug, create new if not found)
+- Updated requirements format to support grouped items: `{ label: string, items: string[] }[]`
+- Added proper form codes (F-1.01, F-1.02, F-1.03, F-2.01A, F-2.01B, F-2.01C, F-2.01D, F-2.01E, F-2.01F, F-2.03, F-2.04, F-2.04B)
+- Updated service-detail.tsx:
+  - Added RequirementItem type with grouped format support (isRequirementGroup helper)
+  - New grouped requirements rendering with bordered sections and checkmarks
+  - Added "Kode Formulir" card showing form codes as badges
+  - Added "Pertanyaan Umum (FAQ)" section with Accordion component
+  - Added "Dasar Hukum" card in sidebar with Permendagri No. 6 Tahun 2026 reference
+  - Restructured sidebar: Dasar Hukum (top), GRATIS banner, Penting notice, Office Hours
+- Updated layanan/page.tsx:
+  - Updated hero description to reference Permendagri No. 6 Tahun 2026
+  - Updated Dasar Hukum section with Permendagri No. 6 Tahun 2026 as primary legal basis
+  - Added full description of the regulation change
+- Updated services-list-section.tsx:
+  - Added "Dasar Hukum: Permendagri No. 6 Tahun 2026" prominent badge with Scale icon
+  - Added emerald-styled legal reference card
+
+Stage Summary:
+- API: /api/layanan/sync-permendagri (POST) - syncs 12 layanan with Permendagri No. 6 Tahun 2026 data
+- Database: Sync route creates/updates layanan with grouped requirements, procedures, FAQ, form codes
+- Frontend: Dasar Hukum prominently displayed on listing page and detail page
+- Requirements: New grouped format supports subcategories (e.g., KTP-el: Baru, Hilang/Rusak, Perubahan Data)
+- Form codes: All Permendagri form codes (F-1.01 through F-2.04B) properly referenced
+- NOTE: Sync API works correctly in production (Vercel); local sandbox cannot reach Supabase DB directly
+
+---
+
 Task ID: 4 (NEXT)
 Agent: TBD
 Task: Continue development - remaining items from original modification requests
@@ -78,7 +115,7 @@ Task: Continue development - remaining items from original modification requests
 Pending Items:
 1. Jam operasional kantor 08:00-15:00 WITA
 2. ~~Foto Bupati & Wakil Bupati~~ (DONE - admin management + upload working)
-3. Permendagri No. 2/2026 dasar hukum
+3. ~~Permendagri No. 6/2026 dasar hukum~~ (DONE - sync API + frontend display)
 4. Multiple photo uploads for berita/inovasi
 5. Excel upload for bulk data import
 6. Admin innovation menu additions

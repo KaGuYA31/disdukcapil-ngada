@@ -115,6 +115,14 @@ interface Layanan {
   processingTime: string | null;
   fee: string | null;
   isActive: boolean;
+  category?: string;
+}
+
+// Requirement type: supports both grouped and flat formats
+type RequirementItem = { label: string; description?: string } | { label: string; items: string[] };
+
+function isRequirementGroup(req: RequirementItem): req is { label: string; items: string[] } {
+  return 'items' in req && Array.isArray(req.items);
 }
 
 // Default service data for fallback
@@ -710,7 +718,10 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
     const Icon = iconMap[service.icon || "FileText"] || FileText;
     const requirements = JSON.parse(service.requirements || "[]");
     const procedures = JSON.parse(service.procedures || "[]");
-    const formFiles = service.forms ? JSON.parse(service.forms) : [];
+    const formsData = service.forms ? JSON.parse(service.forms) : null;
+    const formCodes = formsData?.codes || [];
+    const formFiles = formsData?.links || [];
+    const faqData = service.faq ? JSON.parse(service.faq) : [];
 
     const relatedServices = getRelatedServices(slugValue);
 
@@ -857,16 +868,33 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-4">
-                          {requirements.map((req: { label: string; description?: string }, index: number) => (
-                            <div key={index} className="flex items-start gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
-                              <div>
-                                <p className="text-gray-700">{req.label}</p>
-                                {req.description && (
-                                  <p className="text-sm text-gray-500">{req.description}</p>
-                                )}
+                          {requirements.map((req: RequirementItem, index: number) => (
+                            isRequirementGroup(req) ? (
+                              <div key={index} className="border border-gray-100 rounded-lg p-4 bg-gray-50">
+                                <p className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                  {req.label}
+                                </p>
+                                <ul className="space-y-1.5 ml-4">
+                                  {req.items.map((item, i) => (
+                                    <li key={i} className="flex items-start gap-2 text-sm">
+                                      <CheckCircle className="h-3.5 w-3.5 text-green-500 flex-shrink-0 mt-0.5" />
+                                      <span className="text-gray-700">{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
                               </div>
-                            </div>
+                            ) : (
+                              <div key={index} className="flex items-start gap-2">
+                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                  <p className="text-gray-700">{req.label}</p>
+                                  {req.description && (
+                                    <p className="text-sm text-gray-500">{req.description}</p>
+                                  )}
+                                </div>
+                              </div>
+                            )
                           ))}
                         </div>
                       </CardContent>
@@ -908,7 +936,37 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                   </motion.div>
                 )}
 
-                {/* Formulir */}
+                {/* Form Codes */}
+                {formCodes.length > 0 && (
+                  <motion.div variants={staggerItem}>
+                    <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <FileCheck className="h-5 w-5 text-teal-600" />
+                          Kode Formulir
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-600 mb-3">
+                          Formulir yang digunakan sesuai Permendagri No. 6 Tahun 2026:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {formCodes.map((code: string, index: number) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="bg-teal-50 text-teal-700 border-teal-200 px-3 py-1.5 text-sm font-mono"
+                            >
+                              {code}
+                            </Badge>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                )}
+
+                {/* Formulir Downloads */}
                 {formFiles.length > 0 && (
                   <motion.div variants={staggerItem}>
                     <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
@@ -946,6 +1004,34 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                     </Card>
                   </motion.div>
                 )}
+
+                {/* FAQ */}
+                {faqData.length > 0 && (
+                  <motion.div variants={staggerItem}>
+                    <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <HelpCircle className="h-5 w-5 text-green-600" />
+                          Pertanyaan Umum (FAQ)
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <Accordion type="single" collapsible className="w-full">
+                          {faqData.map((faq: { question: string; answer: string }, index: number) => (
+                            <AccordionItem key={index} value={`faq-${index}`}>
+                              <AccordionTrigger className="text-sm text-left hover:text-green-700">
+                                {faq.question}
+                              </AccordionTrigger>
+                              <AccordionContent className="text-sm text-gray-600">
+                                {faq.answer}
+                              </AccordionContent>
+                            </AccordionItem>
+                          ))}
+                        </Accordion>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                )}
               </motion.div>
 
               {/* Right Column - Sidebar */}
@@ -956,13 +1042,38 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                 variants={sidebarStaggerContainer}
                 className="space-y-6"
               >
-                {/* Free Service Banner */}
+                {/* Dasar Hukum Card */}
                 <motion.div variants={staggerItem}>
                   <Card className="bg-gradient-to-br from-green-600 to-green-700 text-white border-0 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-3">
+                        <ScrollText className="h-6 w-6 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <h3 className="font-bold text-lg mb-2">Dasar Hukum</h3>
+                          <div className="space-y-2">
+                            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3">
+                              <p className="font-semibold text-sm">Permendagri No. 6 Tahun 2026</p>
+                              <p className="text-green-100 text-xs mt-1">Perubahan atas Permendagri No. 109 Tahun 2019 tentang Formulir dan Buku yang Digunakan dalam Administrasi Kependudukan</p>
+                            </div>
+                            <div className="space-y-1 text-xs text-green-100">
+                              <p>&#8226; UU No. 24 Tahun 2013</p>
+                              <p>&#8226; PP No. 37 Tahun 2021</p>
+                              <p>&#8226; Permendagri No. 109/2019</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* Free Service Banner */}
+                <motion.div variants={staggerItem}>
+                  <Card className="border-green-200 bg-green-50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                     <CardContent className="p-6 text-center">
-                      <Sparkles className="h-10 w-10 mx-auto mb-3" />
-                      <h3 className="font-bold text-xl mb-2">GRATIS</h3>
-                      <p className="text-green-100 text-sm mb-4">
+                      <Sparkles className="h-10 w-10 mx-auto mb-3 text-green-600" />
+                      <h3 className="font-bold text-xl mb-2 text-green-800">GRATIS</h3>
+                      <p className="text-green-700 text-sm mb-4">
                         Seluruh layanan administrasi kependudukan tidak dipungut biaya apapun.
                       </p>
                     </CardContent>

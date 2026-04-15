@@ -26,6 +26,7 @@ import {
   Inbox,
   FileSearch,
   Clock,
+  Scale,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -417,6 +418,23 @@ function ServicesListContent() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Dasar Hukum Permendagri No. 6 Tahun 2026 */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-start gap-3">
+            <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Scale className="h-5 w-5 text-emerald-600" />
+            </div>
+            <div>
+              <p className="font-semibold text-emerald-800">
+                Dasar Hukum: Permendagri No. 6 Tahun 2026
+              </p>
+              <p className="text-sm text-emerald-700 mt-1">
+                Perubahan atas Permendagri No. 109 Tahun 2019 tentang Formulir dan Buku yang Digunakan dalam Administrasi Kependudukan. Seluruh persyaratan layanan mengacu pada regulasi terbaru ini.
+              </p>
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, Clock, ClipboardList } from "lucide-react";
+import { FileText, Clock, ClipboardList, Scale } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
@@ -127,7 +127,8 @@ export default function LayananPage() {
                 </motion.h1>
                 <motion.p variants={fadeInUp} className="text-green-100 text-lg md:text-xl leading-relaxed">
                   Informasi lengkap tentang persyaratan dan prosedur layanan
-                  administrasi kependudukan sesuai UU No. 24 Tahun 2013.
+                  administrasi kependudukan sesuai UU No. 24 Tahun 2013 dan
+                  Permendagri No. 6 Tahun 2026.
                 </motion.p>
               </motion.div>
 
@@ -166,10 +167,14 @@ export default function LayananPage() {
                     Dasar Hukum
                   </h3>
                   <ul className="text-sm text-green-100 space-y-1.5">
-                    <li>• UU No. 24 Tahun 2013 tentang Administrasi Kependudukan</li>
-                    <li>• Permendagri No. 2 Tahun 2026</li>
-                    <li>• Permendagri No. 3 Tahun 2024</li>
-                    <li>• SE Menpan RB Tahun 2024 - Pelayanan Publik Gratis</li>
+                    <li className="flex items-start gap-1.5">
+                      <Scale className="h-3.5 w-3.5 mt-0.5 flex-shrink-0 text-green-300" />
+                      <span className="font-semibold text-white">Permendagri No. 6 Tahun 2026</span>
+                    </li>
+                    <li className="text-green-200 text-xs ml-5 -mt-1">Perubahan atas Permendagri No. 109 Tahun 2019 tentang Formulir dan Buku dalam Administrasi Kependudukan</li>
+                    <li>&#8226; UU No. 24 Tahun 2013 tentang Administrasi Kependudukan</li>
+                    <li>&#8226; PP No. 37 Tahun 2021 tentang Capil</li>
+                    <li>&#8226; SE Menpan RB Tahun 2024 - Pelayanan Publik Gratis</li>
                   </ul>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10">
@@ -182,8 +187,8 @@ export default function LayananPage() {
                       <Clock className="h-3.5 w-3.5 mt-0.5 flex-shrink-0 text-green-300" />
                       Layanan selesai di tempat
                     </li>
-                    <li>• Bawa dokumen asli dan fotokopi</li>
-                    <li>• Datang langsung ke kantor Disdukcapil</li>
+                    <li>&#8226; Bawa dokumen asli dan fotokopi</li>
+                    <li>&#8226; Datang langsung ke kantor Disdukcapil</li>
                   </ul>
                 </div>
               </motion.div>
