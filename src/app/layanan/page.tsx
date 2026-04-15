@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, Clock, ClipboardList, Scale } from "lucide-react";
+import { FileText, Clock, ClipboardList, Scale, FileDown, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
@@ -196,12 +197,13 @@ export default function LayananPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.9 } }}
-                className="mt-6 bg-green-500/20 border border-green-400/30 rounded-xl p-4"
+                className="mt-6 flex flex-col sm:flex-row gap-3"
               >
-                <p className="text-green-100 text-sm">
-                  <strong>Catatan:</strong> Seluruh layanan dapat diselesaikan pada hari yang sama 
-                  selama semua persyaratan terpenuhi.
-                </p>
+                <Link href="/formulir" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-green-700 font-semibold rounded-xl hover:bg-green-50 transition-colors shadow-md">
+                  <FileDown className="h-5 w-5" />
+                  Download Semua Formulir
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
               </motion.div>
             </div>
           </div>

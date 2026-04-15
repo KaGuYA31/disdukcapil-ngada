@@ -967,7 +967,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                 )}
 
                 {/* Formulir Downloads */}
-                {formFiles.length > 0 && (
+                {(formFiles.length > 0 || formCodes.length > 0) && (
                   <motion.div variants={staggerItem}>
                     <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                       <CardHeader>
@@ -981,24 +981,64 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                           Unduh dan isi formulir berikut sebelum mengurus layanan:
                         </p>
                         <div className="space-y-2">
-                          {formFiles.map((file: { name: string; url: string; size?: string }, index: number) => (
-                            <a
-                              key={index}
-                              href={file.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
-                            >
-                              <File className="h-5 w-5 text-red-500" />
-                              <div className="flex-1">
-                                <p className="text-sm font-medium">{file.name}</p>
-                                {file.size && (
-                                  <p className="text-xs text-gray-500">{file.size}</p>
-                                )}
-                              </div>
-                              <Download className="h-4 w-4 text-gray-600" />
-                            </a>
-                          ))}
+                          {formFiles.length > 0
+                            ? // Use formFiles (enriched links from DB)
+                              formFiles.map((file: { name: string; url: string; size?: string; code?: string }, index: number) => (
+                                <a
+                                  key={index}
+                                  href={file.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={() => {
+                                    if (file.code) {
+                                      fetch("/api/formulir/download", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ code: file.code }),
+                                      }).catch(() => {});
+                                    }
+                                  }}
+                                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                                >
+                                  <File className="h-5 w-5 text-red-500 flex-shrink-0" />
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium truncate">{file.name}</p>
+                                    {file.size && (
+                                      <p className="text-xs text-gray-500">{file.size}</p>
+                                    )}
+                                  </div>
+                                  <Download className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                                </a>
+                              ))
+                            : // Fallback: generate links from formCodes
+                              formCodes.map((code: string, index: number) => {
+                                const fileName = code.replace(/\./g, "-") + ".pdf";
+                                return (
+                                  <a
+                                    key={index}
+                                    href={`/formulir/${fileName}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => {
+                                      fetch("/api/formulir/download", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ code }),
+                                      }).catch(() => {});
+                                    }}
+                                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                                  >
+                                    <File className="h-5 w-5 text-red-500 flex-shrink-0" />
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-medium truncate">
+                                        {code} - Formulir
+                                      </p>
+                                      <p className="text-xs text-gray-500 font-mono">{code}</p>
+                                    </div>
+                                    <Download className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                                  </a>
+                                );
+                              })}
                         </div>
                       </CardContent>
                     </Card>

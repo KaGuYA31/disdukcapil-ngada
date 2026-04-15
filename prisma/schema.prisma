@@ -504,6 +504,24 @@ model BlankoEKTP {
   @@map("blanko_ektp")
 }
 
+// Formulir Administrasi Kependudukan
+model Formulir {
+  id            String   @id @default(cuid())
+  code          String   @unique // e.g. "F-1.01", "F-2.01A"
+  name          String   // Full form name
+  description   String?  @db.Text
+  category      String   // "Pendaftaran Penduduk", "Pencatatan Sipil", "Persyaratan", "Pencatatan Sipil LN"
+  fileName      String   // PDF filename in /formulir/
+  fileSize      String?  // e.g. "250 KB"
+  downloadCount Int      @default(0)
+  isActive      Boolean  @default(true)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("formulir")
+}
+
 // Pimpinan Daerah (Bupati & Wakil Bupati)
 model Pimpinan {
   id        String   @id @default(cuid())

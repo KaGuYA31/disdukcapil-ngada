@@ -654,22 +654,113 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({
-      success: true,
-      message: "Sync Permendagri No. 6 Tahun 2026 berhasil",
-      data: {
-        dasarHukum: DASAR_HUKUM,
-        summary: {
-          totalServices: PERMENDAGRI_SERVICES.length,
-          updated: results.updated,
-          created: results.created,
-          skipped: results.skipped,
-          errors: results.errors.length,
+    // ────────────────────────────────────────────────────────────
+    // SECOND PASS: Enrich layanan forms with download links from Formulir table
+    // ────────────────────────────────────────────────────────────
+    try {
+      const allFormulir = await db.formulir.findMany({
+        where: { isActive: true },
+      });
+
+      // Build a lookup map by code
+      const formulirMap = new Map(allFormulir.map((f) => [f.code, f]));
+
+      let linksUpdated = 0;
+      let linksSkipped = 0;
+
+      // Fetch all layanan that have form codes
+      const allLayanan = await db.layanan.findMany({
+        where: { isActive: true },
+        select: { id: true, slug: true, forms: true },
+      });
+
+      for (const layanan of allLayanan) {
+        if (!layanan.forms) continue;
+
+        try {
+          const formsData = JSON.parse(layanan.forms);
+          const formCodes: string[] = formsData.codes || [];
+
+          if (formCodes.length === 0) {
+            linksSkipped++;
+            continue;
+          }
+
+          // Build links array by looking up each code in the formulir map
+          const links: { name: string; url: string; code: string; size: string }[] = [];
+          for (const code of formCodes) {
+            const form = formulirMap.get(code);
+            if (form) {
+              links.push({
+                name: `${form.name} (${form.code})`,
+                url: `/formulir/${form.fileName}`,
+                code: form.code,
+                size: form.fileSize || "",
+              });
+            }
+          }
+
+          if (links.length > 0) {
+            const updatedForms = {
+              codes: formCodes,
+              links,
+            };
+
+            await db.layanan.update({
+              where: { id: layanan.id },
+              data: { forms: JSON.stringify(updatedForms) },
+            });
+            linksUpdated++;
+          } else {
+            linksSkipped++;
+          }
+        } catch (parseError) {
+          console.warn(`Warning: Could not parse forms for layanan ${layanan.slug}: ${parseError}`);
+          linksSkipped++;
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: "Sync Permendagri No. 6 Tahun 2026 berhasil",
+        data: {
+          dasarHukum: DASAR_HUKUM,
+          summary: {
+            totalServices: PERMENDAGRI_SERVICES.length,
+            updated: results.updated,
+            created: results.created,
+            skipped: results.skipped,
+            errors: results.errors.length,
+            formLinksUpdated: linksUpdated,
+            formLinksSkipped: linksSkipped,
+          },
+          details: results.details,
+          errors: results.errors,
         },
-        details: results.details,
-        errors: results.errors,
-      },
-    });
+      });
+    } catch (linkError) {
+      console.error("Error enriching form links:", linkError);
+
+      // Still return success for the main sync, but note the link enrichment failure
+      return NextResponse.json({
+        success: true,
+        message: "Sync Permendagri berhasil, namun pengayaan link formulir gagal",
+        data: {
+          dasarHukum: DASAR_HUKUM,
+          summary: {
+            totalServices: PERMENDAGRI_SERVICES.length,
+            updated: results.updated,
+            created: results.created,
+            skipped: results.skipped,
+            errors: results.errors.length,
+            formLinksUpdated: 0,
+            formLinksError: linkError instanceof Error ? linkError.message : String(linkError),
+          },
+          details: results.details,
+          errors: results.errors,
+        },
+      });
+    }
   } catch (error) {
     console.error("Error syncing Permendagri data:", error);
     return NextResponse.json(
