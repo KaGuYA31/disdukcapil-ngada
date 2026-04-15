@@ -28,7 +28,10 @@ import {
   File,
   ClipboardCheck,
   Printer,
+  FileDown,
+  ChevronRight,
 } from "lucide-react";
+import { LAYANAN_FORM_MAP } from "@/lib/formulir-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -719,8 +722,20 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
     const requirements = JSON.parse(service.requirements || "[]");
     const procedures = JSON.parse(service.procedures || "[]");
     const formsData = service.forms ? JSON.parse(service.forms) : null;
-    const formCodes = formsData?.codes || [];
-    const formFiles = formsData?.links || [];
+    let formCodes = formsData?.codes || [];
+    let formFiles = formsData?.links || [];
+    
+    // Fallback to static form data from LAYANAN_FORM_MAP
+    const staticFormMap = LAYANAN_FORM_MAP[slugValue];
+    if (formFiles.length === 0 && staticFormMap) {
+      formCodes = staticFormMap.codes;
+      formFiles = staticFormMap.links.map((link) => ({
+        name: link.name,
+        url: `/formulir/${link.fileName}`,
+        code: link.code,
+      }));
+    }
+    
     const faqData = service.faq ? JSON.parse(service.faq) : [];
 
     const relatedServices = getRelatedServices(slugValue);
@@ -972,8 +987,8 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                     <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                          <Download className="h-5 w-5 text-red-600" />
-                          Formulir Layanan
+                          <Download className="h-5 w-5 text-green-600" />
+                          Download Formulir
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -982,14 +997,13 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                         </p>
                         <div className="space-y-2">
                           {formFiles.length > 0
-                            ? // Use formFiles (enriched links from DB)
-                              formFiles.map((file: { name: string; url: string; size?: string; code?: string }, index: number) => (
+                            ? formFiles.map((file: { name: string; url: string; size?: string; code?: string }, index: number) => (
                                 <a
                                   key={index}
                                   href={file.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  onClick={() => {
+                                  download
+                                  onClick={(e) => {
+                                    // Track download count
                                     if (file.code) {
                                       fetch("/api/formulir/download", {
                                         method: "POST",
@@ -998,27 +1012,28 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                                       }).catch(() => {});
                                     }
                                   }}
-                                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                                  className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200 hover:bg-green-100 transition-colors group"
                                 >
-                                  <File className="h-5 w-5 text-red-500 flex-shrink-0" />
+                                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-200 transition-colors">
+                                    <FileDown className="h-5 w-5 text-green-600" />
+                                  </div>
                                   <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium truncate">{file.name}</p>
+                                    <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
                                     {file.size && (
                                       <p className="text-xs text-gray-500">{file.size}</p>
                                     )}
+                                    <p className="text-xs text-green-600 font-mono mt-0.5">{file.code}</p>
                                   </div>
-                                  <Download className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                                  <Download className="h-4 w-4 text-green-600 flex-shrink-0 group-hover:translate-y-0.5 transition-transform" />
                                 </a>
                               ))
-                            : // Fallback: generate links from formCodes
-                              formCodes.map((code: string, index: number) => {
+                            : formCodes.map((code: string, index: number) => {
                                 const fileName = code.replace(/\./g, "-") + ".pdf";
                                 return (
                                   <a
                                     key={index}
                                     href={`/formulir/${fileName}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    download
                                     onClick={() => {
                                       fetch("/api/formulir/download", {
                                         method: "POST",
@@ -1026,19 +1041,28 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                                         body: JSON.stringify({ code }),
                                       }).catch(() => {});
                                     }}
-                                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                                    className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200 hover:bg-green-100 transition-colors group"
                                   >
-                                    <File className="h-5 w-5 text-red-500 flex-shrink-0" />
+                                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-200 transition-colors">
+                                      <FileDown className="h-5 w-5 text-green-600" />
+                                    </div>
                                     <div className="flex-1 min-w-0">
-                                      <p className="text-sm font-medium truncate">
+                                      <p className="text-sm font-medium text-gray-900 truncate">
                                         {code} - Formulir
                                       </p>
-                                      <p className="text-xs text-gray-500 font-mono">{code}</p>
+                                      <p className="text-xs text-green-600 font-mono mt-0.5">{code}</p>
                                     </div>
-                                    <Download className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                                    <Download className="h-4 w-4 text-green-600 flex-shrink-0 group-hover:translate-y-0.5 transition-transform" />
                                   </a>
                                 );
                               })}
+                        </div>
+                        <div className="mt-4 pt-3 border-t border-gray-100">
+                          <Link href="/formulir" className="inline-flex items-center gap-1.5 text-sm text-green-600 hover:text-green-700 font-medium">
+                            <FileText className="h-4 w-4" />
+                            Lihat Semua 27 Formulir
+                            <ChevronRight className="h-3.5 w-3.5" />
+                          </Link>
                         </div>
                       </CardContent>
                     </Card>
@@ -1391,6 +1415,62 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                   </Card>
                 </motion.div>
               )}
+
+              {/* Formulir Downloads */}
+              {(() => {
+                const formMapping = LAYANAN_FORM_MAP[slugValue];
+                if (!formMapping) return null;
+                return (
+                  <motion.div variants={staggerItem}>
+                    <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Download className="h-5 w-5 text-green-600" />
+                          Download Formulir
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-600 mb-4">
+                          Unduh dan isi formulir berikut sebelum mengurus layanan:
+                        </p>
+                        <div className="space-y-2">
+                          {formMapping.links.map((link, index) => (
+                            <a
+                              key={index}
+                              href={`/formulir/${link.fileName}`}
+                              download
+                              onClick={() => {
+                                fetch("/api/formulir/download", {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ code: link.code }),
+                                }).catch(() => {});
+                              }}
+                              className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200 hover:bg-green-100 transition-colors group"
+                            >
+                              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-200 transition-colors">
+                                <FileDown className="h-5 w-5 text-green-600" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-900 truncate">{link.name}</p>
+                                <p className="text-xs text-green-600 font-mono mt-0.5">{link.code}</p>
+                              </div>
+                              <Download className="h-4 w-4 text-green-600 flex-shrink-0 group-hover:translate-y-0.5 transition-transform" />
+                            </a>
+                          ))}
+                        </div>
+                        <div className="mt-4 pt-3 border-t border-gray-100">
+                          <Link href="/formulir" className="inline-flex items-center gap-1.5 text-sm text-green-600 hover:text-green-700 font-medium">
+                            <FileText className="h-4 w-4" />
+                            Lihat Semua 27 Formulir
+                            <ChevronRight className="h-3.5 w-3.5" />
+                          </Link>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })()}
 
               {/* FAQ */}
               {defaultService.faq.length > 0 && (

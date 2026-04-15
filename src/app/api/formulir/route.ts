@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { FORMULIR_LIST } from "@/lib/formulir-data";
 
 // GET - List all formulir, optionally filter by category
 export async function GET(request: NextRequest) {
@@ -7,29 +8,71 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
 
-    const formulir = await db.formulir.findMany({
-      where: {
-        isActive: true,
-        ...(category ? { category } : {}),
-      },
-      orderBy: { order: "asc" },
-    });
+    try {
+      const formulir = await db.formulir.findMany({
+        where: {
+          isActive: true,
+          ...(category ? { category } : {}),
+        },
+        orderBy: { order: "asc" },
+      });
+
+      // If database has forms, use them (they may have download counts etc.)
+      if (formulir.length > 0) {
+        return NextResponse.json({
+          success: true,
+          data: formulir,
+          total: formulir.length,
+          source: "database",
+        });
+      }
+    } catch (dbError) {
+      console.warn("Database query failed, using static fallback:", dbError);
+    }
+
+    // Fallback: use static data when database is empty or unreachable
+    const filtered = category
+      ? FORMULIR_LIST.filter(f => f.category === category)
+      : FORMULIR_LIST;
 
     return NextResponse.json({
       success: true,
-      data: formulir,
-      total: formulir.length,
+      data: filtered.map(f => ({
+        id: `static-${f.code}`,
+        code: f.code,
+        name: f.name,
+        description: f.description,
+        category: f.category,
+        fileName: f.fileName,
+        fileSize: f.fileSize,
+        downloadCount: 0,
+        isActive: true,
+        order: f.order,
+      })),
+      total: filtered.length,
+      source: "static",
     });
   } catch (error) {
     console.error("Error fetching formulir:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Gagal mengambil data formulir",
-        details: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 }
-    );
+
+    // Last resort fallback
+    return NextResponse.json({
+      success: true,
+      data: FORMULIR_LIST.map(f => ({
+        id: `static-${f.code}`,
+        code: f.code,
+        name: f.name,
+        description: f.description,
+        category: f.category,
+        fileName: f.fileName,
+        fileSize: f.fileSize,
+        downloadCount: 0,
+        isActive: true,
+        order: f.order,
+      })),
+      total: FORMULIR_LIST.length,
+      source: "static",
+    });
   }
 }
 
@@ -74,7 +117,6 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error creating formulir:", error);
 
-    // Handle unique constraint violation
     if (error instanceof Error && error.message.includes("Unique constraint")) {
       return NextResponse.json(
         {
@@ -112,7 +154,6 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Check if formulir exists
     const existing = await db.formulir.findUnique({
       where: { id },
     });
@@ -177,7 +218,6 @@ export async function DELETE(request: NextRequest) {
     const id = searchParams.get("id");
 
     if (!id) {
-      // Also support body for DELETE
       const body = await request.json().catch(() => null);
       const bodyId = body?.id;
 

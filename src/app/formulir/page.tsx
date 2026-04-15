@@ -21,6 +21,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FORMULIR_LIST, type FormulirDefinition } from "@/lib/formulir-data";
 
 interface FormulirItem {
   id: string;
@@ -80,6 +81,22 @@ function trackDownload(code: string) {
   }).catch(() => {});
 }
 
+// Convert static FormulirDefinition to FormulirItem format
+function toFormulirItem(f: FormulirDefinition): FormulirItem {
+  return {
+    id: `static-${f.code}`,
+    code: f.code,
+    name: f.name,
+    description: f.description || null,
+    category: f.category,
+    fileName: f.fileName,
+    fileSize: f.fileSize || null,
+    downloadCount: 0,
+    isActive: true,
+    order: f.order,
+  };
+}
+
 export default function FormulirPage() {
   const [formulirList, setFormulirList] = useState<FormulirItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -94,11 +111,16 @@ export default function FormulirPage() {
     try {
       const res = await fetch("/api/formulir");
       const result = await res.json();
-      if (result.success) {
+      if (result.success && result.data && result.data.length > 0) {
         setFormulirList(result.data);
+      } else {
+        // Use static fallback
+        setFormulirList(FORMULIR_LIST.map(toFormulirItem));
       }
     } catch (err) {
       console.error("Error fetching formulir:", err);
+      // Use static fallback on error
+      setFormulirList(FORMULIR_LIST.map(toFormulirItem));
     } finally {
       setLoading(false);
     }
@@ -371,7 +393,7 @@ function FormulirCard({ form, onDownload }: { form: FormulirItem; onDownload: (c
         )}
         <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
           <span className="text-xs text-gray-400">
-            {form.downloadCount > 0 ? `${form.downloadCount} unduhan` : "Belum ada unduhan"}
+            {form.downloadCount > 0 ? `${form.downloadCount} unduhan` : "PDF"}
           </span>
           <span className="text-xs text-green-600 font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             Unduh <ChevronRight className="h-3 w-3" />

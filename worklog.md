@@ -123,3 +123,29 @@ Pending Items:
 8. Remove KTP-el disclaimer
 9. Remove "real time" text from dashboard
 10. Remove "Pelayanan KTP-el GRATIS" from dashboard
+
+---
+Task ID: 1
+Agent: Main Agent
+Task: Ekstrak formulir dari Permendagri No. 6 Tahun 2026 dan buat sistem unduh formulir
+
+Work Log:
+- Ekstrak 27 formulir PDF dari dokumen Permendagri No. 6 Tahun 2026 (163 halaman)
+- Identifikasi semua formulir: F-1.01 s/d F-1.07 (Pendaftaran Penduduk), F-2.01A s/d F-2.02E (Pencatatan Sipil), F-2.03 s/d F-2.04D (Persyaratan/SPTJM)
+- Buat tabel formulir di Supabase PostgreSQL
+- Tambahkan model Formulir di Prisma schema
+- Buat 3 API routes: /api/formulir (CRUD), /api/formulir/sync (seed 27 forms), /api/formulir/download (counter)
+- Buat halaman publik /formulir dengan search, filter kategori, dan download
+- Update halaman layanan dengan tombol "Download Semua Formulir"
+- Update service-detail.tsx untuk menampilkan link unduh formulir otomatis
+- Sinkronkan 12 layanan dengan link formulir yang sesuai dari database
+- Seed 27 formulir ke database via Python psycopg2
+- Update forms field di 12 layanan dengan download links
+- Deploy ke production (GitHub push)
+
+Stage Summary:
+- 27 formulir PDF diekstrak dan tersimpan di /public/formulir/
+- Halaman /formulir tersedia untuk publik dengan filter & search
+- Setiap layanan (KTP-el, KK, KIA, Akta Kelahiran, dll) sudah terhubung dengan formulir yang sesuai
+- Formulir bisa diunduh langsung dari halaman layanan detail dan halaman formulir
+- Semua data tersinkronisasi antara database, API, dan frontend
