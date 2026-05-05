@@ -1,32 +1,108 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { BackToTop } from "@/components/shared/back-to-top";
 import { QuickAccessPanel } from "@/components/shared/quick-access-panel";
-import { SystemStatusWidget } from "@/components/shared/system-status-widget";
-import { EmergencyInfoBar } from "@/components/shared/emergency-info-bar";
 import { HeroSection } from "@/components/sections/hero-section";
 import { StatsSection } from "@/components/sections/stats-section";
-import { ServicesSection } from "@/components/sections/services-section";
-import { NewsSection } from "@/components/sections/news-section";
-import { FeaturedServicesSection } from "@/components/sections/featured-services-section";
-import { AnnouncementsSection } from "@/components/sections/announcements-section";
-import { FAQSection } from "@/components/sections/faq-section";
-import { JadwalPelayananSection } from "@/components/sections/jadwal-pelayanan-section";
-import { NewsletterSection } from "@/components/sections/newsletter-section";
-import { KeunggulanSection } from "@/components/sections/keunggulan-section";
-import { TestimoniSection } from "@/components/sections/testimoni-section";
-import { CTASection } from "@/components/sections/cta-section";
-import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
-import { GaleriInovasiSection } from "@/components/sections/galeri-inovasi-section";
-import { QuickInfoBar } from "@/components/shared/quick-info-bar";
-import { LiveVisitorCounter } from "@/components/shared/live-visitor-counter";
-import { AboutUsSection } from "@/components/sections/about-us-section";
-import { AddTestimoniWidget } from "@/components/shared/add-testimoni-widget";
-import { SimulasiBiayaSection } from "@/components/sections/simulasi-biaya-section";
-import { BeritaTerkiniWidget } from "@/components/sections/berita-terkini-widget";
-import { FAQInteraktifSection } from "@/components/sections/faq-interaktif-section";
-import { PetaLokasiSection } from "@/components/sections/peta-lokasi-section";
+import { EmergencyInfoBar } from "@/components/shared/emergency-info-bar";
+
+// Lazy-loaded sections (below the fold) with skeleton loading
+const SystemStatusWidget = dynamic(
+  () => import("@/components/shared/system-status-widget").then((m) => ({ default: m.SystemStatusWidget })),
+  { loading: () => <div className="h-20 animate-pulse bg-gray-100 dark:bg-gray-800" /> }
+);
+const ServicesSection = dynamic(
+  () => import("@/components/sections/services-section").then((m) => ({ default: m.ServicesSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4" /><div className="grid md:grid-cols-3 gap-6">{[1,2,3].map(i=><div key={i} className="h-40 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+const FeaturedServicesSection = dynamic(
+  () => import("@/components/sections/featured-services-section").then((m) => ({ default: m.FeaturedServicesSection })),
+  { loading: () => <div className="py-8"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4" /><div className="h-60 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const SimulasiBiayaSection = dynamic(
+  () => import("@/components/sections/simulasi-biaya-section").then((m) => ({ default: m.SimulasiBiayaSection })),
+  { ssr: false, loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-2xl mx-auto h-96 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const BeritaTerkiniWidget = dynamic(
+  () => import("@/components/sections/berita-terkini-widget").then((m) => ({ default: m.BeritaTerkiniWidget })),
+  { loading: () => <div className="py-8"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4" /><div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const AnnouncementsSection = dynamic(
+  () => import("@/components/sections/announcements-section").then((m) => ({ default: m.AnnouncementsSection })),
+  { loading: () => <div className="py-12"><div className="container mx-auto px-4"><div className="h-60 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const NewsletterSection = dynamic(
+  () => import("@/components/sections/newsletter-section").then((m) => ({ default: m.NewsletterSection })),
+  { loading: () => <div className="py-12"><div className="container mx-auto px-4"><div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const FAQInteraktifSection = dynamic(
+  () => import("@/components/sections/faq-interaktif-section").then((m) => ({ default: m.FAQInteraktifSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-3xl mx-auto space-y-3">{[1,2,3,4].map(i=><div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />)}</div></div></div> }
+);
+const JadwalPelayananSection = dynamic(
+  () => import("@/components/sections/jadwal-pelayanan-section").then((m) => ({ default: m.JadwalPelayananSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto h-72 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const PetaLokasiSection = dynamic(
+  () => import("@/components/sections/peta-lokasi-section").then((m) => ({ default: m.PetaLokasiSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="h-80 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const KeunggulanSection = dynamic(
+  () => import("@/components/sections/keunggulan-section").then((m) => ({ default: m.KeunggulanSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="grid md:grid-cols-3 gap-6">{[1,2,3].map(i=><div key={i} className="h-40 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+const TestimoniSection = dynamic(
+  () => import("@/components/sections/testimoni-section").then((m) => ({ default: m.TestimoniSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="h-64 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const WhyChooseUsSection = dynamic(
+  () => import("@/components/sections/why-choose-us-section").then((m) => ({ default: m.WhyChooseUsSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid md:grid-cols-2 gap-6">{[1,2].map(i=><div key={i} className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+const GaleriInovasiSection = dynamic(
+  () => import("@/components/sections/galeri-inovasi-section").then((m) => ({ default: m.GaleriInovasiSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="h-60 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const NewsSection = dynamic(
+  () => import("@/components/sections/news-section").then((m) => ({ default: m.NewsSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid md:grid-cols-3 gap-6">{[1,2,3].map(i=><div key={i} className="h-56 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+const CTASection = dynamic(
+  () => import("@/components/sections/cta-section").then((m) => ({ default: m.CTASection })),
+  { loading: () => <div className="py-16"><div className="h-64 bg-gradient-to-r from-green-700 to-green-900 rounded-xl animate-pulse" /></div> }
+);
+const QuickInfoBar = dynamic(
+  () => import("@/components/shared/quick-info-bar").then((m) => ({ default: m.QuickInfoBar })),
+  { loading: () => <div className="py-8"><div className="container mx-auto px-4"><div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const AboutUsSection = dynamic(
+  () => import("@/components/sections/about-us-section").then((m) => ({ default: m.AboutUsSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid md:grid-cols-2 gap-6">{[1,2].map(i=><div key={i} className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+const LiveVisitorCounter = dynamic(
+  () => import("@/components/shared/live-visitor-counter").then((m) => ({ default: m.LiveVisitorCounter })),
+  { ssr: false }
+);
+const AddTestimoniWidget = dynamic(
+  () => import("@/components/shared/add-testimoni-widget").then((m) => ({ default: m.AddTestimoniWidget })),
+  { ssr: false }
+);
+const AntrianOnlineSection = dynamic(
+  () => import("@/components/sections/antrian-online-section").then((m) => ({ default: m.AntrianOnlineSection })),
+  { ssr: false, loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-5xl mx-auto space-y-6"><div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /><div className="grid md:grid-cols-3 gap-4">{[1,2,3].map(i=><div key={i} className="h-32 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div></div> }
+);
+const UlasanRatingSection = dynamic(
+  () => import("@/components/sections/ulasan-rating-section").then((m) => ({ default: m.UlasanRatingSection })),
+  { ssr: false, loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6"><div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /><div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div></div> }
+);
+const PanduanLayananSection = dynamic(
+  () => import("@/components/sections/panduan-layanan-section").then((m) => ({ default: m.PanduanLayananSection })),
+  { ssr: false, loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto space-y-6">{[1,2,3,4,5].map(i=><div key={i} className="h-28 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
 
 export default function HomePage() {
   return (
@@ -34,9 +110,12 @@ export default function HomePage() {
       <EmergencyInfoBar />
       <Header />
       <main id="main-content" className="flex-1">
+        {/* Critical: loaded eagerly (above the fold) */}
         <HeroSection />
         <LiveVisitorCounter />
         <StatsSection />
+
+        {/* Below the fold: lazy-loaded with skeleton fallbacks */}
         <SystemStatusWidget />
         <ServicesSection />
         <FeaturedServicesSection />
@@ -55,6 +134,9 @@ export default function HomePage() {
         <CTASection />
         <QuickInfoBar />
         <AboutUsSection />
+        <AntrianOnlineSection />
+        <UlasanRatingSection />
+        <PanduanLayananSection />
       </main>
       <Footer />
       <WhatsAppButton />
