@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, FileText, Users, Building2, Loader2, Globe, ChevronDown, IdCard, FileCheck, Sun, Sunset, Moon } from "lucide-react";
+import { Search, FileText, Users, Building2, Loader2, Globe, ChevronDown, IdCard, FileCheck, Sun, Sunset, Moon, Shield, Star } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -109,6 +109,94 @@ function getTimeGreeting() {
     return { text: "Selamat Sore", Icon: Sunset, colorClass: "text-orange-400" };
   }
   return { text: "Selamat Malam", Icon: Moon, colorClass: "text-teal-200" };
+}
+
+// Leader Photo Component with gradient border + glass card
+function LeaderCard({
+  name,
+  role,
+  periode,
+  photo,
+  isLoading,
+  fallbackGradient,
+  FallbackIcon,
+  ringColor,
+}: {
+  name: string;
+  role: string;
+  periode: string | null;
+  photo: string | null;
+  isLoading: boolean;
+  fallbackGradient: string;
+  FallbackIcon: React.ElementType;
+  ringColor: string;
+}) {
+  return (
+    <div className="bg-white/[0.08] backdrop-blur-lg rounded-2xl p-5 border border-white/[0.15] shadow-lg shadow-black/10 hover:bg-white/[0.12] transition-all duration-500 group text-center">
+      {/* Photo */}
+      <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4">
+        <div className="relative w-full h-full">
+          {/* Green gradient border ring */}
+          <div className={`absolute -inset-[3px] rounded-full bg-gradient-to-br ${ringColor} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
+          <div className="absolute -inset-[1px] rounded-full bg-gradient-to-br from-green-400 via-teal-400 to-emerald-500 animate-[spin_8s_linear_infinite]" style={{ mask: "radial-gradient(transparent 65%, black 66%)", WebkitMask: "radial-gradient(transparent 65%, black 66%)" }} />
+
+          {/* Inner background */}
+          <div className="absolute inset-[2px] rounded-full bg-green-800" />
+
+          {/* Photo or fallback */}
+          {isLoading ? (
+            <div className="relative w-full h-full rounded-full bg-green-700/50 flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-white/60" />
+            </div>
+          ) : photo ? (
+            <div className="relative w-full h-full rounded-full overflow-hidden">
+              <Image
+                src={photo}
+                alt={name}
+                width={112}
+                height={112}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ) : (
+            <div className={`relative w-full h-full rounded-full bg-gradient-to-br ${fallbackGradient} flex items-center justify-center`}>
+              <FallbackIcon className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Name */}
+      <h4 className="font-bold text-base sm:text-lg leading-tight text-white">{name}</h4>
+
+      {/* Role */}
+      <p className="text-green-200/80 text-xs sm:text-sm mt-1 font-medium">{role}</p>
+
+      {/* Period */}
+      {periode && (
+        <div className="inline-flex items-center gap-1 mt-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10">
+          <Star className="h-3 w-3 text-yellow-400/80" />
+          <span className="text-[11px] sm:text-xs text-green-100/80 font-medium">{periode}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Decorative separator between leaders
+function LeaderSeparator() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-2 py-2">
+      {/* Vertical line */}
+      <div className="w-px h-8 bg-gradient-to-b from-transparent via-white/30 to-white/30" />
+      {/* Emblem badge */}
+      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400/30 to-teal-400/30 backdrop-blur-md border border-white/20 flex items-center justify-center">
+        <Shield className="h-5 w-5 text-yellow-400/80" />
+      </div>
+      {/* Vertical line */}
+      <div className="w-px h-8 bg-gradient-to-b from-white/30 via-white/30 to-transparent" />
+    </div>
+  );
 }
 
 export function HeroSection() {
@@ -391,99 +479,89 @@ export function HeroSection() {
 
           </motion.div>
 
-          {/* Right Content - Head of Dinas */}
+          {/* Right Content — Leaders & Kadis */}
           <motion.div
-            className="hidden lg:flex justify-center"
+            className="flex flex-col items-center lg:items-end"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" as const }}
           >
-            <div className="relative">
-              {/* Decorative elements */}
+            <div className="relative w-full max-w-md">
+              {/* Decorative blurred orbs */}
               <div className="absolute -top-4 -left-4 w-72 h-72 bg-yellow-400/20 rounded-full blur-3xl" />
               <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-green-400/20 rounded-full blur-3xl" />
 
-              {/* Bupati & Wakil Bupati Cards - Above Kadis */}
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                {/* Bupati Card */}
-                <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 shadow-lg shadow-black/10 text-center hover:bg-white/15 transition-colors">
-                  <div className="w-16 h-16 mx-auto mb-2">
-                    <div className="relative w-full h-full">
-                      <motion.div
-                        className="absolute -inset-0.5 rounded-full"
-                        style={{
-                          background: "conic-gradient(from 0deg, #4ade80, #22d3ee, #facc15, #4ade80)",
-                        }}
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                      />
-                      <div className="absolute inset-0 rounded-full bg-green-800" />
-                      {bupati?.photo ? (
-                        <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-green-800 ring-amber-400/30">
-                          <Image
-                            src={bupati.photo}
-                            alt={bupati.name || "Bupati"}
-                            width={64}
-                            height={64}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ) : loading ? (
-                        <div className="relative w-16 h-16 rounded-full bg-green-700/50 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-amber-400/30">
-                          <Loader2 className="h-6 w-6 animate-spin text-white/60" />
-                        </div>
-                      ) : (
-                        <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-amber-400/30">
-                          <Building2 className="h-8 w-8 text-white" />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <h4 className="font-semibold text-sm leading-tight">{bupati?.name || "Bupati Kabupaten Ngada"}</h4>
-                  <p className="text-green-200 text-xs mt-0.5">Bupati{bupati?.periode ? ` (${bupati.periode})` : ""}</p>
-                </div>
+              {/* ─── Pimpinan Daerah: Bupati & Wakil Bupati ─── */}
+              <div className="relative z-10">
+                {/* Label badge */}
+                <motion.div
+                  className="flex justify-center lg:justify-end mb-4"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                  <span className="inline-flex items-center gap-2 bg-yellow-400/20 backdrop-blur-md rounded-full px-4 py-1.5 text-xs sm:text-sm font-semibold text-yellow-300 border border-yellow-400/30 shadow-lg shadow-yellow-400/10">
+                    <Shield className="h-3.5 w-3.5" />
+                    Pimpinan Daerah
+                  </span>
+                </motion.div>
 
-                {/* Wakil Bupati Card */}
-                <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 shadow-lg shadow-black/10 text-center hover:bg-white/15 transition-colors">
-                  <div className="w-16 h-16 mx-auto mb-2">
-                    <div className="relative w-full h-full">
-                      <motion.div
-                        className="absolute -inset-0.5 rounded-full"
-                        style={{
-                          background: "conic-gradient(from 0deg, #4ade80, #22d3ee, #facc15, #4ade80)",
-                        }}
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                      />
-                      <div className="absolute inset-0 rounded-full bg-green-800" />
-                      {wakilBupati?.photo ? (
-                        <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-green-800 ring-teal-400/30">
-                          <Image
-                            src={wakilBupati.photo}
-                            alt={wakilBupati.name || "Wakil Bupati"}
-                            width={64}
-                            height={64}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ) : loading ? (
-                        <div className="relative w-16 h-16 rounded-full bg-green-700/50 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-teal-400/30">
-                          <Loader2 className="h-6 w-6 animate-spin text-white/60" />
-                        </div>
-                      ) : (
-                        <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center ring-2 ring-offset-2 ring-offset-green-800 ring-teal-400/30">
-                          <Users className="h-8 w-8 text-white" />
-                        </div>
-                      )}
-                    </div>
+                {/* Decorative background pattern — subtle lines behind leaders */}
+                <div
+                  className="absolute inset-0 -z-10 pointer-events-none rounded-3xl"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40L40 0M-10 10L10 -10M30 50L50 30' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3C/svg%3E")`,
+                  }}
+                />
+
+                {/* Leaders grid — side by side on md+, stacked on mobile */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-0 sm:gap-0">
+                  {/* Bupati */}
+                  <div className="w-full sm:w-1/2">
+                    <LeaderCard
+                      name={bupati?.name || "Bupati Kabupaten Ngada"}
+                      role="Bupati"
+                      periode={bupati?.periode || "2024-2029"}
+                      photo={bupati?.photo ?? null}
+                      isLoading={loading}
+                      fallbackGradient="from-amber-400 to-amber-600"
+                      FallbackIcon={Building2}
+                      ringColor="from-green-400 via-emerald-400 to-teal-400"
+                    />
                   </div>
-                  <h4 className="font-semibold text-sm leading-tight">{wakilBupati?.name || "Wakil Bupati Kabupaten Ngada"}</h4>
-                  <p className="text-green-200 text-xs mt-0.5">Wakil Bupati{wakilBupati?.periode ? ` (${wakilBupati.periode})` : ""}</p>
+
+                  {/* Separator — hidden on mobile, visible on sm+ */}
+                  <div className="hidden sm:flex flex-col items-center justify-center self-center px-1">
+                    <LeaderSeparator />
+                  </div>
+
+                  {/* Mobile separator — horizontal line */}
+                  <div className="sm:hidden flex items-center justify-center w-full py-2">
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/30 to-teal-400/30 backdrop-blur-md border border-white/20 flex items-center justify-center mx-3">
+                      <Shield className="h-4 w-4 text-yellow-400/80" />
+                    </div>
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  </div>
+
+                  {/* Wakil Bupati */}
+                  <div className="w-full sm:w-1/2">
+                    <LeaderCard
+                      name={wakilBupati?.name || "Wakil Bupati Kabupaten Ngada"}
+                      role="Wakil Bupati"
+                      periode={wakilBupati?.periode || "2024-2029"}
+                      photo={wakilBupati?.photo ?? null}
+                      isLoading={loading}
+                      fallbackGradient="from-teal-400 to-teal-600"
+                      FallbackIcon={Users}
+                      ringColor="from-teal-400 via-cyan-400 to-green-400"
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* Card with glass-morphism - Kadis (Below Bupati & Wakil) */}
-              <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 max-w-sm shadow-xl shadow-black/10">
+              {/* ─── Card with glass-morphism — Kadis (Below Bupati & Wakil) ─── */}
+              <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 max-w-sm mx-auto sm:mx-0 sm:ml-auto mt-5 shadow-xl shadow-black/10">
                 <div className="text-center">
                   {loading ? (
                     <div className="w-32 h-32 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4 ring-4 ring-white/20">

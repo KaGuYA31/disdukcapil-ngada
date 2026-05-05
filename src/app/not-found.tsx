@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   Home,
   FileText,
@@ -12,11 +13,8 @@ import {
   Building2,
   Globe,
   BarChart3,
-  Lightbulb,
   Shield,
   ArrowLeft,
-  FileCheck,
-  MapPin,
   Phone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -498,12 +496,12 @@ function FloatingParticles() {
 
 export default function NotFound() {
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Dispatch event to open the global search command palette
-      window.dispatchEvent(new CustomEvent("open-search-command"));
+      router.push(`/berita?q=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
@@ -548,15 +546,39 @@ export default function NotFound() {
               Halaman Tidak Ditemukan
             </motion.h2>
 
+            {/* Decorative CSS Document Icon */}
+            <motion.div variants={fadeInScale} className="flex justify-center mb-4 -mt-2">
+              <div className="relative" aria-hidden="true">
+                {/* Document base */}
+                <div className="relative w-16 h-20 rounded-lg bg-white dark:bg-gray-800 border-2 border-dashed border-green-300 dark:border-green-700 shadow-lg shadow-green-500/10">
+                  {/* Folded corner */}
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-100 dark:bg-green-900 rounded-br-lg rounded-tl-sm border-l-2 border-b-2 border-green-300 dark:border-green-700" />
+                  {/* Text lines */}
+                  <div className="absolute top-4 left-2.5 right-2.5 space-y-1.5">
+                    <div className="h-1 rounded-full bg-green-200 dark:bg-green-800 w-full" />
+                    <div className="h-1 rounded-full bg-green-200 dark:bg-green-800 w-4/5" />
+                    <div className="h-1 rounded-full bg-green-100 dark:bg-green-800/50 w-3/5" />
+                  </div>
+                  {/* Question mark overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-green-400 dark:text-green-600 text-2xl font-black opacity-40 -rotate-6">?</span>
+                  </div>
+                </div>
+                {/* Floating accent dots */}
+                <div className="absolute -bottom-1 -left-2 w-2.5 h-2.5 rounded-full bg-teal-400/60 dark:bg-teal-500/40 animate-pulse" />
+                <div className="absolute -top-1 -left-3 w-1.5 h-1.5 rounded-full bg-emerald-400/50 dark:bg-emerald-500/30 animate-pulse delay-300" />
+              </div>
+            </motion.div>
+
             {/* Description */}
             <motion.p
               variants={fadeInUp}
-              className="text-gray-500 dark:text-gray-400 text-base md:text-lg max-w-md mx-auto text-center mb-8"
+              className="text-gray-500 dark:text-gray-400 text-base md:text-lg max-w-lg mx-auto text-center mb-8"
             >
-              Maaf, halaman yang Anda cari tidak tersedia atau telah dipindahkan. Silakan gunakan pencarian atau pilih menu di bawah.
+              Maaf, halaman yang Anda cari tidak ditemukan. Kemungkinan halaman telah dipindahkan, dihapus, atau alamat URL yang Anda masukkan salah. Silakan gunakan pencarian atau pilih salah satu tautan di bawah ini.
             </motion.p>
 
-            {/* Search Bar - opens global search command */}
+            {/* Search Bar - redirects to /berita?q=... */}
             <motion.form
               variants={fadeInUp}
               onSubmit={handleSearch}
@@ -566,14 +588,9 @@ export default function NotFound() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <input
                   type="search"
-                  placeholder="Cari layanan atau informasi..."
+                  placeholder="Cari berita atau informasi..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => {
-                    if (searchQuery.trim()) {
-                      window.dispatchEvent(new CustomEvent("open-search-command"));
-                    }
-                  }}
                   className="w-full h-10 pl-9 pr-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 text-sm outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 dark:focus:ring-green-400/30 dark:focus:border-green-400 transition-all"
                   aria-label="Kata kunci pencarian"
                 />
@@ -586,22 +603,6 @@ export default function NotFound() {
                 Cari
               </Button>
             </motion.form>
-
-            {/* Keyboard shortcut hint */}
-            <motion.p
-              variants={fadeInUp}
-              className="text-center text-xs text-gray-400 dark:text-gray-500 mb-8 -mt-4"
-            >
-              atau tekan{" "}
-              <kbd className="inline-flex items-center rounded border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-1.5 py-0.5 font-mono text-[10px] text-gray-500 dark:text-gray-400">
-                Ctrl
-              </kbd>
-              {" + "}
-              <kbd className="inline-flex items-center rounded border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-1.5 py-0.5 font-mono text-[10px] text-gray-500 dark:text-gray-400">
-                K
-              </kbd>
-              {" "}untuk pencarian cepat
-            </motion.p>
 
             {/* Quick Links Grid */}
             <motion.div variants={fadeInUp}>
@@ -647,8 +648,8 @@ export default function NotFound() {
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
             </motion.div>
 
-            {/* Primary CTA Button */}
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+            {/* Primary CTA Buttons */}
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
               <Button
                 asChild
                 size="lg"
@@ -660,12 +661,38 @@ export default function NotFound() {
                 </Link>
               </Button>
               <Button
+                asChild
                 variant="outline"
                 size="lg"
-                className="border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-6 py-6 text-base"
+                className="border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/40 px-6 py-6 text-base"
+              >
+                <Link href="/layanan">
+                  <FileText className="h-5 w-5 mr-2" />
+                  Lihat Layanan
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-950/40 px-6 py-6 text-base"
+              >
+                <Link href="/pengaduan">
+                  <MessageSquareWarning className="h-5 w-5 mr-2" />
+                  Hubungi Kami
+                </Link>
+              </Button>
+            </motion.div>
+
+            {/* Secondary: Back button */}
+            <motion.div variants={fadeInUp} className="flex justify-center mb-6">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                 onClick={() => window.history.back()}
               >
-                <ArrowLeft className="h-5 w-5 mr-2" />
+                <ArrowLeft className="h-4 w-4 mr-1.5" />
                 Halaman Sebelumnya
               </Button>
             </motion.div>

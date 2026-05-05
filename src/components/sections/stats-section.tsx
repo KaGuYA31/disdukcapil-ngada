@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Users, IdCard, MapPin, TrendingUp, ArrowRight, Loader2, BarChart3 } from "lucide-react";
+import { Users, IdCard, MapPin, TrendingUp, ArrowRight, BarChart3, TrendingUpIcon } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 
 interface RingkasanData {
@@ -78,15 +78,33 @@ function useAnimatedCounter(
   return count;
 }
 
-// Animated stat card component
+// Skeleton shimmer card shown while loading
+function SkeletonStatCard() {
+  return (
+    <div className="relative bg-white/70 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 border border-white/60 dark:border-gray-700/50 overflow-hidden">
+      {/* Shimmer overlay */}
+      <div className="absolute inset-0 animate-shimmer rounded-2xl" />
+      <div className="relative space-y-4">
+        {/* Icon skeleton */}
+        <div className="w-14 h-14 rounded-full bg-gray-200/60 dark:bg-gray-700/40" />
+        {/* Number skeleton */}
+        <div className="h-8 w-28 rounded-lg bg-gray-200/60 dark:bg-gray-700/40" />
+        {/* Label skeleton */}
+        <div className="h-4 w-24 rounded-md bg-gray-200/60 dark:bg-gray-700/40" />
+        {/* Description skeleton */}
+        <div className="h-3 w-36 rounded-md bg-gray-200/40 dark:bg-gray-700/30" />
+      </div>
+    </div>
+  );
+}
+
+// Enhanced animated stat card component
 function AnimatedStatCard({
   icon: Icon,
   rawValue,
   formattedValue,
   label,
   description,
-  color,
-  bgColor,
   delay = 0,
   isAnimating,
   isPercent = false,
@@ -96,8 +114,6 @@ function AnimatedStatCard({
   formattedValue: string;
   label: string;
   description: string;
-  color: string;
-  bgColor: string;
   delay: number;
   isAnimating: boolean;
   isPercent?: boolean;
@@ -113,21 +129,40 @@ function AnimatedStatCard({
       initial={{ opacity: 0, y: 30 }}
       animate={isAnimating ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" as const }}
-      whileHover={{ scale: 1.03, y: -4 }}
-      className="relative bg-white/70 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 shadow-sm hover:shadow-xl hover:shadow-green-500/5 dark:hover:shadow-green-400/5 border border-white/60 dark:border-gray-700/50 transition-all duration-300 cursor-default group"
+      whileHover={{ y: -6 }}
+      className="group relative"
     >
-      {/* Subtle gradient shimmer on top edge */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/40 to-transparent dark:via-green-500/30 rounded-t-2xl" />
-      <div
-        className={`w-12 h-12 ${bgColor} rounded-xl flex items-center justify-center mb-4 ring-1 ring-inset ring-black/5 dark:ring-white/5 transition-transform duration-300 group-hover:scale-110`}
-      >
-        <Icon className={`h-6 w-6 ${color}`} />
+      {/* Gradient border on hover - visible via a pseudo-wrapper */}
+      <div className="absolute -inset-[2px] rounded-2xl bg-gradient-to-br from-green-400/0 via-teal-400/0 to-emerald-400/0 group-hover:from-green-400/60 group-hover:via-teal-400/60 group-hover:to-emerald-400/60 transition-all duration-500 blur-sm opacity-0 group-hover:opacity-100" />
+      <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-green-400/0 via-teal-400/0 to-emerald-400/0 group-hover:from-green-500/80 group-hover:via-teal-500/80 group-hover:to-emerald-500/80 transition-all duration-500 opacity-0 group-hover:opacity-100" />
+
+      {/* Card body */}
+      <div className="relative bg-white/80 dark:bg-gray-800/60 backdrop-blur-md rounded-2xl p-5 md:p-6 shadow-sm group-hover:shadow-xl group-hover:shadow-green-500/10 dark:group-hover:shadow-green-400/10 border border-gray-200/60 dark:border-gray-700/40 transition-all duration-500">
+        {/* Subtle gradient shimmer on top edge */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/40 to-transparent dark:via-green-500/30 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+        {/* Circular icon container with gradient */}
+        <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center mb-4 shadow-lg shadow-green-500/20 dark:shadow-green-400/10 transition-transform duration-300 group-hover:scale-110">
+          <Icon className="h-6 w-6 text-white" />
+        </div>
+
+        {/* Number with tabular-nums + trending indicator */}
+        <div className="flex items-end gap-2">
+          <p className="text-2xl md:text-3xl font-bold bg-gradient-to-br from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent tracking-tight" style={{ fontFeatureSettings: '"tnum"' }}>
+            {isAnimating ? displayValue : "0"}
+          </p>
+          {/* Trending indicator */}
+          <span className="flex items-center gap-0.5 text-emerald-500 dark:text-emerald-400 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <TrendingUpIcon className="h-3.5 w-3.5" />
+            <span className="text-[10px] font-semibold uppercase tracking-wider">Live</span>
+          </span>
+        </div>
+
+        {/* Label */}
+        <p className="font-semibold text-gray-700 dark:text-gray-200 mt-1">{label}</p>
+        {/* Description */}
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
       </div>
-      <p className="text-2xl md:text-3xl font-bold bg-gradient-to-br from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent tabular-nums">
-        {isAnimating ? displayValue : "0"}
-      </p>
-      <p className="font-semibold text-gray-700 dark:text-gray-200 mt-1">{label}</p>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
     </motion.div>
   );
 }
@@ -171,8 +206,6 @@ export function StatsSection() {
       formattedValue: formatNumber(totalPenduduk),
       label: "Total Penduduk",
       description: `Periode ${periode}`,
-      color: "text-green-600",
-      bgColor: "bg-green-100 dark:bg-green-900/50",
       isPercent: false,
     },
     {
@@ -181,8 +214,6 @@ export function StatsSection() {
       formattedValue: formatNumber(blankoEKTP?.jumlahTersedia || 0),
       label: "Blanko E-KTP",
       description: blankoEKTP?.keterangan || "Tersedia saat ini",
-      color: blankoEKTP && blankoEKTP.jumlahTersedia > 0 ? "text-teal-600" : "text-red-600",
-      bgColor: blankoEKTP && blankoEKTP.jumlahTersedia > 0 ? "bg-teal-100 dark:bg-teal-900/50" : "bg-red-100 dark:bg-red-900/50",
       isPercent: false,
     },
     {
@@ -191,8 +222,6 @@ export function StatsSection() {
       formattedValue: "12",
       label: "Kecamatan",
       description: "Wilayah Layanan",
-      color: "text-amber-600",
-      bgColor: "bg-amber-100 dark:bg-amber-900/50",
       isPercent: false,
     },
     {
@@ -201,8 +230,6 @@ export function StatsSection() {
       formattedValue: `${dokumen?.cakupanAkta?.toFixed(1) || "0"}%`,
       label: "Cakupan Akta",
       description: "Akta Kelahiran",
-      color: "text-rose-600",
-      bgColor: "bg-rose-100 dark:bg-rose-900/50",
       isPercent: true,
     },
   ];
@@ -249,16 +276,15 @@ export function StatsSection() {
           </p>
         </motion.div>
 
+        {/* Stats Grid — responsive: 2 cols mobile, 3 tablet, 4 desktop */}
         {loading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+            {[...Array(4)].map((_, i) => (
+              <SkeletonStatCard key={i} />
+            ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 relative">
-            {/* Decorative dividers between cards (desktop) */}
-            <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[25%] w-px h-3/4 bg-gradient-to-b from-transparent via-green-300/30 dark:via-green-600/20 to-transparent" />
-            <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[50%] w-px h-3/4 bg-gradient-to-b from-transparent via-teal-300/30 dark:via-teal-600/20 to-transparent" />
-            <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[75%] w-px h-3/4 bg-gradient-to-b from-transparent via-emerald-300/30 dark:via-emerald-600/20 to-transparent" />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 relative">
             {stats.map((stat, index) => (
               <AnimatedStatCard
                 key={index}
@@ -267,8 +293,6 @@ export function StatsSection() {
                 formattedValue={stat.formattedValue}
                 label={stat.label}
                 description={stat.description}
-                color={stat.color}
-                bgColor={stat.bgColor}
                 delay={index * 0.12}
                 isAnimating={shouldAnimate}
                 isPercent={stat.isPercent}

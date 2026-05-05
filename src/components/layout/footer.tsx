@@ -176,6 +176,7 @@ export function Footer() {
                   src="/logo-kabupaten.png"
                   alt="Logo Kabupaten Ngada"
                   fill
+                  sizes="48px"
                   className="object-contain p-1"
                 />
               </div>

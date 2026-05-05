@@ -233,6 +233,7 @@ export function Header() {
                 src="/logo-kabupaten.png"
                 alt="Logo Kabupaten Ngada"
                 fill
+                sizes="(max-width: 768px) 40px, 48px"
                 className="object-contain group-hover:scale-105 transition-transform"
                 priority
               />
@@ -334,6 +335,7 @@ export function Header() {
                         src="/logo-kabupaten.png"
                         alt="Logo"
                         fill
+                        sizes="32px"
                         className="object-contain"
                       />
                     </div>

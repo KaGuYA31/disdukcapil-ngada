@@ -30,6 +30,9 @@ import {
   Printer,
   FileDown,
   ChevronRight,
+  File as DocumentIcon,
+  Building2,
+  PartyPopper,
 } from "lucide-react";
 import { LAYANAN_FORM_MAP } from "@/lib/formulir-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -90,6 +93,122 @@ const sidebarStaggerContainer = {
     },
   },
 };
+
+// Progress tracker stagger animation
+const progressStagger = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const progressItem = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
+};
+
+// Alur Pelayanan steps
+const alurPelayananSteps = [
+  { icon: DocumentIcon, title: "Persiapan Dokumen", description: "Siapkan semua dokumen persyaratan" },
+  { icon: Building2, title: "Datang ke Kantor", description: "Kunjungi Disdukcapil pada jam kerja" },
+  { icon: CheckCircle, title: "Verifikasi Berkas", description: "Petugas memverifikasi kelengkapan" },
+  { icon: Clock, title: "Proses Layanan", description: "Data diproses oleh petugas" },
+  { icon: PartyPopper, title: "Selesai", description: "Dokumen siap diambil" },
+];
+
+// Service Flow / Alur Pelayanan Progress Tracker Component
+function ServiceFlowTracker() {
+  return (
+    <motion.div variants={staggerItem}>
+      <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ClipboardCheck className="h-5 w-5 text-teal-600" />
+            Alur Pelayanan
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={progressStagger}
+          >
+            {/* Mobile: Vertical layout */}
+            <div className="flex flex-col gap-0 md:hidden">
+              {alurPelayananSteps.map((step, index) => {
+                const StepIcon = step.icon;
+                const isLast = index === alurPelayananSteps.length - 1;
+                return (
+                  <motion.div key={step.title} variants={progressItem} className="flex gap-4">
+                    {/* Vertical line + circle */}
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 text-white rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+                        <StepIcon className="h-5 w-5" />
+                      </div>
+                      {!isLast && (
+                        <div className="w-0.5 flex-1 bg-gradient-to-b from-green-400 to-teal-400 my-1" />
+                      )}
+                    </div>
+                    {/* Content */}
+                    <div className={`pb-6 ${isLast ? "pb-0" : ""}`}>
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                          Langkah {index + 1}
+                        </span>
+                      </div>
+                      <p className="font-semibold text-gray-900 text-sm">{step.title}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{step.description}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Desktop: Horizontal layout */}
+            <div className="hidden md:block">
+              <div className="flex items-start justify-between relative">
+                {/* Connecting line */}
+                <div className="absolute top-5 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-green-400 via-teal-400 to-green-400 z-0" />
+
+                {alurPelayananSteps.map((step, index) => {
+                  const StepIcon = step.icon;
+                  return (
+                    <motion.div
+                      key={step.title}
+                      variants={progressItem}
+                      className="flex flex-col items-center text-center z-10 relative flex-1"
+                    >
+                      {/* Step circle */}
+                      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 text-white rounded-full flex items-center justify-center shadow-md mb-3 ring-4 ring-white">
+                        <StepIcon className="h-5 w-5" />
+                      </div>
+                      {/* Step number badge */}
+                      <span className="absolute -top-1.5 -right-1 md:right-auto md:-top-2 w-5 h-5 bg-white text-green-600 text-xs font-bold rounded-full flex items-center justify-center shadow-sm border border-green-200">
+                        {index + 1}
+                      </span>
+                      {/* Content */}
+                      <p className="font-semibold text-gray-900 text-sm mb-1">{step.title}</p>
+                      <p className="text-xs text-gray-500 max-w-[120px]">{step.description}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
 
 // Icon mapping
 const iconMap: Record<string, React.ElementType> = {
@@ -1069,6 +1188,9 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                   </motion.div>
                 )}
 
+                {/* Alur Pelayanan - Visual Progress Tracker */}
+                {procedures.length > 0 && <ServiceFlowTracker />}
+
                 {/* FAQ */}
                 {faqData.length > 0 && (
                   <motion.div variants={staggerItem}>
@@ -1471,6 +1593,9 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                   </motion.div>
                 );
               })()}
+
+              {/* Alur Pelayanan - Visual Progress Tracker */}
+              {defaultService.procedures.length > 0 && <ServiceFlowTracker />}
 
               {/* FAQ */}
               {defaultService.faq.length > 0 && (

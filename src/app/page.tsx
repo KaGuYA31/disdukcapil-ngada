@@ -11,6 +11,7 @@ import { NewsSection } from "@/components/sections/news-section";
 import { FeaturedServicesSection } from "@/components/sections/featured-services-section";
 import { AnnouncementsSection } from "@/components/sections/announcements-section";
 import { FAQSection } from "@/components/sections/faq-section";
+import { NewsletterSection } from "@/components/sections/newsletter-section";
 import { KeunggulanSection } from "@/components/sections/keunggulan-section";
 import { TestimoniSection } from "@/components/sections/testimoni-section";
 import { CTASection } from "@/components/sections/cta-section";
@@ -33,6 +34,7 @@ export default function HomePage() {
         <ServicesSection />
         <FeaturedServicesSection />
         <AnnouncementsSection />
+        <NewsletterSection />
         <FAQSection />
         <KeunggulanSection />
         <TestimoniSection />

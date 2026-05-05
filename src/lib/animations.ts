@@ -82,6 +82,18 @@ export const slideInRight: Variants = {
   },
 };
 
+// ─── Stagger Item ──────────────────────────────────────────────────────
+// Individual stagger item — used as child of staggerContainer.
+
+export const staggerItem: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
 // ─── Link Card Hover ───────────────────────────────────────────────────
 // Hover interaction for card-style navigation links with lift and shadow.
 
