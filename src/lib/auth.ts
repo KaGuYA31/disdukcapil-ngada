@@ -72,7 +72,7 @@ async function hmacVerify(data: string, signature: string): Promise<boolean> {
     ["verify"]
   );
   const sigBytes = decodeBase64Url(signature);
-  return crypto.subtle.verify("HMAC", key, sigBytes, encoder.encode(data));
+  return crypto.subtle.verify("HMAC", key, sigBytes.buffer as ArrayBuffer, encoder.encode(data));
 }
 
 async function timingSafeEqual(a: Uint8Array, b: Uint8Array): Promise<boolean> {
@@ -85,9 +85,8 @@ async function timingSafeEqual(a: Uint8Array, b: Uint8Array): Promise<boolean> {
     false,
     ["sign"]
   );
-  // Use HMAC comparison as timing-safe comparison proxy
-  const sigA = await crypto.subtle.sign("HMAC", key, a);
-  const sigB = await crypto.subtle.sign("HMAC", key, b);
+  const sigA = await crypto.subtle.sign("HMAC", key, a.buffer as ArrayBuffer);
+  const sigB = await crypto.subtle.sign("HMAC", key, b.buffer as ArrayBuffer);
   // Compare the HMAC outputs byte by byte
   const arrA = new Uint8Array(sigA);
   const arrB = new Uint8Array(sigB);
