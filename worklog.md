@@ -1,4 +1,228 @@
 ---
+Task ID: 9-c
+Agent: Frontend Styling Expert Subagent (Round 9)
+Task: Enhance styling of testimoni-section, jadwal-pelayanan-section, and sosial-media-section
+
+Work Log:
+- Read worklog.md and all 3 target section files for project patterns
+- Read globals.css for existing animation/utility classes (animated-underline, card-accent-top, hero-banner-pattern, floatOrb patterns)
+- Read lib/animations.ts for shared animation variants
+- Enhanced Testimoni Section (src/components/sections/testimoni-section.tsx):
+  - **Hero Banner**: Added full-width gradient banner (h-[120px], from-green-700 via-green-800 to-teal-900) with SVG hero-banner-pattern overlay (opacity-[0.04]), 2 animated gradient orbs (floatOrb variants with stagger), glassmorphism Users icon container (bg-white/15 backdrop-blur-sm rounded-full border-white/20)
+  - **Section Title**: Added `animated-underline` class for gradient underline hover reveal
+  - **Testimonial Cards**: Enhanced glassmorphism effect (backdrop-blur-sm, bg-white/70 dark:bg-gray-900/70), gradient top accent line on hover (`card-accent-top` class), enhanced shadow on hover (hover:shadow-xl hover:-translate-y-1.5)
+  - **Avatar Ring Gradient**: Added gradient ring (from-green-400 to-teal-500) around each user avatar with blur-[2px], opacity transition on group-hover, ring-2 ring-white/dark:ring-gray-900
+  - **Star Ratings**: Added spring scale animation on hover (scale: 1.2, rotate: 15deg, spring stiffness 400 damping 10) to each star
+  - **"Rating Terbaik" Badge**: Added on top-rated testimonial (most stars) — amber→yellow gradient pill with Award icon, spring entrance animation (delay 0.3 + index * 0.1), shadow-md shadow-amber-500/25, positioned absolute top-3 right-3
+  - **Floating Decorative Shapes**: Added 5 animated geometric shapes (squares, circles, dots) with staggered infinite oscillation (6-10s durations)
+  - **Quote Text**: Added italic styling with green left border accent (border-l-2 border-green-300 dark:border-green-700 pl-3)
+  - New imports: Users, Award, Sparkles from lucide-react
+  - New variants: floatOrb animation variants
+- Enhanced Jadwal Pelayanan Section (src/components/sections/jadwal-pelayanan-section.tsx):
+  - **Hero Banner**: Added full-width gradient banner (h-[120px], from-green-700 via-green-800 to-teal-900) with SVG hero-banner-pattern overlay, 2 animated gradient orbs, glassmorphism Calendar icon container (bg-white/15 backdrop-blur-sm rounded-full border-white/20)
+  - **Section Title**: Added `animated-underline` class for gradient underline hover reveal
+  - **Schedule Cards**: Enhanced glassmorphism effect (backdrop-blur-sm, bg-white/90 dark:bg-gray-800/60), enhanced hover (whileHover lift -3px + scale 1.01 with spring, hover:shadow-xl, hover:border-green-400)
+  - **Time Slots**: Added pulsing green dot indicator (animate-ping, 3s cycle) with "Buka" label for operational slots; pulsing red dot with "Tutup" label for non-current-day display; amber pulsing dot for "Istirahat"
+  - **"Jam Istirahat" Callout Box**: Added amber-styled callout with Clock icon in gradient amber container (bg-gradient-to-r from-amber-50 to-orange-50), border-amber-200, explaining 12:00-13:00 WITA break time
+  - **Day Cards**: Added gradient left border accent — green (from-green-400 to-teal-500) for weekdays, red (from-red-400 to-red-600) for weekends, via border-l-[3px]
+  - **Subtle Animated Background Pattern**: Existing circle pattern enhanced, retained
+  - **Live Clock Bar**: Added backdrop-blur-sm glassmorphism effect
+  - New imports: Calendar from lucide-react
+  - New variants: floatOrb animation variants
+- Enhanced Sosial Media Section (src/components/sections/sosial-media-section.tsx):
+  - **Hero Banner**: Added full-width gradient banner (h-[120px], from-green-700 via-green-800 to-teal-900) with SVG hero-banner-pattern overlay, 2 animated gradient orbs, glassmorphism Share2 icon container
+  - **Section Title**: Added `animated-underline` class for gradient underline hover reveal
+  - **Social Media Cards**: Enhanced glassmorphism (backdrop-blur-sm, bg-white/70 dark:bg-gray-900/70), hover lift with 3D tilt (perspective: 800px via style prop)
+  - **Social Icons**: Added pulsing glow ring behind each platform icon on hover — absolute positioned layer with animate-ping (2s duration), opacity 0→1 transition on group-hover
+  - **Contact Cards**: Enhanced hover with gradient border reveal — absolute -inset-[1px] gradient layer (from-green-400 via-teal-400 to-emerald-400, opacity 0→1), hover:shadow-xl, whileHover 3D tilt (rotateY: -2, rotateX: 2 with spring)
+  - **Map Thumbnail**: Added animated gradient border frame — 2-layer gradient border (from-green-400 via-teal-400 to-emerald-500), opacity 0.30→0.70 on hover with group-hover:animate-pulse, perspective 800px
+  - **Operating Hours Badge**: Enhanced with gradient background (from-green-100 to-teal-100 dark variant), border-green-200/50
+  - **Office Hours Dots**: Added pulsing green dots for "Buka" days and pulsing red dots for "Tutup" days (animate-ping, 3s cycle)
+  - **Floating Decorative Shapes**: Added 5 animated geometric shapes (squares, circles, dots) with staggered infinite oscillation (7-11s durations)
+  - New variants: floatOrb animation variants
+
+Stage Summary:
+- 3 files enhanced with premium visual design (testimoni-section.tsx, jadwal-pelayanan-section.tsx, sosial-media-section.tsx)
+- New features: hero banners with glassmorphism icons, animated gradient orbs, animated underlines, glassmorphism cards, 3D tilt hover effects, pulsing glow rings, gradient border reveals, avatar gradient rings, star spring animations, "Rating Terbaik" badge, "Jam Istirahat" callout, pulsing status dots, floating decorative shapes, gradient left border accents
+- ESLint: 0 errors
+- All changes backward compatible, dark mode supported, no API changes
+
+---
+
+Task ID: 9-d
+Agent: Frontend Styling Expert Subagent (Round 9)
+Task: Enhance styling of ulasan-rating-section, galeri-inovasi-section, and faq-section
+
+Work Log:
+- Read worklog.md and all 3 target section files for project patterns
+- Read globals.css for existing animation/utility classes (animated-underline, card-accent-top, shimmer-progress, hover-lift-lg, glass-card-green, animate-rotate-gradient, text-gradient-green)
+- Read antrian-online-section.tsx for hero banner reference pattern
+- Enhanced Ulasan Rating Section (src/components/sections/ulasan-rating-section.tsx):
+  - **Hero Banner**: Added full-width gradient banner (h-[120px], from-green-700 via-green-800 to-teal-900) with SVG diamond pattern overlay, 2 animated gradient orbs (floatOrb variants), glassmorphism Star icon container (bg-white/10 backdrop-blur-md border-white/20), title + subtitle
+  - **Section Title**: Added `animated-underline` class for gradient underline hover reveal
+  - **Rating Overview Card**: Added animated rotating conic-gradient border (animate-rotate-gradient, opacity 0.6→1 on hover), glassmorphism effect on breakdown card (bg-white/70 dark:bg-gray-800/50 backdrop-blur-md)
+  - **Animated Counter**: Created useAnimatedCounter hook using requestAnimationFrame with easeOutCubic easing; overall rating number uses gradient text (from-green-600 via-teal-500 to-green-600) and counts up on scroll
+  - **Rating Bars**: Changed from yellow/amber to green-teal gradient fill (from-green-500 to-teal-500) with `shimmer-progress` shimmer animation
+  - **Review Cards**: Enhanced glassmorphism hover (hover:shadow-xl hover:shadow-green-500/10, hover:-translate-y-1.5, backdrop-blur-md, bg-white/70), added `card-accent-top` class for gradient top accent line reveal on hover
+  - **Avatar**: Added gradient ring border (from-green-400 to-teal-500) that reveals on card group-hover with scale-110 and opacity transition
+  - **Star Display**: Added `whileHover={{ scale: 1.15 }}` spring animation to all stars (not just interactive)
+  - **Like Button**: Enhanced with transition-all duration-200 for smooth fill/color change
+  - **Tulis Ulasan Button**: Upgraded from solid green to gradient (from-green-600 to-teal-600) with hover lift and shadow
+  - **Floating Decorative Shapes**: Added 3 animated geometric shapes (circle, square, dot) with staggered infinite oscillation, hidden on mobile
+  - New imports: useEffect from react (for useAnimatedCounter)
+  - New variants: floatOrb animation variants (opacity/scale breathing with custom delay)
+- Enhanced Galeri Inovasi Section (src/components/sections/galeri-inovasi-section.tsx):
+  - **Hero Banner**: Added full-width gradient banner (h-[120px], from-green-700 via-green-800 to-teal-900) with SVG diamond pattern overlay, 2 animated gradient orbs, glassmorphism Camera icon container, title + subtitle
+  - **Section Title**: Added `animated-underline` class, removed decorative accent line above
+  - **Category Filter Badges**: Added new category filter system — "Semua" + dynamic categories from data, active uses green→teal gradient with shadow-glow, inactive has white bg with hover border transition, whileHover scale 1.05 spring animation, whileTap scale 0.95
+  - **Gallery Grid**: Enhanced hover effects — hover:scale-[1.02] scale transform, hover:shadow-xl hover:shadow-green-500/15, hover:-translate-y-1 lift
+  - **Gallery Items**: Added gradient border glow layer on hover (from-green-500/0 via-teal-500/0 to-green-500/0 → 0.60 opacity on hover, blur-sm, -z-10)
+  - **Image Cards**: Enhanced "Lihat Detail" overlay with green→teal gradient bg instead of white/20, border-white/20, shadow-lg; slide-up animation unchanged (translate-y-4→0, 500ms)
+  - **Expand Icon Indicator**: Added Maximize2 icon in glassmorphism circle (bg-white/20 backdrop-blur-sm, border-white/30) that appears on hover with scale-75→scale-100 animation at top-right corner
+  - **Hover Overlay Darkening**: Increased from-black/50 to from-black/60 for better contrast
+  - **Card Info**: Added group-hover:bg-green-50/50 background transition on hover
+  - **Category Badge**: Enhanced with gradient bg (from-green-50 to-teal-50 dark variant)
+  - **View All Button**: Added hover:shadow-md hover:shadow-green-500/10 transition
+  - **Floating Decorative Shapes**: Added 4 animated geometric shapes (ring, square, dot, rectangle) with staggered infinite oscillation, hidden on mobile
+  - New imports: Maximize2 from lucide-react
+  - New state: activeCategory for filtering
+  - New data: categories array derived from gallery items
+  - New variants: floatOrb animation variants
+- Enhanced FAQ Section (src/components/sections/faq-section.tsx):
+  - **Hero Banner**: Added full-width gradient banner (h-[120px], from-green-700 via-green-800 to-teal-900) with SVG diamond pattern overlay, 2 animated gradient orbs, glassmorphism HelpCircle icon container, title + subtitle
+  - **Section Title**: Added `animated-underline` class
+  - **FAQ Accordion Items**: Enhanced glassmorphism (backdrop-blur-md), gradient left border accent that reveals on hover (w-0→w-1, from-green-500 to-teal-500, 300ms transition)
+  - **Category Number Badges**: Enhanced with hover shadow glow (group-hover:shadow-md group-hover:shadow-green-500/25 transition-shadow duration-300)
+  - **Accordion Trigger**: Enhanced open state with chevron icon color ([&>svg]:text-green-600 dark variant), transition-all duration-300
+  - **Search Input**: Enhanced focus state with focus-within:ring-2 focus-within:ring-green-500/30 focus-within:shadow-lg focus-within:shadow-green-500/10 gradient border glow, transition-all duration-300
+  - **Clear Button**: Added motion.button with AnimatePresence scale animation (0.8→1 opacity+scale)
+  - **Bottom CTA Card**: Enhanced MessageCircle icon container with shadow-sm, Chat WhatsApp button with hover:-translate-y-0.5 lift
+  - **Floating Decorative Shapes**: Added 3 animated geometric shapes (ring, dot, rectangle) with staggered infinite oscillation, hidden on mobile
+  - New imports: ChevronDown from lucide-react (imported but chevron handled by shadcn accordion)
+  - New variants: floatOrb animation variants
+  - Restructured: moved content area inside relative div, separated hero banner from content for proper layout
+
+Stage Summary:
+- 3 files enhanced with premium visual design (ulasan-rating-section.tsx, galeri-inovasi-section.tsx, faq-section.tsx)
+- New features: hero banners, animated counter, rotating gradient border, shimmer progress bars, glassmorphism cards, gradient accent lines, category filter, expand indicator, floating decorative shapes, gradient border glow, gradient left border accent
+- ESLint: 0 errors
+- All changes backward compatible, dark mode supported, no API changes
+
+---
+
+Task ID: 9-a
+Agent: Full-Stack Developer Subagent (Round 9)
+Task: Create a "Timeline Sejarah & Pencapaian" (History Timeline & Achievements) section for the homepage
+
+Work Log:
+- Read worklog.md (first 50 lines) for project patterns — understood 8 rounds completed, 80+ components, green/teal theme
+- Read src/components/sections/profil/sejarah-section.tsx for timeline design patterns (alternating left/right, gradient line, pulsing dots)
+- Read src/lib/animations.ts for shared animation variants
+- Read globals.css for existing CSS utility classes (dot-grid-pattern, glass-card utilities, shimmer, hover-lift)
+- Created TimelinePencapaianSection (src/components/sections/timeline-pencapaian-section.tsx):
+  - "use client" component with framer-motion scroll-triggered animations (useInView)
+  - **Section Header**: "Timeline Pencapaian" with History icon badge in green pill, subtitle "Jejak langkah dan pencapaian Disdukcapil Kabupaten Ngada", gradient accent on title using text-gradient-green
+  - **Category Legend**: 4 inline category items below subtitle (Pencapaian=Trophy, Inovasi=Lightbulb, Digital=Monitor, Infrastruktur=Building2)
+  - **10 Timeline Milestones** (2010–2025):
+    - 2010: Pembentukan Disdukcapil Ngada (Infrastruktur)
+    - 2013: Implementasi Sistem SIAK (Digital)
+    - 2015: Penerbitan KTP-el Pertama (Pencapaian)
+    - 2017: Layanan Online Perdana (Inovasi)
+    - 2018: Sistem Antrian Digital (Digital)
+    - 2020: Pelayanan di Era Pandemi (Inovasi)
+    - 2022: Pencapaian 100% Cakupan KTP-el (Pencapaian)
+    - 2023: Peluncuran Portal Digital Baru (Digital)
+    - 2024: Penghargaan Pelayanan Publik Terbaik (Pencapaian)
+    - 2025: Modernisasi Pelayanan Digital (Inovasi)
+  - Each milestone displays: year badge (gradient circle with AnimatedYear counter), title, description (2-3 lines), category badge with icon, category-specific color
+  - **Category Color System** (4 categories with full config objects):
+    - Pencapaian: emerald gradient, Trophy icon, emerald badges/borders/dots
+    - Inovasi: amber gradient, Lightbulb icon, amber badges/borders/dots
+    - Digital: teal gradient, Monitor icon, teal badges/borders/dots
+    - Infrastruktur: violet gradient, Building2 icon, violet badges/borders/dots
+  - **Layout**: Single-column centered timeline, alternating left/right content cards on desktop (md:flex-row / md:flex-row-reverse), linear on mobile
+  - **Vertical Timeline Line**: Animated scaleY grow from top (2s easeOut) with multi-stop gradient (green→teal→emerald→teal→green)
+  - **Pulsing Dots**: Each timeline point has a 48px gradient circle (category-colored) + 2 concentric pulse ring animations (2.5s + 3.5s cycles with stagger)
+  - **Glassmorphism Cards**: backdrop-blur-md, bg-white/70 dark:bg-gray-900/70, border-gray-200/60, category-specific hover border color
+  - **Hover Effects**: Cards lift -4px with shadow-xl on hover, bottom accent gradient line reveals (0→75% width in 500ms)
+  - **Background**: dot grid pattern (dot-grid-pattern class), 3 decorative gradient orbs (green/teal/emerald with animate-float-1/2/3), subtle gradient overlay
+  - **Animations**:
+    - Staggered card entrance (0.15s stagger via staggerContainer)
+    - Timeline line grows from top on scroll (scaleY 0→1)
+    - Dual-layer pulsing dots with ring animation
+    - Cards slide in from alternating sides (slideFromLeft / slideFromRight)
+    - AnimatedYear counter component: counts from 2000 to target year on scroll (1200ms duration with step interval)
+  - **Scroll indicator**: "Gulir untuk menjelajahi" with animated ChevronDown arrows
+  - **Footer note**: Data source attribution pill centered below timeline
+  - **Skeleton Loader**: TimelinePencapaianSectionSkeleton with shimmer placeholders for header, 6 timeline item skeletons
+  - **Dark Mode**: Full support throughout all elements
+  - **Exports**: TimelinePencapaianSection (main), TimelinePencapaianSectionSkeleton (loading)
+  - **Lucide icons**: History, Trophy, Lightbulb, Monitor, Building2, ChevronDown
+  - **shadcn/ui**: Badge (category badges)
+  - No page.tsx modifications per instructions
+  - All text in Indonesian
+
+Stage Summary:
+- 1 NEW component created: src/components/sections/timeline-pencapaian-section.tsx
+- 0 files modified (page.tsx NOT modified per instructions)
+- ESLint: 0 errors
+- Dev server: Compiled successfully
+- Component ready for integration into homepage via dynamic import
+
+---
+
+Task ID: 9-b
+Agent: Full-Stack Developer Subagent (Round 9)
+Task: Create an "Ucapan Kepala Dinas" (Leadership Message) section for the homepage
+
+Work Log:
+- Read worklog.md (first 50 lines) for project patterns — understood 8 rounds completed, 80+ components, green/teal theme with gold accents
+- Read cta-section.tsx for testimonial/quote design patterns — noted glassmorphism, floating shapes, gradient mesh, stagger animations
+- Read src/lib/animations.ts for shared animation variants (fadeInUp, staggerContainer, staggerItem)
+- Created UcapanKepalaDinasSection (src/components/sections/ucapan-kepala-dinas-section.tsx):
+  - "use client" component with framer-motion scroll-triggered animations (useInView)
+  - **Section Header**: "Pesan Kepala Dinas" with Quote icon badge in green pill, subtitle "Komitmen dan visi pimpinan Disdukcapil Kabupaten Ngada", gradient accent line (green→teal→amber)
+  - **Leadership Quote Card**:
+    - Glassmorphism style with backdrop-blur-xl, gradient bg (from-green-50/30 to-teal-50/20, dark: green-900/20 to-teal-900/10)
+    - Animated gradient border wrapper (green→teal→amber, blur-sm glow, opacity 0.4)
+    - Large decorative Quote icon (top-right, 20-28w, pulsing glow animation with opacity/scale cycling 3s infinite)
+    - Decorative quote marks (&ldquo;) in green with 6xl/7xl size
+    - Main quote text (italic, 2xl/lg responsive font size): Full quote about commitment to serving Ngada citizens with integrity, speed, transparency, and digital modernization
+    - Stripe pattern overlay (opacity 0.02, 45deg repeating)
+    - Corner sparkle stars (amber + green, pulsing opacity animation)
+    - Gradient signature line decoration (green→teal→amber horizontal line with dot)
+    - Author info: "Kepala Dinas Kependudukan dan Pencatatan Sipil", role "Kabupaten Ngada, NTT", gradient divider, "Aktif Menjabat" badge with pulsing green dot
+    - Spring scale entrance animation (scale 0.92→1, duration 0.7s)
+  - **Quick Stats Row** (3 glassmorphism stat pills below quote):
+    - "10+ Tahun Melayani" (Clock icon): counts from 0 to 10, 1800ms
+    - "171.000+ Penduduk" (Users icon): counts from 0 to 171, 2200ms
+    - "100% Komitmen" (Award icon): counts from 0 to 100, 1600ms
+    - Each: glassmorphism (bg-white/70, backdrop-blur-md), gradient icon container, top accent line on hover, whileHover lift (-3px) + scale (1.04)
+    - Custom useAnimatedCounter hook with requestAnimationFrame + easeOutCubic easing
+  - **Vision Pillars** (3 cards below stats):
+    - Integritas (Shield icon, green→emerald gradient): honest and professional service description
+    - Inovasi (Lightbulb icon, teal→cyan gradient): continuous modernization through digitalization description
+    - Transparansi (Eye icon, amber→yellow gradient): open governance and public trust description
+    - Each: glassmorphism (bg-white/70, backdrop-blur-md), gradient icon container with shadow, whileHover lift (-6px) + scale (1.02), spring stiffness 300, hover gradient overlay, top gradient accent line, number badge (1/2/3) appears on hover, title color transition, decorative dot trail at bottom, border color transition on hover
+  - **Background**: gradient overlay (from-white via-green-50/30 to-white, dark mode support), dot grid pattern (SVG, 3% opacity), 5 floating geometric shapes (square, circle, diamond, dot, rotated square with infinite oscillation animations), 2 decorative blur orbs (green + teal)
+  - **Footer note**: "Pesan ini mencerminkan komitmen..." centered text
+  - **Skeleton Loader**: UcapanKepalaDinasSectionSkeleton with shimmer placeholders for header, quote card, stats, and pillars
+  - **Exports**: UcapanKepalaDinasSection (main), UcapanKepalaDinasSectionSkeleton (loading)
+  - **Lucide icons**: Quote, Shield, Lightbulb, Eye, Users, Award, Star, Clock
+  - **Shared imports**: fadeInUp, staggerContainer from @/lib/animations
+  - **No page.tsx modifications** per instructions
+  - Full dark mode support throughout all elements
+  - All text in Indonesian
+
+Stage Summary:
+- 1 NEW component created: src/components/sections/ucapan-kepala-dinas-section.tsx
+- 0 files modified (page.tsx NOT modified per instructions)
+- ESLint: 0 errors
+- Dev server: Compiled successfully
+- Component ready for integration into homepage via dynamic import
+
+---
+
 Task ID: 8-main
 Agent: Main Coordinator (Round 8)
 Task: Round 8 - Styling Improvements & New Feature Additions

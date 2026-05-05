@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   ChevronRight,
+  Calendar,
 } from "lucide-react";
 
 /* ── ClientOnly: useSyncExternalStore for mount detection ── */
@@ -327,6 +328,21 @@ const cardVariants = {
   },
 };
 
+const floatOrb = {
+  animate: (i: number) => ({
+    y: [0, -12, 0],
+    x: [0, i % 2 === 0 ? 6 : -6, 0],
+    scale: [1, 1.04, 1],
+    opacity: [0.25, 0.4, 0.25],
+    transition: {
+      duration: 7 + i * 2,
+      repeat: Infinity,
+      ease: "easeInOut" as const,
+      delay: i * 0.7,
+    },
+  }),
+};
+
 export function JadwalPelayananSection() {
   const [selectedDay, setSelectedDay] = useState<number>(getWITADay());
   const [currentTime, setCurrentTime] = useState(getWITATime());
@@ -366,6 +382,32 @@ export function JadwalPelayananSection() {
       ref={sectionRef}
       className="py-16 md:py-24 bg-white dark:bg-gray-950 relative overflow-hidden"
     >
+      {/* Gradient Hero Banner */}
+      <div className="absolute top-0 left-0 right-0 h-[120px] bg-gradient-to-br from-green-700 via-green-800 to-teal-900" />
+      {/* SVG Cross Pattern Overlay */}
+      <div className="absolute top-0 left-0 right-0 h-[120px] hero-banner-pattern opacity-[0.04]" />
+      {/* Animated Gradient Orbs */}
+      <motion.div
+        custom={0}
+        variants={floatOrb}
+        initial="animate"
+        animate="animate"
+        className="absolute top-2 left-[20%] w-20 h-20 bg-green-400/20 rounded-full blur-2xl pointer-events-none"
+      />
+      <motion.div
+        custom={1}
+        variants={floatOrb}
+        initial="animate"
+        animate="animate"
+        className="absolute top-6 right-[15%] w-16 h-16 bg-teal-400/20 rounded-full blur-2xl pointer-events-none"
+      />
+      {/* Glassmorphism Icon Container */}
+      <div className="absolute top-0 left-0 right-0 h-[120px] flex items-center justify-center pointer-events-none">
+        <div className="bg-white/15 backdrop-blur-sm rounded-full border border-white/20 p-3 shadow-lg">
+          <Calendar className="h-7 w-7 text-white" />
+        </div>
+      </div>
+
       {/* Subtle animated background pattern */}
       <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]">
         <div
@@ -386,13 +428,13 @@ export function JadwalPelayananSection() {
           variants={headerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="text-center max-w-3xl mx-auto mb-10"
+          className="text-center max-w-3xl mx-auto mb-10 mt-10"
         >
           <span className="inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold text-sm uppercase tracking-wider">
             <Clock className="h-4 w-4" />
             Jadwal Pelayanan
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2 animated-underline">
             Jam Operasional Kantor
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-4">
@@ -407,7 +449,7 @@ export function JadwalPelayananSection() {
           animate={isInView ? "visible" : "hidden"}
           className="mb-8"
         >
-          <div className="relative max-w-2xl mx-auto bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 dark:from-green-900/20 dark:via-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-6 border border-green-100 dark:border-green-800/30 overflow-hidden">
+          <div className="relative max-w-2xl mx-auto bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 dark:from-green-900/20 dark:via-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-6 border border-green-100 dark:border-green-800/30 overflow-hidden backdrop-blur-sm">
             {/* Glassmorphism shine */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-300/50 dark:via-green-500/30 to-transparent" />
 
@@ -493,17 +535,20 @@ export function JadwalPelayananSection() {
             {WEEKLY_SCHEDULE.map((day) => {
               const isToday = day.id === currentDay;
               const isSelected = day.id === selectedDay;
+              const isWeekend = day.id >= 6;
               return (
                 <button
                   key={day.id}
                   data-day={day.id}
                   onClick={() => setSelectedDay(day.id)}
-                  className={`relative flex-shrink-0 px-4 sm:px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 min-w-[80px] ${
+                  className={`relative flex-shrink-0 px-4 sm:px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 min-w-[80px] border-l-[3px] ${
                     isSelected
-                      ? "bg-green-600 text-white shadow-lg shadow-green-600/25 dark:bg-green-500 dark:shadow-green-500/20"
+                      ? "bg-green-600 text-white shadow-lg shadow-green-600/25 dark:bg-green-500 dark:shadow-green-500/20 border-l-green-400"
                       : isToday
-                        ? "bg-green-50 text-green-700 border-2 border-green-300 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/30"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+                        ? "bg-green-50 text-green-700 border-2 border-green-300 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/30 border-l-green-500"
+                        : isWeekend
+                          ? "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 border-l-red-400"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 border-l-green-400/60 dark:border-l-green-700"
                   }`}
                 >
                   {isToday && !isSelected && (
@@ -544,7 +589,7 @@ export function JadwalPelayananSection() {
             >
               {selectedSchedule.isClosed ? (
                 /* Closed Day Card */
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/30 rounded-2xl p-8 md:p-12 border border-gray-200 dark:border-gray-700/50 text-center">
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/30 rounded-2xl p-8 md:p-12 border border-gray-200 dark:border-gray-700/50 text-center backdrop-blur-sm">
                   <div className="w-20 h-20 mx-auto mb-6 bg-gray-200 dark:bg-gray-700/50 rounded-full flex items-center justify-center">
                     <AlertTriangle className="h-10 w-10 text-gray-400 dark:text-gray-500" />
                   </div>
@@ -562,7 +607,7 @@ export function JadwalPelayananSection() {
                 </div>
               ) : (
                 /* Active Day Card */
-                <div className="relative bg-gradient-to-br from-white to-green-50/30 dark:from-gray-800/60 dark:to-green-900/10 rounded-2xl border border-green-100 dark:border-green-800/30 shadow-lg shadow-green-500/5 dark:shadow-green-500/5 overflow-hidden">
+                <div className="relative bg-gradient-to-br from-white/90 to-green-50/30 dark:from-gray-800/60 dark:to-green-900/10 rounded-2xl border border-green-100 dark:border-green-800/30 shadow-lg shadow-green-500/5 dark:shadow-green-500/5 overflow-hidden backdrop-blur-sm">
                   {/* Top accent gradient line */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-emerald-400 to-teal-500" />
 
@@ -574,6 +619,8 @@ export function JadwalPelayananSection() {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                       <div>
                         <div className="flex items-center gap-3">
+                          {/* Gradient left border accent */}
+                          <div className={`w-1 h-8 rounded-full ${selectedSchedule.id >= 6 ? "bg-gradient-to-b from-red-400 to-red-600" : "bg-gradient-to-b from-green-400 to-teal-500"}`} />
                           <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                             {selectedSchedule.name}
                           </h3>
@@ -584,7 +631,7 @@ export function JadwalPelayananSection() {
                             </span>
                           )}
                         </div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 ml-4">
                           Jam operasional pelayanan administrasi kependudukan
                         </p>
                       </div>
@@ -605,10 +652,11 @@ export function JadwalPelayananSection() {
                         <motion.div
                           key={idx}
                           variants={cardVariants}
-                          whileHover={{ y: -2 }}
-                          className={`relative rounded-xl p-4 border transition-all duration-300 ${
+                          whileHover={{ y: -3, scale: 1.01 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                          className={`relative rounded-xl p-4 border transition-all duration-300 backdrop-blur-sm ${
                             slot.type === "operasional"
-                              ? "bg-white dark:bg-gray-800/50 border-green-100 dark:border-green-800/30 hover:border-green-300 dark:hover:border-green-700 hover:shadow-md"
+                              ? "bg-white/80 dark:bg-gray-800/50 border-green-100 dark:border-green-800/30 hover:border-green-400 dark:hover:border-green-600 hover:shadow-xl"
                               : "bg-amber-50/50 dark:bg-amber-900/10 border-amber-200/50 dark:border-amber-800/20"
                           }`}
                         >
@@ -632,7 +680,7 @@ export function JadwalPelayananSection() {
                           <p className={`text-sm font-mono ${slot.type === "operasional" ? "text-gray-600 dark:text-gray-300" : "text-amber-600 dark:text-amber-400"}`}>
                             {slot.time}
                           </p>
-                          {/* Active slot indicator */}
+                          {/* Active slot indicator with pulsing dot */}
                           {selectedSchedule.id === currentDay && slot.type === "operasional" && !officeStatus.isBreak && officeStatus.isOpen && (
                             (() => {
                               const nowMinutes = getWITAHour() * 60 + getWITAMinute();
@@ -641,27 +689,62 @@ export function JadwalPelayananSection() {
                               const isActive = nowMinutes >= startH * 60 && nowMinutes < endH * 60;
                               if (!isActive) return null;
                               return (
-                                <div className="flex items-center gap-1 mt-2">
-                                  <span className="relative flex h-1.5 w-1.5">
+                                <div className="flex items-center gap-1.5 mt-2">
+                                  <span className="relative flex h-2 w-2">
                                     <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
-                                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
                                   </span>
-                                  <span className="text-[11px] text-green-600 dark:text-green-400 font-medium">Sedang berlangsung</span>
+                                  <span className="text-[11px] text-green-600 dark:text-green-400 font-medium">Buka</span>
                                 </div>
                               );
                             })()
                           )}
                           {selectedSchedule.id === currentDay && officeStatus.isBreak && slot.type === "istirahat" && (
-                            <div className="flex items-center gap-1 mt-2">
-                              <span className="relative flex h-1.5 w-1.5">
+                            <div className="flex items-center gap-1.5 mt-2">
+                              <span className="relative flex h-2 w-2">
                                 <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping" />
-                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500" />
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
                               </span>
-                              <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">Sedang berlangsung</span>
+                              <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">Istirahat</span>
+                            </div>
+                          )}
+                          {/* Pulsing dot indicator for Buka/Tutup status */}
+                          {selectedSchedule.id !== currentDay && (
+                            <div className="flex items-center gap-1.5 mt-2">
+                              {slot.type === "operasional" ? (
+                                <>
+                                  <span className="relative flex h-2 w-2">
+                                    <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60 animate-ping" style={{ animationDuration: "3s" }} />
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                                  </span>
+                                  <span className="text-[11px] text-green-600 dark:text-green-400 font-medium">Buka</span>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="relative flex h-2 w-2">
+                                    <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-60 animate-ping" style={{ animationDuration: "3s" }} />
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+                                  </span>
+                                  <span className="text-[11px] text-red-500 dark:text-red-400 font-medium">Tutup</span>
+                                </>
+                              )}
                             </div>
                           )}
                         </motion.div>
                       ))}
+                    </div>
+
+                    {/* Jam Istirahat Callout Box */}
+                    <div className="mb-8 p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/10 rounded-xl border border-amber-200 dark:border-amber-800/30 flex items-start gap-3">
+                      <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-800/40 dark:to-orange-800/30 rounded-lg flex items-center justify-center">
+                        <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">Jam Istirahat</p>
+                        <p className="text-xs text-amber-700 dark:text-amber-400 mt-0.5">
+                          Pelayanan istirahat pada pukul <strong>12:00 – 13:00 WITA</strong>. Pelayanan dilanjutkan kembali setelah istirahat. Silakan menunggu atau kembali pada pukul 13:00.
+                        </p>
+                      </div>
                     </div>
 
                     {/* Available Services */}
@@ -712,15 +795,24 @@ export function JadwalPelayananSection() {
         >
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-gray-500 dark:text-gray-400">
             <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="relative flex h-3 w-3">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60 animate-ping" style={{ animationDuration: "3s" }} />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
+              </span>
               <span>Buka / Sedang Melayani</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-amber-500" />
+              <span className="relative flex h-3 w-3">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60 animate-ping" style={{ animationDuration: "3s" }} />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500" />
+              </span>
               <span>Istirahat</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-red-500" />
+              <span className="relative flex h-3 w-3">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-60 animate-ping" style={{ animationDuration: "3s" }} />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
+              </span>
               <span>Tutup</span>
             </div>
             <div className="flex items-center gap-2">

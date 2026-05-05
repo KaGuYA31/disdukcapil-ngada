@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Quote, Star, ChevronDown, PenLine, Loader2 } from "lucide-react";
+import { Quote, Star, ChevronDown, PenLine, Loader2, Users, Award, Sparkles } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -109,6 +109,21 @@ const starVariants = {
   }),
 };
 
+const floatOrb = {
+  animate: (i: number) => ({
+    y: [0, -15, 0],
+    x: [0, i % 2 === 0 ? 8 : -8, 0],
+    scale: [1, 1.05, 1],
+    opacity: [0.3, 0.5, 0.3],
+    transition: {
+      duration: 6 + i * 2,
+      repeat: Infinity,
+      ease: "easeInOut" as const,
+      delay: i * 0.5,
+    },
+  }),
+};
+
 function StarRating({ rating, animate }: { rating: number; animate?: boolean }) {
   return (
     <div className="flex items-center gap-0.5">
@@ -119,6 +134,9 @@ function StarRating({ rating, animate }: { rating: number; animate?: boolean }) 
           variants={animate ? starVariants : undefined}
           initial={animate ? "hidden" : undefined}
           animate={animate ? "visible" : undefined}
+          whileHover={{ scale: 1.2, rotate: 15 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          className="cursor-default"
         >
           <Star
             className={`h-4 w-4 ${
@@ -137,10 +155,12 @@ function TestimonialCard({
   testimonial,
   index,
   animateStars,
+  isTopRated,
 }: {
   testimonial: Testimonial;
   index: number;
   animateStars: boolean;
+  isTopRated?: boolean;
 }) {
   return (
     <motion.div
@@ -150,7 +170,21 @@ function TestimonialCard({
       initial="hidden"
       animate="visible"
     >
-      <Card className="h-full border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 rounded-xl overflow-hidden">
+      <Card className="group h-full border-gray-200/60 dark:border-gray-800/60 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 rounded-xl overflow-hidden backdrop-blur-sm bg-white/70 dark:bg-gray-900/70 card-accent-top relative">
+        {/* Rating Terbaik badge */}
+        {isTopRated && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 + index * 0.1, type: "spring", stiffness: 300 }}
+            className="absolute top-3 right-3 z-10"
+          >
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-amber-400 to-yellow-400 text-amber-900 text-[10px] font-bold rounded-full shadow-md shadow-amber-500/25">
+              <Award className="h-3 w-3" />
+              Rating Terbaik
+            </span>
+          </motion.div>
+        )}
         <CardContent className="p-6 flex flex-col h-full">
           {/* Star Rating */}
           <div className="mb-4">
@@ -162,7 +196,7 @@ function TestimonialCard({
             <div className="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center mt-0.5">
               <Quote className="h-4 w-4 text-green-600 dark:text-green-400" />
             </div>
-            <p className="text-gray-600 dark:text-gray-400 italic leading-relaxed text-sm flex-1">
+            <p className="text-gray-600 dark:text-gray-400 italic leading-relaxed text-sm flex-1 border-l-2 border-green-300 dark:border-green-700 pl-3">
               &ldquo;{testimonial.text}&rdquo;
             </p>
           </div>
@@ -172,8 +206,12 @@ function TestimonialCard({
 
           {/* Author Info */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-              {testimonial.name.charAt(0)}
+            {/* Avatar with gradient ring */}
+            <div className="relative">
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-green-400 to-teal-500 opacity-60 group-hover:opacity-100 transition-opacity duration-300 blur-[2px]" />
+              <div className="relative w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 ring-2 ring-white dark:ring-gray-900">
+                {testimonial.name.charAt(0)}
+              </div>
             </div>
             <div>
               <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
@@ -279,6 +317,9 @@ export function TestimoniSection() {
       : dbTestimonials.slice(0, 3).map(mapDBToTestimonial)
     : allTestimonials;
 
+  // Find the max rating for top-rated badge
+  const maxRating = Math.max(...displayTestimonials.map((t) => t.rating));
+
   const clearRotationTimer = useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
@@ -345,20 +386,73 @@ export function TestimoniSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+      {/* Gradient Hero Banner */}
+      <div className="absolute top-0 left-0 right-0 h-[120px] bg-gradient-to-br from-green-700 via-green-800 to-teal-900" />
+      {/* SVG Cross Pattern Overlay */}
+      <div className="absolute top-0 left-0 right-0 h-[120px] hero-banner-pattern opacity-[0.04]" />
+      {/* Animated Gradient Orbs */}
+      <motion.div
+        custom={0}
+        variants={floatOrb}
+        initial="animate"
+        animate="animate"
+        className="absolute top-4 left-[15%] w-24 h-24 bg-green-400/20 rounded-full blur-2xl pointer-events-none"
+      />
+      <motion.div
+        custom={1}
+        variants={floatOrb}
+        initial="animate"
+        animate="animate"
+        className="absolute top-8 right-[20%] w-20 h-20 bg-teal-400/20 rounded-full blur-2xl pointer-events-none"
+      />
+      {/* Glassmorphism Icon Container */}
+      <div className="absolute top-0 left-0 right-0 h-[120px] flex items-center justify-center pointer-events-none">
+        <div className="bg-white/15 backdrop-blur-sm rounded-full border border-white/20 p-3 shadow-lg">
+          <Users className="h-7 w-7 text-white" />
+        </div>
+      </div>
+
+      {/* Floating Decorative Shapes */}
+      <motion.div
+        animate={{ y: [0, -10, 0], rotate: [0, 45, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-40 left-[5%] w-3 h-3 rounded-sm bg-green-300/30 dark:bg-green-500/15 rotate-12"
+      />
+      <motion.div
+        animate={{ y: [0, 12, 0], rotate: [0, -30, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute top-[60%] right-[8%] w-4 h-4 rounded-full bg-teal-300/25 dark:bg-teal-500/10"
+      />
+      <motion.div
+        animate={{ y: [0, -8, 0], x: [0, 6, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute bottom-32 left-[12%] w-2.5 h-2.5 rounded-full bg-emerald-300/20 dark:bg-emerald-500/10"
+      />
+      <motion.div
+        animate={{ y: [0, 10, 0], rotate: [0, 20, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        className="absolute top-[45%] right-[15%] w-3 h-3 rounded-sm bg-green-200/25 dark:bg-green-600/10 rotate-45"
+      />
+      <motion.div
+        animate={{ y: [0, -6, 0], x: [0, -5, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        className="absolute bottom-48 right-[25%] w-2 h-2 rounded-full bg-teal-200/20 dark:bg-teal-600/10"
+      />
+
+      <div className="container mx-auto px-4 relative">
         {/* Section Header */}
         <motion.div
           variants={headerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="text-center max-w-3xl mx-auto mb-12"
+          className="text-center max-w-3xl mx-auto mb-12 mt-10"
         >
           <span className="inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold text-sm uppercase tracking-wider">
             <Quote className="h-4 w-4" />
             Testimoni
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2 animated-underline">
             Testimoni Masyarakat
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-4">
@@ -429,6 +523,7 @@ export function TestimoniSection() {
                   testimonial={testimonial}
                   index={index}
                   animateStars={isInView}
+                  isTopRated={testimonial.rating === maxRating}
                 />
               ))}
             </div>

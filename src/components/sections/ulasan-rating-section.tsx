@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Star,
@@ -162,6 +162,47 @@ const cardVariants = {
   },
 };
 
+const floatOrb = {
+  hidden: { opacity: 0 },
+  animate: (i: number) => ({
+    opacity: [0.15, 0.25, 0.15],
+    scale: [1, 1.2, 1],
+    transition: {
+      duration: 8,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: i,
+    },
+  }),
+};
+
+// ─── Animated Counter Hook ────────────────────────────────────────────
+
+function useAnimatedCounter(target: number, duration: number = 2000, isInView: boolean) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(eased * target);
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [target, duration, isInView]);
+
+  return count;
+}
+
 // ─── Star Rating Component ────────────────────────────────────────────
 
 function StarRating({
@@ -186,7 +227,7 @@ function StarRating({
           <motion.button
             key={i}
             type="button"
-            whileHover={interactive ? { scale: 1.15 } : undefined}
+            whileHover={{ scale: 1.15 }}
             whileTap={interactive ? { scale: 0.9 } : undefined}
             onMouseEnter={() => interactive && setHoverRating(i + 1)}
             onMouseLeave={() => interactive && setHoverRating(0)}
@@ -219,8 +260,12 @@ function InitialsAvatar({ name }: { name: string }) {
     .slice(0, 2);
 
   return (
-    <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm">
-      {initials}
+    <div className="relative">
+      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm">
+        {initials}
+      </div>
+      {/* Gradient ring border */}
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-green-400 to-teal-500 -z-[1] scale-110 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
     </div>
   );
 }
@@ -237,8 +282,9 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
       variants={cardVariants}
       initial="hidden"
       animate="visible"
+      className="group/card"
     >
-      <Card className="h-full border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 rounded-xl">
+      <Card className="h-full border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-xl hover:shadow-green-500/10 dark:hover:shadow-green-400/5 hover:-translate-y-1.5 transition-all duration-300 rounded-xl bg-white/70 dark:bg-gray-800/50 backdrop-blur-md card-accent-top">
         <CardContent className="p-5">
           {/* Header */}
           <div className="flex items-start gap-3 mb-3">
@@ -273,7 +319,7 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
             className="inline-flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
             aria-label="Suka ulasan ini"
           >
-            <ThumbsUp className={`h-3.5 w-3.5 ${liked ? "fill-green-600 text-green-600 dark:fill-green-400 dark:text-green-400" : ""}`} />
+            <ThumbsUp className={`h-3.5 w-3.5 transition-all duration-200 ${liked ? "fill-green-600 text-green-600 dark:fill-green-400 dark:text-green-400" : ""}`} />
             <span className="tabular-nums">{liked ? review.suka + 1 : review.suka}</span>
             <span className="hidden sm:inline">orang merasa terbantu</span>
           </button>
@@ -319,7 +365,7 @@ function ReviewFormDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-green-600 hover:bg-green-700 text-white font-medium shadow-sm hover:shadow-md transition-all duration-300">
+        <Button className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-medium shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
           <MessageSquarePlus className="mr-2 h-4 w-4" />
           Tulis Ulasan
         </Button>
@@ -422,7 +468,7 @@ function ReviewFormDialog() {
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-green-600 hover:bg-green-700 text-white"
+            className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white"
           >
             {isSubmitting ? (
               <>
@@ -464,15 +510,59 @@ export function UlasanRatingSection() {
     return { totalReviews, avgRating: avgRating.toFixed(1), breakdown };
   }, []);
 
+  const animatedRating = useAnimatedCounter(Number(stats.avgRating), 2000, isInView);
+
   return (
     <section
       ref={sectionRef}
       className="py-16 md:py-24 bg-white dark:bg-gray-950 relative overflow-hidden"
       aria-labelledby="ulasan-rating-title"
     >
+      {/* ── Gradient Hero Banner ── */}
+      <div className="relative h-[120px] bg-gradient-to-r from-green-700 via-green-800 to-teal-900 overflow-hidden">
+        {/* SVG Pattern Overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 0L26 14L14 26L2 14Z' fill='none' stroke='white' stroke-width='0.5'/%3E%3C/svg%3E")`,
+          }}
+        />
+        {/* Animated gradient orbs */}
+        <motion.div
+          custom={0}
+          variants={floatOrb}
+          initial="hidden"
+          animate="animate"
+          className="absolute top-2 left-1/4 w-44 h-44 bg-green-400/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          custom={1.5}
+          variants={floatOrb}
+          initial="hidden"
+          animate="animate"
+          className="absolute bottom-0 right-1/4 w-52 h-52 bg-teal-400/15 rounded-full blur-3xl"
+        />
+        {/* Content overlay */}
+        <div className="relative z-10 h-full flex items-center justify-center">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg">
+              <Star className="h-6 w-6 text-white fill-yellow-400" />
+            </div>
+            <div className="text-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-white">
+                Ulasan & Rating
+              </h1>
+              <p className="text-green-200/80 text-sm mt-0.5">
+                Kepuasan masyarakat terhadap layanan kami
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Background */}
       <div
-        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03] top-[120px]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fbbf24' fill-opacity='0.4'%3E%3Ccircle cx='20' cy='20' r='1.5'/%3E%3C/g%3E%3C/svg%3E")`,
           backgroundSize: "40px 40px",
@@ -480,6 +570,23 @@ export function UlasanRatingSection() {
       />
       <div className="absolute top-1/3 -right-32 w-72 h-72 bg-yellow-100/20 dark:bg-yellow-900/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 -left-32 w-64 h-64 bg-green-100/20 dark:bg-green-900/10 rounded-full blur-3xl" />
+
+      {/* Floating decorative shapes */}
+      <motion.div
+        animate={{ y: [0, -8, 0], rotate: [0, 5, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-40 right-20 w-3 h-3 bg-gradient-to-br from-green-400 to-teal-500 rounded-full opacity-20 hidden lg:block"
+      />
+      <motion.div
+        animate={{ y: [0, 10, 0], rotate: [0, -8, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-40 left-16 w-4 h-4 border-2 border-green-400/20 rounded-sm opacity-30 hidden lg:block"
+      />
+      <motion.div
+        animate={{ y: [0, -6, 0], scale: [1, 1.1, 1] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute top-60 left-1/3 w-2 h-2 bg-teal-400/20 rounded-full hidden lg:block"
+      />
 
       <div className="container mx-auto px-4 relative">
         {/* Section Header */}
@@ -489,13 +596,9 @@ export function UlasanRatingSection() {
           animate={isInView ? "visible" : "hidden"}
           className="text-center max-w-3xl mx-auto mb-10"
         >
-          <span className="inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold text-sm uppercase tracking-wider">
-            <Star className="h-4 w-4 fill-green-600 text-green-600" />
-            Ulasan & Rating
-          </span>
           <h2
             id="ulasan-rating-title"
-            className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2"
+            className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2 animated-underline inline-block"
           >
             Apa Kata Masyarakat?
           </h2>
@@ -515,40 +618,48 @@ export function UlasanRatingSection() {
           >
             {/* Overall Rating Card */}
             <motion.div variants={cardVariants}>
-              <Card className="h-full border-gray-200 dark:border-gray-800 shadow-sm">
-                <CardContent className="p-6 flex flex-col items-center justify-center text-center">
-                  <motion.p
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    animate={isInView ? { scale: 1, opacity: 1 } : {}}
-                    transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-                    className="text-6xl font-extrabold text-gray-900 dark:text-gray-100"
-                  >
-                    {stats.avgRating}
-                  </motion.p>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={isInView ? { opacity: 1 } : {}}
-                    transition={{ delay: 0.5 }}
-                    className="mt-2"
-                  >
-                    <StarRating rating={Math.round(Number(stats.avgRating))} size="lg" />
-                  </motion.div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
-                    Dari <span className="font-semibold text-gray-700 dark:text-gray-300">{stats.totalReviews}</span> ulasan
-                  </p>
-                  <div className="mt-4 flex items-center gap-2">
-                    <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/30 px-3 py-1.5 rounded-full">
-                      <ThumbsUp className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
-                      <span className="text-xs font-semibold text-green-700 dark:text-green-400">98% merekomendasikan</span>
+              <div className="relative rounded-xl overflow-hidden">
+                {/* Animated rotating gradient border */}
+                <div className="absolute -inset-[2px] bg-gradient-to-r from-green-500 via-teal-500 to-green-600 rounded-xl animate-rotate-gradient opacity-60 hover:opacity-100 transition-opacity duration-500" style={{ zIndex: 0 }} />
+                <div className="absolute -inset-[2px] rounded-xl overflow-hidden" style={{ zIndex: 0 }}>
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-500 via-teal-500 to-emerald-500 animate-rotate-gradient" />
+                </div>
+                <Card className="relative bg-white dark:bg-gray-900 rounded-xl border-0 overflow-hidden" style={{ zIndex: 1 }}>
+                  <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                    {/* Animated counter with gradient text */}
+                    <motion.p
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                      transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+                      className="text-6xl font-extrabold bg-gradient-to-r from-green-600 via-teal-500 to-green-600 bg-clip-text text-transparent"
+                    >
+                      {animatedRating.toFixed(1)}
+                    </motion.p>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={isInView ? { opacity: 1 } : {}}
+                      transition={{ delay: 0.5 }}
+                      className="mt-2"
+                    >
+                      <StarRating rating={Math.round(Number(stats.avgRating))} size="lg" />
+                    </motion.div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
+                      Dari <span className="font-semibold text-gray-700 dark:text-gray-300">{stats.totalReviews}</span> ulasan
+                    </p>
+                    <div className="mt-4 flex items-center gap-2">
+                      <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/30 px-3 py-1.5 rounded-full border border-green-200/50 dark:border-green-800/30">
+                        <ThumbsUp className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
+                        <span className="text-xs font-semibold text-green-700 dark:text-green-400">98% merekomendasikan</span>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             </motion.div>
 
             {/* Rating Breakdown */}
             <motion.div variants={cardVariants}>
-              <Card className="h-full border-gray-200 dark:border-gray-800 shadow-sm">
+              <Card className="h-full border-gray-200 dark:border-gray-800 shadow-sm bg-white/70 dark:bg-gray-800/50 backdrop-blur-md">
                 <CardContent className="p-6">
                   <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">
                     Distribusi Rating
@@ -568,12 +679,12 @@ export function UlasanRatingSection() {
                           </span>
                           <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
                         </div>
-                        <div className="flex-1 h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                        <div className="flex-1 h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden relative">
                           <motion.div
                             initial={{ width: 0 }}
                             animate={isInView ? { width: `${item.percent}%` } : {}}
                             transition={{ delay: 0.6 + idx * 0.1, duration: 0.8, ease: "easeOut" }}
-                            className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full"
+                            className="h-full bg-gradient-to-r from-green-500 to-teal-500 rounded-full shimmer-progress"
                           />
                         </div>
                         <span className="text-xs text-gray-400 dark:text-gray-500 w-16 text-right tabular-nums flex-shrink-0">
