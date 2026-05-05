@@ -372,18 +372,18 @@ export function NewsSection() {
                   href={`/berita/${item.slug}`}
                   className="group block h-full"
                 >
-                  <Card className="h-full overflow-hidden border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                    {/* Thumbnail */}
+                  <Card className="h-full overflow-hidden border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg hover:shadow-green-500/5 transition-all duration-300 hover:-translate-y-1 hover:border-green-300/40 dark:hover:border-green-700/30">
+                    {/* Thumbnail with zoom on hover */}
                     <div
                       className={`aspect-video bg-gradient-to-br ${getThumbnailGradient(item.category)} relative overflow-hidden`}
                     >
-                      {/* Category icon placeholder */}
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      {/* Category icon placeholder — scales on hover */}
+                      <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-110">
                         <CategoryIconDisplay category={item.category} />
                       </div>
 
                       {/* Gradient overlay for readability */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent transition-opacity duration-300 group-hover:from-black/60" />
 
                       {/* Category badge */}
                       <Badge
@@ -415,7 +415,7 @@ export function NewsSection() {
                         </span>
                       </div>
 
-                      {/* Baca Selengkapnya link */}
+                      {/* Baca Selengkapnya link — reveals on hover */}
                       <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
                         <span className="text-sm text-green-700 font-medium flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
                           Baca Selengkapnya

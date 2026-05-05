@@ -129,6 +129,24 @@ const KoneksiLangsungWidget = dynamic(
   () => import("@/components/shared/koneksi-langsung-widget").then((m) => ({ default: m.KoneksiLangsungWidget })),
   { ssr: false }
 );
+const DokumenTrackerWidget = dynamic(
+  () => import("@/components/shared/dokumen-tracker-widget").then((m) => ({ default: m.DokumenTrackerWidget })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-2xl mx-auto h-80 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const PerbandinganLayananSection = dynamic(
+  () => import("@/components/sections/perbandingan-layanan-section").then((m) => ({ default: m.PerbandinganLayananSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-5xl mx-auto space-y-3">{[1,2,3,4].map(i=><div key={i} className="h-36 bg-gray-200 dark:bg-gray-700 rounded-2xl animate-pulse" />)}</div></div></div> }
+);
+const TautanTerkaitSection = dynamic(
+  () => import("@/components/sections/tautan-terkait-section").then((m) => ({ default: m.TautanTerkaitSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">{[1,2,3,4,5,6].map(i=><div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+
+// Task 6-c: Quick Poll Widget
+const QuickPollWidget = dynamic(
+  () => import("@/components/shared/quick-poll-widget").then((m) => ({ default: m.QuickPollWidget })),
+  { ssr: false }
+);
 
 // Task 4-a: Previous components
 const LoadingScreen = dynamic(
@@ -170,6 +188,7 @@ export default function HomePage() {
         <SystemStatusWidget />
         <ServicesSection />
         <FeaturedServicesSection />
+        <DokumenTrackerWidget />
         <SimulasiBiayaSection />
         <BeritaTerkiniWidget />
         <AnnouncementsSection />
@@ -180,6 +199,7 @@ export default function HomePage() {
         <PetaLokasiSection />
         <SosialMediaSection />
         <PromosiLayananSection />
+        <PerbandinganLayananSection />
         <KeunggulanSection />
         <TestimoniSection />
         <TestimoniMarqueeSection />
@@ -193,9 +213,11 @@ export default function HomePage() {
         <SectionDivider variant="wave-2" color="teal" />
         <PanduanLayananSection />
         <SectionDivider variant="curved" color="green" />
+        <TautanTerkaitSection />
         <CTASection />
       </main>
       <KoneksiLangsungWidget />
+      <QuickPollWidget />
       <WhatsAppButton />
       <FloatingActionMenu />
       <CookieConsent />

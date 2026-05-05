@@ -80,7 +80,7 @@ const defaultSteps: Omit<TrackerStep, "status">[] = [
 const pulseGlow = {
   scale: [1, 1.05, 1],
   opacity: [0.6, 1, 0.6],
-  transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+  transition: { duration: 2, repeat: Infinity, ease: "easeInOut" as const },
 };
 
 const checkmark = {

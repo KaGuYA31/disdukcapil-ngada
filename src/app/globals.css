@@ -215,12 +215,16 @@
 
 /* Card hover effects */
 .card-hover {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.3s ease;
 }
 
 .card-hover:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+.dark .card-hover:hover {
+  border-color: rgba(34, 197, 94, 0.2);
 }
 
 /* WhatsApp floating button animation */
@@ -528,6 +532,125 @@
   border-radius: inherit;
   background: inherit;
   z-index: -1;
+}
+
+/* ===== Gradient Shift Animation ===== */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* ===== Slide Up Fade Animation ===== */
+@keyframes slide-up-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.6s ease-out both;
+}
+
+/* ===== Scale Pulse Animation ===== */
+@keyframes scale-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+.animate-scale-pulse {
+  animation: scale-pulse 2s ease-in-out infinite;
+}
+
+/* ===== Border Glow Animation ===== */
+@keyframes border-glow {
+  0%, 100% {
+    border-color: rgba(34, 197, 94, 0.2);
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.1);
+  }
+  50% {
+    border-color: rgba(34, 197, 94, 0.6);
+    box-shadow: 0 0 16px rgba(34, 197, 94, 0.2);
+  }
+}
+.animate-border-glow {
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+/* ===== Glass Card Teal ===== */
+.glass-card-teal {
+  background: rgba(13, 148, 136, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(20, 184, 166, 0.15);
+}
+.dark .glass-card-teal {
+  background: rgba(13, 148, 136, 0.25);
+  border: 1px solid rgba(20, 184, 166, 0.12);
+}
+
+/* ===== Text Gradient Green ===== */
+.text-gradient-green {
+  background: linear-gradient(135deg, #15803d 0%, #22c55e 50%, #14b8a6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== Hover Lift Utilities ===== */
+.hover-lift-sm {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-lift-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+}
+
+.hover-lift-md {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-lift-md:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Hover Glow Utilities ===== */
+.hover-glow-green {
+  transition: box-shadow 0.3s ease;
+}
+.hover-glow-green:hover {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.25), 0 8px 24px -4px rgba(34, 197, 94, 0.15);
+}
+
+.hover-glow-teal {
+  transition: box-shadow 0.3s ease;
+}
+.hover-glow-teal:hover {
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.25), 0 8px 24px -4px rgba(20, 184, 166, 0.15);
+}
+
+/* ===== 3D Tilt Perspective Utility ===== */
+.tilt-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+.tilt-card:hover {
+  transform: perspective(800px) rotateY(-2deg) rotateX(2deg) translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.12);
 }
 
 /* Print styles */

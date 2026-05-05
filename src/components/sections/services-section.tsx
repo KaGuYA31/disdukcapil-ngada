@@ -228,17 +228,19 @@ function CategorySection({
                 href={`/layanan/${service.slug}`}
                 className="group block h-full"
               >
-                <Card className={`relative h-full card-hover border-gray-200 dark:border-gray-800 ${colors.hoverBorder} hover:border-green-300 hover:shadow-green-100/50 hover:shadow-lg transition-all duration-300 overflow-hidden`}>
-                  {/* Gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-transparent to-green-50/50 dark:to-green-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0" />
+                <Card className={`relative h-full card-hover border-gray-200 dark:border-gray-800 ${colors.hoverBorder} hover:border-green-300 hover:shadow-green-100/50 hover:shadow-lg transition-all duration-300 overflow-hidden hover-glow-green`}>
+                  {/* Gradient overlay on hover with shift */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-50/60 via-teal-50/30 to-transparent dark:from-green-900/20 dark:via-teal-900/10 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
+                  {/* Gradient border glow on hover */}
+                  <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-br from-green-400/0 via-teal-400/0 to-emerald-400/0 group-hover:from-green-400/40 group-hover:via-teal-400/20 group-hover:to-emerald-400/40 dark:group-hover:from-green-500/30 dark:group-hover:via-teal-500/15 dark:group-hover:to-emerald-500/30 transition-all duration-500 -z-10 blur-[2px]" />
                   {/* Left border accent on hover */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top z-10 rounded-r" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500 to-teal-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top z-10 rounded-r" />
 
                   <CardHeader className="relative z-[1]">
                     <div
-                      className={`w-14 h-14 ${colors.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                      className={`w-14 h-14 ${colors.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:shadow-md transition-all duration-300`}
                     >
-                      <ServiceIconDisplay name={service.icon} className={`h-7 w-7 ${colors.text}`} />
+                      <ServiceIconDisplay name={service.icon} className={`h-7 w-7 ${colors.text} transition-transform duration-300 group-hover:scale-110`} />
                     </div>
                     <CardTitle className="text-lg group-hover:text-green-700 transition-colors">
                       {service.name}

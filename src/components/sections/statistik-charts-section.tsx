@@ -510,7 +510,7 @@ export function StatistikChartsSection() {
                     Cakupan Dokumen
                   </h3>
                 </div>
-                <DocumentCoverage dokumen={dokumen} inView={shouldAnimate} />
+                <DocumentCoverage dokumen={dokumen ?? null} inView={shouldAnimate} />
                 <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-4 text-center">
                   Persentase kepemilikan dokumen kependudukan
                 </p>

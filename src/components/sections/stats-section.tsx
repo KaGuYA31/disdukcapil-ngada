@@ -137,14 +137,17 @@ function AnimatedStatCard({
       <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-green-400/0 via-teal-400/0 to-emerald-400/0 group-hover:from-green-500/80 group-hover:via-teal-500/80 group-hover:to-emerald-500/80 transition-all duration-500 opacity-0 group-hover:opacity-100" />
 
       {/* Card body */}
-      <div className="relative bg-white/80 dark:bg-gray-800/60 backdrop-blur-md rounded-2xl p-5 md:p-6 shadow-sm group-hover:shadow-xl group-hover:shadow-green-500/10 dark:group-hover:shadow-green-400/10 border border-gray-200/60 dark:border-gray-700/40 transition-all duration-500">
+      <div className="relative bg-white/80 dark:bg-gray-800/60 backdrop-blur-md rounded-2xl p-5 md:p-6 shadow-sm group-hover:shadow-xl group-hover:shadow-green-500/10 dark:group-hover:shadow-green-400/10 border border-gray-200/60 dark:border-gray-700/40 transition-all duration-500 group-hover:bg-green-50/40 dark:group-hover:bg-green-900/10">
         {/* Subtle gradient shimmer on top edge */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/40 to-transparent dark:via-green-500/30 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* Gradient accent line at bottom */}
+        <div className="absolute inset-x-4 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-green-400/0 to-transparent group-hover:via-green-400/50 dark:group-hover:via-green-500/30 transition-all duration-500 rounded-full" />
 
         {/* Circular icon container with gradient + pulse ring */}
         <div className="relative w-14 h-14 mb-4">
-          {/* Pulse ring behind icon — only visible when hovering */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-green-400/30 to-teal-500/30 animate-icon-pulse-ring opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          {/* Pulse ring behind icon — always visible, intensifies on hover */}
+          <div className="absolute inset-[-4px] rounded-full bg-gradient-to-br from-green-400/20 to-teal-500/20 animate-icon-pulse-ring transition-opacity duration-500 group-hover:opacity-100 opacity-40" />
+          <div className="absolute inset-[-8px] rounded-full bg-gradient-to-br from-green-400/10 to-teal-500/10 animate-icon-pulse-ring transition-opacity duration-500 group-hover:opacity-100 opacity-20" style={{ animationDelay: "0.5s" }} />
           {/* Icon container */}
           <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center shadow-lg shadow-green-500/20 dark:shadow-green-400/10 transition-transform duration-300 group-hover:scale-110">
             <Icon className="h-6 w-6 text-white" />

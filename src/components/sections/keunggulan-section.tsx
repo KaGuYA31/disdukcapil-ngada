@@ -123,7 +123,7 @@ function FeatureCard({
     <motion.div
       variants={cardVariants}
       whileHover={{ y: -4 }}
-      className="relative bg-white/80 dark:bg-gray-800/40 backdrop-blur-sm rounded-2xl p-6 shadow-sm hover:shadow-xl hover:shadow-green-500/5 dark:hover:shadow-green-400/5 transition-all duration-300 group"
+      className="relative bg-white/80 dark:bg-gray-800/40 backdrop-blur-sm rounded-2xl p-6 shadow-sm hover:shadow-xl hover:shadow-green-500/5 dark:hover:shadow-green-400/5 transition-all duration-300 group tilt-card"
     >
       {/* Gradient border on hover (pseudo via absolute) */}
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/0 via-teal-400/0 to-emerald-400/0 group-hover:from-green-400/20 group-hover:via-teal-400/10 group-hover:to-emerald-400/20 dark:group-hover:from-green-500/15 dark:group-hover:via-teal-500/10 dark:group-hover:to-emerald-500/15 transition-all duration-500 -z-10 blur-sm" />
@@ -134,9 +134,9 @@ function FeatureCard({
         {badgeNumber}
       </span>
 
-      {/* Icon */}
+      {/* Icon with glowing background on hover */}
       <div
-        className={`w-12 h-12 ${feature.iconBg} ${feature.iconBgDark} rounded-xl flex items-center justify-center mb-5 ring-1 ring-inset ring-black/5 dark:ring-white/5 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md`}
+        className={`w-12 h-12 ${feature.iconBg} ${feature.iconBgDark} rounded-xl flex items-center justify-center mb-5 ring-1 ring-inset ring-black/5 dark:ring-white/5 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:shadow-green-500/20 dark:group-hover:shadow-green-400/15 group-hover:ring-green-400/30`}
       >
         <Icon className={`h-6 w-6 ${feature.iconColor} ${feature.iconColorDark} transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3`} />
       </div>

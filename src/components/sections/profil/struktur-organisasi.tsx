@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, CheckCircle2 } from "lucide-react";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -100,15 +100,15 @@ function StaffCard({ member, index }: { member: StaffMember; index: number }) {
     <motion.div
       variants={fadeInUp}
       custom={index}
-      whileHover={{ y: -2, boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)" }}
-      transition={{ duration: 0.2 }}
-      className="bg-white rounded-xl border border-gray-200 p-4 hover:border-green-300 hover:shadow-lg transition-all duration-200 group"
+      whileHover={{ y: -3, boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)" }}
+      transition={{ duration: 0.25 }}
+      className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 hover:border-green-300 dark:hover:border-green-600 hover:shadow-xl transition-all duration-300 group"
     >
       <div className="flex items-center gap-3">
         <AvatarCircle initials={member.initials} size="sm" className="group-hover:from-green-600 group-hover:to-green-800 transition-all duration-200" />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-gray-900 truncate">{member.name}</p>
-          <p className="text-xs text-green-700 font-medium truncate">{member.position}</p>
+          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">{member.name}</p>
+          <p className="text-xs text-green-700 dark:text-green-400 font-medium truncate">{member.position}</p>
           <p className="text-xs text-gray-400 mt-0.5">{member.nip}</p>
         </div>
       </div>
@@ -118,8 +118,17 @@ function StaffCard({ member, index }: { member: StaffMember; index: number }) {
 
 export function StrukturOrganisasiSection() {
   return (
-    <section id="struktur-organisasi" className="py-16 md:py-24 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <section id="struktur-organisasi" className="py-16 md:py-24 bg-gray-50 dark:bg-gray-950 relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.02] pointer-events-none"
+        style={{
+          backgroundImage: `radial-gradient(circle, #059669 1px, transparent 1px)`,
+          backgroundSize: "32px 32px",
+        }}
+      />
+
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <motion.div
           initial="hidden"
@@ -134,10 +143,10 @@ export function StrukturOrganisasiSection() {
               Struktur Organisasi
             </span>
           </motion.div>
-          <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-gray-900">
+          <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">
             Bagan Organisasi Dinas
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-gray-600 mt-4">
+          <motion.p variants={fadeInUp} className="text-gray-600 dark:text-gray-400 mt-4">
             Struktur organisasi Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada
           </motion.p>
         </motion.div>
@@ -153,36 +162,53 @@ export function StrukturOrganisasiSection() {
           {/* Kepala Dinas Card */}
           <motion.div variants={fadeInUp} className="flex justify-center mb-6">
             <div className="relative">
-              {/* Gradient border wrapper */}
-              <div className="absolute -inset-[2px] rounded-2xl bg-gradient-to-br from-green-400 via-green-600 to-green-800" />
-              <div className="relative bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              {/* Animated gradient border wrapper */}
+              <div className="absolute -inset-[2px] rounded-2xl bg-gradient-to-br from-green-400 via-green-600 to-teal-600 animate-[gradientShift_4s_ease_infinite]" />
+              <motion.div
+                whileHover={{ y: -4, boxShadow: "0 25px 50px -12px rgba(5,150,105,0.25)" }}
+                transition={{ duration: 0.3 }}
+                className="relative bg-white dark:bg-gray-900 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
+              >
                 <div className="flex flex-col items-center text-center">
                   {/* Photo placeholder */}
                   <div className="relative mb-4">
-                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-green-400 to-green-700 flex items-center justify-center ring-4 ring-green-100">
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-green-400 to-green-700 flex items-center justify-center ring-4 ring-green-100 dark:ring-green-900">
                       <span className="text-white font-bold text-3xl md:text-4xl">
                         {kepalaDinas.initial}
                       </span>
                     </div>
                     {/* Decorative badge */}
-                    <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center ring-2 ring-white">
+                    <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center ring-2 ring-white dark:ring-gray-900">
                       <ShieldCheck className="h-4 w-4 text-white" />
                     </div>
                   </div>
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
                     {kepalaDinas.fullName}
                   </h3>
-                  <p className="text-green-700 font-semibold text-sm mt-1">
+                  <p className="text-green-700 dark:text-green-400 font-semibold text-sm mt-1">
                     {kepalaDinas.name}
                   </p>
-                  <p className="text-gray-500 text-xs mt-1 max-w-xs">
+                  <p className="text-gray-500 dark:text-gray-400 text-xs mt-1 max-w-xs">
                     {kepalaDinas.position}
                   </p>
                   <p className="text-gray-400 text-xs mt-1">
                     {kepalaDinas.nip}
                   </p>
+                  {/* "Aktif" badge */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+                    className="mt-3"
+                  >
+                    <span className="inline-flex items-center gap-1.5 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 text-xs font-semibold px-3 py-1 rounded-full">
+                      <CheckCircle2 className="h-3 w-3" />
+                      Aktif Menjabat
+                    </span>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
 
@@ -204,23 +230,28 @@ export function StrukturOrganisasiSection() {
                 {/* Kasubag Card */}
                 <div className="flex justify-center mb-4">
                   <motion.div
-                    whileHover={{ y: -2 }}
-                    transition={{ duration: 0.2 }}
+                    whileHover={{ y: -3 }}
+                    transition={{ duration: 0.25 }}
                     className="relative"
                   >
-                    <div className="absolute -inset-[1.5px] rounded-xl bg-gradient-to-br from-green-300 via-green-500 to-green-600 opacity-80" />
-                    <div className="relative bg-white rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow duration-200">
+                    <div className="absolute -inset-[1.5px] rounded-xl bg-gradient-to-br from-green-300 via-green-500 to-teal-500 opacity-80" />
+                    <div className="relative bg-white dark:bg-gray-900 rounded-xl p-5 shadow-md hover:shadow-xl transition-all duration-300">
                       <div className="flex flex-col items-center text-center">
-                        <AvatarCircle initials={section.initial} size="lg" className="mb-3 ring-3 ring-green-50" />
-                        <h4 className="font-bold text-gray-900 text-sm">
+                        <AvatarCircle initials={section.initial} size="lg" className="mb-3 ring-3 ring-green-50 dark:ring-green-900" />
+                        <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">
                           {section.title}
                         </h4>
-                        <p className="text-xs text-green-600 font-medium mt-1">
+                        <p className="text-xs text-green-600 dark:text-green-400 font-medium mt-1">
                           {section.position}
                         </p>
                         <p className="text-xs text-gray-400 mt-1">
                           {section.nip}
                         </p>
+                        {/* "Aktif" badge */}
+                        <span className="mt-2 inline-flex items-center gap-1 bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                          <CheckCircle2 className="h-2.5 w-2.5" />
+                          Aktif
+                        </span>
                       </div>
                     </div>
                   </motion.div>

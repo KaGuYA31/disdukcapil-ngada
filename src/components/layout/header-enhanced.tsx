@@ -45,11 +45,11 @@ const DISMISS_DURATION = 60 * 60 * 1000; // 1 hour
 export function HeaderEnhanced() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const touchStartRef = useRef<number | null>(null);
 
-  // ─── Check dismissal status using useSyncExternalStore ───────────
-  // Reads from localStorage without triggering re-renders from setState in effects
+  // ─── Check dismissal status on mount ───────────
   const isDismissed = useSyncExternalStore(
     () => () => {},
     () => {
@@ -125,7 +125,7 @@ export function HeaderEnhanced() {
 
   // ─── Dismiss handler ─────────────────────────────────────────────
   const handleDismiss = () => {
-    setIsDismissed(true);
+    setDismissed(true);
     setIsVisible(false);
     try {
       localStorage.setItem(DISMISS_KEY, Date.now().toString());
@@ -135,7 +135,7 @@ export function HeaderEnhanced() {
   };
 
   // Don't render if dismissed
-  if (isDismissed) return null;
+  if (isDismissed || dismissed) return null;
 
   const current = ANNOUNCEMENTS[currentIndex];
 
