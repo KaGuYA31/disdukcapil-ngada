@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Building2, Lock, User, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
-export default function AdminLoginPage() {
+function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -128,5 +128,13 @@ export default function AdminLoginPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense>
+      <AdminLoginForm />
+    </Suspense>
   );
 }
