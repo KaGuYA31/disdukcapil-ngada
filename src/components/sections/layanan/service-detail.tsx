@@ -53,6 +53,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
+import { LayananSidebarWidgets } from "@/components/sections/layanan/layanan-sidebar-widgets";
 
 // Animation variants
 const fadeInUp = {
@@ -1220,75 +1221,8 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                 )}
               </motion.div>
 
-              {/* Right Column - Sidebar */}
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                variants={sidebarStaggerContainer}
-                className="space-y-6"
-              >
-                {/* Dasar Hukum Card */}
-                <motion.div variants={staggerItem}>
-                  <Card className="bg-gradient-to-br from-green-600 to-green-700 text-white border-0 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-3">
-                        <ScrollText className="h-6 w-6 flex-shrink-0 mt-0.5" />
-                        <div>
-                          <h3 className="font-bold text-lg mb-2">Dasar Hukum</h3>
-                          <div className="space-y-2">
-                            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3">
-                              <p className="font-semibold text-sm">Permendagri No. 6 Tahun 2026</p>
-                              <p className="text-green-100 text-xs mt-1">Perubahan atas Permendagri No. 109 Tahun 2019 tentang Formulir dan Buku yang Digunakan dalam Administrasi Kependudukan</p>
-                            </div>
-                            <div className="space-y-1 text-xs text-green-100">
-                              <p>&#8226; UU No. 24 Tahun 2013</p>
-                              <p>&#8226; PP No. 37 Tahun 2021</p>
-                              <p>&#8226; Permendagri No. 109/2019</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                {/* Free Service Banner */}
-                <motion.div variants={staggerItem}>
-                  <Card className="border-green-200 bg-green-50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-                    <CardContent className="p-6 text-center">
-                      <Sparkles className="h-10 w-10 mx-auto mb-3 text-green-600" />
-                      <h3 className="font-bold text-xl mb-2 text-green-800">GRATIS</h3>
-                      <p className="text-green-700 text-sm mb-4">
-                        Seluruh layanan administrasi kependudukan tidak dipungut biaya apapun.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                {/* Notice */}
-                <motion.div variants={staggerItem}>
-                  <Card className="bg-yellow-50 border-yellow-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-                    <CardContent className="p-6">
-                      <div className="flex gap-3">
-                        <AlertCircle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                        <div>
-                          <p className="font-medium text-yellow-800">Penting!</p>
-                          <p className="text-sm text-yellow-700 mt-1">
-                            Seluruh layanan diproses dengan datang langsung ke kantor
-                            Disdukcapil dengan membawa berkas lengkap.
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                {/* Office Hours */}
-                <motion.div variants={staggerItem}>
-                  <OfficeHours />
-                </motion.div>
-              </motion.div>
+              {/* Right Column - Sidebar Widgets */}
+              <LayananSidebarWidgets />
             </div>
           </div>
         </section>
@@ -1626,49 +1560,8 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
               )}
             </motion.div>
 
-            {/* Right Column */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={sidebarStaggerContainer}
-              className="space-y-6"
-            >
-              {/* Free Service Banner */}
-              <motion.div variants={staggerItem}>
-                <Card className="bg-gradient-to-br from-green-600 to-green-700 text-white border-0 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-                  <CardContent className="p-6 text-center">
-                    <Sparkles className="h-10 w-10 mx-auto mb-3" />
-                    <h3 className="font-bold text-xl mb-2">GRATIS</h3>
-                    <p className="text-green-100 text-sm mb-4">
-                      Seluruh layanan administrasi kependudukan tidak dipungut biaya apapun.
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Office Hours */}
-              <motion.div variants={staggerItem}>
-                <OfficeHours />
-              </motion.div>
-
-              {/* Contact CTA */}
-              <motion.div variants={staggerItem}>
-                <Card className="bg-green-700 text-white border-0 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-                  <CardContent className="p-6 text-center">
-                    <h3 className="font-bold text-lg mb-2">Butuh Bantuan?</h3>
-                    <p className="text-green-100 text-sm mb-4">
-                      Hubungi kami untuk informasi lebih lanjut
-                    </p>
-                    <Link href="/pengaduan">
-                      <Button className="w-full bg-white text-green-700 hover:bg-green-50">
-                        Hubungi Kami
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
+            {/* Right Column - Sidebar Widgets */}
+            <LayananSidebarWidgets />
           </div>
         </div>
       </section>

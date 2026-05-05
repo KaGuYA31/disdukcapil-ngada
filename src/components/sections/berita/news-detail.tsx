@@ -31,6 +31,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { SITE_CONFIG, CONTACT_INFO } from "@/lib/constants";
+import { BeritaSidebarWidgets } from "@/components/sections/berita/berita-sidebar-widgets";
 
 interface NewsItem {
   id: string;
@@ -462,22 +463,7 @@ export function NewsDetail() {
             </motion.div>
 
             {/* Sidebar */}
-            <motion.div variants={fadeInUp} className="space-y-6">
-              {/* CTA */}
-              <Card className="bg-green-700 text-white border-0">
-                <CardContent className="p-6 text-center">
-                  <h3 className="font-bold text-lg mb-2">Ada Pertanyaan?</h3>
-                  <p className="text-green-100 text-sm mb-4">
-                    Hubungi kami untuk informasi lebih lanjut
-                  </p>
-                  <Link href="/pengaduan">
-                    <Button className="w-full bg-white text-green-700 hover:bg-green-50">
-                      Hubungi Kami
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </motion.div>
+            <BeritaSidebarWidgets />
           </motion.div>
 
           {/* Berita Terkait */}

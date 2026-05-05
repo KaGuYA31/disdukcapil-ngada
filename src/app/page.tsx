@@ -103,6 +103,10 @@ const PanduanLayananSection = dynamic(
   () => import("@/components/sections/panduan-layanan-section").then((m) => ({ default: m.PanduanLayananSection })),
   { ssr: false, loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto space-y-6">{[1,2,3,4,5].map(i=><div key={i} className="h-28 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
 );
+const SectionDivider = dynamic(
+  () => import("@/components/shared/section-divider").then((m) => ({ default: m.SectionDivider })),
+  { ssr: false }
+);
 
 export default function HomePage() {
   return (
@@ -112,8 +116,10 @@ export default function HomePage() {
       <main id="main-content" className="flex-1">
         {/* Critical: loaded eagerly (above the fold) */}
         <HeroSection />
+        <SectionDivider variant="wave-1" color="green" />
         <LiveVisitorCounter />
         <StatsSection />
+        <SectionDivider variant="dotted" color="green" />
 
         {/* Below the fold: lazy-loaded with skeleton fallbacks */}
         <SystemStatusWidget />
@@ -124,6 +130,7 @@ export default function HomePage() {
         <AnnouncementsSection />
         <NewsletterSection />
         <FAQInteraktifSection />
+        <SectionDivider variant="gradient" color="green" />
         <JadwalPelayananSection />
         <PetaLokasiSection />
         <KeunggulanSection />
@@ -131,14 +138,15 @@ export default function HomePage() {
         <WhyChooseUsSection />
         <GaleriInovasiSection />
         <NewsSection />
-        <CTASection />
         <QuickInfoBar />
         <AboutUsSection />
         <AntrianOnlineSection />
         <UlasanRatingSection />
+        <SectionDivider variant="wave-2" color="teal" />
         <PanduanLayananSection />
+        <SectionDivider variant="curved" color="green" />
+        <CTASection />
       </main>
-      <Footer />
       <WhatsAppButton />
       <AddTestimoniWidget />
       <QuickAccessPanel />

@@ -203,22 +203,28 @@ export function Header() {
           <OperatingHoursIndicator />
 
           <div className="flex items-center gap-4">
-            <Link href="/admin" className="hover:text-green-200 transition-colors">
-              Login Admin
-            </Link>
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="hover:text-green-200 transition-colors flex items-center gap-1.5"
+                className="inline-flex items-center gap-2 px-3 py-1 bg-white/15 hover:bg-white/25 backdrop-blur-sm rounded-full text-xs font-medium transition-all duration-200 border border-white/20"
                 aria-label="Toggle theme"
               >
                 {theme === "dark" ? (
-                  <Sun className="h-4 w-4" />
+                  <>
+                    <Sun className="h-3.5 w-3.5" />
+                    <span className="hidden xl:inline">Mode Terang</span>
+                  </>
                 ) : (
-                  <Moon className="h-4 w-4" />
+                  <>
+                    <Moon className="h-3.5 w-3.5" />
+                    <span className="hidden xl:inline">Mode Gelap</span>
+                  </>
                 )}
               </button>
             )}
+            <Link href="/admin" className="hover:text-green-200 transition-colors">
+              Login Admin
+            </Link>
           </div>
         </div>
       </div>
