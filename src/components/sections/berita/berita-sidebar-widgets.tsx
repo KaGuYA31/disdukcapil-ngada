@@ -90,7 +90,7 @@ const rankColors = [
 // ─── Widget: Berita Populer ───────────────────────────────────────
 function BeritaPopulerWidget() {
   return (
-    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-green-200 dark:hover:border-green-800 transition-all duration-300">
       {/* Green accent header */}
       <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 px-4 py-3">
         <CardTitle className="text-white text-sm font-bold flex items-center gap-2">
@@ -142,7 +142,7 @@ function BeritaPopulerWidget() {
 // ─── Widget: Kategori ─────────────────────────────────────────────
 function KategoriWidget() {
   return (
-    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-green-200 dark:hover:border-green-800 transition-all duration-300">
       <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 px-4 py-3">
         <CardTitle className="text-white text-sm font-bold flex items-center gap-2">
           <Newspaper className="h-4 w-4" />
@@ -178,7 +178,7 @@ function KategoriWidget() {
 // ─── Widget: Arsip ────────────────────────────────────────────────
 function ArsipWidget() {
   return (
-    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-green-200 dark:hover:border-green-800 transition-all duration-300">
       <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 px-4 py-3">
         <CardTitle className="text-white text-sm font-bold flex items-center gap-2">
           <Archive className="h-4 w-4" />
@@ -213,7 +213,7 @@ function ArsipWidget() {
 // ─── Widget: Tags ─────────────────────────────────────────────────
 function TagsWidget() {
   return (
-    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-green-200 dark:hover:border-green-800 transition-all duration-300">
       <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 px-4 py-3">
         <CardTitle className="text-white text-sm font-bold flex items-center gap-2">
           <Tag className="h-4 w-4" />
@@ -252,7 +252,7 @@ function NewsletterWidget() {
   };
 
   return (
-    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-amber-200 dark:hover:border-amber-800 transition-all duration-300">
       <div className="bg-gradient-to-r from-amber-500 to-amber-600 dark:from-amber-600 dark:to-amber-700 px-4 py-3">
         <CardTitle className="text-white text-sm font-bold flex items-center gap-2">
           <Rss className="h-4 w-4" />
@@ -313,7 +313,7 @@ function NewsletterWidget() {
 // ─── Widget: Kontak Cepat ─────────────────────────────────────────
 function KontakCepatWidget() {
   return (
-    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <Card className="overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-green-200 dark:hover:border-green-800 transition-all duration-300">
       <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 px-4 py-3">
         <CardTitle className="text-white text-sm font-bold flex items-center gap-2">
           <Phone className="h-4 w-4" />

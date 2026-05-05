@@ -352,23 +352,32 @@ export function NewsListSection() {
                         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-teal-500 to-green-500" />
                         <div className="grid md:grid-cols-2 gap-0">
                           {/* Featured Thumbnail */}
-                          <div className="aspect-video md:aspect-auto bg-gradient-to-br from-green-600 to-green-800 relative overflow-hidden">
+                          <div className="aspect-video md:aspect-auto bg-gradient-to-br from-green-600 to-green-800 relative overflow-hidden min-h-[280px]">
                             {featured.thumbnail ? (
                               <img
                                 src={featured.thumbnail}
                                 alt={featured.title}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                               />
                             ) : (
                               <div className="absolute inset-0 flex items-center justify-center text-white/20 text-8xl font-bold">
                                 D
                               </div>
                             )}
+                            {/* Dark gradient overlay on hover */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                            {/* Baca overlay on hover */}
+                            <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                              <span className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg shadow-xl">
+                                <BookOpen className="h-4 w-4" />
+                                Baca Selengkapnya
+                              </span>
+                            </div>
                             <div className="absolute top-4 left-4 flex items-center gap-2">
-                              <Badge className={`${getCategoryColor(featured.category)} text-xs`}>
+                              <Badge className={`${getCategoryColor(featured.category)} text-xs border backdrop-blur-sm`}>
                                 {featured.category}
                               </Badge>
-                              <Badge className="bg-green-600 text-white text-xs border-0">
+                              <Badge className="bg-green-600 text-white text-xs border-0 shadow-sm">
                                 <Sparkles className="h-3 w-3 mr-1" />
                                 Terbaru
                               </Badge>
@@ -440,8 +449,21 @@ export function NewsListSection() {
                                   D
                                 </div>
                               )}
+                              {/* Dark gradient overlay on hover */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                              {/* Baca overlay text */}
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                whileHover={{ opacity: 1, y: 0 }}
+                                className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                              >
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white text-xs font-semibold rounded-lg shadow-lg">
+                                  <BookOpen className="h-3.5 w-3.5" />
+                                  Baca
+                                </span>
+                              </motion.div>
                               <Badge
-                                className={`absolute top-3 left-3 ${getCategoryColor(item.category)}`}
+                                className={`absolute top-3 left-3 ${getCategoryColor(item.category)} border backdrop-blur-sm bg-opacity-90`}
                               >
                                 {item.category}
                               </Badge>

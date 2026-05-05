@@ -11,7 +11,6 @@ import {
   Calendar,
   FileX,
   DownloadCloud,
-  Eye,
 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -349,81 +348,98 @@ interface DocCardProps {
 }
 
 function DocCard({ doc, index, iconBg, iconColor, Icon, layout = "full" }: DocCardProps) {
+  // Category-specific border color accents
+  const borderAccent = (() => {
+    const cat = doc.category?.toLowerCase() || "";
+    if (cat === "uu" || cat.includes("undang")) return "hover:border-red-300 dark:hover:border-red-700";
+    if (cat === "pp" || cat.includes("peraturan pemerintah")) return "hover:border-amber-300 dark:hover:border-amber-700";
+    if (cat.includes("permendagri")) return "hover:border-blue-300 dark:hover:border-blue-700";
+    if (cat === "lakip" || cat.includes("laporan")) return "hover:border-teal-300 dark:hover:border-teal-700";
+    if (cat === "ikm" || cat.includes("indeks")) return "hover:border-violet-300 dark:hover:border-violet-700";
+    if (cat === "sop" || cat.includes("sop")) return "hover:border-emerald-300 dark:hover:border-emerald-700";
+    return "hover:border-green-300 dark:hover:border-green-700";
+  })();
+
   return (
     <motion.div custom={index} variants={cardVariants} initial="hidden" animate="visible">
-      <Card className="border-gray-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 bg-gradient-to-br from-white to-gray-50/50 h-full overflow-hidden">
-        {layout === "full" ? (
-          <>
-            <CardHeader>
-              <div className="flex items-start justify-between gap-4">
-                <div className={`w-12 h-12 ${iconBg} rounded-lg flex items-center justify-center`}>
-                  <Icon className={`h-6 w-6 ${iconColor}`} />
-                </div>
-                {doc.category && (
-                  <Badge variant="secondary" className="bg-green-50 text-green-700 font-medium">
-                    {doc.category}
-                  </Badge>
-                )}
-              </div>
-              <CardTitle className="text-lg mt-4 leading-snug">{doc.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed">{doc.description}</p>
-              <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                {doc.date ? (
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="h-4 w-4" />
-                    {formatDate(doc.date)}
-                  </span>
-                ) : (
-                  <span />
-                )}
-                <span className="font-medium">{doc.fileSize}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-xs text-gray-400">
-                  <Eye className="h-3.5 w-3.5" />
-                  {formatDownloads(doc.downloads)}
-                </span>
-                <Button size="sm" className="bg-green-700 hover:bg-green-800 transition-colors">
-                  <Download className="mr-2 h-4 w-4" />
-                  Unduh
-                </Button>
-              </div>
-            </CardContent>
-          </>
-        ) : (
-          <CardContent className="p-6">
-            <div className="flex items-start gap-4">
-              <div className={`w-12 h-12 ${iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
-                <Icon className={`h-6 w-6 ${iconColor}`} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-gray-900 leading-snug">{doc.title}</h3>
-                <p className="text-gray-600 text-sm mt-1 leading-relaxed">{doc.description}</p>
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center gap-3">
-                    {doc.date && (
-                      <span className="flex items-center gap-1 text-xs text-gray-400">
-                        <Calendar className="h-3.5 w-3.5" />
-                        {formatDate(doc.date)}
-                      </span>
-                    )}
-                    <span className="flex items-center gap-1 text-xs text-gray-400">
-                      <Eye className="h-3.5 w-3.5" />
-                      {formatDownloads(doc.downloads)}
-                    </span>
+      <motion.div
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.25 }}
+      >
+        <Card className={`border-gray-200 dark:border-gray-700 hover:shadow-xl ${borderAccent} transition-all duration-300 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-800 dark:to-gray-900/50 h-full overflow-hidden group`}>
+          {layout === "full" ? (
+            <>
+              <CardHeader>
+                <div className="flex items-start justify-between gap-4">
+                  <div className={`w-12 h-12 ${iconBg} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className={`h-6 w-6 ${iconColor}`} />
                   </div>
-                  <Button size="sm" className="bg-green-700 hover:bg-green-800 transition-colors">
-                    <Download className="mr-1.5 h-4 w-4" />
+                  {doc.category && (
+                    <Badge variant="secondary" className="bg-green-50 dark:bg-green-900/40 text-green-700 dark:text-green-300 font-medium">
+                      {doc.category}
+                    </Badge>
+                  )}
+                </div>
+                <CardTitle className="text-lg mt-4 leading-snug group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200">{doc.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">{doc.description}</p>
+                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  {doc.date ? (
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="h-4 w-4" />
+                      {formatDate(doc.date)}
+                    </span>
+                  ) : (
+                    <span />
+                  )}
+                  <span className="font-medium">{doc.fileSize}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-xs text-gray-400">
+                    <Download className="h-3.5 w-3.5" />
+                    {formatDownloads(doc.downloads)}
+                  </span>
+                  <Button size="sm" className="bg-green-700 hover:bg-green-800 hover:shadow-md transition-all duration-200">
+                    <Download className="mr-2 h-4 w-4" />
                     Unduh
                   </Button>
                 </div>
+              </CardContent>
+            </>
+          ) : (
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className={`w-12 h-12 ${iconBg} rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                  <Icon className={`h-6 w-6 ${iconColor}`} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 leading-snug group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200">{doc.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 leading-relaxed">{doc.description}</p>
+                  <div className="flex items-center justify-between mt-4">
+                    <div className="flex items-center gap-3">
+                      {doc.date && (
+                        <span className="flex items-center gap-1 text-xs text-gray-400">
+                          <Calendar className="h-3.5 w-3.5" />
+                          {formatDate(doc.date)}
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1 text-xs text-gray-400">
+                        <Download className="h-3.5 w-3.5" />
+                        {formatDownloads(doc.downloads)}
+                      </span>
+                    </div>
+                    <Button size="sm" className="bg-green-700 hover:bg-green-800 hover:shadow-md transition-all duration-200">
+                      <Download className="mr-1.5 h-4 w-4" />
+                      Unduh
+                    </Button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        )}
-      </Card>
+            </CardContent>
+          )}
+        </Card>
+      </motion.div>
     </motion.div>
   );
 }

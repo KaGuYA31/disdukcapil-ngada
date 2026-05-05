@@ -142,6 +142,18 @@ const TautanTerkaitSection = dynamic(
   { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">{[1,2,3,4,5,6].map(i=><div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
 );
 
+// Task 7-b: Infografis Ringkasan Section
+const InfografisRingkasanSection = dynamic(
+  () => import("@/components/sections/infografis-ringkasan-section").then((m) => ({ default: m.InfografisRingkasanSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{[1,2,3,4,5,6].map(i=><div key={i} className="h-72 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+
+// Task 7-a: AI Chatbot Widget
+const AICHatbotWidget = dynamic(
+  () => import("@/components/shared/ai-chatbot-widget").then((m) => ({ default: m.AICHatbotWidget })),
+  { ssr: false }
+);
+
 // Task 6-c: Quick Poll Widget
 const QuickPollWidget = dynamic(
   () => import("@/components/shared/quick-poll-widget").then((m) => ({ default: m.QuickPollWidget })),
@@ -181,6 +193,7 @@ export default function HomePage() {
         <SectionDivider variant="wave-1" color="green" />
         <LiveVisitorCounter />
         <StatsSection />
+        <InfografisRingkasanSection />
         <StatistikInteraktifSection />
         <SectionDivider variant="dotted" color="green" />
 
@@ -218,6 +231,7 @@ export default function HomePage() {
       </main>
       <KoneksiLangsungWidget />
       <QuickPollWidget />
+      <AICHatbotWidget />
       <WhatsAppButton />
       <FloatingActionMenu />
       <CookieConsent />
