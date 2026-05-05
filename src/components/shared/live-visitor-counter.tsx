@@ -1,8 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useSyncExternalStore, useEffect, useRef, useState, useCallback, useMemo, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, Wifi } from "lucide-react";
+
+/* ── ClientOnly: useSyncExternalStore for mount detection ── */
+const emptySubscribe = () => () => {};
+function useIsMounted() {
+  return useSyncExternalStore(emptySubscribe, () => true, () => false);
+}
+
+function ClientOnly({ children }: { children: ReactNode }) {
+  const mounted = useIsMounted();
+  if (!mounted) return <section aria-label="Pengunjung aktif" className="w-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm border-y border-gray-200/80 dark:border-gray-700/50"><div className="container mx-auto px-4 py-3"><div className="flex justify-center gap-8"><span className="h-4 w-20 animate-pulse bg-gray-200 dark:bg-gray-700 rounded inline-block" /><span className="h-4 w-24 animate-pulse bg-gray-200 dark:bg-gray-700 rounded inline-block" /></div></div></section>;
+  return <>{children}</>;
+}
 
 /* ── localStorage keys ── */
 const DAILY_KEY = "disdukcapil_live_daily_visits";
@@ -131,6 +143,7 @@ export function LiveVisitorCounter() {
   }, [onlineSmooth]);
 
   return (
+    <ClientOnly>
     <section
       aria-label="Pengunjung aktif"
       className="w-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm border-y border-gray-200/80 dark:border-gray-700/50"
@@ -193,5 +206,6 @@ export function LiveVisitorCounter() {
         </div>
       </div>
     </section>
+    </ClientOnly>
   );
 }

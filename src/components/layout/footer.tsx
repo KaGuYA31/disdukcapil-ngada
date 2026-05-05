@@ -161,15 +161,18 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-gray-900 dark:bg-gray-950 text-gray-300">
-      {/* Gradient overlay from gray-900 to gray-950 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 dark:from-gray-950 via-gray-900 dark:via-gray-950 to-gray-950 dark:to-black pointer-events-none" />
+    <footer className="relative text-gray-300">
+      {/* Dark green gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-green-950 via-gray-900 to-gray-950 dark:from-gray-950 dark:via-gray-950 dark:to-black pointer-events-none" />
+
+      {/* Subtle decorative diamond pattern overlay */}
+      <div className="absolute inset-0 footer-pattern-overlay pointer-events-none" />
 
       {/* Main Footer Content */}
-      <div className="relative container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6">
-          {/* About Section - spans 4 cols */}
-          <div className="lg:col-span-4 space-y-4">
+      <div className="relative container mx-auto px-4 py-12 sm:py-14 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-5">
+          {/* About Section - spans 4 cols with glassmorphism */}
+          <div className="lg:col-span-4 space-y-4 rounded-2xl p-5 glass-card-green transition-all duration-300 hover:bg-green-950/40">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12 bg-white dark:bg-gray-800/60 rounded-lg p-1 flex-shrink-0">
                 <Image
@@ -208,8 +211,8 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Layanan Populer - spans 2 cols */}
-          <div className="lg:col-span-2">
+          {/* Layanan Populer - spans 2 cols with glassmorphism */}
+          <div className="lg:col-span-2 rounded-2xl p-5 glass-card-green transition-all duration-300 hover:bg-green-950/40">
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp className="h-4.5 w-4.5 text-green-400" />
               <h4 className="font-semibold text-white text-lg">
@@ -233,8 +236,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Layanan Unggulan - spans 2 cols */}
-          <div className="lg:col-span-2">
+          {/* Layanan Unggulan - spans 2 cols with glassmorphism */}
+          <div className="lg:col-span-2 rounded-2xl p-5 glass-card-green transition-all duration-300 hover:bg-green-950/40">
             <div className="flex items-center gap-2 mb-4">
               <Star className="h-4.5 w-4.5 text-amber-400" />
               <h4 className="font-semibold text-white text-lg">
@@ -258,8 +261,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Quick Links - spans 2 cols */}
-          <div className="lg:col-span-2">
+          {/* Quick Links - spans 2 cols with glassmorphism */}
+          <div className="lg:col-span-2 rounded-2xl p-5 glass-card-green transition-all duration-300 hover:bg-green-950/40">
             <h4 className="font-semibold text-white text-lg mb-4">
               Tautan Cepat
             </h4>
@@ -280,8 +283,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Persyaratan Layanan - spans 2 cols */}
-          <div className="lg:col-span-2">
+          {/* Persyaratan Layanan - spans 2 cols with glassmorphism */}
+          <div className="lg:col-span-2 rounded-2xl p-5 glass-card-green transition-all duration-300 hover:bg-green-950/40">
             <div className="flex items-center gap-2 mb-4">
               <ClipboardList className="h-4.5 w-4.5 text-teal-400" />
               <h4 className="font-semibold text-white text-base">
@@ -457,6 +460,19 @@ export function Footer() {
                 <span className="text-gray-400 dark:text-gray-500">Sabtu - Minggu: Tutup</span>
               </span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Government Branding Strip */}
+      <div className="relative border-t border-green-800/30 bg-green-950/80 dark:bg-black">
+        <div className="container mx-auto px-4 py-2.5">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 text-xs text-gray-400">
+            <span>Republik Indonesia</span>
+            <span className="hidden sm:inline text-gray-600">•</span>
+            <span>Provinsi Nusa Tenggara Timur</span>
+            <span className="hidden sm:inline text-gray-600">•</span>
+            <span>Kabupaten Ngada</span>
           </div>
         </div>
       </div>

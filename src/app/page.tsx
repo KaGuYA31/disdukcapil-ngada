@@ -9,6 +9,10 @@ import { QuickAccessPanel } from "@/components/shared/quick-access-panel";
 import { HeroSection } from "@/components/sections/hero-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { EmergencyInfoBar } from "@/components/shared/emergency-info-bar";
+import { SearchCommand } from "@/components/shared/search-command";
+import { ScrollProgress } from "@/components/shared/scroll-progress";
+import { CookieConsent } from "@/components/shared/cookie-consent";
+import { AnnouncementTicker } from "@/components/shared/announcement-ticker";
 
 // Lazy-loaded sections (below the fold) with skeleton loading
 const SystemStatusWidget = dynamic(
@@ -45,7 +49,7 @@ const FAQInteraktifSection = dynamic(
 );
 const JadwalPelayananSection = dynamic(
   () => import("@/components/sections/jadwal-pelayanan-section").then((m) => ({ default: m.JadwalPelayananSection })),
-  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto h-72 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+  { ssr: false, loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto h-72 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
 );
 const PetaLokasiSection = dynamic(
   () => import("@/components/sections/peta-lokasi-section").then((m) => ({ default: m.PetaLokasiSection })),
@@ -108,17 +112,39 @@ const SectionDivider = dynamic(
   { ssr: false }
 );
 
+// Task 4-a: New components
+const LoadingScreen = dynamic(
+  () => import("@/components/shared/loading-screen").then((m) => ({ default: m.LoadingScreen })),
+  { ssr: false }
+);
+const FloatingActionMenu = dynamic(
+  () => import("@/components/shared/floating-action-menu").then((m) => ({ default: m.FloatingActionMenu })),
+  { ssr: false }
+);
+const StatistikInteraktifSection = dynamic(
+  () => import("@/components/sections/statistik-interaktif-section").then((m) => ({ default: m.StatistikInteraktifSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="h-60 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+const TestimoniMarqueeSection = dynamic(
+  () => import("@/components/sections/testimoni-marquee-section").then((m) => ({ default: m.TestimoniMarqueeSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
+      <LoadingScreen />
+      <ScrollProgress />
       <EmergencyInfoBar />
       <Header />
+      <AnnouncementTicker />
       <main id="main-content" className="flex-1">
         {/* Critical: loaded eagerly (above the fold) */}
         <HeroSection />
         <SectionDivider variant="wave-1" color="green" />
         <LiveVisitorCounter />
         <StatsSection />
+        <StatistikInteraktifSection />
         <SectionDivider variant="dotted" color="green" />
 
         {/* Below the fold: lazy-loaded with skeleton fallbacks */}
@@ -135,6 +161,7 @@ export default function HomePage() {
         <PetaLokasiSection />
         <KeunggulanSection />
         <TestimoniSection />
+        <TestimoniMarqueeSection />
         <WhyChooseUsSection />
         <GaleriInovasiSection />
         <NewsSection />
@@ -148,6 +175,9 @@ export default function HomePage() {
         <CTASection />
       </main>
       <WhatsAppButton />
+      <FloatingActionMenu />
+      <CookieConsent />
+      <SearchCommand />
       <AddTestimoniWidget />
       <QuickAccessPanel />
       <BackToTop />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Clock,
@@ -12,6 +12,18 @@ import {
   AlertTriangle,
   ChevronRight,
 } from "lucide-react";
+
+/* ── ClientOnly: useSyncExternalStore for mount detection ── */
+const emptySubscribe = () => () => {};
+function useIsMounted() {
+  return useSyncExternalStore(emptySubscribe, () => true, () => false);
+}
+
+function ClientOnly({ children }: { children: ReactNode }) {
+  const mounted = useIsMounted();
+  if (!mounted) return <section className="py-16 md:py-24 bg-white dark:bg-gray-950"><div className="container mx-auto px-4"><div className="max-w-2xl mx-auto h-48 bg-gray-100 dark:bg-gray-800 rounded-2xl animate-pulse" /></div></section>;
+  return <>{children}</>;
+}
 
 const WITA_TZ = "Asia/Makassar";
 
@@ -349,6 +361,7 @@ export function JadwalPelayananSection() {
   }, [currentDay]);
 
   return (
+    <ClientOnly>
     <section
       ref={sectionRef}
       className="py-16 md:py-24 bg-white dark:bg-gray-950 relative overflow-hidden"
@@ -409,10 +422,10 @@ export function JadwalPelayananSection() {
                 <p className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">
                   Waktu Saat Ini (WITA)
                 </p>
-                <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-1 tabular-nums tracking-tight">
+                <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-1 tabular-nums tracking-tight" suppressHydrationWarning>
                   {currentTime}
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{currentDate}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1" suppressHydrationWarning>{currentDate}</p>
 
                 {/* Office Status Badge */}
                 <div className="mt-3 flex flex-wrap items-center gap-2 justify-center sm:justify-start">
@@ -722,5 +735,6 @@ export function JadwalPelayananSection() {
         </motion.div>
       </div>
     </section>
+    </ClientOnly>
   );
 }

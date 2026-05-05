@@ -141,14 +141,19 @@ function AnimatedStatCard({
         {/* Subtle gradient shimmer on top edge */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/40 to-transparent dark:via-green-500/30 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-        {/* Circular icon container with gradient */}
-        <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center mb-4 shadow-lg shadow-green-500/20 dark:shadow-green-400/10 transition-transform duration-300 group-hover:scale-110">
-          <Icon className="h-6 w-6 text-white" />
+        {/* Circular icon container with gradient + pulse ring */}
+        <div className="relative w-14 h-14 mb-4">
+          {/* Pulse ring behind icon — only visible when hovering */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-green-400/30 to-teal-500/30 animate-icon-pulse-ring opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          {/* Icon container */}
+          <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center shadow-lg shadow-green-500/20 dark:shadow-green-400/10 transition-transform duration-300 group-hover:scale-110">
+            <Icon className="h-6 w-6 text-white" />
+          </div>
         </div>
 
         {/* Number with tabular-nums + trending indicator */}
         <div className="flex items-end gap-2">
-          <p className="text-2xl md:text-3xl font-bold bg-gradient-to-br from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent tracking-tight" style={{ fontFeatureSettings: '"tnum"' }}>
+          <p className="text-2xl md:text-3xl font-bold bg-gradient-to-br from-gray-900 to-gray-600 dark:from-gray-50 dark:to-gray-300 bg-clip-text text-transparent tracking-tight" style={{ fontFeatureSettings: '"tnum"' }}>
             {isAnimating ? displayValue : "0"}
           </p>
           {/* Trending indicator */}
@@ -158,10 +163,10 @@ function AnimatedStatCard({
           </span>
         </div>
 
-        {/* Label */}
-        <p className="font-semibold text-gray-700 dark:text-gray-200 mt-1">{label}</p>
-        {/* Description */}
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
+        {/* Label — improved dark mode contrast */}
+        <p className="font-semibold text-gray-700 dark:text-gray-100 mt-1">{label}</p>
+        {/* Description — improved dark mode contrast */}
+        <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">{description}</p>
       </div>
     </motion.div>
   );
@@ -268,10 +273,10 @@ export function StatsSection() {
             <BarChart3 className="h-4 w-4" />
             Data Kependudukan
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-50 dark:to-gray-300 bg-clip-text text-transparent mb-3">
             Ringkasan Data Kependudukan
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-500 dark:text-gray-300 max-w-2xl mx-auto">
             Data kependudukan Kabupaten Ngada berdasarkan periode terbaru
           </p>
         </motion.div>

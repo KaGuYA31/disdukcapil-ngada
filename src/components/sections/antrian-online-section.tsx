@@ -129,7 +129,7 @@ function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: strin
   }, [value]);
 
   return (
-    <span className="tabular-nums">
+    <span className="tabular-nums" suppressHydrationWarning>
       {display.toLocaleString("id-ID")}
       {suffix}
     </span>
@@ -365,11 +365,11 @@ export function AntrianOnlineSection() {
                     className="flex items-center gap-2 my-3"
                   >
                     <Hash className="h-8 w-8 text-green-600 dark:text-green-400" />
-                    <span className="text-5xl md:text-6xl font-extrabold text-green-700 dark:text-green-400 tabular-nums">
+                    <span className="text-5xl md:text-6xl font-extrabold text-green-700 dark:text-green-400 tabular-nums" suppressHydrationWarning>
                       A-{String(queueData.nomorSekarang).padStart(3, "0")}
                     </span>
                   </motion.div>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1" suppressHydrationWarning>
                     Terakhir diperbarui: {queueData.lastUpdated}
                   </p>
 

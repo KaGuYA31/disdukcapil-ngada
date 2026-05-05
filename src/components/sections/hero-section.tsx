@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Search, FileText, Users, Building2, Loader2, Globe, ChevronDown, IdCard, FileCheck, Sun, Sunset, Moon, Shield, Star } from "lucide-react";
 import Image from "next/image";
@@ -204,9 +204,25 @@ export function HeroSection() {
   const [data, setData] = useState<BerandaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [greeting, setGreeting] = useState(getTimeGreeting);
+  const heroRef = useRef<HTMLElement>(null);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     setGreeting(getTimeGreeting());
+  }, []);
+
+  // Parallax scroll tracking
+  useEffect(() => {
+    const handleScroll = () => {
+      if (heroRef.current) {
+        const rect = heroRef.current.getBoundingClientRect();
+        if (rect.bottom > 0) {
+          setScrollY(window.scrollY * 0.3);
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -278,9 +294,12 @@ export function HeroSection() {
   const wakilBupati = data?.wakilBupati;
 
   return (
-    <section className="relative overflow-hidden text-white">
-      {/* Animated Gradient Background */}
+    <section ref={heroRef} className="relative overflow-hidden text-white">
+      {/* Animated Gradient Mesh Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-700 via-green-800 to-green-900 animate-hero-gradient" />
+
+      {/* Secondary moving gradient mesh layer */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-teal-800/40 via-transparent to-yellow-700/20 animate-hero-gradient" style={{ backgroundSize: "300% 300%", animationDuration: "20s", animationDirection: "reverse" }} />
 
       {/* Floating Particles - CSS animated for performance */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
@@ -288,6 +307,46 @@ export function HeroSection() {
         <div className="absolute top-[60%] left-[70%] w-40 h-40 rounded-full bg-teal-400/[0.06] animate-float-2 blur-xl" />
         <div className="absolute top-[30%] left-[80%] w-24 h-24 rounded-full bg-yellow-400/[0.05] animate-float-3 blur-xl" />
         <div className="absolute top-[75%] left-[25%] w-28 h-28 rounded-full bg-green-300/[0.06] animate-float-4 blur-xl" />
+      </div>
+
+      {/* Floating Geometric Shapes */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {/* Hexagon — top right area */}
+        <div className="absolute top-[12%] right-[8%] w-16 h-16 animate-geo-spin-slow opacity-[0.08]" style={{ transform: `translateY(${scrollY * 0.1}px)` }}>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,2 95,25 95,75 50,98 5,75 5,25" stroke="white" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+        {/* Triangle — left area */}
+        <div className="absolute top-[40%] left-[4%] w-12 h-12 animate-geo-float opacity-[0.07]" style={{ transform: `translateY(${scrollY * 0.15}px)` }}>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,5 95,90 5,90" stroke="white" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+        {/* Diamond — bottom left */}
+        <div className="absolute bottom-[25%] left-[15%] w-10 h-10 animate-geo-rotate opacity-[0.06]">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="80" height="80" stroke="white" strokeWidth="2" fill="none" transform="rotate(45 50 50)" />
+          </svg>
+        </div>
+        {/* Small circle outline — top center */}
+        <div className="absolute top-[8%] left-[45%] w-8 h-8 animate-geo-float opacity-[0.05]" style={{ animationDelay: "-4s", transform: `translateY(${scrollY * 0.2}px)` }}>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="45" stroke="white" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+        {/* Pentagon — right center */}
+        <div className="absolute top-[55%] right-[5%] w-14 h-14 animate-geo-spin-slow opacity-[0.06]" style={{ animationDelay: "-8s" }}>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,3 97,37 79,91 21,91 3,37" stroke="white" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+        {/* Dark mode: additional subtle shapes */}
+        <div className="dark:block hidden absolute top-[70%] right-[25%] w-20 h-20 animate-geo-float opacity-[0.03]" style={{ animationDelay: "-6s" }}>
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,2 95,25 95,75 50,98 5,75 5,25" stroke="#22c55e" strokeWidth="1.5" fill="none" />
+          </svg>
+        </div>
       </div>
 
       {/* Subtle Dot Grid Pattern Overlay */}
@@ -300,8 +359,8 @@ export function HeroSection() {
         }}
       />
 
-      {/* Decorative Globe Element */}
-      <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 opacity-[0.06] hidden xl:block">
+      {/* Decorative Globe Element — parallax */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 opacity-[0.06] hidden xl:block parallax-slow" style={{ transform: `translateY(${-scrollY * 0.05}px)` }}>
         <Globe className="h-[500px] w-[500px] text-white" strokeWidth={0.5} />
       </div>
 
@@ -443,7 +502,7 @@ export function HeroSection() {
                 <Link href="/layanan">
                   <Button
                     size="lg"
-                    className="relative bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold shadow-lg shadow-black/10 overflow-hidden"
+                    className="relative bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold shadow-lg shadow-black/10 overflow-hidden rounded-xl btn-gradient-border transition-all duration-300"
                   >
                     {/* Subtle gradient overlay */}
                     <span className="absolute inset-0 bg-gradient-to-r from-white via-green-50/40 to-white opacity-0 hover:opacity-100 transition-opacity duration-300" />
@@ -456,7 +515,7 @@ export function HeroSection() {
                 <Link href="/layanan-online">
                   <Button
                     size="lg"
-                    className="bg-white/15 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10 transition-all duration-200"
+                    className="bg-white/15 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10 transition-all duration-200 rounded-xl hover:shadow-xl hover:shadow-green-500/20"
                   >
                     <Globe className="mr-2 h-5 w-5" />
                     Layanan Online
@@ -467,7 +526,7 @@ export function HeroSection() {
                 <Link href="/pengaduan">
                   <Button
                     size="lg"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold shadow-lg shadow-yellow-500/20 hidden sm:inline-flex"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 h-12 px-6 font-semibold shadow-lg shadow-yellow-500/20 hidden sm:inline-flex rounded-xl hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-300"
                   >
                     <Users className="mr-2 h-5 w-5" />
                     Ajukan Pengaduan
@@ -701,17 +760,28 @@ export function HeroSection() {
         </motion.span>
       </motion.button>
 
-      {/* Wave Divider */}
+      {/* Wave Divider with dark mode support */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg
           viewBox="0 0 1440 120"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-auto"
+          className="w-full h-auto dark:hidden"
         >
           <path
             d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
             fill="white"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 1440 120"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-auto hidden dark:block"
+        >
+          <path
+            d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
+            fill="#111827"
           />
         </svg>
       </div>
