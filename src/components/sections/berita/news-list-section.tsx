@@ -258,21 +258,33 @@ export function NewsListSection() {
                   />
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {categories.slice(0, 4).map((category) => (
-                    <Button
-                      key={category}
-                      variant={selectedCategory === category ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedCategory(category)}
-                      className={
-                        selectedCategory === category
-                          ? "bg-green-700 hover:bg-green-800 text-white"
-                          : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
-                      }
-                    >
-                      {category}
-                    </Button>
-                  ))}
+                  {categories.slice(0, 4).map((category) => {
+                    const isActive = selectedCategory === category;
+                    return (
+                      <motion.div key={category} whileTap={{ scale: 0.95 }}>
+                        <Button
+                          variant={isActive ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setSelectedCategory(category)}
+                          className={`relative overflow-hidden transition-all duration-300 ${
+                            isActive
+                              ? "bg-green-700 hover:bg-green-800 text-white shadow-md shadow-green-700/25"
+                              : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-400 dark:hover:border-green-600 hover:text-green-700 dark:hover:text-green-400"
+                          }`}
+                        >
+                          {isActive && (
+                            <motion.div
+                              layoutId="activeCategory"
+                              className="absolute inset-0 bg-green-700"
+                              style={{ zIndex: 0 }}
+                              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                            />
+                          )}
+                          <span className="relative z-10">{category}</span>
+                        </Button>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
@@ -333,9 +345,11 @@ export function NewsListSection() {
               <>
                 {/* Featured Article */}
                 {featured && (
-                  <motion.div variants={featuredVariants} initial="hidden" animate="visible" className="mb-10">
+                  <motion.div variants={featuredVariants} initial="hidden" animate="visible" className="mb-12">
                     <Link href={`/berita/${featured.slug}`} className="group block">
-                      <Card className="overflow-hidden border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:border-green-300 dark:group-hover:border-green-700">
+                      <Card className="overflow-hidden border-2 border-green-200 dark:border-green-800 bg-white dark:bg-gray-900 shadow-lg hover:shadow-2xl hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 group-hover:-translate-y-0.5 relative">
+                        {/* Featured ribbon */}
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-teal-500 to-green-500" />
                         <div className="grid md:grid-cols-2 gap-0">
                           {/* Featured Thumbnail */}
                           <div className="aspect-video md:aspect-auto bg-gradient-to-br from-green-600 to-green-800 relative overflow-hidden">
@@ -412,7 +426,7 @@ export function NewsListSection() {
                     {visibleNews.map((item) => (
                       <motion.div key={item.id} variants={cardVariants}>
                         <Link href={`/berita/${item.slug}`} className="group block">
-                          <Card className="h-full card-hover overflow-hidden border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+                          <Card className="h-full overflow-hidden border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-green-300 dark:hover:border-green-700 transition-all duration-300">
                             {/* Thumbnail */}
                             <div className="aspect-video bg-gradient-to-br from-green-600 to-green-800 relative overflow-hidden">
                               {item.thumbnail ? (

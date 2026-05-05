@@ -46,6 +46,16 @@ export default function PengaduanPage() {
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
         <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+          {/* Pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.04]">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            />
+          </div>
+
           {/* Decorative gradient orbs */}
           <motion.div
             variants={floatOrb}
@@ -66,6 +76,18 @@ export default function PengaduanPage() {
             animate="visible"
             transition={{ delay: 0.6 }}
             className="absolute top-1/2 left-1/2 w-32 h-32 bg-gradient-to-br from-green-400/15 to-emerald-500/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"
+          />
+
+          {/* Floating decorative shapes */}
+          <motion.div
+            animate={{ y: [0, -8, 0], rotate: [0, 5, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-16 right-[12%] w-4 h-4 bg-green-400/20 rounded-sm rotate-12 hidden lg:block"
+          />
+          <motion.div
+            animate={{ y: [0, 8, 0], rotate: [0, -3, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+            className="absolute bottom-20 left-[15%] w-3 h-3 bg-teal-300/20 rounded-full hidden lg:block"
           />
 
           <div className="container mx-auto px-4 relative z-10">
@@ -150,6 +172,13 @@ export default function PengaduanPage() {
                 </motion.div>
               </motion.div>
             </div>
+          </div>
+
+          {/* Bottom wave divider */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+              <path d="M0 60V20C240 50 480 0 720 20C960 40 1200 10 1440 30V60H0Z" className="fill-white dark:fill-gray-950" />
+            </svg>
           </div>
         </section>
 

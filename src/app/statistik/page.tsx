@@ -111,17 +111,27 @@ function QuickStatCard({
       className="min-w-[160px] flex-shrink-0"
     >
       <Card
-        className={`relative overflow-hidden rounded-2xl border-2 ${borderColor} bg-white dark:bg-gray-800 shadow-md hover:shadow-xl transition-shadow duration-300`}
+        className={`relative overflow-hidden rounded-2xl border-2 ${borderColor} bg-white dark:bg-gray-800 shadow-md hover:shadow-xl transition-all duration-300`}
       >
-        {/* Subtle gradient accent at top */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-20" />
+        {/* Gradient accent at top */}
+        <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${
+          borderColor.includes("green") ? "from-green-400 to-green-600"
+          : borderColor.includes("teal") ? "from-teal-400 to-teal-600"
+          : borderColor.includes("amber") ? "from-amber-400 to-amber-600"
+          : "from-rose-400 to-rose-600"
+        }`} />
 
-        <CardContent className="p-5 text-center">
-          {/* Icon */}
-          <div
-            className={`w-12 h-12 ${iconBg} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm`}
-          >
-            <div className={iconColor}>{icon}</div>
+        {/* Subtle background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-transparent dark:from-white/5 dark:to-transparent pointer-events-none" />
+
+        <CardContent className="p-5 text-center relative z-10">
+          {/* Icon with pulse ring on hover */}
+          <div className="relative mx-auto mb-3">
+            <div
+              className={`w-12 h-12 ${iconBg} rounded-xl flex items-center justify-center mx-auto shadow-sm transition-transform duration-300 group-hover:scale-110`}
+            >
+              <div className={iconColor}>{icon}</div>
+            </div>
           </div>
 
           {/* Animated Number */}
@@ -214,14 +224,39 @@ function StatistikLoadingSkeleton() {
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16">
-          <div className="container mx-auto px-4">
+        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+          {/* Pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.04]">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            />
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
-              <div className="h-4 w-32 bg-white/20 rounded mb-6 animate-pulse" />
-              <div className="h-10 w-80 bg-white/20 rounded mb-4 animate-pulse" />
-              <div className="h-5 w-96 bg-white/15 rounded mb-2 animate-pulse" />
-              <div className="h-5 w-72 bg-white/10 rounded animate-pulse" />
+              <div className="mb-4">
+                <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Data Kependudukan" }]} />
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20">
+                  <BarChart3 className="h-5 w-5 text-green-200" />
+                </div>
+                Data Kependudukan
+              </h1>
+              <p className="text-green-100 text-lg">
+                Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada
+              </p>
             </div>
+          </div>
+
+          {/* Bottom wave divider */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+              <path d="M0 60V20C240 50 480 0 720 20C960 40 1200 10 1440 30V60H0Z" className="fill-gray-50 dark:fill-gray-950" />
+            </svg>
           </div>
         </section>
 
@@ -266,20 +301,39 @@ function StatistikErrorState({ onRetry }: { onRetry: () => void }) {
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16">
-          <div className="container mx-auto px-4">
+        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+          {/* Pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.04]">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            />
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
               <div className="mb-4">
                 <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Data Kependudukan" }]} />
               </div>
               <h1 className="text-3xl md:text-4xl font-bold mb-4 flex items-center gap-3">
-                <BarChart3 className="h-9 w-9 md:h-10 md:w-10 text-green-200" />
+                <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20">
+                  <BarChart3 className="h-5 w-5 text-green-200" />
+                </div>
                 Data Kependudukan
               </h1>
               <p className="text-green-100 text-lg">
                 Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada
               </p>
             </div>
+          </div>
+
+          {/* Bottom wave divider */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+              <path d="M0 60V20C240 50 480 0 720 20C960 40 1200 10 1440 30V60H0Z" className="fill-gray-50 dark:fill-gray-950" />
+            </svg>
           </div>
         </section>
 
@@ -426,8 +480,50 @@ export default function StatistikPage() {
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16">
-          <div className="container mx-auto px-4">
+        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+          {/* Pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.04]">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            />
+          </div>
+
+          {/* Decorative gradient orbs */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="absolute top-0 right-0 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-br from-green-500/25 to-emerald-600/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-2xl"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+            className="absolute bottom-0 left-0 w-48 h-48 md:w-64 md:h-64 bg-gradient-to-tr from-teal-500/20 to-green-400/10 rounded-full translate-y-1/2 -translate-x-1/4 blur-2xl"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut", delay: 0.6 }}
+            className="absolute top-1/2 left-1/2 w-32 h-32 bg-gradient-to-br from-amber-400/10 to-emerald-500/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"
+          />
+
+          {/* Floating shapes */}
+          <motion.div
+            animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-12 right-[15%] w-4 h-4 bg-green-400/20 rounded-sm rotate-12 hidden lg:block"
+          />
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+            className="absolute bottom-16 left-[20%] w-3 h-3 bg-teal-300/20 rounded-full hidden lg:block"
+          />
+
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
               <motion.div
                 initial="hidden"
@@ -437,14 +533,23 @@ export default function StatistikPage() {
                 <motion.div variants={fadeInUp} className="mb-4">
                   <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Data Kependudukan" }]} />
                 </motion.div>
+
+                <motion.div variants={fadeInUp} className="mb-3">
+                  <span className="inline-block bg-white/15 backdrop-blur-sm text-green-100 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full border border-white/20">
+                    Dashboard Data
+                  </span>
+                </motion.div>
+
                 <motion.h1
                   variants={fadeInUp}
-                  className="text-3xl md:text-4xl font-bold mb-4 flex items-center gap-3"
+                  className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 flex items-center gap-3"
                 >
-                  <BarChart3 className="h-9 w-9 md:h-10 md:w-10 text-green-200" />
+                  <div className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20">
+                    <BarChart3 className="h-6 w-6 md:h-7 md:w-7 text-green-200" />
+                  </div>
                   Data Kependudukan
                 </motion.h1>
-                <motion.p variants={fadeInUp} className="text-green-100 text-lg">
+                <motion.p variants={fadeInUp} className="text-green-100 text-lg md:text-xl leading-relaxed">
                   Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada
                 </motion.p>
                 <motion.p variants={fadeInUp} className="text-green-200 mt-2">
@@ -453,6 +558,13 @@ export default function StatistikPage() {
                 </motion.p>
               </motion.div>
             </div>
+          </div>
+
+          {/* Bottom wave divider */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+              <path d="M0 60V20C240 50 480 0 720 20C960 40 1200 10 1440 30V60H0Z" className="fill-gray-50 dark:fill-gray-950" />
+            </svg>
           </div>
         </section>
 
@@ -554,7 +666,7 @@ export default function StatistikPage() {
           >
             {/* Total Penduduk */}
             <motion.div variants={fadeInUp}>
-              <Card className="border-l-4 border-l-green-600 bg-gradient-to-r from-green-50 to-white dark:from-green-900/20 dark:to-gray-800 shadow-md hover:shadow-lg transition-shadow rounded-xl overflow-hidden">
+              <Card className="border-l-4 border-l-green-600 bg-gradient-to-br from-green-50 via-white to-teal-50/30 dark:from-green-900/20 dark:via-gray-800 dark:to-teal-900/10 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden hover:-translate-y-0.5">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-green-800 dark:text-green-300">
                     <div className="p-2 bg-green-100 dark:bg-green-900/40 rounded-lg">
@@ -847,7 +959,7 @@ export default function StatistikPage() {
                             {data.dokumen.map((d, index) => (
                               <tr
                                 key={d.id}
-                                className="border-b last:border-b-0 dark:border-gray-700 hover:bg-green-50/50 dark:hover:bg-green-900/10 transition-colors"
+                                className="border-b last:border-b-0 dark:border-gray-700 hover:bg-green-50/50 dark:hover:bg-green-900/10 transition-colors even:bg-gray-50/50 dark:even:bg-gray-900/30"
                                 style={{ animationDelay: `${index * 50}ms` }}
                               >
                                 <td className="px-4 py-3 font-medium text-gray-800 dark:text-gray-200">{d.kecamatan}</td>

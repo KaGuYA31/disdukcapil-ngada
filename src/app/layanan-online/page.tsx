@@ -413,6 +413,16 @@ export default function LayananOnlinePage() {
       <main className="flex-1" id="main-content">
         {/* Hero Banner */}
         <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+          {/* Pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.04]">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            />
+          </div>
+
           {/* Decorative floating gradient orbs */}
           <motion.div
             variants={floatOrb}
@@ -455,7 +465,9 @@ export default function LayananOnlinePage() {
               </motion.div>
 
               <motion.div variants={fadeInUp} transition={{ duration: 0.5 }} className="flex items-center gap-2 mb-3 mt-4">
-                <Globe className="h-8 w-8" />
+                <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20">
+                  <Globe className="h-5 w-5" />
+                </div>
                 <Badge className="bg-white/20 text-white border-white/30">
                   Layanan Jarak Jauh
                 </Badge>
@@ -561,6 +573,13 @@ export default function LayananOnlinePage() {
               </motion.div>
             </motion.div>
           </div>
+
+          {/* Bottom wave divider */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+              <path d="M0 60V20C240 50 480 0 720 20C960 40 1200 10 1440 30V60H0Z" className="fill-green-600" />
+            </svg>
+          </div>
         </section>
 
         {/* Statistics Banner */}
@@ -634,13 +653,16 @@ export default function LayananOnlinePage() {
               viewport={{ once: true, margin: "-50px" }}
               variants={staggerContainer}
             >
-              <motion.h2 variants={fadeInUp} transition={{ duration: 0.5 }} className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+              <motion.h2 variants={fadeInUp} transition={{ duration: 0.5 }} className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8 flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-teal-600 rounded-xl flex items-center justify-center shadow-md">
+                  <Globe className="h-5 w-5 text-white" />
+                </div>
                 Layanan Tersedia untuk Pengajuan Online
               </motion.h2>
 
               {layananList.length === 0 ? (
                 <motion.div variants={fadeInUp} transition={{ duration: 0.5 }}>
-                  <Card className="border-gray-200 dark:border-gray-700 dark:bg-gray-800">
+                  <Card className="border-gray-200 dark:border-gray-700 dark:bg-gray-800 shadow-sm hover:shadow-lg transition-shadow duration-300">
                     <CardContent className="py-12 text-center">
                       <AlertCircle className="h-12 w-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
                       <p className="text-gray-500 dark:text-gray-400">
@@ -660,7 +682,9 @@ export default function LayananOnlinePage() {
                         variants={fadeInUp}
                         transition={{ duration: 0.4 }}
                       >
-                        <Card className="h-full border border-gray-200 dark:border-gray-700 dark:bg-gray-800 hover:border-green-300 dark:hover:border-green-700 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                        <Card className="h-full border border-gray-200 dark:border-gray-700 dark:bg-gray-800 hover:border-green-400 dark:hover:border-green-600 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                          {/* Top accent line */}
+                          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-teal-500 to-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                           <CardHeader>
                             <div className="flex items-center gap-3">
                               <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/50 dark:to-green-800/50 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -727,7 +751,10 @@ export default function LayananOnlinePage() {
               viewport={{ once: true, margin: "-50px" }}
               variants={staggerContainer}
             >
-              <motion.h2 variants={fadeInUp} transition={{ duration: 0.5 }} className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-12 text-center">
+              <motion.h2 variants={fadeInUp} transition={{ duration: 0.5 }} className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-12 text-center flex items-center justify-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-teal-600 rounded-xl flex items-center justify-center shadow-md">
+                  <FileText className="h-5 w-5 text-white" />
+                </div>
                 Cara Mengajukan Layanan Online
               </motion.h2>
 

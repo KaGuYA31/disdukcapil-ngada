@@ -433,6 +433,7 @@ export function PengaduanSection() {
       {/* Decorative gradient blobs */}
       <div className="absolute -top-20 -left-20 w-72 h-72 bg-green-200/20 dark:bg-green-800/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-64 h-64 bg-amber-200/15 dark:bg-amber-800/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 w-48 h-48 bg-teal-200/10 dark:bg-teal-800/10 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
 
       <div className="container mx-auto px-4 relative">
         <div className="grid lg:grid-cols-3 gap-8 lg:gap-10">
@@ -728,8 +729,10 @@ export function PengaduanSection() {
                     </div>
 
                     {/* Info Box */}
-                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex gap-3">
-                      <Info className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                    <div className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex gap-3">
+                      <div className="w-8 h-8 bg-green-100 dark:bg-green-900/40 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Info className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </div>
                       <div className="text-sm text-green-800 dark:text-green-300">
                         <p className="font-semibold mb-1">Waktu Respons</p>
                         <p>

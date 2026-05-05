@@ -11,6 +11,9 @@ import {
   ChevronRight,
   Clock,
   BookOpen,
+  FileSpreadsheet,
+  FileCheck,
+  Hash,
 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -66,11 +69,11 @@ const CATEGORIES = [
   { key: "Persyaratan", label: "Surat Pernyataan & SPTJM", icon: FileText },
 ];
 
-const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  "Pendaftaran Penduduk": { bg: "bg-green-50", text: "text-green-700", border: "border-green-200" },
-  "Pencatatan Sipil": { bg: "bg-teal-50", text: "text-teal-700", border: "border-teal-200" },
-  "Pencatatan Sipil LN": { bg: "bg-amber-50", text: "text-amber-700", border: "border-amber-200" },
-  "Persyaratan": { bg: "bg-purple-50", text: "text-purple-700", border: "border-purple-200" },
+const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string; icon: typeof FileText; darkBg: string }> = {
+  "Pendaftaran Penduduk": { bg: "bg-green-50", text: "text-green-700", border: "border-green-200", icon: FileCheck, darkBg: "dark:bg-green-900/40" },
+  "Pencatatan Sipil": { bg: "bg-teal-50", text: "text-teal-700", border: "border-teal-200", icon: FileText, darkBg: "dark:bg-teal-900/40" },
+  "Pencatatan Sipil LN": { bg: "bg-amber-50", text: "text-amber-700", border: "border-amber-200", icon: FileSpreadsheet, darkBg: "dark:bg-amber-900/40" },
+  "Persyaratan": { bg: "bg-purple-50", text: "text-purple-700", border: "border-purple-200", icon: FileText, darkBg: "dark:bg-purple-900/40" },
 };
 
 function trackDownload(code: string) {
@@ -148,7 +151,18 @@ export default function FormulirPage() {
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16 md:py-20 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+          {/* Pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.04]">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            />
+          </div>
+
+          {/* Decorative gradient orbs */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -160,6 +174,24 @@ export default function FormulirPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
             className="absolute bottom-0 left-0 w-48 h-48 md:w-64 md:h-64 bg-gradient-to-tr from-teal-500/20 to-green-400/10 rounded-full translate-y-1/2 -translate-x-1/4 blur-2xl"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut", delay: 0.6 }}
+            className="absolute top-1/2 left-1/3 w-32 h-32 bg-gradient-to-br from-amber-400/10 to-emerald-500/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"
+          />
+
+          {/* Floating shapes */}
+          <motion.div
+            animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-12 right-[15%] w-4 h-4 bg-green-400/20 rounded-sm rotate-12 hidden lg:block"
+          />
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+            className="absolute bottom-20 left-[20%] w-3 h-3 bg-teal-300/20 rounded-full hidden lg:block"
           />
 
           <div className="container mx-auto px-4 relative z-10">
@@ -173,7 +205,9 @@ export default function FormulirPage() {
                 </span>
               </motion.div>
               <motion.h1 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 flex items-center gap-3">
-                <FileDown className="h-9 w-9 md:h-11 md:w-11 text-green-200" />
+                <div className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20">
+                  <FileDown className="h-6 w-6 md:h-7 md:w-7 text-green-200" />
+                </div>
                 Formulir Administrasi
                 <br className="hidden sm:block" />
                 <span className="text-green-200">Kependudukan</span>
@@ -199,10 +233,17 @@ export default function FormulirPage() {
               </motion.div>
             </motion.div>
           </div>
+
+          {/* Bottom wave divider */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+              <path d="M0 60V20C240 50 480 0 720 20C960 40 1200 10 1440 30V60H0Z" className="fill-gray-50 dark:fill-gray-950" />
+            </svg>
+          </div>
         </section>
 
         {/* Search & Filter */}
-        <section className="bg-white border-b border-gray-200 sticky top-16 z-30 shadow-sm">
+        <section className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-16 z-30 shadow-sm">
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col md:flex-row gap-3">
               <div className="relative flex-1">
@@ -211,33 +252,37 @@ export default function FormulirPage() {
                   placeholder="Cari formulir (kode atau nama)..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 dark:bg-gray-800 dark:border-gray-700 focus-visible:border-green-500"
                 />
               </div>
               <div className="flex gap-2 overflow-x-auto pb-1 md:pb-0">
-                {CATEGORIES.map((cat) => (
-                  <Button
-                    key={cat.key}
-                    variant={activeCategory === cat.key ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setActiveCategory(cat.key)}
-                    className={`whitespace-nowrap ${
-                      activeCategory === cat.key
-                        ? "bg-green-600 hover:bg-green-700"
-                        : "text-gray-600 hover:text-green-700"
-                    }`}
-                  >
-                    <cat.icon className="h-3.5 w-3.5 mr-1" />
-                    {cat.label}
-                  </Button>
-                ))}
+                {CATEGORIES.map((cat) => {
+                  const isActive = activeCategory === cat.key;
+                  return (
+                    <motion.div key={cat.key} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        variant={isActive ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setActiveCategory(cat.key)}
+                        className={`whitespace-nowrap transition-all duration-300 ${
+                          isActive
+                            ? "bg-green-600 hover:bg-green-700 text-white shadow-md shadow-green-600/25"
+                            : "text-gray-600 hover:text-green-700 dark:text-gray-300 dark:hover:text-green-400 dark:border-gray-600"
+                        }`}
+                      >
+                        <cat.icon className="h-3.5 w-3.5 mr-1" />
+                        {cat.label}
+                      </Button>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </div>
         </section>
 
         {/* Formulir List */}
-        <section className="bg-gray-50 py-10 md:py-14 min-h-[50vh]">
+        <section className="bg-gray-50 dark:bg-gray-950 py-10 md:py-14 min-h-[50vh]">
           <div className="container mx-auto px-4">
             {loading ? (
               <div className="text-center py-16">
@@ -246,9 +291,22 @@ export default function FormulirPage() {
               </div>
             ) : filtered.length === 0 ? (
               <div className="text-center py-16">
-                <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-600 mb-2">Tidak Ada Formulir</h3>
-                <p className="text-gray-500">Coba ubah filter atau kata kunci pencarian.</p>
+                <motion.div
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-20 h-20 bg-gradient-to-br from-green-100 to-teal-100 dark:from-green-900/30 dark:to-teal-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm"
+                >
+                  <FileText className="h-10 w-10 text-green-400 dark:text-green-500" />
+                </motion.div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Tidak Ada Formulir</h3>
+                <p className="text-gray-500 dark:text-gray-400">Coba ubah filter atau kata kunci pencarian.</p>
+                <Button
+                  variant="outline"
+                  onClick={() => { setSearch(""); setActiveCategory("all"); }}
+                  className="mt-4 border-green-300 dark:border-green-700 text-green-700 dark:text-green-400"
+                >
+                  Reset Filter
+                </Button>
               </div>
             ) : activeCategory === "all" ? (
               <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="space-y-10">
@@ -290,11 +348,13 @@ export default function FormulirPage() {
         </section>
 
         {/* Info Section */}
-        <section className="bg-white py-10 md:py-14 border-t border-gray-200">
+        <section className="bg-white dark:bg-gray-900 py-10 md:py-14 border-t border-gray-200 dark:border-gray-800">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-green-600" />
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
+                <div className="w-8 h-8 bg-green-100 dark:bg-green-900/40 rounded-lg flex items-center justify-center">
+                  <BookOpen className="h-4 w-4 text-green-600 dark:text-green-400" />
+                </div>
                 Informasi Penting
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -363,7 +423,8 @@ export default function FormulirPage() {
 }
 
 function FormulirCard({ form, onDownload }: { form: FormulirItem; onDownload: (code: string) => void }) {
-  const colors = CATEGORY_COLORS[form.category] || { bg: "bg-gray-50", text: "text-gray-700", border: "border-gray-200" };
+  const colors = CATEGORY_COLORS[form.category] || { bg: "bg-gray-50", text: "text-gray-700", border: "border-gray-200", icon: FileText, darkBg: "dark:bg-gray-800" };
+  const CategoryIcon = colors.icon;
 
   const handleDownload = () => {
     onDownload(form.code);
@@ -377,25 +438,48 @@ function FormulirCard({ form, onDownload }: { form: FormulirItem; onDownload: (c
 
   return (
     <Card
-      className={`group transition-all duration-200 hover:shadow-lg hover:-translate-y-1 border ${colors.border} cursor-pointer h-full`}
+      className={`group transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 border-2 cursor-pointer h-full bg-white dark:bg-gray-900 relative overflow-hidden ${
+        form.category === "Pendaftaran Penduduk"
+          ? "border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600"
+          : form.category === "Pencatatan Sipil"
+          ? "border-teal-200 dark:border-teal-800 hover:border-teal-400 dark:hover:border-teal-600"
+          : form.category === "Pencatatan Sipil LN"
+          ? "border-amber-200 dark:border-amber-800 hover:border-amber-400 dark:hover:border-amber-600"
+          : form.category === "Persyaratan"
+          ? "border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600"
+          : "border-gray-200 dark:border-gray-700 hover:border-green-400"
+      }`}
       onClick={handleDownload}
     >
-      <CardContent className="p-4 flex flex-col h-full">
+      {/* Subtle top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <CardContent className="p-5 flex flex-col h-full">
         <div className="flex items-start justify-between mb-3">
-          <Badge className={`${colors.bg} ${colors.text} text-xs font-medium border-0`}>
-            {form.code}
-          </Badge>
-          <Download className="h-4 w-4 text-gray-400 group-hover:text-green-600 transition-colors" />
+          <div className="flex items-center gap-2">
+            <div className={"w-8 h-8 " + colors.bg + " dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0"}>
+              <CategoryIcon className={`h-4 w-4 ${colors.text}`} />
+            </div>
+            <Badge className={`${colors.bg} ${colors.text} text-xs font-medium border-0`}>
+              {form.code}
+            </Badge>
+          </div>
+          <div className="w-8 h-8 bg-green-50 dark:bg-green-900/40 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-green-100 dark:group-hover:bg-green-900/60">
+            <Download className="h-4 w-4 text-green-600 dark:text-green-400" />
+          </div>
         </div>
-        <h3 className="font-semibold text-gray-900 text-sm mb-2 line-clamp-2 flex-1">{form.name}</h3>
-        {form.fileSize && (
-          <p className="text-xs text-gray-500 mb-2">{form.fileSize}</p>
+        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-2 line-clamp-2 flex-1">{form.name}</h3>
+        {form.description && (
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{form.description}</p>
         )}
-        <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-100">
-          <span className="text-xs text-gray-400">
+        {form.fileSize && (
+          <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">{form.fileSize}</p>
+        )}
+        <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100 dark:border-gray-800">
+          <span className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
+            <Hash className="h-3 w-3" />
             {form.downloadCount > 0 ? `${form.downloadCount} unduhan` : "PDF"}
           </span>
-          <span className="text-xs text-green-600 font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="text-xs text-green-600 dark:text-green-400 font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1">
             Unduh <ChevronRight className="h-3 w-3" />
           </span>
         </div>

@@ -112,7 +112,25 @@ const SectionDivider = dynamic(
   { ssr: false }
 );
 
-// Task 4-a: New components
+// Task 5-a: New components
+const NotifikasiBanner = dynamic(
+  () => import("@/components/shared/notifikasi-banner").then((m) => ({ default: m.NotifikasiBanner })),
+  { ssr: false }
+);
+const SosialMediaSection = dynamic(
+  () => import("@/components/sections/sosial-media-section").then((m) => ({ default: m.SosialMediaSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid lg:grid-cols-3 gap-6"><div className="h-80 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /><div className="h-80 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /><div className="h-80 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div></div> }
+);
+const PromosiLayananSection = dynamic(
+  () => import("@/components/sections/promosi-layanan-section").then((m) => ({ default: m.PromosiLayananSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{[1,2,3].map(i=><div key={i} className="h-56 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+const KoneksiLangsungWidget = dynamic(
+  () => import("@/components/shared/koneksi-langsung-widget").then((m) => ({ default: m.KoneksiLangsungWidget })),
+  { ssr: false }
+);
+
+// Task 4-a: Previous components
 const LoadingScreen = dynamic(
   () => import("@/components/shared/loading-screen").then((m) => ({ default: m.LoadingScreen })),
   { ssr: false }
@@ -138,6 +156,7 @@ export default function HomePage() {
       <EmergencyInfoBar />
       <Header />
       <AnnouncementTicker />
+      <NotifikasiBanner />
       <main id="main-content" className="flex-1">
         {/* Critical: loaded eagerly (above the fold) */}
         <HeroSection />
@@ -159,6 +178,8 @@ export default function HomePage() {
         <SectionDivider variant="gradient" color="green" />
         <JadwalPelayananSection />
         <PetaLokasiSection />
+        <SosialMediaSection />
+        <PromosiLayananSection />
         <KeunggulanSection />
         <TestimoniSection />
         <TestimoniMarqueeSection />
@@ -174,6 +195,7 @@ export default function HomePage() {
         <SectionDivider variant="curved" color="green" />
         <CTASection />
       </main>
+      <KoneksiLangsungWidget />
       <WhatsAppButton />
       <FloatingActionMenu />
       <CookieConsent />
