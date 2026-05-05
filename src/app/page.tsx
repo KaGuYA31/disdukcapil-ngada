@@ -148,6 +148,18 @@ const InfografisRingkasanSection = dynamic(
   { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{[1,2,3,4,5,6].map(i=><div key={i} className="h-72 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
 );
 
+// Task 8-a: Peta Interaktif Kecamatan
+const PetaKecamatanSection = dynamic(
+  () => import("@/components/sections/peta-kecamatan-section").then((m) => ({ default: m.PetaKecamatanSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4">{[1,2,3,4,5,6].map(i=><div key={i} className="h-32 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+
+// Task 8-b: Panduan Interaktif
+const PanduanInteraktifSection = dynamic(
+  () => import("@/components/sections/panduan-interaktif-section").then((m) => ({ default: m.PanduanInteraktifSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto space-y-6">{[1,2,3,4,5].map(i=><div key={i} className="h-28 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+
 // Task 7-a: AI Chatbot Widget
 const AICHatbotWidget = dynamic(
   () => import("@/components/shared/ai-chatbot-widget").then((m) => ({ default: m.AICHatbotWidget })),
@@ -226,6 +238,9 @@ export default function HomePage() {
         <SectionDivider variant="wave-2" color="teal" />
         <PanduanLayananSection />
         <SectionDivider variant="curved" color="green" />
+        <PetaKecamatanSection />
+        <SectionDivider variant="gradient" color="teal" />
+        <PanduanInteraktifSection />
         <TautanTerkaitSection />
         <CTASection />
       </main>

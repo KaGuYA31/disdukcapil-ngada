@@ -11,6 +11,7 @@ import {
   FileQuestion,
   ArrowRight,
   Sparkles,
+  Flame,
 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import {
@@ -198,6 +199,9 @@ const popularQuestions = [
   "KTP hilang, bagaimana caranya?",
 ];
 
+// FAQ items marked as "popular" by ID
+const popularFaqIds = new Set(["lainnya-1", "ktp-1", "akta-1", "pindah-2", "ktp-5"]);
+
 // ─── Animation Variants ────────────────────────────────────────────────
 
 const headerVariants = {
@@ -225,6 +229,20 @@ const fadeInUp = {
     y: 0,
     transition: { duration: 0.5, ease: "easeOut" as const },
   },
+};
+
+const floatOrb = {
+  animate: (delay: number) => ({
+    y: [0, -20, 0],
+    x: [0, 10, 0],
+    scale: [1, 1.1, 1],
+    transition: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut" as const,
+      delay,
+    },
+  }),
 };
 
 // ─── Component ─────────────────────────────────────────────────────────
@@ -267,97 +285,144 @@ export function FAQInteraktifSection() {
       className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
       aria-labelledby="faq-interaktif-title"
     >
-      {/* Decorative background */}
+      {/* ── Gradient Hero Banner ── */}
+      <div className="relative h-[120px] bg-gradient-to-r from-green-700 via-green-800 to-teal-900 overflow-hidden">
+        {/* SVG Pattern Overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 0L26 14L14 26L2 14Z' fill='none' stroke='white' stroke-width='0.5'/%3E%3C/svg%3E")`,
+          }}
+        />
+        {/* Animated gradient orbs */}
+        <motion.div
+          custom={0}
+          variants={floatOrb}
+          initial="hidden"
+          animate="animate"
+          className="absolute top-4 left-1/4 w-48 h-48 bg-green-400/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          custom={1.5}
+          variants={floatOrb}
+          initial="hidden"
+          animate="animate"
+          className="absolute bottom-0 right-1/4 w-56 h-56 bg-teal-400/20 rounded-full blur-3xl"
+        />
+        {/* Content overlay */}
+        <div className="relative z-10 h-full flex items-center justify-center">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg">
+              <HelpCircle className="h-6 w-6 text-white" />
+            </div>
+            <div className="text-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-white">
+                Tanya Jawab Interaktif
+              </h1>
+              <p className="text-green-200/80 text-sm mt-0.5">
+                Temukan jawaban untuk pertanyaan seputar layanan kependudukan
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Dot Pattern Background ── */}
       <div
-        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.025] dark:opacity-[0.04] pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 2L26 14L14 26L2 14Z' fill='none' stroke='%2315803d' stroke-width='0.5'/%3E%3C/svg%3E")`,
+          backgroundImage: `radial-gradient(circle, %2315803d 1px, transparent 1px)`,
+          backgroundSize: "24px 24px",
         }}
       />
-      <div className="absolute top-0 left-1/2 w-96 h-96 bg-green-100/30 dark:bg-green-900/10 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
 
       <div className="container mx-auto px-4 relative">
-        {/* Section Header */}
+        {/* Section Header (below hero, hidden since hero has it) */}
         <motion.div
           variants={headerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="text-center max-w-3xl mx-auto mb-10"
+          className="text-center max-w-3xl mx-auto mb-8 mt-10"
         >
-          <span className="inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold text-sm uppercase tracking-wider">
-            <MessageSquare className="h-4 w-4" />
-            Tanya Jawab
-          </span>
-          <h2
-            id="faq-interaktif-title"
-            className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2"
-          >
-            Tanya Jawab Interaktif
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-4">
-            Temukan jawaban untuk pertanyaan seputar layanan kependudukan.
+          <p className="text-gray-600 dark:text-gray-400">
             Pilih kategori atau gunakan pencarian untuk menemukan informasi yang Anda butuhkan.
           </p>
         </motion.div>
 
         <div className="max-w-3xl mx-auto">
-          {/* Search Bar */}
+          {/* Search Bar with gradient glow on focus */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
             className="mb-6"
           >
-            <div className="relative bg-gray-50/80 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/80 dark:border-gray-700/60 transition-all duration-200 focus-within:ring-2 focus-within:ring-green-500/20 focus-within:border-green-500 dark:focus-within:border-green-600 shadow-sm">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-              <Input
-                type="text"
-                placeholder="Ketik pertanyaan atau kata kunci..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-10 h-11 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none focus-visible:border-0"
-                aria-label="Cari pertanyaan"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                  aria-label="Hapus pencarian"
+            <div className="relative group">
+              {/* Gradient glow ring on focus */}
+              <div className="absolute -inset-[2px] rounded-xl bg-gradient-to-r from-green-500 via-emerald-400 to-teal-500 opacity-0 group-focus-within:opacity-100 blur-sm transition-opacity duration-300" />
+              <div className="relative bg-gray-50/80 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/80 dark:border-gray-700/60 transition-all duration-200 focus-within:ring-0 focus-within:border-green-500 dark:focus-within:border-green-600 shadow-sm">
+                <motion.div
+                  animate={searchQuery ? { rotate: 15, scale: 1.1 } : { rotate: 0, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
                 >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
+                  <Search className="h-4 w-4 text-gray-400 group-focus-within:text-green-500 transition-colors" />
+                </motion.div>
+                <Input
+                  type="text"
+                  placeholder="Ketik pertanyaan atau kata kunci..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10 h-11 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none focus-visible:border-0"
+                  aria-label="Cari pertanyaan"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    aria-label="Hapus pencarian"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
             </div>
           </motion.div>
 
-          {/* Category Tabs */}
+          {/* Category Pills with animated sliding indicator */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
             className="mb-6"
           >
-            <div className="flex flex-wrap gap-2" role="tablist" aria-label="Kategori FAQ">
+            <div className="relative inline-flex flex-wrap gap-2 p-1.5 bg-gray-100 dark:bg-gray-800/60 rounded-2xl" role="tablist" aria-label="Kategori FAQ">
               {kategoriList.map((kat) => {
                 const KatIcon = kat.icon;
+                const isActive = activeKategori === kat.value;
                 return (
                   <button
                     key={kat.value}
                     role="tab"
-                    aria-selected={activeKategori === kat.value}
+                    aria-selected={isActive}
                     onClick={() => setActiveKategori(kat.value)}
-                    className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      activeKategori === kat.value
-                        ? "bg-green-600 text-white shadow-sm shadow-green-500/25"
-                        : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
-                    }`}
+                    className="relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
                   >
-                    <KatIcon className="h-3.5 w-3.5" />
-                    {kat.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeFaqPill"
+                        className="absolute inset-0 bg-green-600 dark:bg-green-500 rounded-lg shadow-lg shadow-green-600/25 dark:shadow-green-500/20"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                      />
+                    )}
+                    <KatIcon className={`h-3.5 w-3.5 relative z-10 ${isActive ? "text-white" : "text-gray-500 dark:text-gray-400"}`} />
+                    <span className={`relative z-10 ${isActive ? "text-white" : "text-gray-600 dark:text-gray-400"}`}>
+                      {kat.label}
+                    </span>
                     {kat.value !== "Semua" && (
                       <span
-                        className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                          activeKategori === kat.value
+                        className={`relative z-10 text-[10px] px-1.5 py-0.5 rounded-full ${
+                          isActive
                             ? "bg-white/20 text-white"
                             : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                         }`}
@@ -409,6 +474,12 @@ export function FAQInteraktifSection() {
                             <span className="text-sm md:text-[0.9rem] font-semibold text-gray-800 dark:text-gray-200 leading-snug">
                               {faq.pertanyaan}
                             </span>
+                            {popularFaqIds.has(faq.id) && (
+                              <span className="flex-shrink-0 inline-flex items-center gap-1 text-[9px] px-1.5 py-0.5 rounded-full bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30 text-orange-700 dark:text-orange-300 font-semibold border border-orange-200 dark:border-orange-800/40">
+                                <Flame className="h-2.5 w-2.5" />
+                                Populer
+                              </span>
+                            )}
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className="px-5 pb-4 md:px-5">
@@ -450,8 +521,29 @@ export function FAQInteraktifSection() {
             )}
           </div>
 
+          {/* Lihat Semua FAQ CTA */}
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-8 mb-8"
+          >
+            <Link href="/faq">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold text-sm shadow-lg shadow-green-600/25 hover:shadow-xl hover:shadow-green-600/30 transition-shadow duration-300"
+              >
+                <HelpCircle className="h-4 w-4" />
+                Lihat Semua FAQ
+                <ArrowRight className="h-4 w-4" />
+              </motion.button>
+            </Link>
+          </motion.div>
+
           {/* Popular Questions + CTA */}
-          <div className="grid md:grid-cols-2 gap-4 mt-8">
+          <div className="grid md:grid-cols-2 gap-4">
             {/* Popular Questions */}
             <motion.div
               variants={fadeInUp}
@@ -459,7 +551,7 @@ export function FAQInteraktifSection() {
               animate={isInView ? "visible" : "hidden"}
               transition={{ delay: 0.6 }}
             >
-              <Card className="border-gray-200/80 dark:border-gray-700/50 h-full">
+              <Card className="border-gray-200/80 dark:border-gray-700/50 h-full hover:shadow-md hover:border-green-200/60 dark:hover:border-green-800/40 transition-all duration-300">
                 <CardContent className="p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400" />
@@ -491,7 +583,7 @@ export function FAQInteraktifSection() {
               animate={isInView ? "visible" : "hidden"}
               transition={{ delay: 0.7 }}
             >
-              <Card className="bg-gradient-to-br from-green-50 to-teal-50/80 dark:from-green-950/30 dark:to-teal-950/20 border-green-200/80 dark:border-green-800/50 h-full">
+              <Card className="bg-gradient-to-br from-green-50 to-teal-50/80 dark:from-green-950/30 dark:to-teal-950/20 border-green-200/80 dark:border-green-800/50 h-full hover:shadow-md transition-all duration-300">
                 <CardContent className="p-5">
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/50 flex items-center justify-center flex-shrink-0">

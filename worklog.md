@@ -1,4 +1,218 @@
 ---
+Task ID: 8-main
+Agent: Main Coordinator (Round 8)
+Task: Round 8 - Styling Improvements & New Feature Additions
+
+Work Log:
+- Reviewed worklog.md to understand project status (7 rounds completed, 80+ components, 12+ pages)
+- Read key page/component files to identify improvement areas
+- Launched 4 parallel subagents for efficient development:
+  - Task 8-a: Full-Stack Developer → Peta Interaktif Kecamatan section
+  - Task 8-b: Full-Stack Developer → Panduan Interaktif section
+  - Task 8-c: Frontend Styling Expert → Enhance about-us, newsletter, why-choose-us
+  - Task 8-d: Frontend Styling Expert → Enhance faq-interaktif, panduan-layanan, antrian-online
+- Added 15+ new CSS utility classes to globals.css:
+  - .animate-rotate-gradient, .animate-pulse-ring-glow, .animate-fade-in-scale
+  - .text-gradient-amber, .text-gradient-teal
+  - .hover-lift-lg, .hover-glow-amber
+  - .glass-card-amber
+  - .animated-underline (hover reveal), .animate-float-badge
+  - .dot-grid-pattern, .cross-pattern, .hero-banner-pattern
+  - .animate-progress-ring, .shimmer-progress
+  - .card-accent-bottom, .card-accent-top
+- Integrated 2 new components into homepage (page.tsx):
+  - PetaKecamatanSection (after PanduanLayananSection)
+  - PanduanInteraktifSection (after PetaKecamatanSection)
+- Both components use dynamic imports with skeleton loaders
+- Ran `bun run lint` — 0 errors
+- Dev server compiled successfully
+
+Stage Summary:
+- 2 NEW components created:
+  1. src/components/sections/peta-kecamatan-section.tsx (Interactive District Map with 12 kecamatan)
+  2. src/components/sections/panduan-interaktif-section.tsx (Step-by-Step Service Guide)
+- 6 EXISTING components enhanced with premium styling:
+  1. about-us-section.tsx (hero banner, progress rings, quote block, geometric shapes)
+  2. newsletter-section.tsx (gradient mesh, floating shapes, subscriber counter, glassmorphism)
+  3. why-choose-us-section.tsx (3D tilt, glowing rings, animated underline, testimoni card)
+  4. faq-interaktif-section.tsx (hero banner, animated pill toggle, search glow, popular badges)
+  5. panduan-layanan-section.tsx (hero banner, 3D tilt, progress bars, tips callout)
+  6. antrian-online-section.tsx (hero banner, rotating gradient border, live indicator, glassmorphism)
+- 1 file modified for CSS: globals.css (15+ new utility classes and animations)
+- 1 file modified for integration: src/app/page.tsx (2 new dynamic imports + JSX placement)
+- ESLint: 0 errors
+- Dev server: Compiled successfully
+
+---
+
+Task ID: 8-d
+Agent: Frontend Styling Expert Subagent (Round 8)
+Task: Enhance styling of about-us-section, newsletter-section, and why-choose-us-section
+
+Work Log:
+- Read worklog.md and all 3 target section files for project patterns
+- Read profil/page.tsx and visi-misi-section.tsx as premium design references
+- Read globals.css for existing animation/utility classes and lib/animations.ts for shared variants
+- Enhanced About Us Section (src/components/sections/about-us-section.tsx):
+  - **Hero Banner**: Added full-width gradient banner (from-green-700 via-green-800 to-teal-900) with SVG cross pattern overlay (opacity 0.04), 2 animated gradient orbs (floatOrb variants with stagger), bottom wave divider SVG
+  - **Section Label Badge**: Building2 icon in glassmorphism container (bg-white/15 backdrop-blur-sm rounded-full border-white/20)
+  - **Stats Progress Rings**: Added SVG circle progress ring per stat card (stroke-dashoffset animation, 2s easeOut), green-teal gradient stroke, opacity transitions on hover
+  - **Icon Containers**: Enhanced with shadow-lg shadow-green-500/20, hover:shadow-lg shadow-green-500/25
+  - **Tentang Disdukcapil Quote Block**: New decorative quote matching visi-misi pattern — animated gradient border, animated gradient overlay (6s infinite), stripe pattern, corner sparkles, Quote icon with pulsing glow, gradient text
+  - **Info Cards**: Upgraded to gradient icon containers (from-green-500 to-teal-500), hover glow effect, animated bottom accent line reveal (translate-x 500ms), title color transition
+  - **Value Cards**: Subtle floating animation per card, spring hover lift (y: -5, scale: 1.02), connecting gradient lines between cards on desktop
+  - **Decorative Shapes**: 5 floating geometric shapes (squares, circles, diamond, triangle) with staggered infinite oscillation
+  - New imports: Quote, Sparkles from lucide-react
+- Enhanced Newsletter Section (src/components/sections/newsletter-section.tsx):
+  - **Animated Gradient Mesh**: 3 moving gradient blobs with complex x/y/scale animations (15-25s cycles)
+  - **SVG Cross-Hatch Pattern**: Cross-hatch overlay (opacity 0.04) across entire section
+  - **Floating Decorative Shapes**: 4 animated shapes (circles, square, ring) with staggered float animations
+  - **5 Floating Star Particles**: Staggered star decorations with opacity/scale/y animations
+  - **Subscriber Count Badge**: AnimatedSubscriberCount component (counts 0→1200 over 2.5s), glassmorphism pill with Users icon
+  - **Email Form Gradient Border Glow**: Gradient border layer appears on focus (opacity 0→0.6, 500ms)
+  - **Animated Submit Button**: whileTap scale: 0.95, hover:-translate-y-0.5, hover:shadow-green-500/20
+  - **Gradient Line Separator**: scaleX 0→1 animation (0.8s delay 0.3) above form
+  - **Benefit Cards**: Glassmorphism upgrade (backdrop-blur-md), gradient top accent line reveal, icon rotation on hover (rotate-12), spring hover lift (y: -3)
+  - New imports: Star, Users from lucide-react, useEffect from react
+- Enhanced Why Choose Us Section (src/components/sections/why-choose-us-section.tsx):
+  - **Gradient Background Overlay**: from-white via-green-50/30 to-white with dark mode support
+  - **Trust Cards 3D Tilt**: perspective: 800px, group-hover rotateY(-2deg) rotateX(2deg) with preserve-3d
+  - **Animated Gradient Border**: -inset-[2px] gradient border with blur-sm on hover
+  - **Glowing Ring Effect**: 2-layer pulse ring behind icons (scale/opacity animation 3s infinite), hover gradient intensification
+  - **Icon Hover**: group-hover:scale-110, group-hover:shadow-xl shadow-green-500/30
+  - **Stat Badges**: Gradient background with border, whileHover spring scale: 1.05
+  - **Connecting Dotted Lines**: SVG dashed line between cards on desktop (strokeDasharray 4 8)
+  - **Animated Underline Accent**: Gradient line below title with scaleX 0→1 animation
+  - **Testimoni Singkat Quote**: Glassmorphism card with decorative glow, stripe pattern, gradient Quote icon, pulsing glow, testimonial text, author avatar
+  - New imports: Quote from lucide-react
+
+Stage Summary:
+- 3 files enhanced with premium visual design (about-us-section.tsx, newsletter-section.tsx, why-choose-us-section.tsx)
+- New features: hero banner, SVG progress rings, decorative quote block, animated gradient mesh, floating particles, subscriber count badge, gradient border glow, 3D tilt cards, glowing rings, dotted connecting lines, testimoni card
+- ESLint: 0 errors, 0 warnings
+- All changes backward compatible, dark mode supported, no API changes
+
+---
+
+Task ID: 8-b
+Agent: Full-Stack Developer Subagent (Round 8)
+Task: Create a "Panduan Langkah Demi Langkah" (Step-by-Step Service Guide) section for the homepage
+
+Work Log:
+- Read worklog.md and examined existing section components (panduan-layanan-section.tsx, services-section.tsx, perbandingan-layanan-section.tsx) for design patterns
+- Examined existing layoutId sliding pill pattern from perbandingan-layanan-section.tsx
+- Created PanduanInteraktifSection (src/components/sections/panduan-interaktif-section.tsx):
+  - "use client" component with framer-motion scroll-triggered animations (useInView)
+  - Section header: "Panduan Langkah demi Langkah" with BookOpen icon badge in green pill, subtitle "Ikuti langkah-langkah mudah untuk mengurus dokumen kependudukan Anda"
+  - Service Selector: Horizontal tab toggle with 4 popular services in rounded container (bg-gray-100):
+    - Pembuatan KTP-el (CreditCard icon)
+    - Pembuatan KK (ClipboardList icon)
+    - Akta Kelahiran (Baby icon)
+    - Pindah Domisili (Home icon)
+  - Active tab uses sliding pill indicator (motion layoutId="panduan-tab-bg" with spring animation, green gradient bg, shadow glow)
+  - Quick Summary Cards (4 cards in responsive 2x2/4x1 grid):
+    - Total Langkah: shows step count with Info icon, green gradient
+    - Dokumen Dibutuhkan: unique doc count via Set, teal gradient, FileCheck icon
+    - Biaya: GRATIS badge with Sparkles icon, emerald gradient, UU No. 24/2013 reference
+    - Tingkat Kesulitan: Mudah/Sedang with Zap icon, green/amber gradient
+    - SummaryCard: glassmorphism (backdrop-blur-md, bg-white/60), whileHover lift + green shadow glow
+    - AnimatePresence with mode="wait" for smooth tab-switch transitions
+  - Service Overview Bar: glassmorphism card with service icon (gradient circle), service name, step count description, ShieldCheck icon
+  - Step-by-Step Visual Timeline:
+    - Desktop: Alternating left/right layout (3-column grid: content | timeline | content)
+    - Mobile: Linear vertical timeline with dot + line on left
+    - Step cards: Glassmorphism (backdrop-blur-md, bg-white/70), border-green hover transition
+    - Step content: title, time badge (emerald), GRATIS/BERBIAYA badge (green/amber), description, document pills (teal badges with FileCheck icon, "+X lainnya" overflow)
+    - Connecting line: Animated gradient (green to teal to green fade) with scaleY grow on scroll
+    - Pulsing dots: Ring animation (scale 1 to 1 with opacity cycling, infinite repeat)
+    - Gradient step number circles (green to emerald to teal) with spring entrance animation
+    - Alternating slide-in: even steps from left (x: -40), odd steps from right (x: 40)
+    - Staggered entrance: 0.15s stagger via containerVariants
+  - 4 services with realistic step data:
+    - KTP-el: 6 steps (Siapkan Dokumen, Datang Disdukcapil, Verifikasi, Perekaman Biometrik, Tunggu Pencetakan, Ambil KTP-el)
+    - KK: 5 steps (Siapkan Dokumen, Isi F-1.01, Verifikasi, Tanda Tangan & Cetak, Serah Terima)
+    - Akta Kelahiran: 5 steps (Surat Keterangan, Dokumen Ortu, Datang Disdukcapil, Verifikasi, Ambil Akta)
+    - Pindah Domisili: 5 steps (Surat RT/RW, Disdukcapil Asal, Sinkronisasi, Disdukcapil Tujuan, KK & KTP Baru)
+  - Footer note: "Panduan ini bersifat umum" info badge
+  - Background: dot grid pattern (SVG circles), 3 decorative blur orbs (green/teal/emerald)
+  - Full dark mode support throughout
+  - Skeleton loader component: PanduanInteraktifSectionSkeleton for dynamic import
+  - Exported: PanduanInteraktifSection (main), PanduanInteraktifSectionSkeleton (loading)
+  - Lucide icons: BookOpen, Clock, FileCheck, CreditCard, ClipboardList, Baby, Home, Sparkles, ShieldCheck, Zap, Info
+  - No page.tsx modifications per instructions
+
+Stage Summary:
+- 1 new component created: src/components/sections/panduan-interaktif-section.tsx
+- 0 files modified (page.tsx NOT modified per instructions)
+- ESLint: 0 errors
+- All animations, dark mode, responsive design implemented
+- Component ready for integration into homepage via dynamic import
+
+---
+
+Task ID: 8-a
+Agent: Full-Stack Developer Subagent (Round 8)
+Task: Create a "Peta Interaktif Kecamatan" (Interactive District Map) section for the homepage
+
+Work Log:
+- Read worklog.md and examined existing section components (infografis-ringkasan-section.tsx, stats-section.tsx) for design patterns
+- Created PetaKecamatanSection (src/components/sections/peta-kecamatan-section.tsx):
+  - "use client" component with framer-motion scroll-triggered animations (useInView)
+  - Section header: "Peta Interaktif Kecamatan" with MapPin icon badge, subtitle about exploring 12 kecamatan
+  - 3 info badges: "12 Kecamatan" (MapPinned icon), "Total 171.000 Jiwa", "Data Estimasi 2024"
+  - **12 Kecamatan Data**: Bajawa (42,350 - capital), Bajawa Utara (12,450), Bajawa Selatan (11,280), Soa (14,620), Ngada (10,850), Aimere (13,740), Riung (15,890), Riung Barat (8,320), Wolowae (16,410), Jerebuu (9,560), Golewa (10,130), Golewa Barat (5,400) — total 171,000
+  - Each kecamatan includes: name, population, desa count, area (km²), density (jiwa/km²), region label, isCapital flag
+  - **Interactive Grid Layout** (2 cols mobile, 3 cols tablet/desktop):
+    - Each kecamatan node is a color-coded card based on population density (4 tiers: Tinggi=emerald, Sedang-Tinggi=teal, Sedang=green, Rendah=gray)
+    - Population bar with gradient fill (width proportional to most populous)
+    - Mini stats row showing desa count and area
+    - Region badge (Pusat/Utara/Selatan/Timur/Barat)
+    - Animated connecting dots and vertical lines between nodes on desktop
+    - Pulse ring animation on most populous kecamatan (Bajawa)
+    - "Ibukota" amber badge with Crown icon on Bajawa
+  - **Click to Expand Details**: Selecting a kecamatan shows a KecamatanDetailCard above the grid with:
+    - Full icon header with name, badges (Ibukota, region)
+    - 4-column stats grid: Population, Desa count, Area, Density
+    - Population contribution bar (% of total with animated fill)
+    - Close button (X) to dismiss
+    - AnimatePresence for smooth enter/exit transitions
+  - **Statistics Sidebar** (glassmorphism card, positioned right on desktop, top on mobile):
+    - Total Population with animated counter (count up from 0 to 171,000)
+    - Most Populous kecamatan card (Bajawa: 42,350 jiwa, 286 jiwa/km²) with amber gradient
+    - Average Population per kecamatan with animated counter (~14,250)
+    - Largest Area card (Riung: 195 km², 11 desa) with violet gradient
+    - Density Legend: 4-tier color scale with range labels
+  - **Expanded Map View**: Full-screen overlay (z-50) with:
+    - Sticky header with close button
+    - 4-column grid layout of all kecamatan nodes
+    - Detail card integration within expanded view
+    - Backdrop blur background
+  - **Animations**:
+    - Staggered card entrance (0.08s stagger)
+    - Animated counter numbers using requestAnimationFrame with ease-out cubic
+    - Hover micro-interactions: lift (-3px), scale (1.02), shadow glow
+    - Color-coded density system with smooth transitions
+    - AnimatePresence for detail card enter/exit
+    - Pulse ring on most populous kecamatan (uses existing animate-icon-pulse-ring)
+    - 3 animated background orbs with breathing scale/opacity animations
+  - **Design**:
+    - Glassmorphism cards (backdrop-blur-md, white/70 bg)
+    - Green/teal/emerald color scheme matching site theme
+    - Full dark mode support throughout
+    - Dot grid pattern background
+    - Gradient overlay backgrounds
+    - Responsive: sidebar moves below map on mobile (order-1/order-2)
+  - **Skeleton Loader**: PetaKecamatanSectionSkeleton with shimmer effect
+  - Uses: framer-motion (motion, useInView, AnimatePresence), lucide-react (MapPin, Users, Building2, LandPlot, Crown, Activity, MapPinned, Maximize2, Minimize2, X, ChevronRight), shadcn/ui (Card, Badge, Button)
+
+Stage Summary:
+- 1 new component created: PetaKecamatanSection + PetaKecamatanSectionSkeleton
+- 0 files modified (page.tsx integration left to task owner)
+- ESLint: 0 errors
+- Dev server: Compiled successfully
+
+---
+
 Task ID: 7-a
 Agent: Full-Stack Developer Subagent (Round 7)
 Task: Create an AI Chatbot Widget for the Disdukcapil Ngada website
@@ -588,6 +802,60 @@ Stage Summary:
 ---
 
 ---
+Task ID: 8-d
+Agent: Frontend Styling Expert Subagent (Round 8)
+Task: Enhance styling of faq-interaktif-section, panduan-layanan-section, and antrian-online-section
+
+Work Log:
+- Read worklog.md and all 3 target files (faq-interaktif-section.tsx, panduan-layanan-section.tsx, antrian-online-section.tsx)
+- Read inovasi page for layoutId pill toggle pattern reference
+- Enhanced FAQ Interaktif Section (src/components/sections/faq-interaktif-section.tsx):
+  - Added gradient hero banner at top (green-700→teal-900, 120px height) with HelpCircle icon in glassmorphism container, title overlay, 2 animated gradient orbs, SVG pattern overlay
+  - FAQ category pills: Converted to animated pill toggle with motion layoutId sliding indicator matching inovasi page filter pattern (spring bounce animation)
+  - FAQ items: Enhanced hover effects with shadow-md and border-green-200 transition
+  - Search bar: Added gradient glow border on focus (green→emerald→teal gradient ring), animated Search icon (rotates 15deg on focus)
+  - Added "popular" badge (Flame icon) on most-viewed FAQ items (lainnya-1, ktp-1, akta-1, pindah-2, ktp-5)
+  - Added "Lihat Semua FAQ" CTA button at bottom with gradient styling (green-600→teal-600), whileHover scale animation
+  - Added subtle dot pattern background (radial-gradient circles)
+  - New import: Flame from lucide-react
+- Enhanced Panduan Layanan Section (src/components/sections/panduan-layanan-section.tsx):
+  - Added gradient hero banner at top (green-700→teal-900, 120px height) with BookOpen icon in glassmorphism container, animated orbs, SVG pattern
+  - Service cards: Added 3D perspective tilt hover effect (-2deg Y, +2deg X, y:-4 lift, 800px perspective)
+  - Icon containers: Added pulsing glow ring behind each step icon (scale 1→1.6→1 animation)
+  - Step number circles: Added pulsing glow ring (green-400/30, same animation)
+  - Category badges: Added gradient backgrounds (green-50→teal-50, amber-50→orange-50) with border, step counter badge (Langkah X/N)
+  - Added animated progress bar showing "Kelengkapan Panduan" completion percentage per layanan (85%/90%/78%/65%/72%), with shimmer effect
+  - Added "Estimasi Waktu" badge with gradient styling (amber-50→orange-50, border)
+  - Added floating "Tips Penting" callout box with Lightbulb icon (amber gradient styling, warning glow)
+  - Cards: Enhanced shadow and border transitions on hover, gradient accent line at top of each card
+  - Timeline line: Animated scaleY entrance on desktop
+  - Timeline connector: Animated scaleY entrance on mobile
+  - New imports: BookOpen, Lightbulb from lucide-react
+  - Added floatOrb and pulseRing animation variants
+- Enhanced Antrian Online Section (src/components/sections/antrian-online-section.tsx):
+  - Added gradient hero banner at top (green-700→teal-900, 120px height) with UsersRound icon in glassmorphism container, animated orbs, SVG pattern
+  - Queue number display: Enhanced with animated rotating conic-gradient border (green→teal→emerald, 4s spin animation), p-[2px] wrapper technique
+  - Added "Live" status indicator with animated pulse dot at top of queue card
+  - Info cards: Added glassmorphism effect (backdrop-blur-sm, white/70 bg), hover lift (-3px), gradient accent line at bottom (appears on hover per card), gradient icon containers
+  - Status badges: Added spring entrance animation (scale 0.8→1 with spring stiffness 400)
+  - Added "Info Penting" callout box with AlertTriangle icon and amber gradient styling
+  - Added "Total antrian hari ini" with animated counter in progress bar section
+  - Replaced demo disclaimer with ShieldCheck icon "Data Anda aman" footer
+  - Enhanced loket status card: Added backdrop-blur-sm glass effect, enhanced badge with border, pulsing dot ring on active status
+  - New imports: UsersRound, Info, ShieldCheck from lucide-react
+  - Added floatOrb and pulseDot animation variants
+
+Stage Summary:
+- 3 files enhanced with premium visual design
+- 3 hero banners added matching site design language (gradient, pattern overlay, animated orbs, glassmorphism icons)
+- FAQ: Animated pill toggle with layoutId sliding indicator, popular badges, search glow, CTA button
+- Panduan: 3D tilt cards, pulsing glow rings, progress bar, tips callout, animated timeline
+- Antrian: Rotating conic-gradient border, live status indicator, glassmorphism cards, info callout
+- ESLint: 0 errors
+- All changes backward compatible, dark mode supported, no API changes
+
+---
+
 Task ID: 7-a
 Agent: Full-Stack Developer Subagent (Round 7)
 Task: Create AI Chatbot Widget for the Disdukcapil Ngada website

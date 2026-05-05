@@ -22,6 +22,8 @@ import {
   FileCheck2,
   FolderSearch,
   PenLine,
+  BookOpen,
+  Lightbulb,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -449,6 +451,32 @@ const stepVariants = {
   }),
 };
 
+const floatOrb = {
+  animate: (delay: number) => ({
+    y: [0, -18, 0],
+    x: [0, 12, 0],
+    scale: [1, 1.08, 1],
+    transition: {
+      duration: 7,
+      repeat: Infinity,
+      ease: "easeInOut" as const,
+      delay,
+    },
+  }),
+};
+
+const pulseRing = {
+  animate: {
+    scale: [1, 1.6, 1],
+    opacity: [0.4, 0, 0.4],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut" as const,
+    },
+  },
+};
+
 // ┅ Tip Icon Component ─────────────────────────────────────────────────
 
 function TipCallout({ tip }: { tip: StepTip }) {
@@ -495,6 +523,15 @@ function getStepIcon(stepIndex: number): React.ReactNode {
   return icons[stepIndex % icons.length];
 }
 
+// Completion percentage per layanan (simulated)
+const completionPercent: Record<string, number> = {
+  "ktp-el": 85,
+  "kk": 90,
+  "akta-kelahiran": 78,
+  "pindah-penduduk": 65,
+  "akta-kematian": 72,
+};
+
 // ─── Main Component ───────────────────────────────────────────────────
 
 export function PanduanLayananSection() {
@@ -515,12 +552,56 @@ export function PanduanLayananSection() {
     setExpandedStep((prev) => (prev === nomor ? null : nomor));
   };
 
+  const currentCompletion = completionPercent[activeTab] ?? 80;
+
   return (
     <section
       ref={sectionRef}
       className="py-16 md:py-24 bg-white dark:bg-gray-950 relative overflow-hidden"
       aria-labelledby="panduan-layanan-title"
     >
+      {/* ── Gradient Hero Banner ── */}
+      <div className="relative h-[120px] bg-gradient-to-r from-green-700 via-green-800 to-teal-900 overflow-hidden">
+        {/* SVG Pattern Overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 0L26 14L14 26L2 14Z' fill='none' stroke='white' stroke-width='0.5'/%3E%3C/svg%3E")`,
+          }}
+        />
+        {/* Animated gradient orbs */}
+        <motion.div
+          custom={0}
+          variants={floatOrb}
+          initial="hidden"
+          animate="animate"
+          className="absolute top-2 left-1/3 w-44 h-44 bg-green-400/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          custom={1.5}
+          variants={floatOrb}
+          initial="hidden"
+          animate="animate"
+          className="absolute bottom-0 right-1/3 w-52 h-52 bg-teal-400/15 rounded-full blur-3xl"
+        />
+        {/* Content overlay */}
+        <div className="relative z-10 h-full flex items-center justify-center">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg">
+              <BookOpen className="h-6 w-6 text-white" />
+            </div>
+            <div className="text-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-white">
+                Langkah-langkah Layanan
+              </h1>
+              <p className="text-green-200/80 text-sm mt-0.5">
+                Panduan visual lengkap untuk setiap layanan administrasi kependudukan
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Background */}
       <div
         className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03]"
@@ -538,20 +619,9 @@ export function PanduanLayananSection() {
           variants={headerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="text-center max-w-3xl mx-auto mb-10"
+          className="text-center max-w-3xl mx-auto mb-8 mt-8"
         >
-          <span className="inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold text-sm uppercase tracking-wider">
-            <FileText className="h-4 w-4" />
-            Panduan Layanan
-          </span>
-          <h2
-            id="panduan-layanan-title"
-            className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2"
-          >
-            Langkah-langkah Layanan
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-4">
-            Panduan visual lengkap untuk setiap layanan administrasi kependudukan.
+          <p className="text-gray-600 dark:text-gray-400">
             Ikuti langkah-langkah berikut agar proses Anda berjalan lancar.
           </p>
         </motion.div>
@@ -587,7 +657,7 @@ export function PanduanLayananSection() {
             </div>
           </motion.div>
 
-          {/* Overview + Toggle */}
+          {/* Overview + Toggle + Progress */}
           <motion.div
             variants={headerVariants}
             initial="hidden"
@@ -612,6 +682,32 @@ export function PanduanLayananSection() {
                 {isDetailed ? "Langkah Singkat" : "Langkah Detail"}
               </Button>
             </div>
+
+            {/* Animated Progress Bar */}
+            <div className="mt-4 p-3 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                  Kelengkapan Panduan
+                </span>
+                <span className="text-xs font-bold text-green-600 dark:text-green-400 tabular-nums">
+                  {currentCompletion}%
+                </span>
+              </div>
+              <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <motion.div
+                  key={activeTab}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${currentCompletion}%` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-full"
+                >
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.2)_50%,transparent_100%)] animate-[shimmer_2s_infinite]" />
+                </motion.div>
+              </div>
+              <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1.5">
+                {activeLayanan.steps.length} langkah • {activeLayanan.steps.reduce((a, s) => a + s.dokumen.length, 0)} dokumen
+              </p>
+            </div>
           </motion.div>
 
           {/* Steps Timeline */}
@@ -624,8 +720,13 @@ export function PanduanLayananSection() {
               transition={{ duration: 0.35 }}
             >
               <div className="relative">
-                {/* Vertical Timeline Line (Desktop) */}
-                <div className="hidden md:block absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-green-500 via-green-300 to-green-500/20 dark:from-green-600 dark:via-green-700 dark:to-green-800/20" />
+                {/* Vertical Timeline Line (Desktop) - animated */}
+                <motion.div
+                  initial={{ scaleY: 0 }}
+                  animate={{ scaleY: 1 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  className="hidden md:block absolute left-8 top-0 bottom-0 w-0.5 origin-top bg-gradient-to-b from-green-500 via-teal-400 to-green-500/10 dark:from-green-500 dark:via-teal-600 dark:to-green-800/10"
+                />
 
                 <motion.div
                   variants={containerVariants}
@@ -646,16 +747,27 @@ export function PanduanLayananSection() {
                       >
                         {/* Timeline connector for mobile */}
                         {!isLast && (
-                          <div className="md:hidden absolute left-5 top-12 bottom-0 w-0.5 bg-gradient-to-b from-green-300 to-green-100 dark:from-green-700 dark:to-green-900/30" />
+                          <motion.div
+                            initial={{ scaleY: 0 }}
+                            animate={{ scaleY: 1 }}
+                            transition={{ duration: 0.6, delay: idx * 0.1, ease: "easeOut" }}
+                            className="md:hidden absolute left-5 top-12 bottom-0 w-0.5 origin-top bg-gradient-to-b from-green-300 to-green-100 dark:from-green-700 dark:to-green-900/30"
+                          />
                         )}
 
                         <div className="flex gap-4 md:gap-6">
-                          {/* Step Number Circle */}
+                          {/* Step Number Circle with pulsing glow ring */}
                           <div className="relative z-10 flex-shrink-0">
+                            {/* Pulsing ring behind step dot */}
+                            <motion.span
+                              variants={pulseRing}
+                              animate="animate"
+                              className="absolute inset-0 w-10 h-10 md:w-16 md:h-16 rounded-full bg-green-400/30 dark:bg-green-500/20"
+                            />
                             <motion.div
                               whileHover={{ scale: 1.1 }}
                               className={cn(
-                                "w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center text-sm md:text-lg font-bold shadow-sm transition-all duration-300",
+                                "relative w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center text-sm md:text-lg font-bold shadow-sm transition-all duration-300",
                                 isExpanded
                                   ? "bg-green-600 text-white shadow-green-600/30 shadow-lg"
                                   : "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400"
@@ -665,140 +777,175 @@ export function PanduanLayananSection() {
                             </motion.div>
                           </div>
 
-                          {/* Step Content */}
-                          <Card className="flex-1 border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-                            <CardContent className="p-4 md:p-5">
-                              {/* Step Header */}
-                              <div
-                                className={cn(
-                                  "flex items-start gap-3 cursor-pointer",
-                                  isDetailed && "cursor-pointer"
-                                )}
-                                onClick={() => toggleStep(step.nomor)}
-                                role={isDetailed ? "button" : undefined}
-                                tabIndex={isDetailed ? 0 : undefined}
-                                onKeyDown={(e) => {
-                                  if (isDetailed && (e.key === "Enter" || e.key === " ")) {
-                                    e.preventDefault();
-                                    toggleStep(step.nomor);
-                                  }
-                                }}
-                                aria-expanded={isDetailed ? isExpanded : undefined}
-                              >
-                                {/* Icon */}
-                                <div className={cn(
-                                  "w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors",
-                                  isExpanded
-                                    ? "bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400"
-                                    : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                                )}>
-                                  {getStepIcon(idx)}
-                                </div>
-
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 flex-wrap">
-                                    <h4 className="text-sm md:text-base font-semibold text-gray-900 dark:text-gray-100">
-                                      {isDetailed ? step.judul : step.judulSingkat}
-                                    </h4>
-                                    <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 border-0 text-[10px] px-2 py-0.5 gap-1">
-                                      <Clock className="h-3 w-3" />
-                                      {step.estimasiWaktu}
-                                    </Badge>
+                          {/* Step Content - 3D tilt on hover */}
+                          <motion.div
+                            whileHover={{
+                              y: -4,
+                              rotateY: -2,
+                              rotateX: 2,
+                              transition: { duration: 0.25 },
+                            }}
+                            style={{ perspective: "800px" }}
+                            className="flex-1"
+                          >
+                            <Card className={cn(
+                              "border shadow-sm overflow-hidden transition-all duration-300",
+                              isExpanded
+                                ? "border-green-300 dark:border-green-700 shadow-lg shadow-green-500/10 dark:shadow-green-400/10"
+                                : "border-gray-200 dark:border-gray-800 hover:shadow-md hover:border-green-200 dark:hover:border-green-800/50"
+                            )}>
+                              {/* Gradient accent line at top */}
+                              <div className={cn(
+                                "h-0.5 transition-colors duration-300",
+                                isExpanded
+                                  ? "bg-gradient-to-r from-green-500 via-emerald-400 to-teal-500"
+                                  : "bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800"
+                              )} />
+                              <CardContent className="p-4 md:p-5">
+                                {/* Step Header */}
+                                <div
+                                  className={cn(
+                                    "flex items-start gap-3 cursor-pointer",
+                                    isDetailed && "cursor-pointer"
+                                  )}
+                                  onClick={() => toggleStep(step.nomor)}
+                                  role={isDetailed ? "button" : undefined}
+                                  tabIndex={isDetailed ? 0 : undefined}
+                                  onKeyDown={(e) => {
+                                    if (isDetailed && (e.key === "Enter" || e.key === " ")) {
+                                      e.preventDefault();
+                                      toggleStep(step.nomor);
+                                    }
+                                  }}
+                                  aria-expanded={isDetailed ? isExpanded : undefined}
+                                >
+                                  {/* Icon with pulsing glow ring */}
+                                  <div className="relative">
+                                    <motion.span
+                                      variants={pulseRing}
+                                      animate="animate"
+                                      className="absolute inset-0 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-green-400/20 dark:bg-green-500/15"
+                                    />
+                                    <div className={cn(
+                                      "relative w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors",
+                                      isExpanded
+                                        ? "bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400"
+                                        : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                                    )}>
+                                      {getStepIcon(idx)}
+                                    </div>
                                   </div>
-                                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1.5 leading-relaxed">
-                                    {isDetailed ? step.deskripsi : step.deskripsiSingkat}
-                                  </p>
+
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                      <h4 className="text-sm md:text-base font-semibold text-gray-900 dark:text-gray-100">
+                                        {isDetailed ? step.judul : step.judulSingkat}
+                                      </h4>
+                                      {/* Estimasi Waktu badge with Clock */}
+                                      <Badge className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 text-[10px] px-2 py-0.5 gap-1 font-medium">
+                                        <Clock className="h-3 w-3" />
+                                        {step.estimasiWaktu}
+                                      </Badge>
+                                      {/* Step category badge */}
+                                      <Badge className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/30 dark:to-teal-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800/40 text-[10px] px-2 py-0.5 font-medium hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors">
+                                        Langkah {step.nomor}/{activeLayanan.steps.length}
+                                      </Badge>
+                                    </div>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1.5 leading-relaxed">
+                                      {isDetailed ? step.deskripsi : step.deskripsiSingkat}
+                                    </p>
+                                  </div>
+
+                                  {isDetailed && (
+                                    <motion.div
+                                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                                      transition={{ duration: 0.2 }}
+                                      className="flex-shrink-0 mt-1"
+                                    >
+                                      <ChevronDown className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                                    </motion.div>
+                                  )}
                                 </div>
 
-                                {isDetailed && (
-                                  <motion.div
-                                    animate={{ rotate: isExpanded ? 180 : 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="flex-shrink-0 mt-1"
-                                  >
-                                    <ChevronDown className="h-5 w-5 text-gray-400 dark:text-gray-500" />
-                                  </motion.div>
-                                )}
-                              </div>
+                                {/* Expanded Detail (only in detailed mode) */}
+                                <AnimatePresence>
+                                  {isDetailed && isExpanded && (
+                                    <motion.div
+                                      initial={{ height: 0, opacity: 0 }}
+                                      animate={{ height: "auto", opacity: 1 }}
+                                      exit={{ height: 0, opacity: 0 }}
+                                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                                      className="overflow-hidden"
+                                    >
+                                      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 space-y-4">
+                                        {/* Tips/Warnings */}
+                                        {step.tips.length > 0 && (
+                                          <div>
+                                            <h5 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                                              Tips & Peringatan
+                                            </h5>
+                                            <div className="space-y-2">
+                                              {step.tips.map((tip, tipIdx) => (
+                                                <TipCallout key={tipIdx} tip={tip} />
+                                              ))}
+                                            </div>
+                                          </div>
+                                        )}
 
-                              {/* Expanded Detail (only in detailed mode) */}
-                              <AnimatePresence>
-                                {isDetailed && isExpanded && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    className="overflow-hidden"
-                                  >
-                                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 space-y-4">
-                                      {/* Tips/Warnings */}
-                                      {step.tips.length > 0 && (
+                                        {/* Document Checklist */}
                                         <div>
-                                          <h5 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-                                            Tips & Peringatan
+                                          <h5 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                            <FileText className="h-3.5 w-3.5" />
+                                            Anda Perlu
                                           </h5>
-                                          <div className="space-y-2">
-                                            {step.tips.map((tip, tipIdx) => (
-                                              <TipCallout key={tipIdx} tip={tip} />
+                                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                            {step.dokumen.map((doc, docIdx) => (
+                                              <motion.div
+                                                key={docIdx}
+                                                initial={{ opacity: 0, x: -10 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: docIdx * 0.05 }}
+                                                className="flex items-center gap-2 p-2.5 rounded-lg bg-green-50/50 dark:bg-green-900/10 border border-green-100 dark:border-green-800/30"
+                                              >
+                                                <CheckCircle className="h-3.5 w-3.5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                                                <span className="text-xs text-gray-700 dark:text-gray-300">{doc}</span>
+                                              </motion.div>
                                             ))}
                                           </div>
                                         </div>
-                                      )}
-
-                                      {/* Document Checklist */}
-                                      <div>
-                                        <h5 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                                          <FileText className="h-3.5 w-3.5" />
-                                          Anda Perlu
-                                        </h5>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                          {step.dokumen.map((doc, docIdx) => (
-                                            <motion.div
-                                              key={docIdx}
-                                              initial={{ opacity: 0, x: -10 }}
-                                              animate={{ opacity: 1, x: 0 }}
-                                              transition={{ delay: docIdx * 0.05 }}
-                                              className="flex items-center gap-2 p-2.5 rounded-lg bg-green-50/50 dark:bg-green-900/10 border border-green-100 dark:border-green-800/30"
-                                            >
-                                              <CheckCircle className="h-3.5 w-3.5 text-green-600 dark:text-green-400 flex-shrink-0" />
-                                              <span className="text-xs text-gray-700 dark:text-gray-300">{doc}</span>
-                                            </motion.div>
-                                          ))}
-                                        </div>
                                       </div>
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
 
-                              {/* Non-detailed mode: always show documents inline */}
-                              {!isDetailed && (
-                                <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
-                                  <div className="flex flex-wrap gap-1.5">
-                                    {step.dokumen.slice(0, 3).map((doc, docIdx) => (
-                                      <Badge
-                                        key={docIdx}
-                                        variant="outline"
-                                        className="text-[10px] px-2 py-0.5 bg-green-50 dark:bg-green-900/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800/30 font-normal"
-                                      >
-                                        <CheckCircle className="h-2.5 w-2.5 mr-1" />
-                                        {doc}
-                                      </Badge>
-                                    ))}
-                                    {step.dokumen.length > 3 && (
-                                      <Badge
-                                        variant="outline"
-                                        className="text-[10px] px-2 py-0.5 text-gray-500 dark:text-gray-400 font-normal"
-                                      >
-                                        +{step.dokumen.length - 3} lainnya
-                                      </Badge>
-                                    )}
+                                {/* Non-detailed mode: always show documents inline */}
+                                {!isDetailed && (
+                                  <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {step.dokumen.slice(0, 3).map((doc, docIdx) => (
+                                        <Badge
+                                          key={docIdx}
+                                          variant="outline"
+                                          className="text-[10px] px-2 py-0.5 bg-green-50 dark:bg-green-900/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800/30 font-normal"
+                                        >
+                                          <CheckCircle className="h-2.5 w-2.5 mr-1" />
+                                          {doc}
+                                        </Badge>
+                                      ))}
+                                      {step.dokumen.length > 3 && (
+                                        <Badge
+                                          variant="outline"
+                                          className="text-[10px] px-2 py-0.5 text-gray-500 dark:text-gray-400 font-normal"
+                                        >
+                                          +{step.dokumen.length - 3} lainnya
+                                        </Badge>
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                              )}
-                            </CardContent>
-                          </Card>
+                                )}
+                              </CardContent>
+                            </Card>
+                          </motion.div>
                         </div>
                       </motion.div>
                     );
@@ -828,12 +975,38 @@ export function PanduanLayananSection() {
             </motion.div>
           </AnimatePresence>
 
+          {/* Floating Tips Callout */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ delay: 0.7 }}
+            className="mt-8"
+          >
+            <div className="p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50/60 dark:from-amber-900/10 dark:to-orange-900/5 border border-amber-200/80 dark:border-amber-800/30 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md shadow-amber-500/20">
+                  <Lightbulb className="h-4.5 w-4.5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                    Tips Penting
+                  </p>
+                  <p className="text-xs text-amber-700/80 dark:text-amber-300/70 mt-1 leading-relaxed">
+                    Datang di pagi hari (08:00-10:00 WITA) untuk menghindari antrian panjang.
+                    Pastikan semua dokumen dalam kondisi asli (bukan fotokopi) dan data KK sudah sesuai sebelum ke kantor.
+                    Bawa bolpen untuk mengisi formulir di lokasi.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Helpful note */}
           <motion.div
             variants={headerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="mt-8"
+            className="mt-6"
           >
             <div className="p-4 rounded-xl bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/10 dark:to-teal-900/10 border border-green-100 dark:border-green-800/30">
               <div className="flex items-start gap-3">
@@ -854,6 +1027,14 @@ export function PanduanLayananSection() {
           </motion.div>
         </div>
       </div>
+
+      {/* Shimmer animation */}
+      <style jsx global>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
     </section>
   );
 }
