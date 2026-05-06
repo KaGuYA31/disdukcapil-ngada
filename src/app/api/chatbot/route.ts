@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, sanitizeString, secureResponse } from "@/lib/security";
 import ZAI from "z-ai-web-dev-sdk";
 
-// In-memory ZAI instance (reuse across requests)
-let zaiInstance: InstanceType<typeof ZAI> | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let zaiInstance: any = null;
 
-async function getZAI(): Promise<InstanceType<typeof ZAI>> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getZAI(): Promise<any> {
   if (!zaiInstance) {
     zaiInstance = await ZAI.create();
   }

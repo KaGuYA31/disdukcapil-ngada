@@ -318,7 +318,7 @@ export function TimelinePencapaianSection() {
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: "easeInOut" as const,
               }}
             >
               <ChevronDown className="h-4 w-4" />
@@ -329,7 +329,7 @@ export function TimelinePencapaianSection() {
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: "easeInOut" as const,
                 delay: 0.2,
               }}
             >
@@ -408,7 +408,7 @@ export function TimelinePencapaianSection() {
                           transition={{
                             duration: 2.5,
                             repeat: Infinity,
-                            ease: "easeInOut",
+                            ease: "easeInOut" as const,
                             delay: index * 0.3,
                           }}
                           className={`absolute inset-0 w-12 h-12 rounded-full ${cfg.ringBg}`}
@@ -422,7 +422,7 @@ export function TimelinePencapaianSection() {
                           transition={{
                             duration: 3.5,
                             repeat: Infinity,
-                            ease: "easeInOut",
+                            ease: "easeInOut" as const,
                             delay: index * 0.3 + 0.5,
                           }}
                           className={`absolute inset-0 w-12 h-12 rounded-full ${cfg.ringBg}`}

@@ -271,7 +271,7 @@ export default function HomePage() {
         <PetaKecamatanSection />
         <SectionDivider variant="gradient" color="teal" />
         <PanduanInteraktifSection />
-        <SectionDivider variant="wave-1" color="emerald" />
+        <SectionDivider variant="wave-1" color="green" />
         <TimelinePencapaianSection />
         <SectionDivider variant="dotted" color="teal" />
         <UcapanKepalaDinasSection />

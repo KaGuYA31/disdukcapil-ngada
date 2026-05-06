@@ -141,12 +141,13 @@ function ProgressRing({ progress, color, size = 56 }: { progress: number; color:
 
   useEffect(() => {
     if (inView) {
-      const controls = animate(circumference, circumference - (progress / 100) * circumference, {
+      const target = circumference - (progress / 100) * circumference;
+      const controls = animate(circumference, target, {
         duration: 2,
         ease: "easeOut",
+        onUpdate: (v) => setOffset(v),
       });
-      const unsubscribe = controls.on("change", (v) => setOffset(v));
-      return () => { controls.stop(); unsubscribe(); };
+      return () => { controls.stop(); };
     }
   }, [inView, circumference, progress]);
 

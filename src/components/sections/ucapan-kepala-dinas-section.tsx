@@ -93,8 +93,8 @@ const quoteCardVariants = {
     scale: 1,
     transition: {
       duration: 0.7,
-      ease: [0.25, 0.46, 0.45, 0.94],
-      type: "spring",
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+      type: "spring" as const,
       stiffness: 100,
     },
   },
@@ -248,7 +248,7 @@ export function UcapanKepalaDinasSection() {
                 transition={{
                   duration: 3,
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  ease: "easeInOut" as const,
                 }}
               >
                 <Quote className="h-20 w-20 md:h-28 md:w-28 text-green-600 dark:text-green-400" />

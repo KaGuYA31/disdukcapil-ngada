@@ -722,7 +722,7 @@ export function KalkulatorEstimasiSection() {
           transition={{
             duration: shape.duration,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: "easeInOut" as const,
             delay: index * 1.2,
           }}
           className={`absolute hidden md:block ${shape.size} ${shape.className}`}

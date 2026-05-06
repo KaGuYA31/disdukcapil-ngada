@@ -196,7 +196,7 @@ export function NewsletterSection() {
           transition={{
             duration: 4 + i * 0.8,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: "easeInOut" as const,
             delay: i * 1.2,
           }}
           className="absolute hidden lg:block"

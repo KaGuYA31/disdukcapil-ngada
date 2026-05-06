@@ -124,7 +124,7 @@ export function LoadingScreen() {
                 transition={{
                   duration: 2,
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  ease: "easeInOut" as const,
                 }}
                 className="relative w-24 h-24 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 shadow-2xl shadow-green-900/50"
               >

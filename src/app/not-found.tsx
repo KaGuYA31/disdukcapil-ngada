@@ -483,7 +483,7 @@ function FloatingParticles() {
           transition={{
             duration: 5 + i,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: "easeInOut" as const,
             delay: i * 0.4,
           }}
         />
