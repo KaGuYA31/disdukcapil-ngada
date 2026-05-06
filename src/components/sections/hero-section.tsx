@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Search, FileText, Users, Building2, Loader2, Globe, ChevronDown, IdCard, FileCheck, Sun, Sunset, Moon, Shield, Star } from "lucide-react";
+import { Search, FileText, Users, Building2, Loader2, Globe, ChevronDown, IdCard, FileCheck, Sun, Sunset, Moon, Shield, Star, MapPin, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -301,12 +301,44 @@ export function HeroSection() {
       {/* Secondary moving gradient mesh layer */}
       <div className="absolute inset-0 bg-gradient-to-tr from-teal-800/40 via-transparent to-yellow-700/20 animate-hero-gradient" style={{ backgroundSize: "300% 300%", animationDuration: "20s", animationDirection: "reverse" }} />
 
-      {/* Floating Particles - CSS animated for performance */}
+      {/* Gradient Mesh Blobs — 4 complex moving blobs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <div className="absolute -top-[20%] -left-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] rounded-full bg-gradient-to-br from-green-400/15 to-teal-500/10 blur-3xl animate-mesh-blob-1" />
+        <div className="absolute top-[20%] right-[-15%] w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] rounded-full bg-gradient-to-br from-teal-400/12 to-emerald-400/8 blur-3xl animate-mesh-blob-2" />
+        <div className="absolute bottom-[10%] left-[20%] w-[45vw] h-[45vw] max-w-[450px] max-h-[450px] rounded-full bg-gradient-to-br from-yellow-400/8 to-green-400/10 blur-3xl animate-mesh-blob-3" />
+        <div className="absolute top-[50%] left-[50%] w-[35vw] h-[35vw] max-w-[350px] max-h-[350px] rounded-full bg-gradient-to-br from-emerald-400/10 to-cyan-400/8 blur-3xl animate-mesh-blob-4" />
+      </div>
+
+      {/* Floating Particles — existing large blur orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-[15%] left-[10%] w-32 h-32 rounded-full bg-green-400/[0.07] animate-float-1 blur-xl" />
         <div className="absolute top-[60%] left-[70%] w-40 h-40 rounded-full bg-teal-400/[0.06] animate-float-2 blur-xl" />
         <div className="absolute top-[30%] left-[80%] w-24 h-24 rounded-full bg-yellow-400/[0.05] animate-float-3 blur-xl" />
         <div className="absolute top-[75%] left-[25%] w-28 h-28 rounded-full bg-green-300/[0.06] animate-float-4 blur-xl" />
+      </div>
+
+      {/* Small Floating Particles — 18 subtle dots with varied sizes, opacity, speed */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {/* Desktop particles */}
+        <div className="hidden md:block absolute top-[8%] left-[12%] w-1.5 h-1.5 rounded-full bg-green-300/50" style={{ animation: 'particle-float-1 14s ease-in-out infinite' }} />
+        <div className="hidden md:block absolute top-[22%] left-[85%] w-1 h-1 rounded-full bg-teal-300/60" style={{ animation: 'particle-float-2 18s ease-in-out infinite', animationDelay: '-3s' }} />
+        <div className="hidden md:block absolute top-[45%] left-[6%] w-2 h-2 rounded-full bg-green-200/40" style={{ animation: 'particle-float-3 16s ease-in-out infinite', animationDelay: '-6s' }} />
+        <div className="hidden md:block absolute top-[65%] left-[90%] w-1 h-1 rounded-full bg-emerald-300/50" style={{ animation: 'particle-float-4 20s ease-in-out infinite', animationDelay: '-2s' }} />
+        <div className="hidden md:block absolute top-[35%] left-[55%] w-1.5 h-1.5 rounded-full bg-teal-200/35" style={{ animation: 'particle-float-5 17s ease-in-out infinite', animationDelay: '-8s' }} />
+        <div className="hidden md:block absolute top-[80%] left-[40%] w-1 h-1 rounded-full bg-green-300/45" style={{ animation: 'particle-float-1 22s ease-in-out infinite', animationDelay: '-5s' }} />
+        <div className="hidden md:block absolute top-[12%] left-[65%] w-2 h-2 rounded-full bg-yellow-200/30" style={{ animation: 'particle-float-2 19s ease-in-out infinite', animationDelay: '-10s' }} />
+        <div className="hidden md:block absolute top-[55%] left-[20%] w-1.5 h-1.5 rounded-full bg-emerald-200/40" style={{ animation: 'particle-float-3 15s ease-in-out infinite', animationDelay: '-7s' }} />
+        <div className="hidden md:block absolute top-[28%] left-[35%] w-1 h-1 rounded-full bg-green-400/35" style={{ animation: 'particle-float-4 21s ease-in-out infinite', animationDelay: '-12s' }} />
+        <div className="hidden md:block absolute top-[72%] left-[60%] w-1.5 h-1.5 rounded-full bg-teal-300/30" style={{ animation: 'particle-float-5 18s ease-in-out infinite', animationDelay: '-4s' }} />
+        <div className="hidden md:block absolute top-[90%] left-[15%] w-1 h-1 rounded-full bg-green-200/50" style={{ animation: 'particle-float-1 16s ease-in-out infinite', animationDelay: '-9s' }} />
+        <div className="hidden md:block absolute top-[5%] left-[45%] w-2 h-2 rounded-full bg-teal-200/25" style={{ animation: 'particle-float-2 23s ease-in-out infinite', animationDelay: '-1s' }} />
+        <div className="hidden md:block absolute top-[48%] left-[78%] w-1 h-1 rounded-full bg-emerald-300/40" style={{ animation: 'particle-float-3 20s ease-in-out infinite', animationDelay: '-11s' }} />
+        <div className="hidden md:block absolute top-[15%] left-[30%] w-1.5 h-1.5 rounded-full bg-green-300/35" style={{ animation: 'particle-float-4 17s ease-in-out infinite', animationDelay: '-6s' }} />
+        <div className="hidden md:block absolute top-[60%] left-[50%] w-1 h-1 rounded-full bg-yellow-300/30" style={{ animation: 'particle-float-5 24s ease-in-out infinite', animationDelay: '-13s' }} />
+        {/* Mobile: reduced particles (6) */}
+        <div className="md:hidden absolute top-[10%] left-[15%] w-1.5 h-1.5 rounded-full bg-green-300/40" style={{ animation: 'particle-float-1 18s ease-in-out infinite' }} />
+        <div className="md:hidden absolute top-[50%] left-[80%] w-1 h-1 rounded-full bg-teal-300/50" style={{ animation: 'particle-float-3 20s ease-in-out infinite', animationDelay: '-4s' }} />
+        <div className="md:hidden absolute top-[75%] left-[30%] w-1.5 h-1.5 rounded-full bg-green-200/35" style={{ animation: 'particle-float-5 16s ease-in-out infinite', animationDelay: '-8s' }} />
       </div>
 
       {/* Floating Geometric Shapes */}
@@ -402,15 +434,18 @@ export function HeroSection() {
 
             <motion.div
               variants={fadeIn}
+              whileHover={{ y: -4, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
               className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-sm"
             >
               <Building2 className="h-4 w-4" />
               <span>Pemerintah Kabupaten Ngada</span>
+              <Sparkles className="h-3 w-3 text-yellow-300/70" />
             </motion.div>
 
             <motion.h1
               variants={fadeIn}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight hero-text-shadow"
             >
               Portal Layanan{" "}
               <span className="text-yellow-400">Kependudukan</span> dan
@@ -493,16 +528,16 @@ export function HeroSection() {
               </span>
             </motion.form>
 
-            {/* Quick Actions */}
+            {/* Quick Actions — Enhanced CTA Buttons */}
             <motion.div
               variants={fadeIn}
               className="flex flex-wrap gap-3 justify-center lg:justify-start"
             >
-              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 20 }}>
                 <Link href="/layanan">
                   <Button
                     size="lg"
-                    className="relative bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold shadow-lg shadow-black/10 overflow-hidden rounded-xl btn-gradient-border transition-all duration-300"
+                    className="relative bg-white text-green-700 hover:bg-green-50 h-12 px-6 font-semibold shadow-lg shadow-black/10 overflow-hidden rounded-xl btn-gradient-border transition-all duration-300 animate-cta-pulse-glow"
                   >
                     {/* Subtle gradient overlay */}
                     <span className="absolute inset-0 bg-gradient-to-r from-white via-green-50/40 to-white opacity-0 hover:opacity-100 transition-opacity duration-300" />
@@ -511,18 +546,18 @@ export function HeroSection() {
                   </Button>
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 20 }}>
                 <Link href="/layanan-online">
                   <Button
                     size="lg"
-                    className="bg-white/15 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10 transition-all duration-200 rounded-xl hover:shadow-xl hover:shadow-green-500/20"
+                    className="bg-white/15 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-green-700 h-12 px-6 font-semibold shadow-lg shadow-black/10 transition-all duration-200 rounded-xl hover:shadow-xl hover:shadow-green-500/20 btn-gradient-border"
                   >
                     <Globe className="mr-2 h-5 w-5" />
                     Layanan Online
                   </Button>
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 20 }}>
                 <Link href="/pengaduan">
                   <Button
                     size="lg"
@@ -533,6 +568,30 @@ export function HeroSection() {
                   </Button>
                 </Link>
               </motion.div>
+            </motion.div>
+
+            {/* Stats Preview Row — 3 mini-stat pills with glassmorphism */}
+            <motion.div
+              variants={fadeIn}
+              className="flex flex-wrap gap-3 justify-center lg:justify-start mt-2"
+            >
+              {[
+                { label: "171K+ Penduduk", icon: Users },
+                { label: "12 Kecamatan", icon: MapPin },
+                { label: "50+ Layanan", icon: FileCheck },
+              ].map((stat, idx) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.0 + idx * 0.15, type: "spring", stiffness: 300, damping: 20 }}
+                  whileHover={{ y: -2, scale: 1.05 }}
+                  className="flex items-center gap-2 stats-preview-pill rounded-full px-4 py-2 cursor-default"
+                >
+                  <stat.icon className="h-3.5 w-3.5 text-green-300/80" />
+                  <span className="text-xs sm:text-sm font-medium text-white/90">{stat.label}</span>
+                </motion.div>
+              ))}
             </motion.div>
 
 
@@ -735,7 +794,7 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Scroll Down Indicator */}
+      {/* Scroll Down Indicator — Enhanced with gradient trail */}
       <motion.button
         className="hidden md:flex absolute bottom-28 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-1 group cursor-pointer"
         onClick={() => {
@@ -745,11 +804,17 @@ export function HeroSection() {
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm opacity-70 group-hover:opacity-100 transition-opacity">
-          <ChevronDown className="h-5 w-5 text-white" />
+        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm opacity-70 group-hover:opacity-100 transition-all duration-300 group-hover:border-green-400/50 group-hover:shadow-lg group-hover:shadow-green-500/20">
+          <ChevronDown className="h-5 w-5 text-white group-hover:text-green-300 transition-colors" />
         </span>
+        {/* Gradient trail dots */}
+        <div className="flex flex-col items-center gap-1">
+          <div className="w-1 h-1 rounded-full bg-green-400/60 animate-gradient-trail" style={{ animationDelay: "0s" }} />
+          <div className="w-0.5 h-0.5 rounded-full bg-green-400/40 animate-gradient-trail" style={{ animationDelay: "0.3s" }} />
+          <div className="w-0.5 h-0.5 rounded-full bg-teal-400/30 animate-gradient-trail" style={{ animationDelay: "0.6s" }} />
+        </div>
         {/* Semi-transparent white line extending from button to wave divider */}
-        <div className="w-px h-16 bg-gradient-to-b from-white/30 to-white/5" />
+        <div className="w-px h-16 bg-gradient-to-b from-white/30 via-green-400/15 to-white/5" />
         {/* Animated opacity pulse text */}
         <motion.span
           className="text-xs text-white/50 mt-0"

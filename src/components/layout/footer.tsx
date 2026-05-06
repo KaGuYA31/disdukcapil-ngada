@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -22,6 +23,8 @@ import {
   Users,
   TrendingUp,
   Heart,
+  Send,
+  QrCode,
 } from "lucide-react";
 import { VisitorCounter } from "@/components/shared/visitor-counter";
 import { CONTACT_INFO, OPERATING_HOURS, SOCIAL_MEDIA } from "@/lib/constants";
@@ -155,13 +158,24 @@ const socialFeedItems: SocialFeedItem[] = [
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const [emailInput, setEmailInput] = useState("");
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (emailInput.trim()) {
+      setEmailSubmitted(true);
+      setEmailInput("");
+      setTimeout(() => setEmailSubmitted(false), 3000);
+    }
+  };
+
   return (
-    <footer className="relative text-gray-300">
+    <footer className="relative text-gray-300 footer-gradient-top">
       {/* Dark green gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-green-950 via-gray-900 to-gray-950 dark:from-gray-950 dark:via-gray-950 dark:to-black pointer-events-none" />
 
@@ -194,20 +208,36 @@ export function Footer() {
               profesional, transparan, dan mudah diakses oleh seluruh
               masyarakat.
             </p>
-            {/* Social Media Links (compact) */}
+            {/* Social Media Links (compact) — Enhanced with gradient reveal */}
             <div className="flex gap-2.5">
               {socialLinks.map((social) => (
-                <a
+                <motion.a
                   key={social.title}
                   href={social.href}
-                  className="w-10 h-10 bg-gray-800 dark:bg-gray-700/50 rounded-lg flex items-center justify-center hover:bg-green-600 dark:hover:bg-green-500 hover:scale-110 transition-all duration-200"
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  className="w-10 h-10 bg-gray-800 dark:bg-gray-700/50 rounded-lg flex items-center justify-center social-icon-gradient transition-all duration-200"
                   aria-label={social.title}
+                  title={social.title}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <social.icon className="h-4.5 w-4.5" />
-                </a>
+                </motion.a>
               ))}
+            </div>
+
+            {/* QR Code Placeholder */}
+            <div className="mt-5 flex items-start gap-3">
+              <div className="w-20 h-20 rounded-lg bg-white/10 border border-white/15 flex flex-col items-center justify-center">
+                <QrCode className="h-10 w-10 text-green-400/70" />
+                <span className="text-[8px] text-gray-400 mt-0.5">QR Code</span>
+              </div>
+              <div className="pt-1">
+                <p className="text-xs font-medium text-gray-300">Scan untuk info lebih lanjut</p>
+                <p className="text-[10px] text-gray-500 mt-1">Akses informasi layanan melalui QR code</p>
+              </div>
             </div>
           </div>
 
@@ -376,8 +406,50 @@ export function Footer() {
           </div>
         </motion.div>
 
+        {/* Animated Gradient Divider */}
+        <div className="mt-10 animated-footer-divider" />
+
+        {/* Newsletter Mini Form */}
+        <div className="mt-8">
+          <div className="max-w-xl mx-auto">
+            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+              <div className="relative flex-1">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+                <input
+                  type="email"
+                  placeholder="Langganan info terbaru..."
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-lg bg-gray-800/80 dark:bg-gray-700/50 border border-gray-700/50 dark:border-gray-600/40 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:border-green-500/40 transition-all duration-200"
+                  required
+                />
+              </div>
+              <motion.button
+                type="submit"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-400 hover:to-teal-400 text-white text-sm font-medium shadow-lg shadow-green-500/20 transition-all duration-200 flex items-center gap-2"
+              >
+                <Send className="h-4 w-4" />
+                <span className="hidden sm:inline">Langganan</span>
+              </motion.button>
+            </form>
+            {emailSubmitted && (
+              <motion.p
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="text-xs text-green-400 mt-2 text-center"
+              >
+                Terima kasih telah berlangganan!
+              </motion.p>
+            )}
+          </div>
+        </div>
+
         {/* Green-600 gradient separator line */}
-        <div className="mt-10 h-[2px] bg-gradient-to-r from-transparent via-green-600 to-transparent opacity-60" />
+        <div className="mt-8 h-[2px] bg-gradient-to-r from-transparent via-green-600 to-transparent opacity-60" />
 
         {/* Contact Bar - full width */}
         <div className="pt-8" id="footer-contact">
@@ -464,6 +536,18 @@ export function Footer() {
         </div>
       </div>
 
+      {/* Back to Top — Floating Button */}
+      <motion.button
+        onClick={scrollToTop}
+        whileHover={{ scale: 1.1, y: -2 }}
+        whileTap={{ scale: 0.9 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        className="fixed bottom-24 right-6 z-40 w-11 h-11 rounded-full bg-gradient-to-br from-green-500 to-teal-500 text-white shadow-lg shadow-green-500/25 flex items-center justify-center hover:shadow-xl hover:shadow-green-500/30 transition-shadow duration-300"
+        aria-label="Kembali ke atas"
+      >
+        <ArrowUp className="h-5 w-5" />
+      </motion.button>
+
       {/* Government Branding Strip */}
       <div className="relative border-t border-green-800/30 bg-green-950/80 dark:bg-black">
         <div className="container mx-auto px-4 py-2.5">
@@ -481,23 +565,23 @@ export function Footer() {
       <div className="relative border-t border-gray-800 dark:border-gray-700/60 bg-gray-950 dark:bg-black">
         <div className="container mx-auto px-4 py-5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-3">
-            {/* Scroll to Top + Copyright */}
+            {/* Copyright with Badge */}
             <div className="flex items-center gap-4 text-sm">
-              <button
-                onClick={scrollToTop}
-                className="inline-flex items-center gap-1.5 hover:text-green-400 transition-colors group"
-                aria-label="Kembali ke atas"
-              >
-                <span className="w-7 h-7 bg-gray-800 dark:bg-gray-700/50 rounded-full flex items-center justify-center group-hover:bg-green-600 dark:group-hover:bg-green-500 transition-colors duration-200">
-                  <ArrowUp className="h-3.5 w-3.5" />
-                </span>
-                <span className="hidden sm:inline">Kembali ke Atas</span>
-              </button>
               <div className="text-center">
-                <p className="text-gray-400">
-                  © {currentYear} Dinas Kependudukan dan Pencatatan Sipil
-                  Kabupaten Ngada
-                </p>
+                <motion.p
+                  className="text-gray-400 inline-flex items-center gap-2"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                >
+                  <motion.span
+                    className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-medium text-green-400"
+                    animate={{ boxShadow: ["0 0 0 0 rgba(34,197,94,0)", "0 0 8px 2px rgba(34,197,94,0.15)", "0 0 0 0 rgba(34,197,94,0)"] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    Disdukcapil Ngada
+                  </motion.span>
+                  © {currentYear}
+                </motion.p>
                 <p className="text-xs text-gray-500 dark:text-gray-600 mt-1 flex items-center justify-center gap-1">
                   Dibuat dengan
                   <Heart className="h-3 w-3 text-red-500 fill-red-500 inline" />

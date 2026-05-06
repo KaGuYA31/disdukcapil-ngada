@@ -160,6 +160,36 @@ const PanduanInteraktifSection = dynamic(
   { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto space-y-6">{[1,2,3,4,5].map(i=><div key={i} className="h-28 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
 );
 
+// Task 9-a: Timeline Pencapaian
+const TimelinePencapaianSection = dynamic(
+  () => import("@/components/sections/timeline-pencapaian-section").then((m) => ({ default: m.TimelinePencapaianSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto space-y-8">{[1,2,3,4].map(i=><div key={i} className="h-32 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+
+// Task 9-b: Ucapan Kepala Dinas
+const UcapanKepalaDinasSection = dynamic(
+  () => import("@/components/sections/ucapan-kepala-dinas-section").then((m) => ({ default: m.UcapanKepalaDinasSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="max-w-4xl mx-auto h-96 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+
+// Task 10-a: Event & Agenda Dinas
+const EventAgendaSection = dynamic(
+  () => import("@/components/sections/event-agenda-section").then((m) => ({ default: m.EventAgendaSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-5xl mx-auto space-y-6">{[1,2,3].map(i=><div key={i} className="h-40 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}</div></div></div> }
+);
+
+// Task 10-b: Kalkulator Estimasi Layanan
+const KalkulatorEstimasiSection = dynamic(
+  () => import("@/components/sections/kalkulator-estimasi-section").then((m) => ({ default: m.KalkulatorEstimasiSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-4xl mx-auto h-96 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
+);
+
+// Task 10-d: Indeks Kepuasan Masyarakat
+const IndeksKepuasanSection = dynamic(
+  () => import("@/components/sections/indeks-kepuasan-section").then((m) => ({ default: m.IndeksKepuasanSection })),
+  { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4 mx-auto" /><div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6"><div className="h-72 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /><div className="h-72 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div></div> }
+);
+
 // Task 7-a: AI Chatbot Widget
 const AICHatbotWidget = dynamic(
   () => import("@/components/shared/ai-chatbot-widget").then((m) => ({ default: m.AICHatbotWidget })),
@@ -241,6 +271,15 @@ export default function HomePage() {
         <PetaKecamatanSection />
         <SectionDivider variant="gradient" color="teal" />
         <PanduanInteraktifSection />
+        <SectionDivider variant="wave-1" color="emerald" />
+        <TimelinePencapaianSection />
+        <SectionDivider variant="dotted" color="teal" />
+        <UcapanKepalaDinasSection />
+        <SectionDivider variant="gradient" color="green" />
+        <EventAgendaSection />
+        <KalkulatorEstimasiSection />
+        <SectionDivider variant="wave-2" color="green" />
+        <IndeksKepuasanSection />
         <TautanTerkaitSection />
         <CTASection />
       </main>
