@@ -36,6 +36,7 @@ const quickLinks = [
   { title: "Inovasi", href: "/inovasi" },
   { title: "Berita & Informasi", href: "/berita" },
   { title: "Pengaduan", href: "/pengaduan" },
+  { title: "Kebijakan Privasi", href: "/kebijakan-privasi" },
 ];
 
 const layananUnggulanLinks = [
