@@ -2,11 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, sanitizeString, secureResponse } from "@/lib/security";
 import ZAI from "z-ai-web-dev-sdk";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let zaiInstance: any = null;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function getZAI(): Promise<any> {
+async function getZAI() {
   if (!zaiInstance) {
     zaiInstance = await ZAI.create();
   }

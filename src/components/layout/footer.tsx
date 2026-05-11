@@ -18,7 +18,6 @@ import {
   ExternalLink,
   ClipboardList,
   Star,
-  ArrowUp,
   ChevronRight,
   Users,
   TrendingUp,
@@ -160,10 +159,6 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   const [emailInput, setEmailInput] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -535,18 +530,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-
-      {/* Back to Top — Floating Button */}
-      <motion.button
-        onClick={scrollToTop}
-        whileHover={{ scale: 1.1, y: -2 }}
-        whileTap={{ scale: 0.9 }}
-        transition={{ type: "spring", stiffness: 400, damping: 20 }}
-        className="fixed bottom-24 right-6 z-40 w-11 h-11 rounded-full bg-gradient-to-br from-green-500 to-teal-500 text-white shadow-lg shadow-green-500/25 flex items-center justify-center hover:shadow-xl hover:shadow-green-500/30 transition-shadow duration-300"
-        aria-label="Kembali ke atas"
-      >
-        <ArrowUp className="h-5 w-5" />
-      </motion.button>
 
       {/* Government Branding Strip */}
       <div className="relative border-t border-green-800/30 bg-green-950/80 dark:bg-black">

@@ -24,6 +24,7 @@ import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { BackToTop } from "@/components/shared/back-to-top";
 import { fadeInUp, fadeInScale, staggerContainer, linkCardHover } from "@/lib/animations";
+import { CONTACT_INFO } from "@/lib/constants";
 
 // ─── Quick links data ────────────────────────────────────────────────
 
@@ -705,7 +706,7 @@ export default function NotFound() {
               <p>
                 Butuh bantuan? Hubungi kami{" "}
                 <a
-                  href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20bertanya%20mengenai%20layanan%20kependudukan."
+                  href={`${CONTACT_INFO.whatsappUrl}?text=${encodeURIComponent("Halo, saya ingin bertanya mengenai layanan kependudukan.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-green-600 dark:text-green-400 hover:underline font-medium inline-flex items-center gap-1"
