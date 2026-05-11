@@ -15,6 +15,8 @@ import {
   FileSpreadsheet,
   CheckCircle2,
   XCircle,
+  CreditCard,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,6 +39,11 @@ interface StatistikData {
   aktaBelum: number;
   kiaMiliki: number;
   kiaBelum: number;
+}
+
+interface BlankoData {
+  jumlahTersedia: number;
+  keterangan: string;
 }
 
 const initialData: StatistikData = {
@@ -62,6 +69,8 @@ export default function AdminStatistikPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [data, setData] = useState<StatistikData>(initialData);
+  const [blankoData, setBlankoData] = useState<BlankoData>({ jumlahTersedia: 0, keterangan: "" });
+  const [savingBlanko, setSavingBlanko] = useState(false);
 
   // Import state
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -116,6 +125,15 @@ export default function AdminStatistikPage() {
           kiaMiliki: ringkasanDokumen?.kiaMiliki || 0,
           kiaBelum: ringkasanDokumen?.kiaBelum || 0,
         });
+        // Fetch blanko EKTP data
+        const blankoResponse = await fetch("/api/admin/statistik/blanko");
+        const blankoResult = await blankoResponse.json();
+        if (blankoResult.success && blankoResult.data) {
+          setBlankoData({
+            jumlahTersedia: blankoResult.data.jumlahTersedia || 0,
+            keterangan: blankoResult.data.keterangan || "",
+          });
+        }
       }
     } catch (error) {
       console.error("Error fetching data kependudukan:", error);
@@ -186,6 +204,38 @@ export default function AdminStatistikPage() {
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("id-ID").format(num);
+  };
+
+  const handleSaveBlanko = async () => {
+    try {
+      setSavingBlanko(true);
+      const response = await fetch("/api/admin/statistik/blanko", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jumlahTersedia: blankoData.jumlahTersedia,
+          keterangan: blankoData.keterangan || null,
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        toast({
+          title: "Berhasil",
+          description: "Data blanko EKTP berhasil disimpan dan langsung ditampilkan di halaman utama",
+        });
+      } else {
+        throw new Error("Gagal menyimpan data blanko");
+      }
+    } catch (error) {
+      console.error("Error saving blanko:", error);
+      toast({
+        title: "Error",
+        description: "Gagal menyimpan data blanko EKTP",
+        variant: "destructive",
+      });
+    } finally {
+      setSavingBlanko(false);
+    }
   };
 
   const handleNumberChange = (field: keyof StatistikData, value: string) => {
@@ -358,10 +408,155 @@ export default function AdminStatistikPage() {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Petunjuk</AlertTitle>
           <AlertDescription>
-            Data yang diubah di halaman ini akan langsung ditampilkan di halaman Data Kependudukan website. 
+            Data yang diubah di halaman ini akan langsung ditampilkan di halaman utama website. 
             Pastikan data yang dimasukkan sudah benar sebelum menyimpan.
           </AlertDescription>
         </Alert>
+
+        {/* ======== HOMEPAGE STATISTIK — Blanko EKTP + Penduduk ======== */}
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* Blanko EKTP — Ditampilkan di Homepage */}
+          <Card className="border-green-300 dark:border-green-700 bg-gradient-to-br from-green-50/50 to-white dark:from-green-900/10 dark:to-gray-900">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-100 dark:bg-green-900/40 rounded-lg">
+                    <CreditCard className="h-5 w-5 text-green-700 dark:text-green-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">Blanko EKTP</CardTitle>
+                    <CardDescription>Ditampilkan di halaman utama website</CardDescription>
+                  </div>
+                </div>
+                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">
+                  Homepage
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="blankoJumlah">Jumlah Blanko Tersedia</Label>
+                <Input
+                  id="blankoJumlah"
+                  type="text"
+                  value={formatNumber(blankoData.jumlahTersedia)}
+                  onChange={(e) => {
+                    const numValue = parseInt(e.target.value.replace(/\./g, "").replace(/,/g, "")) || 0;
+                    setBlankoData((prev) => ({ ...prev, jumlahTersedia: numValue }));
+                  }}
+                  placeholder="0"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="blankoKeterangan">Keterangan (opsional)</Label>
+                <Input
+                  id="blankoKeterangan"
+                  type="text"
+                  value={blankoData.keterangan}
+                  onChange={(e) => setBlankoData((prev) => ({ ...prev, keterangan: e.target.value }))}
+                  placeholder="Contoh: Stok menipis, menunggu pengiriman"
+                />
+              </div>
+              <div className="flex items-start gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-blue-700 dark:text-blue-300">
+                  Data ini akan langsung muncul di halaman utama website sebagai "Blanko KTP Tersedia".
+                  Update kapan saja saat ada pengiriman atau pemakaian blanko.
+                </p>
+              </div>
+              <Button
+                onClick={handleSaveBlanko}
+                disabled={savingBlanko}
+                className="bg-green-700 hover:bg-green-800 text-white w-full"
+              >
+                {savingBlanko ? (
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Menyimpan...</>
+                ) : (
+                  <><Save className="mr-2 h-4 w-4" />Simpan Blanko EKTP</>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Jumlah Penduduk — Ditampilkan di Homepage */}
+          <Card className="border-green-300 dark:border-green-700 bg-gradient-to-br from-green-50/50 to-white dark:from-green-900/10 dark:to-gray-900">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-100 dark:bg-green-900/40 rounded-lg">
+                    <Users className="h-5 w-5 text-green-700 dark:text-green-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">Jumlah Penduduk</CardTitle>
+                    <CardDescription>Ditampilkan di halaman utama website</CardDescription>
+                  </div>
+                </div>
+                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400">
+                  Homepage
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="homepagePeriode">Periode Data</Label>
+                <Input
+                  id="homepagePeriode"
+                  value={data.periode}
+                  onChange={(e) => setData((prev) => ({ ...prev, periode: e.target.value }))}
+                  placeholder="Contoh: Februari 2025"
+                />
+                <p className="text-xs text-gray-500">Periode ditampilkan di bawah angka jumlah penduduk</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="homepageTotal">Total Penduduk</Label>
+                <Input
+                  id="homepageTotal"
+                  type="text"
+                  value={formatNumber(data.totalPenduduk)}
+                  onChange={(e) => handleNumberChange("totalPenduduk", e.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-xs">Laki-laki</Label>
+                  <Input
+                    type="text"
+                    value={formatNumber(data.lakiLaki)}
+                    onChange={(e) => handleNumberChange("lakiLaki", e.target.value)}
+                    onBlur={calculateRasio}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs">Perempuan</Label>
+                  <Input
+                    type="text"
+                    value={formatNumber(data.perempuan)}
+                    onChange={(e) => handleNumberChange("perempuan", e.target.value)}
+                    onBlur={calculateRasio}
+                  />
+                </div>
+              </div>
+              <div className="flex items-start gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-blue-700 dark:text-blue-300">
+                  Data ini akan langsung muncul di halaman utama website sebagai "Jumlah Penduduk".
+                  Update setelah ada data terbaru dari BPS.
+                </p>
+              </div>
+              <Button
+                onClick={handleSave}
+                disabled={saving}
+                className="bg-green-700 hover:bg-green-800 text-white w-full"
+              >
+                {saving ? (
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Menyimpan...</>
+                ) : (
+                  <><Save className="mr-2 h-4 w-4" />Simpan Data Penduduk</>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* ======== EXCEL IMPORT SECTION ======== */}
         <Card className="border-green-200 dark:border-green-800">

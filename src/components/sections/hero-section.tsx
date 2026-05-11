@@ -195,15 +195,20 @@ export function HeroSection() {
 
   // ── Computed stats ────────────────────────────────────────────────
   const totalPenduduk = data?.ringkasan?.totalPenduduk ?? 0;
-  const ektpCetak = data?.dokumen?.ektpCetak ?? 0;
-  const aktaLahir = data?.dokumen?.aktaLahir ?? 0;
-  const cakupanAkta = data?.dokumen?.cakupanAkta ?? 0;
+  const blankoTersedia = data?.blankoEKTP?.jumlahTersedia ?? 0;
+  const blankoKeterangan = data?.blankoEKTP?.keterangan ?? null;
 
   const stats = [
-    { label: "Penduduk", value: formatNumber(totalPenduduk) },
-    { label: "KTP-el Cetak", value: formatNumber(ektpCetak) },
-    { label: "Akta Lahir", value: formatNumber(aktaLahir) },
-    { label: "Cakupan Akta", value: `${cakupanAkta.toFixed(1)}%` },
+    {
+      label: "Jumlah Penduduk",
+      value: formatNumber(totalPenduduk),
+      sublabel: data?.ringkasan?.periode ?? null,
+    },
+    {
+      label: "Blanko KTP Tersedia",
+      value: formatNumber(blankoTersedia),
+      sublabel: blankoKeterangan ?? null,
+    },
   ];
 
   return (
@@ -330,18 +335,23 @@ export function HeroSection() {
                 <Loader2 className="h-6 w-6 animate-spin text-green-300" />
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-lg mx-auto">
                 {stats.map((stat) => (
                   <div
                     key={stat.label}
-                    className="flex flex-col items-center sm:items-center py-2"
+                    className="flex flex-col items-center sm:items-center py-3 px-4 rounded-2xl bg-white/10 border border-white/15"
                   >
-                    <span className="text-2xl sm:text-3xl font-bold text-white">
+                    <span className="text-3xl sm:text-4xl font-bold text-white tabular-nums">
                       {stat.value}
                     </span>
-                    <span className="text-xs sm:text-sm text-green-200/70 mt-1">
+                    <span className="text-sm sm:text-base text-green-200/80 mt-1 font-medium">
                       {stat.label}
                     </span>
+                    {stat.sublabel && (
+                      <span className="text-[11px] text-green-300/50 mt-0.5">
+                        {stat.sublabel}
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>
