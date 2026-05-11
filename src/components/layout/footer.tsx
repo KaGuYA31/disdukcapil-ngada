@@ -24,6 +24,7 @@ import {
   Heart,
   Send,
   QrCode,
+  ArrowUp,
 } from "lucide-react";
 import { VisitorCounter } from "@/components/shared/visitor-counter";
 import { CONTACT_INFO, OPERATING_HOURS, SOCIAL_MEDIA } from "@/lib/constants";
@@ -180,6 +181,13 @@ export function Footer() {
 
       {/* Main Footer Content */}
       <div className="relative container mx-auto px-4 py-12 sm:py-14 lg:py-16">
+        {/* Skip-to-content link for keyboard users */}
+        <a
+          href="#"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9999] focus:rounded-md focus:bg-green-600 focus:px-3 focus:py-2 focus:text-white focus:shadow-lg"
+        >
+          Kembali ke navigasi utama
+        </a>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-5">
           {/* About Section - spans 4 cols with glassmorphism */}
           <div className="lg:col-span-4 space-y-4 rounded-2xl p-5 glass-card-green transition-all duration-300 hover:bg-green-950/40">
@@ -530,6 +538,17 @@ export function Footer() {
             </div>
           </div>
         </div>
+
+        {/* Kembali ke Atas - accessibility scroll-to-top link */}
+        <div className="mt-4 text-center">
+          <a
+            href="#main-content"
+            className="text-xs text-gray-500 hover:text-green-400 transition-colors duration-200 inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50 rounded px-1"
+          >
+            <ArrowUp className="h-3 w-3" />
+            Kembali ke Atas
+          </a>
+        </div>
       </div>
 
       {/* Government Branding Strip */}
@@ -583,7 +602,7 @@ export function Footer() {
             <div className="flex items-center gap-4 text-sm">
               <Link
                 href="https://ngadakab.go.id"
-                className="hover:text-green-400 inline-flex items-center gap-1 transition-colors"
+                className="group relative hover:text-green-300 transition-colors inline-flex items-center gap-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-green-400 after:transition-all after:duration-300 group-hover:after:w-full"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -593,7 +612,7 @@ export function Footer() {
               <span className="text-gray-600 dark:text-gray-500">|</span>
               <Link
                 href="https://nttprov.go.id"
-                className="hover:text-green-400 inline-flex items-center gap-1 transition-colors"
+                className="group relative hover:text-green-300 transition-colors inline-flex items-center gap-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-green-400 after:transition-all after:duration-300 group-hover:after:w-full"
                 target="_blank"
                 rel="noopener noreferrer"
               >

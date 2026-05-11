@@ -454,7 +454,10 @@ function AnimatedCounter() {
   }, []);
 
   return (
-    <span className="tabular-nums">{count}</span>
+    <div className="relative inline-block">
+      <div className="absolute inset-0 bg-green-400/20 rounded-2xl animate-pulse" />
+      <span className="relative tabular-nums">{count}</span>
+    </div>
   );
 }
 
@@ -539,6 +542,22 @@ export default function NotFound() {
               </h1>
             </motion.div>
 
+            {/* Floating "Kembali" card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.5 }}
+              className="mt-2 mb-6"
+            >
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Kembali ke Beranda
+              </Link>
+            </motion.div>
+
             {/* Heading */}
             <motion.h2
               variants={fadeInUp}
@@ -620,13 +639,14 @@ export default function NotFound() {
                   >
                     <Link href={link.href} className="block h-full">
                       <Card
-                        className={`bg-white dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 ${link.borderHover} h-full transition-all duration-200 group cursor-pointer`}
+                        className={`relative bg-white dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 ${link.borderHover} h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer overflow-hidden`}
                       >
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-xl" />
                         <CardContent className="flex flex-col items-center gap-2.5 p-4">
                           <div
-                            className={`flex items-center justify-center w-11 h-11 rounded-xl ${link.bg} ${link.hoverBg} transition-colors duration-200`}
+                            className={`flex items-center justify-center w-11 h-11 rounded-xl ${link.bg} ${link.hoverBg} transition-colors duration-300 group-hover:scale-110 transition-transform duration-300`}
                           >
-                            <link.icon className={`h-5 w-5 ${link.color} group-hover:scale-110 transition-transform duration-200`} />
+                            <link.icon className={`h-5 w-5 ${link.color} transition-transform duration-300`} />
                           </div>
                           <div className="text-center">
                             <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors block">

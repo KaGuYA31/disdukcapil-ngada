@@ -202,6 +202,12 @@ const QuickPollWidget = dynamic(
   { ssr: false }
 );
 
+// Accessibility Settings Widget
+const AccessibilitySettingsWidget = dynamic(
+  () => import("@/components/shared/accessibility-settings-widget").then((m) => ({ default: m.AccessibilitySettingsWidget })),
+  { ssr: false }
+);
+
 // Section Navigator (desktop only)
 const SectionNavigator = dynamic(
   () => import("@/components/shared/section-navigator").then((m) => ({ default: m.SectionNavigator })),
@@ -292,6 +298,7 @@ export default function HomePage() {
       <KoneksiLangsungWidget />
       <QuickPollWidget />
       <AICHatbotWidget />
+      <AccessibilitySettingsWidget />
       <WhatsAppButton />
       <FloatingActionMenu />
       <CookieConsent />
