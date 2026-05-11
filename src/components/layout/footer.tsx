@@ -46,7 +46,7 @@ const quickLinks = [
 
 const layananUnggulanLinks = [
   { title: "Layanan Online", href: "/layanan-online" },
-  { title: "Cek Status Pengajuan", href: "/layanan/cek-status" },
+  { title: "Cek Status Pengajuan", href: "/layanan-online/cek-status" },
   { title: "Info KTP-el", href: "/layanan/ktp-el" },
   { title: "Pendaftaran Online", href: "/layanan-online" },
 ];

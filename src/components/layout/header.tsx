@@ -38,8 +38,16 @@ interface NavItem {
 const navigation: NavItem[] = [
   { title: "Beranda", href: "/" },
   { title: "Layanan", href: "/layanan" },
-  { title: "Layanan Online", href: "/layanan-online" },
-  { title: "Cek Status", href: "/layanan-online/cek-status" },
+  {
+    title: "Layanan Online",
+    href: "/layanan-online",
+    dropdownLabel: "Layanan Digital",
+    children: [
+      { title: "Pengajuan Online", href: "/layanan-online", description: "Ajukan layanan dari rumah" },
+      { title: "Cek Status Pengajuan", href: "/layanan-online/cek-status", description: "Lacak status pengajuan Anda" },
+    ],
+  },
+  { title: "Inovasi", href: "/inovasi" },
   { title: "Formulir", href: "/formulir" },
   { title: "Berita", href: "/berita" },
   { title: "Pengaduan", href: "/pengaduan" },
