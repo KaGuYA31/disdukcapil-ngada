@@ -37,20 +37,10 @@ interface NavItem {
 
 const navigation: NavItem[] = [
   { title: "Beranda", href: "/" },
-  {
-    title: "Profil",
-    href: "/profil",
-    children: [
-      { title: "Visi & Misi", href: "/profil#visi-misi" },
-      { title: "Struktur Organisasi", href: "/profil#struktur" },
-      { title: "Sejarah", href: "/profil#sejarah" },
-      { title: "Lokasi", href: "/profil#lokasi" },
-    ],
-  },
-  { title: "Persyaratan Layanan", href: "/layanan" },
+  { title: "Layanan", href: "/layanan" },
   { title: "Layanan Online", href: "/layanan-online" },
-  { title: "Data Kependudukan", href: "/statistik" },
-  { title: "Inovasi", href: "/inovasi" },
+  { title: "Cek Status", href: "/layanan-online/cek-status" },
+  { title: "Formulir", href: "/formulir" },
   { title: "Berita", href: "/berita" },
   { title: "Pengaduan", href: "/pengaduan" },
   { title: "Hubungi Kami", href: "/hubungi-kami" },
