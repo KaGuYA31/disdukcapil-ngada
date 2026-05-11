@@ -25,8 +25,10 @@ import {
   Send,
   QrCode,
   ArrowUp,
+  Activity,
 } from "lucide-react";
 import { VisitorCounter } from "@/components/shared/visitor-counter";
+import { StatsOverviewWidget } from "@/components/shared/stats-overview-widget";
 import { CONTACT_INFO, OPERATING_HOURS, SOCIAL_MEDIA } from "@/lib/constants";
 
 const quickLinks = [
@@ -408,6 +410,23 @@ export function Footer() {
               ))}
             </div>
           </div>
+        </motion.div>
+
+        {/* Quick Stats Overview Widget */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" as const, delay: 0.1 }}
+          className="mt-6"
+        >
+          <div className="flex items-center gap-2.5 mb-4">
+            <Activity className="h-5 w-5 text-green-400" />
+            <h4 className="font-semibold text-white text-base">
+              Statistik Ringkas
+            </h4>
+          </div>
+          <StatsOverviewWidget variant="footer" />
         </motion.div>
 
         {/* Animated Gradient Divider */}

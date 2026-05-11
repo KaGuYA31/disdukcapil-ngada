@@ -229,6 +229,20 @@ export default function SitemapPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main id="main-content" className="flex-1">
+        {/* BreadcrumbList JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://disdukcapil-ngada.vercel.app/" },
+                { "@type": "ListItem", "position": 2, "name": "Peta Situs", "item": "https://disdukcapil-ngada.vercel.app/sitemap-page" }
+              ]
+            })
+          }}
+        />
         {/* Hero Banner */}
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16 relative overflow-hidden">
           {/* Decorative elements */}
@@ -267,7 +281,7 @@ export default function SitemapPage() {
         </section>
 
         {/* Sitemap Content */}
-        <section className="py-12 md:py-16 bg-gray-50">
+        <section className="py-12 md:py-16 bg-gray-50 dark:bg-gray-950">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto space-y-12">
               {sitemapCategories.map((category, catIndex) => (
@@ -280,10 +294,10 @@ export default function SitemapPage() {
                 >
                   {/* Category Header */}
                   <div className="mb-6">
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-1">
+                    <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                       {category.title}
                     </h2>
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">
                       {category.description}
                     </p>
                     <div className="mt-3 h-1 w-16 bg-gradient-to-r from-green-500 to-teal-400 rounded-full" />
@@ -303,21 +317,21 @@ export default function SitemapPage() {
                         <motion.div key={link.href} variants={fadeInUp}>
                           <Link
                             href={link.href}
-                            className="group block bg-white rounded-xl border border-gray-200 p-5 transition-all duration-200 hover:bg-green-50 hover:border-green-200 hover:shadow-md"
+                            className="group block bg-white dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 p-5 transition-all duration-200 hover:bg-green-50 dark:hover:bg-green-900/20 hover:border-green-200 dark:hover:border-green-700 hover:shadow-md"
                           >
                             <div className="flex items-start gap-4">
                               {/* Left border accent on hover */}
-                              <div className="flex-shrink-0 mt-0.5 w-10 h-10 rounded-lg bg-green-100 text-green-700 flex items-center justify-center group-hover:bg-green-200 group-hover:text-green-800 transition-colors duration-200">
+                              <div className="flex-shrink-0 mt-0.5 w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-900/70 group-hover:text-green-800 dark:group-hover:text-green-300 transition-colors duration-200">
                                 <IconComponent className="w-5 h-5" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between gap-2">
-                                  <h3 className="font-semibold text-gray-900 group-hover:text-green-800 transition-colors duration-200 truncate">
+                                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-green-800 dark:group-hover:text-green-300 transition-colors duration-200 truncate">
                                     {link.title}
                                   </h3>
-                                  <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-green-600 group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+                                  <ArrowRight className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-green-600 dark:group-hover:text-green-400 group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
                                 </div>
-                                <p className="text-sm text-gray-500 mt-1 leading-relaxed line-clamp-2">
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed line-clamp-2">
                                   {link.description}
                                 </p>
                               </div>
@@ -336,17 +350,17 @@ export default function SitemapPage() {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={sectionFadeIn}
-                className="mt-8 bg-white rounded-xl border border-gray-200 p-6 md:p-8"
+                className="mt-8 bg-white dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 p-6 md:p-8"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-green-100 text-green-700 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 flex items-center justify-center flex-shrink-0">
                     <Map className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 text-lg mb-2">
+                    <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg mb-2">
                       Tidak menemukan halaman yang dicari?
                     </h3>
-                    <p className="text-gray-500 mb-4">
+                    <p className="text-gray-500 dark:text-gray-400 mb-4">
                       Jika Anda tidak menemukan informasi yang dicari pada peta
                       situs ini, silakan gunakan fitur pencarian atau hubungi
                       kami melalui WhatsApp untuk bantuan lebih lanjut.
@@ -361,7 +375,7 @@ export default function SitemapPage() {
                       </Link>
                       <Link
                         href="/pengaduan"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-white text-green-700 border border-green-200 rounded-lg hover:bg-green-50 transition-colors text-sm font-medium"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors text-sm font-medium"
                       >
                         <MessageSquareWarning className="w-4 h-4" />
                         Sampaikan Pengaduan

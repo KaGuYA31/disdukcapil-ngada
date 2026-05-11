@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/components/providers";
 import { SearchCommand } from "@/components/shared/search-command";
 import { QuickLinksWidget } from "@/components/shared/quick-links-widget";
+import { PageTransitionIndicator } from "@/components/shared/page-transition-indicator";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -164,6 +165,62 @@ export default function RootLayout({
             })
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "GovernmentOrganization",
+              "name": "Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada",
+              "alternateName": "Disdukcapil Ngada",
+              "url": "https://disdukcapil-ngada.vercel.app",
+              "logo": "https://disdukcapil-ngada.vercel.app/logo-kabupaten.png",
+              "description": "Website resmi Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada, Nusa Tenggara Timur. Layanan administrasi kependudukan untuk masyarakat Kabupaten Ngada.",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Jl. Raya Bajawa - Ende",
+                "addressLocality": "Bajawa",
+                "addressRegion": "Nusa Tenggara Timur",
+                "postalCode": "86311",
+                "addressCountry": "ID"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "-8.4833",
+                "longitude": "121.0167"
+              },
+              "telephone": "+6238241222",
+              "email": "disdukcapil@ngadakab.go.id",
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                  "opens": "08:00",
+                  "closes": "16:00"
+                }
+              ],
+              "sameAs": [
+                "https://www.facebook.com/disdukcapilngada",
+                "https://www.instagram.com/disdukcapilngada",
+                "https://www.youtube.com/@disdukcapilngada",
+                "https://twitter.com/disdukcapilngada"
+              ],
+              "areaServed": {
+                "@type": "AdministrativeArea",
+                "name": "Kabupaten Ngada",
+                "containedInPlace": {
+                  "@type": "AdministrativeArea",
+                  "name": "Provinsi Nusa Tenggara Timur"
+                }
+              },
+              "parentOrganization": {
+                "@type": "GovernmentOrganization",
+                "name": "Pemerintah Kabupaten Ngada",
+                "url": "https://ngadakab.go.id"
+              }
+            })
+          }}
+        />
       </head>
       <body
         className={`${plusJakarta.variable} font-sans antialiased bg-background text-foreground`}
@@ -175,6 +232,7 @@ export default function RootLayout({
           Langsung ke konten utama
         </a>
         <Providers>
+          <PageTransitionIndicator />
           {children}
           <SearchCommand />
           <QuickLinksWidget />
