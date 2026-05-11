@@ -172,6 +172,18 @@ const UcapanKepalaDinasSection = dynamic(
   { loading: () => <div className="py-16"><div className="container mx-auto px-4"><div className="max-w-4xl mx-auto h-96 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" /></div></div> }
 );
 
+// Round 10: Maintenance Banner
+const MaintenanceBanner = dynamic(
+  () => import("@/components/shared/maintenance-banner").then((m) => ({ default: m.MaintenanceBanner })),
+  { ssr: false }
+);
+
+// Round 10: Event Countdown Timer
+const EventCountdown = dynamic(
+  () => import("@/components/shared/event-countdown").then((m) => ({ default: m.EventCountdown })),
+  { ssr: false, loading: () => <div className="py-12"><div className="container mx-auto px-4"><div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" /></div></div> }
+);
+
 // Task 10-a: Event & Agenda Dinas
 const EventAgendaSection = dynamic(
   () => import("@/components/sections/event-agenda-section").then((m) => ({ default: m.EventAgendaSection })),
@@ -241,6 +253,11 @@ export default function HomePage() {
       <Header />
       <AnnouncementTicker />
       <NotifikasiBanner />
+      <MaintenanceBanner
+        type="info"
+        title="Layanan Digital 24/7"
+        message="Portal layanan kependudukan digital kami tersedia setiap saat. Untuk layanan tatap muka, kunjungi kantor kami pada hari Senin-Jumat pukul 08:00-15:00 WITA."
+      />
       <main id="main-content" className="flex-1">
         {/* Critical: loaded eagerly (above the fold) */}
         <HeroSection />
@@ -289,6 +306,13 @@ export default function HomePage() {
         <UcapanKepalaDinasSection />
         <SectionDivider variant="gradient" color="green" />
         <EventAgendaSection />
+        {/* Event Countdown - Hari Kependudukan Nasional 2025 (28 Oktober) */}
+        <EventCountdown
+          variant="default"
+          title="Hari Kependudukan Nasional 2025"
+          description="Peringatan penting layanan kependudukan bagi seluruh masyarakat Indonesia"
+          targetDate="2025-10-28T00:00:00+08:00"
+        />
         <KalkulatorEstimasiSection />
         <SectionDivider variant="wave-2" color="green" />
         <IndeksKepuasanSection />

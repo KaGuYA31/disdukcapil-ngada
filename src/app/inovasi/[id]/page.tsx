@@ -147,6 +147,9 @@ export default function InovasiDetailPage() {
                   src={activity.photo}
                   alt={activity.title}
                   fill
+                  sizes="100vw"
+                  loading="eager"
+                  priority
                   className="object-cover opacity-40"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 to-transparent" />

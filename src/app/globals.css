@@ -2605,3 +2605,593 @@ html.theme-transition *::after {
   font-variant-numeric: tabular-nums;
   transition: all 0.3s ease;
 }
+
+/* ========================================================================
+   ENHANCED CSS UTILITY CLASSES — Disdukcapil Kabupaten Ngada
+   Appended v2: comprehensive new utilities, animations, and dark mode
+   ======================================================================== */
+
+/* ─── 1. Animation Keyframes & Classes ─── */
+
+/* Gentle floating animation — 6s, subtle ±8px Y translation */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Float animation in reverse direction */
+.animate-float-reverse {
+  animation: float-slow 6s ease-in-out infinite reverse;
+}
+
+/* Soft green glow that pulses in and out */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.15), 0 0 10px rgba(34, 197, 94, 0.05); }
+  50% { box-shadow: 0 0 16px rgba(34, 197, 94, 0.3), 0 0 32px rgba(34, 197, 94, 0.1); }
+}
+@keyframes glow-pulse-dark {
+  0%, 100% { box-shadow: 0 0 8px rgba(34, 197, 94, 0.2), 0 0 16px rgba(34, 197, 94, 0.08); }
+  50% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4), 0 0 40px rgba(34, 197, 94, 0.15); }
+}
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+.dark .animate-glow-pulse {
+  animation: glow-pulse-dark 3s ease-in-out infinite;
+}
+
+/* Subtle scale animation like breathing (1.02x to 1.0) */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* Light shine sweep across surface (left to right) */
+@keyframes shine-sweep {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+.animate-shine {
+  position: relative;
+  overflow: hidden;
+}
+.animate-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: shine-sweep 3s ease-in-out infinite;
+}
+
+/* Animated dashed border that moves */
+@keyframes border-dance {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 24; }
+}
+
+/* ─── 2. Card & Surface Effects ─── */
+
+/* Card that lifts with enhanced shadow on hover */
+.card-hover-lift {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card-hover-lift:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow:
+    0 20px 40px -12px rgba(0, 0, 0, 0.12),
+    0 8px 16px -8px rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.25);
+}
+.dark .card-hover-lift:hover {
+  box-shadow:
+    0 20px 40px -12px rgba(0, 0, 0, 0.35),
+    0 8px 16px -8px rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.18);
+}
+
+/* Frosted glass card effect with backdrop-blur */
+.card-glass-morph {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+.dark .card-glass-morph {
+  background: rgba(31, 41, 55, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Animated gradient border using pseudo-element */
+.card-gradient-border {
+  position: relative;
+  z-index: 0;
+  border: 2px solid transparent;
+}
+.card-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #22c55e, #14b8a6, #fbbf24, #22c55e);
+  background-size: 300% 300%;
+  animation: gradient-shift 6s ease infinite;
+  z-index: -2;
+}
+.card-gradient-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  z-index: -1;
+}
+
+/* Inner glow effect on cards (subtle green) */
+.card-inner-glow {
+  box-shadow: inset 0 1px 2px 0 rgba(34, 197, 94, 0.06);
+}
+.dark .card-inner-glow {
+  box-shadow: inset 0 1px 2px 0 rgba(34, 197, 94, 0.08);
+}
+.card-inner-glow:hover {
+  box-shadow:
+    inset 0 1px 2px 0 rgba(34, 197, 94, 0.1),
+    0 0 24px -4px rgba(34, 197, 94, 0.08);
+}
+.dark .card-inner-glow:hover {
+  box-shadow:
+    inset 0 1px 2px 0 rgba(34, 197, 94, 0.12),
+    0 0 24px -4px rgba(34, 197, 94, 0.12);
+}
+
+/* 3D perspective tilt on hover (CSS only) */
+.card-perspective {
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
+  transform-style: preserve-3d;
+}
+.card-perspective:hover {
+  transform: perspective(1000px) rotateY(-3deg) rotateX(3deg) translateY(-8px);
+  box-shadow:
+    0 24px 48px -12px rgba(0, 0, 0, 0.18),
+    -4px 0 12px -4px rgba(34, 197, 94, 0.06);
+}
+.dark .card-perspective:hover {
+  box-shadow:
+    0 24px 48px -12px rgba(0, 0, 0, 0.4),
+    -4px 0 12px -4px rgba(34, 197, 94, 0.08);
+}
+
+/* Subtle noise texture overlay */
+.surface-noise {
+  position: relative;
+}
+.surface-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  mix-blend-mode: overlay;
+}
+.dark .surface-noise::after {
+  opacity: 0.05;
+}
+
+/* ─── 3. Text Effects ─── */
+
+/* Animated shimmer gradient text effect */
+.text-shimmer {
+  background: linear-gradient(
+    110deg,
+    #15803d 0%, #22c55e 20%, #fbbf24 40%,
+    #14b8a6 60%, #22c55e 80%, #15803d 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer-move 4s linear infinite;
+}
+@keyframes text-shimmer-move {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* Green text glow/shadow */
+.text-glow-green {
+  text-shadow: 0 0 8px rgba(34, 197, 94, 0.4), 0 0 20px rgba(34, 197, 94, 0.15);
+}
+.dark .text-glow-green {
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.5), 0 0 24px rgba(34, 197, 94, 0.2);
+}
+
+/* Text with stroke outline effect */
+.text-stroke {
+  -webkit-text-stroke: 1.5px rgba(34, 197, 94, 0.5);
+  -webkit-text-fill-color: transparent;
+}
+.dark .text-stroke {
+  -webkit-text-stroke: 1.5px rgba(34, 197, 94, 0.6);
+}
+
+/* Animated gradient text that shifts colors */
+.text-gradient-animate {
+  background: linear-gradient(135deg, #15803d, #22c55e, #14b8a6, #fbbf24, #22c55e);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* ─── 4. Interactive & Hover Effects ─── */
+
+/* Lift element up on hover with smooth transition */
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -6px rgba(0, 0, 0, 0.1);
+}
+.dark .hover-lift:hover {
+  box-shadow: 0 10px 20px -6px rgba(0, 0, 0, 0.3);
+}
+
+/* Green glow shadow on hover */
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+.hover-glow:hover {
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.2), 0 6px 20px -4px rgba(34, 197, 94, 0.12);
+}
+.dark .hover-glow:hover {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 6px 20px -4px rgba(34, 197, 94, 0.18);
+}
+
+/* Subtle scale 1.02 on hover */
+.hover-scale-sm {
+  transition: transform 0.2s ease;
+}
+.hover-scale-sm:hover {
+  transform: scale(1.02);
+}
+
+/* Content slides right on hover */
+.hover-slide-right {
+  transition: transform 0.25s ease;
+}
+.hover-slide-right:hover {
+  transform: translateX(4px);
+}
+
+/* Underline that grows from center on hover */
+.hover-underline-grow {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+}
+.hover-underline-grow::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #22c55e, #14b8a6);
+  border-radius: 1px;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+.hover-underline-grow:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Green focus ring for form elements */
+.focus-ring-green:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+.dark .focus-ring-green:focus {
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+/* ─── 5. Layout & Container Utilities ─── */
+
+/* Max width 640px centered */
+.container-narrow {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Max width 1440px centered */
+.container-wide {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Auto-fit responsive grid — min 280px column */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Center alignment utility */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── 6. Loading & Progress ─── */
+
+/* Three bouncing dots loading indicator */
+@keyframes loading-dot {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+.loading-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+.loading-dots span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  animation: loading-dot 1.4s ease-in-out infinite both;
+}
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+.loading-dots span:nth-child(3) { animation-delay: 0s; }
+.dark .loading-dots span {
+  background-color: #4ade80;
+}
+
+/* Animated progress bar with stripe animation */
+.progress-bar-animated {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #15803d, #22c55e);
+  border-radius: 9999px;
+}
+.progress-bar-animated::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    -45deg,
+    transparent 25%, rgba(255, 255, 255, 0.15) 25%,
+    rgba(255, 255, 255, 0.15) 50%, transparent 50%,
+    transparent 75%, rgba(255, 255, 255, 0.15) 75%
+  );
+  background-size: 20px 20px;
+  animation: progress-stripe 1s linear infinite;
+}
+@keyframes progress-stripe {
+  0% { background-position: 20px 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Pulse animation for skeleton loading */
+@keyframes skeleton-pulse-anim {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.skeleton-pulse {
+  background: #e5e7eb;
+  animation: skeleton-pulse-anim 1.8s ease-in-out infinite;
+  border-radius: 0.375rem;
+}
+.dark .skeleton-pulse {
+  background: #374151;
+}
+
+/* ─── 7. Dark Mode Specific ─── */
+
+/* Enhanced dark mode card with elevated feel */
+.dark-card-elevated {
+  background: #1f2937;
+  border: 1px solid rgba(55, 65, 81, 0.6);
+}
+.dark .dark-card-elevated {
+  background: #1f2937;
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.25);
+}
+
+/* Dark mode green glow effect */
+.dark-glow-green {
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.15);
+}
+.dark .dark-glow-green {
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.25), 0 4px 12px rgba(34, 197, 94, 0.08);
+}
+
+/* Subtle dark mode border */
+.dark-border-subtle {
+  border-color: #e5e7eb;
+}
+.dark .dark-border-subtle {
+  border-color: rgba(75, 85, 99, 0.5);
+}
+
+/* ─── 8. Divider & Separator ─── */
+
+/* Green gradient horizontal divider */
+.divider-gradient-green {
+  height: 2px;
+  border: none;
+  background: linear-gradient(90deg, transparent, #22c55e 30%, #14b8a6 70%, transparent);
+  border-radius: 1px;
+}
+.dark .divider-gradient-green {
+  background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.5) 30%, rgba(20, 184, 166, 0.4) 70%, transparent);
+}
+
+/* Three dots centered divider */
+.divider-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.divider-dots::before,
+.divider-dots::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+}
+.dark .divider-dots::before,
+.dark .divider-dots::after {
+  background: linear-gradient(90deg, transparent, #374151, transparent);
+}
+.divider-dots span {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+}
+.dark .divider-dots span {
+  background: #4ade80;
+}
+
+/* SVG wave divider */
+.divider-wave {
+  width: 100%;
+  height: 32px;
+  display: block;
+}
+.divider-wave svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ─── 9. Badge & Tag Enhancements ─── */
+
+/* Green success badge style */
+.badge-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  border-radius: 9999px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+.dark .badge-success {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border-color: rgba(34, 197, 94, 0.25);
+}
+
+/* Amber warning badge style */
+.badge-warning {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  border-radius: 9999px;
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+.dark .badge-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+/* Teal info badge style */
+.badge-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  border-radius: 9999px;
+  background: rgba(20, 184, 166, 0.12);
+  color: #0f766e;
+  border: 1px solid rgba(20, 184, 166, 0.2);
+}
+.dark .badge-info {
+  background: rgba(20, 184, 166, 0.15);
+  color: #2dd4bf;
+  border-color: rgba(20, 184, 166, 0.25);
+}
+
+/* ─── 10. Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow,
+  .animate-float-reverse,
+  .animate-glow-pulse,
+  .animate-breathe,
+  .animate-shine,
+  .text-shimmer,
+  .text-gradient-animate,
+  .card-gradient-border::before,
+  .loading-dots span,
+  .progress-bar-animated::after,
+  .skeleton-pulse {
+    animation: none !important;
+  }
+}
+
+
+/* ===== Accessibility Enhanced — High Contrast Mode ===== */
+html[data-high-contrast] {
+  filter: contrast(1.3);
+}
+html[data-high-contrast] img,
+html[data-high-contrast] video {
+  filter: contrast(1.3) saturate(1.2);
+}
+html[data-high-contrast] .skip-link {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+/* ===== Accessibility Enhanced — Focus Visible Indicator ===== */
+*:focus-visible {
+  outline: 3px solid #059669;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+

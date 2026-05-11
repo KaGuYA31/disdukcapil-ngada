@@ -6,6 +6,8 @@ import { Providers } from "@/components/providers";
 import { SearchCommand } from "@/components/shared/search-command";
 import { QuickLinksWidget } from "@/components/shared/quick-links-widget";
 import { PageTransitionIndicator } from "@/components/shared/page-transition-indicator";
+import { QuickServiceShortcuts } from "@/components/shared/quick-service-shortcuts";
+import { AccessibilityEnhanced } from "@/components/shared/accessibility-enhanced";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -236,6 +238,8 @@ export default function RootLayout({
           {children}
           <SearchCommand />
           <QuickLinksWidget />
+          <QuickServiceShortcuts />
+          <AccessibilityEnhanced />
           <Toaster />
         </Providers>
       </body>
