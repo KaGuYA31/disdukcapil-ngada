@@ -6,11 +6,9 @@ import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { BackToTop } from "@/components/shared/back-to-top";
 import { HeroSection } from "@/components/sections/hero-section";
-import { EmergencyInfoBar } from "@/components/shared/emergency-info-bar";
 import { SearchCommand } from "@/components/shared/search-command";
 import { ScrollProgress } from "@/components/shared/scroll-progress";
 import { CookieConsent } from "@/components/shared/cookie-consent";
-import { AnnouncementTicker } from "@/components/shared/announcement-ticker";
 
 // ─── Essential Sections ─────────────────────────────────────────────
 // These are the sections that citizens actually need
@@ -37,11 +35,6 @@ const PetaLokasiSection = dynamic(
 
 // ─── Widgets (floating, non-blocking) ──────────────────────────────
 
-const AICHatbotWidget = dynamic(
-  () => import("@/components/shared/ai-chatbot-widget").then((m) => ({ default: m.AICHatbotWidget })),
-  { ssr: false }
-);
-
 const AccessibilitySettingsWidget = dynamic(
   () => import("@/components/shared/accessibility-settings-widget").then((m) => ({ default: m.AccessibilitySettingsWidget })),
   { ssr: false }
@@ -58,9 +51,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <ScrollProgress />
-      <EmergencyInfoBar />
       <Header />
-      <AnnouncementTicker />
 
       <main id="main-content" className="flex-1">
         {/* Hero: greeting, search, quick actions, stats */}
@@ -214,7 +205,6 @@ export default function HomePage() {
       {/* Floating Widgets */}
       <SearchCommand />
       <CookieConsent />
-      <AICHatbotWidget />
       <AccessibilitySettingsWidget />
       <WhatsAppButton />
       <QuickAccessPanel />
