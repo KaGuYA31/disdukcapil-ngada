@@ -104,6 +104,31 @@ export default function ProfilPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main id="main-content" className="flex-1">
+        {/* BreadcrumbList Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Beranda",
+                  item: "https://disdukcapil-ngada.vercel.app/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Profil Dinas",
+                  item: "https://disdukcapil-ngada.vercel.app/profil",
+                },
+              ],
+            }),
+          }}
+        />
+
         {/* Hero Banner */}
         <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
           {/* Pattern overlay */}

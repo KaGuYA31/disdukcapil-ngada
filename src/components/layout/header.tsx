@@ -183,12 +183,19 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
+        "sticky top-0 z-50 w-full transition-all duration-300 relative",
         isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-md dark:bg-gray-900/95"
+          ? "bg-white/90 backdrop-blur-xl shadow-lg shadow-black/[0.04] border-b border-gray-200/80 dark:bg-gray-900/90 dark:border-gray-700/60 dark:shadow-black/20"
           : "bg-white border-b border-gray-100 dark:bg-gray-900 dark:border-gray-800"
       )}
     >
+      {/* Green accent line at top when scrolled */}
+      <div
+        className={cn(
+          "absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-600 via-emerald-400 to-teal-500 z-10 transition-opacity duration-300",
+          isScrolled ? "opacity-100" : "opacity-0"
+        )}
+      />
       {/* Top bar */}
       <div className="bg-green-700 text-white py-1.5 text-sm hidden md:block">
         <div className="container mx-auto px-4 flex justify-between items-center">

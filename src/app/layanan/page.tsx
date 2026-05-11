@@ -78,6 +78,31 @@ export default function LayananPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main id="main-content" className="flex-1">
+        {/* BreadcrumbList Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Beranda",
+                  item: "https://disdukcapil-ngada.vercel.app/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Layanan",
+                  item: "https://disdukcapil-ngada.vercel.app/layanan",
+                },
+              ],
+            }),
+          }}
+        />
+
         {/* Hero Banner */}
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16 md:py-20 relative overflow-hidden">
           {/* Decorative gradient orbs */}

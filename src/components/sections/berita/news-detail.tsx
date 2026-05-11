@@ -536,6 +536,10 @@ export function NewsDetail() {
                         <Calendar className="h-3.5 w-3.5" />
                         Dipublikasikan {formatFullDate(news.createdAt)}
                       </p>
+                      <p className="text-gray-400 text-xs flex items-center gap-1 mt-0.5">
+                        <Clock className="h-3 w-3" />
+                        {readingTime} baca
+                      </p>
                     </div>
                     {/* Share Buttons (compact, in author bar) */}
                     <div className="flex items-center gap-1.5">
