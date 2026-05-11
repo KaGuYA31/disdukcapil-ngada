@@ -48,7 +48,7 @@ const SKIP_LINKS = [
 
 const KEYBOARD_SHORTCUTS: KeyboardShortcut[] = [
   { key: "1", alt: true, label: "Beranda", action: () => navigateTo("/") },
-  { key: "2", alt: true, label: "Layanan", action: () => navigateTo("/layanan") },
+  { key: "2", alt: true, label: "Persyaratan", action: () => navigateTo("/layanan") },
   { key: "3", alt: true, label: "Berita", action: () => navigateTo("/berita") },
   { key: "4", alt: true, label: "Pengaduan", action: () => navigateTo("/pengaduan") },
   { key: "5", alt: true, label: "Hubungi Kami", action: () => navigateTo("/hubungi-kami") },

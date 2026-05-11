@@ -40,7 +40,7 @@ const quickLinks = [
     borderHover: "hover:border-green-300 dark:hover:border-green-700",
   },
   {
-    label: "Layanan",
+    label: "Persyaratan Layanan",
     href: "/layanan",
     icon: FileText,
     description: "Daftar layanan",

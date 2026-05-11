@@ -89,7 +89,7 @@ const sitemapCategories: SitemapCategory[] = [
         icon: UserCircle,
       },
       {
-        title: "Layanan Publik",
+        title: "Persyaratan Layanan",
         href: "/layanan",
         description: "Daftar lengkap layanan administrasi kependudukan",
         icon: FileText,

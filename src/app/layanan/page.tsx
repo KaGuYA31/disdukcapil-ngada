@@ -135,7 +135,7 @@ export default function LayananPage() {
                 variants={staggerContainer}
               >
                 <motion.div variants={fadeInUp} className="mb-4">
-                  <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Layanan" }]} />
+                  <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Persyaratan Layanan" }]} />
                 </motion.div>
                 <motion.div variants={fadeInUp} className="mb-3">
                   <span className="inline-block bg-white/15 backdrop-blur-sm text-green-100 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full border border-white/20">

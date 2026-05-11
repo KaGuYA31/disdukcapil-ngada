@@ -34,7 +34,7 @@ import { CONTACT_INFO, OPERATING_HOURS, SOCIAL_MEDIA } from "@/lib/constants";
 const quickLinks = [
   { title: "Beranda", href: "/" },
   { title: "Profil Dinas", href: "/profil" },
-  { title: "Layanan Publik", href: "/layanan" },
+  { title: "Persyaratan Layanan", href: "/layanan" },
   { title: "Data Kependudukan", href: "/statistik" },
   { title: "Inovasi", href: "/inovasi" },
   { title: "Berita & Informasi", href: "/berita" },

@@ -29,7 +29,7 @@ const quickLinks: QuickLink[] = [
   { icon: MessageSquare, label: "Pengaduan", href: "/pengaduan" },
   { icon: Newspaper, label: "Berita", href: "/berita" },
   { icon: BarChart3, label: "Data Kependudukan", href: "/statistik" },
-  { icon: FileText, label: "Layanan", href: "/layanan" },
+  { icon: FileText, label: "Persyaratan Layanan", href: "/layanan" },
   { icon: Building2, label: "Profil", href: "/profil" },
   { icon: Lightbulb, label: "Inovasi", href: "/inovasi" },
   { icon: ShieldCheck, label: "Transparansi", href: "/transparansi" },

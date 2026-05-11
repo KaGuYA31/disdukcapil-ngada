@@ -37,7 +37,7 @@ interface NavItem {
 
 const navigation: NavItem[] = [
   { title: "Beranda", href: "/" },
-  { title: "Layanan", href: "/layanan" },
+  { title: "Persyaratan Layanan", href: "/layanan" },
   {
     title: "Layanan Online",
     href: "/layanan-online",

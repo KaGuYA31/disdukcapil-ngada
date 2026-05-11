@@ -120,7 +120,7 @@ const fadeUp = {
 
 const quickActions = [
   {
-    label: "Layanan",
+    label: "Persyaratan Layanan",
     href: "/layanan",
     Icon: FileText,
     description: "Daftar layanan yang tersedia",
@@ -390,7 +390,7 @@ export function HeroSection() {
                 className="bg-white text-emerald-700 hover:bg-green-50 h-11 px-5 font-semibold shadow-md rounded-xl transition-all duration-200 hover:-translate-y-0.5"
               >
                 <FileText className="mr-2 h-4 w-4" />
-                Lihat Layanan
+                Lihat Persyaratan
               </Button>
             </Link>
             <Link href="/layanan-online">

@@ -197,7 +197,7 @@ export default function FormulirPage() {
           <div className="container mx-auto px-4 relative z-10">
             <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
               <motion.div variants={fadeInUp} className="mb-4">
-                <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Layanan", href: "/layanan" }, { label: "Formulir" }]} />
+                <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Persyaratan Layanan", href: "/layanan" }, { label: "Formulir" }]} />
               </motion.div>
               <motion.div variants={fadeInUp} className="mb-3">
                 <span className="inline-block bg-white/15 backdrop-blur-sm text-green-100 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full border border-white/20">
