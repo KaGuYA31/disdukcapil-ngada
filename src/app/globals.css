@@ -1882,3 +1882,141 @@ html {
 .dark .badge-pulse-dot::after {
   border-color: #1f2937;
 }
+
+/* ===== Smooth Hover Underline for Links ===== */
+.hover-underline-fx {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+}
+.hover-underline-fx::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.hover-underline-fx:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ===== Card Spotlight Effect ===== */
+.card-spotlight {
+  position: relative;
+  overflow: hidden;
+}
+.card-spotlight::before {
+  content: '';
+  position: absolute;
+  top: var(--mouse-y, -100px);
+  left: var(--mouse-x, -100px);
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.06) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.card-spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ===== Gradient Text Utility (Green-Teal) ===== */
+.text-gradient-hero {
+  background: linear-gradient(135deg, #ffffff 0%, #bbf7d0 50%, #99f6e4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== Animated Counter Label ===== */
+.counter-label-gradient {
+  background: linear-gradient(90deg, #6b7280, #9ca3af);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== Skeleton Shimmer Animation ===== */
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.skeleton-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  transform: translateX(-100%);
+  animation: skeleton-shimmer-move 1.5s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer-move {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ===== Hover Border Gradient ===== */
+.hover-border-gradient {
+  position: relative;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+.hover-border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, #22c55e, #14b8a6, #fbbf24);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.hover-border-gradient:hover::before {
+  opacity: 1;
+}
+
+/* ===== Soft Focus Shadow ===== */
+.shadow-soft-focus {
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.05), 0 4px 16px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.02);
+}
+.dark .shadow-soft-focus {
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Pulse Dot Online Indicator ===== */
+.pulse-dot-online {
+  position: relative;
+  width: 8px;
+  height: 8px;
+}
+.pulse-dot-online::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #22c55e;
+}
+.pulse-dot-online::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.4);
+  animation: pulse-dot-ring 2s ease-out infinite;
+}
+@keyframes pulse-dot-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* ===== Text Balance Utility ===== */
+.text-balance {
+  text-wrap: balance;
+}

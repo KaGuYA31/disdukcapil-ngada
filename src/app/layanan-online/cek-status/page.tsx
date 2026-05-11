@@ -108,41 +108,41 @@ const statusConfig: {
 } = {
   Baru: {
     label: "Baru",
-    color: "text-teal-700",
-    bgColor: "bg-teal-50",
-    borderColor: "border-teal-200",
+    color: "text-teal-700 dark:text-teal-300",
+    bgColor: "bg-teal-50 dark:bg-teal-900/30",
+    borderColor: "border-teal-200 dark:border-teal-800",
     icon: Clock,
     description: "Pengajuan baru diterima, menunggu verifikasi",
   },
   Diverifikasi: {
     label: "Diverifikasi",
-    color: "text-yellow-700",
-    bgColor: "bg-yellow-50",
-    borderColor: "border-yellow-200",
+    color: "text-yellow-700 dark:text-yellow-400",
+    bgColor: "bg-yellow-50 dark:bg-yellow-900/20",
+    borderColor: "border-yellow-200 dark:border-yellow-800",
     icon: CheckCircle,
     description: "Dokumen telah diverifikasi, menunggu proses",
   },
   Diproses: {
     label: "Diproses",
-    color: "text-orange-700",
-    bgColor: "bg-orange-50",
-    borderColor: "border-orange-200",
+    color: "text-orange-700 dark:text-orange-300",
+    bgColor: "bg-orange-50 dark:bg-orange-900/20",
+    borderColor: "border-orange-200 dark:border-orange-800",
     icon: Loader2,
     description: "Pengajuan sedang diproses oleh petugas",
   },
   Selesai: {
     label: "Selesai",
-    color: "text-green-700",
-    bgColor: "bg-green-50",
-    borderColor: "border-green-200",
+    color: "text-green-700 dark:text-green-300",
+    bgColor: "bg-green-50 dark:bg-green-900/20",
+    borderColor: "border-green-200 dark:border-green-800",
     icon: CheckCircle,
     description: "Pengajuan telah selesai",
   },
   Ditolak: {
     label: "Ditolak",
-    color: "text-red-700",
-    bgColor: "bg-red-50",
-    borderColor: "border-red-200",
+    color: "text-red-700 dark:text-red-300",
+    bgColor: "bg-red-50 dark:bg-red-900/20",
+    borderColor: "border-red-200 dark:border-red-800",
     icon: AlertCircle,
     description: "Pengajuan ditolak",
   },
@@ -218,9 +218,9 @@ export default function CekStatusPage() {
     return (
       statusConfig[status] || {
         label: status,
-        color: "text-gray-700",
-        bgColor: "bg-gray-50",
-        borderColor: "border-gray-200",
+        color: "text-gray-700 dark:text-gray-200",
+        bgColor: "bg-gray-50 dark:bg-gray-800",
+        borderColor: "border-gray-200 dark:border-gray-700",
         icon: Clock,
         description: "Status tidak diketahui",
       }
@@ -382,7 +382,7 @@ export default function CekStatusPage() {
         </section>
 
         {/* ──── Search Section ──── */}
-        <section className="py-10 bg-gray-50">
+        <section className="py-10 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <motion.div
               initial="hidden"
@@ -392,7 +392,7 @@ export default function CekStatusPage() {
               className="max-w-xl mx-auto"
             >
               <motion.div variants={fadeInUp}>
-                <Card className="shadow-md border-0 shadow-green-900/5">
+                <Card className="shadow-md border-0 shadow-green-900/5 dark:bg-gray-800/50">
                   <CardContent className="pt-6">
                     <div className="space-y-4">
                       <div className="space-y-2">
@@ -410,7 +410,7 @@ export default function CekStatusPage() {
                             onKeyDown={(e) =>
                               e.key === "Enter" && handleSearch()
                             }
-                            className="text-base h-11"
+                            className="text-base h-11 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
                           />
                           <Button
                             onClick={handleSearch}
@@ -426,10 +426,10 @@ export default function CekStatusPage() {
                           </Button>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         Nomor pengajuan diberikan setelah Anda mengirim
                         pengajuan layanan online. Format:{" "}
-                        <span className="font-mono text-gray-600">
+                        <span className="font-mono text-gray-600 dark:text-gray-300">
                           ONL-YYYYMMDD-XXXX
                         </span>
                       </p>
@@ -453,15 +453,15 @@ export default function CekStatusPage() {
                   viewport={{ once: true }}
                   variants={fadeInUp}
                 >
-                  <Card className="border-0 shadow-md">
+                  <Card className="border-0 shadow-md dark:bg-gray-800/50">
                     <CardContent className="py-16 text-center">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                        <AlertCircle className="h-8 w-8 text-gray-300" />
+                      <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                        <AlertCircle className="h-8 w-8 text-gray-300 dark:text-gray-500" />
                       </div>
-                      <p className="text-gray-700 font-semibold text-lg">
+                      <p className="text-gray-700 dark:text-gray-200 font-semibold text-lg">
                         Pengajuan tidak ditemukan
                       </p>
-                      <p className="text-sm text-gray-500 mt-2 max-w-sm mx-auto">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 max-w-sm mx-auto">
                         Pastikan nomor pengajuan yang Anda masukkan sudah
                         benar. Jika masih bermasalah, silakan hubungi kami.
                       </p>
@@ -481,7 +481,7 @@ export default function CekStatusPage() {
                 >
                   {/* Status Card */}
                   <motion.div variants={fadeInUp}>
-                    <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                    <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all dark:bg-gray-800/50">
                       <CardHeader>
                         <div className="flex items-center justify-between flex-wrap gap-2">
                           <div>
@@ -537,18 +537,18 @@ export default function CekStatusPage() {
                             <p className="font-medium">
                               {getStatusConfig(result.status).label}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
                               {getStatusConfig(result.status).description}
                             </p>
                           </div>
                         </div>
 
                         {result.catatan && (
-                          <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                            <p className="text-sm font-medium text-yellow-800">
+                          <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                            <p className="text-sm font-medium text-yellow-800 dark:text-yellow-300">
                               Catatan Petugas:
                             </p>
-                            <p className="text-sm text-yellow-700 mt-1">
+                            <p className="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
                               {result.catatan}
                             </p>
                           </div>
@@ -559,7 +559,7 @@ export default function CekStatusPage() {
 
                   {/* Timeline */}
                   <motion.div variants={fadeInUp}>
-                    <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                    <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all dark:bg-gray-800/50">
                       <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
                           <Calendar className="h-5 w-5 text-green-600" />
@@ -574,19 +574,19 @@ export default function CekStatusPage() {
                           <div className="space-y-6">
                             {/* Step: Pengajuan Dibuat */}
                             <div className="flex items-start gap-4 relative">
-                              <div className="w-[30px] h-[30px] bg-teal-100 border-2 border-teal-400 rounded-full flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
-                                <FileText className="h-3.5 w-3.5 text-teal-600" />
+                              <div className="w-[30px] h-[30px] bg-teal-100 dark:bg-teal-900/40 border-2 border-teal-400 dark:border-teal-600 rounded-full flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
+                                <FileText className="h-3.5 w-3.5 text-teal-600 dark:text-teal-300" />
                               </div>
                               <div className="flex-1 pb-1">
                                 <div className="flex items-center justify-between flex-wrap gap-1">
-                                  <p className="font-semibold text-gray-800">
+                                  <p className="font-semibold text-gray-800 dark:text-gray-100">
                                     Pengajuan Dibuat
                                   </p>
-                                  <p className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                                  <p className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">
                                     {formatDate(result.tanggalPengajuan)}
                                   </p>
                                 </div>
-                                <p className="text-sm text-gray-600 mt-0.5">
+                                <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
                                   Pengajuan berhasil dikirim melalui website
                                 </p>
                               </div>
@@ -595,19 +595,19 @@ export default function CekStatusPage() {
                             {/* Step: Sedang Diproses */}
                             {result.tanggalProses && (
                               <div className="flex items-start gap-4 relative">
-                                <div className="w-[30px] h-[30px] bg-orange-100 border-2 border-orange-400 rounded-full flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
-                                  <Clock className="h-3.5 w-3.5 text-orange-600" />
+                                <div className="w-[30px] h-[30px] bg-orange-100 dark:bg-orange-900/40 border-2 border-orange-400 dark:border-orange-600 rounded-full flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
+                                  <Clock className="h-3.5 w-3.5 text-orange-600 dark:text-orange-300" />
                                 </div>
                                 <div className="flex-1 pb-1">
                                   <div className="flex items-center justify-between flex-wrap gap-1">
-                                    <p className="font-semibold text-gray-800">
+                                    <p className="font-semibold text-gray-800 dark:text-gray-100">
                                       Sedang Diproses
                                     </p>
-                                    <p className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">
                                       {formatDate(result.tanggalProses)}
                                     </p>
                                   </div>
-                                  <p className="text-sm text-gray-600 mt-0.5">
+                                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
                                     Pengajuan sedang ditangani oleh petugas
                                   </p>
                                 </div>
@@ -617,19 +617,19 @@ export default function CekStatusPage() {
                             {/* Step: Selesai */}
                             {result.tanggalSelesai && (
                               <div className="flex items-start gap-4 relative">
-                                <div className="w-[30px] h-[30px] bg-green-100 border-2 border-green-400 rounded-full flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
-                                  <CheckCircle className="h-3.5 w-3.5 text-green-600" />
+                                <div className="w-[30px] h-[30px] bg-green-100 dark:bg-green-900/40 border-2 border-green-400 dark:border-green-600 rounded-full flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
+                                  <CheckCircle className="h-3.5 w-3.5 text-green-600 dark:text-green-300" />
                                 </div>
                                 <div className="flex-1 pb-1">
                                   <div className="flex items-center justify-between flex-wrap gap-1">
-                                    <p className="font-semibold text-gray-800">
+                                    <p className="font-semibold text-gray-800 dark:text-gray-100">
                                       Selesai
                                     </p>
-                                    <p className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">
                                       {formatDate(result.tanggalSelesai)}
                                     </p>
                                   </div>
-                                  <p className="text-sm text-gray-600 mt-0.5">
+                                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
                                     Pengajuan telah selesai diproses
                                   </p>
                                 </div>
@@ -643,7 +643,7 @@ export default function CekStatusPage() {
 
                   {/* Data Pemohon */}
                   <motion.div variants={fadeInUp}>
-                    <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                    <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all dark:bg-gray-800/50">
                       <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
                           <User className="h-5 w-5 text-green-600" />
@@ -652,12 +652,12 @@ export default function CekStatusPage() {
                       </CardHeader>
                       <CardContent>
                         <div className="grid md:grid-cols-2 gap-4">
-                          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                              <User className="h-4 w-4 text-green-600" />
+                          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                            <div className="w-8 h-8 bg-green-100 dark:bg-green-900/40 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <User className="h-4 w-4 text-green-600 dark:text-green-300" />
                             </div>
                             <div>
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
                                 Nama Lengkap
                               </p>
                               <p className="font-medium text-sm">
@@ -665,23 +665,23 @@ export default function CekStatusPage() {
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                              <FileText className="h-4 w-4 text-blue-600" />
+                          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                            <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/40 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <FileText className="h-4 w-4 text-blue-600 dark:text-blue-300" />
                             </div>
                             <div>
-                              <p className="text-xs text-gray-500">NIK</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">NIK</p>
                               <p className="font-medium text-sm">
                                 {result.nik}
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                            <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                              <Phone className="h-4 w-4 text-orange-600" />
+                          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                            <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/40 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <Phone className="h-4 w-4 text-orange-600 dark:text-orange-300" />
                             </div>
                             <div>
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
                                 No. Telepon
                               </p>
                               <p className="font-medium text-sm">
@@ -690,12 +690,12 @@ export default function CekStatusPage() {
                             </div>
                           </div>
                           {result.email && (
-                            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <Mail className="h-4 w-4 text-purple-600" />
+                            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                              <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/40 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <Mail className="h-4 w-4 text-purple-600 dark:text-purple-300" />
                               </div>
                               <div>
-                                <p className="text-xs text-gray-500">Email</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">Email</p>
                                 <p className="font-medium text-sm">
                                   {result.email}
                                 </p>
@@ -703,12 +703,12 @@ export default function CekStatusPage() {
                             </div>
                           )}
                           {result.alamat && (
-                            <div className="md:col-span-2 flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                              <div className="w-8 h-8 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <MapPin className="h-4 w-4 text-rose-600" />
+                            <div className="md:col-span-2 flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                              <div className="w-8 h-8 bg-rose-100 dark:bg-rose-900/40 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <MapPin className="h-4 w-4 text-rose-600 dark:text-rose-300" />
                               </div>
                               <div>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                   Alamat
                                 </p>
                                 <p className="font-medium text-sm">
@@ -724,7 +724,7 @@ export default function CekStatusPage() {
 
                   {/* Layanan */}
                   <motion.div variants={fadeInUp}>
-                    <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                    <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all dark:bg-gray-800/50">
                       <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
                           <FileText className="h-5 w-5 text-green-600" />
@@ -733,14 +733,14 @@ export default function CekStatusPage() {
                       </CardHeader>
                       <CardContent>
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center shadow-sm">
-                            <FileText className="h-6 w-6 text-green-600" />
+                          <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/40 dark:to-emerald-900/40 rounded-xl flex items-center justify-center shadow-sm">
+                            <FileText className="h-6 w-6 text-green-600 dark:text-green-300" />
                           </div>
                           <div>
-                            <p className="font-semibold text-gray-800">
+                            <p className="font-semibold text-gray-800 dark:text-gray-100">
                               {result.layanan.name}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
                               Diajukan pada{" "}
                               {formatDate(result.tanggalPengajuan)}
                             </p>
@@ -753,7 +753,7 @@ export default function CekStatusPage() {
                   {/* Dokumen */}
                   {result.dokumen.length > 0 && (
                     <motion.div variants={fadeInUp}>
-                      <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                      <Card className="border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all dark:bg-gray-800/50">
                         <CardHeader>
                           <CardTitle className="text-lg flex items-center gap-2">
                             <Download className="h-5 w-5 text-green-600" />
@@ -765,17 +765,17 @@ export default function CekStatusPage() {
                             {result.dokumen.map((doc) => (
                               <div
                                 key={doc.id}
-                                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-colors"
+                                className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                               >
                                 <div className="flex items-center gap-3">
-                                  <div className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center">
-                                    <FileText className="h-4 w-4 text-gray-500" />
+                                  <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                                    <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                                   </div>
                                   <div>
                                     <p className="text-sm font-medium">
                                       {doc.namaDokumen}
                                     </p>
-                                    <p className="text-xs text-gray-500">
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
                                       {doc.fileName}
                                     </p>
                                   </div>
@@ -784,7 +784,7 @@ export default function CekStatusPage() {
                                   href={doc.fileUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="p-2 hover:bg-green-100 hover:text-green-700 rounded-lg transition-colors"
+                                  className="p-2 hover:bg-green-100 dark:hover:bg-green-900 hover:text-green-700 rounded-lg transition-colors"
                                 >
                                   <Download className="h-4 w-4" />
                                 </a>
@@ -798,8 +798,8 @@ export default function CekStatusPage() {
 
                   {/* Hubungi Kami CTA */}
                   <motion.div variants={fadeInUp}>
-                    <Card className="border-0 shadow-md overflow-hidden">
-                      <div className="bg-gradient-to-r from-green-600 to-teal-600 p-6 md:p-8">
+                    <Card className="border-0 shadow-md overflow-hidden dark:bg-gray-800/50">
+                      <div className="bg-gradient-to-r from-green-600 to-teal-600 dark:from-green-800 dark:to-teal-800 p-6 md:p-8">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                           <div className="w-14 h-14 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center flex-shrink-0">
                             <MessageCircle className="h-7 w-7 text-white" />
@@ -817,7 +817,7 @@ export default function CekStatusPage() {
                             href={CONTACT_INFO.whatsappUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 bg-white text-green-700 font-semibold px-5 py-2.5 rounded-xl hover:bg-green-50 transition-colors shadow-sm flex-shrink-0"
+                            className="inline-flex items-center gap-2 bg-white dark:bg-gray-100 text-green-700 font-semibold px-5 py-2.5 rounded-xl hover:bg-green-50 dark:hover:bg-green-900 transition-colors shadow-sm flex-shrink-0"
                           >
                             <Phone className="h-4 w-4" />
                             Hubungi Kami
@@ -838,19 +838,19 @@ export default function CekStatusPage() {
                   viewport={{ once: true }}
                   variants={fadeInUp}
                 >
-                  <Card className="border-0 shadow-md">
+                  <Card className="border-0 shadow-md dark:bg-gray-800/50">
                     <CardContent className="py-16 text-center">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Search className="h-8 w-8 text-gray-300" />
+                      <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                        <Search className="h-8 w-8 text-gray-300 dark:text-gray-500" />
                       </div>
-                      <p className="text-gray-700 font-semibold text-lg">
+                      <p className="text-gray-700 dark:text-gray-200 font-semibold text-lg">
                         Masukkan Nomor Pengajuan
                       </p>
-                      <p className="text-sm text-gray-500 mt-2">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                         Masukkan nomor pengajuan di atas untuk melihat status
                         terkini dari layanan yang Anda ajukan.
                       </p>
-                      <p className="text-xs text-gray-400 mt-3 font-mono">
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 font-mono">
                         Format: ONL-YYYYMMDD-XXXX
                       </p>
                     </CardContent>

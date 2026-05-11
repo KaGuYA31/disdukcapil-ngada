@@ -46,61 +46,61 @@ const datasets = [
     title: "Jumlah Penduduk per Kecamatan",
     icon: BarChart3,
     theme: "teal",
-    bgIcon: "bg-teal-100",
-    textIcon: "text-teal-600",
-    borderHover: "hover:border-teal-400",
+    bgIcon: "bg-teal-100 dark:bg-teal-900/30",
+    textIcon: "text-teal-600 dark:text-teal-400",
+    borderHover: "hover:border-teal-400 dark:hover:border-teal-600",
     description: "Data demografis penduduk berdasarkan kecamatan",
   },
   {
     title: "Data KTP-el",
     icon: CreditCard,
     theme: "emerald",
-    bgIcon: "bg-emerald-100",
-    textIcon: "text-emerald-600",
-    borderHover: "hover:border-emerald-400",
+    bgIcon: "bg-emerald-100 dark:bg-emerald-900/30",
+    textIcon: "text-emerald-600 dark:text-emerald-400",
+    borderHover: "hover:border-emerald-400 dark:hover:border-emerald-600",
     description: "Data pembuatan dan penerbitan KTP-el",
   },
   {
     title: "Data Akta Kelahiran",
     icon: Baby,
     theme: "amber",
-    bgIcon: "bg-amber-100",
-    textIcon: "text-amber-600",
-    borderHover: "hover:border-amber-400",
+    bgIcon: "bg-amber-100 dark:bg-amber-900/30",
+    textIcon: "text-amber-600 dark:text-amber-400",
+    borderHover: "hover:border-amber-400 dark:hover:border-amber-600",
     description: "Data pencatatan akta kelahiran",
   },
   {
     title: "Data Kartu Keluarga",
     icon: Users,
     theme: "rose",
-    bgIcon: "bg-rose-100",
-    textIcon: "text-rose-600",
-    borderHover: "hover:border-rose-400",
+    bgIcon: "bg-rose-100 dark:bg-rose-900/30",
+    textIcon: "text-rose-600 dark:text-rose-400",
+    borderHover: "hover:border-rose-400 dark:hover:border-rose-600",
     description: "Data kepemilikan dan pembuatan KK",
   },
   {
     title: "Data Perpindahan Penduduk",
     icon: MoveRight,
     theme: "teal",
-    bgIcon: "bg-teal-100",
-    textIcon: "text-teal-600",
-    borderHover: "hover:border-teal-400",
+    bgIcon: "bg-teal-100 dark:bg-teal-900/30",
+    textIcon: "text-teal-600 dark:text-teal-400",
+    borderHover: "hover:border-teal-400 dark:hover:border-teal-600",
     description: "Data perpindahan penduduk",
   },
   {
     title: "Data Akta Perkawinan",
     icon: Heart,
     theme: "amber",
-    bgIcon: "bg-amber-100",
-    textIcon: "text-amber-600",
-    borderHover: "hover:border-amber-400",
+    bgIcon: "bg-amber-100 dark:bg-amber-900/30",
+    textIcon: "text-amber-600 dark:text-amber-400",
+    borderHover: "hover:border-amber-400 dark:hover:border-amber-600",
     description: "Data pencatatan pernikahan dan perceraian",
   },
 ];
 
 export default function OpenDataPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
@@ -155,26 +155,26 @@ export default function OpenDataPage() {
             variants={staggerContainer}
           >
             <motion.div variants={fadeInUp} className="text-center mb-8">
-              <p className="text-green-600 font-semibold uppercase tracking-wider text-sm mb-2">
+              <p className="text-green-600 dark:text-green-400 font-semibold uppercase tracking-wider text-sm mb-2">
                 PRINSIP KAMI
               </p>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
                 Prinsip Open Data
               </h2>
-              <p className="text-gray-500 mt-2 max-w-2xl mx-auto">
+              <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-2xl mx-auto">
                 Tiga prinsip utama yang menjadi fondasi kebijakan keterbukaan data kami
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6">
               <motion.div variants={fadeInUp}>
-                <Card className="border-2 hover:border-green-300 hover:shadow-lg transition-all duration-300 h-full text-center group">
+                <Card className="border-2 hover:border-green-300 dark:hover:border-green-600 hover:shadow-lg transition-all duration-300 h-full text-center group">
                   <CardContent className="p-6">
-                    <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
-                      <Unlock className="h-8 w-8 text-green-600" />
+                    <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 dark:group-hover:bg-green-800 transition-colors">
+                      <Unlock className="h-8 w-8 text-green-600 dark:text-green-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Keterbukaan</h3>
-                    <p className="text-gray-500">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Keterbukaan</h3>
+                    <p className="text-gray-500 dark:text-gray-400">
                       Seluruh data kependudukan yang tidak bersifat rahasia dibuka untuk publik demi
                       transparansi dan akuntabilitas pelayanan administrasi.
                     </p>
@@ -183,13 +183,13 @@ export default function OpenDataPage() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Card className="border-2 hover:border-teal-300 hover:shadow-lg transition-all duration-300 h-full text-center group">
+                <Card className="border-2 hover:border-teal-300 dark:hover:border-teal-600 hover:shadow-lg transition-all duration-300 h-full text-center group">
                   <CardContent className="p-6">
-                    <div className="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-teal-200 transition-colors">
-                      <Eye className="h-8 w-8 text-teal-600" />
+                    <div className="w-16 h-16 bg-teal-100 dark:bg-teal-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-teal-200 dark:group-hover:bg-teal-800 transition-colors">
+                      <Eye className="h-8 w-8 text-teal-600 dark:text-teal-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Aksesibilitas</h3>
-                    <p className="text-gray-500">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Aksesibilitas</h3>
+                    <p className="text-gray-500 dark:text-gray-400">
                       Data disediakan dalam format yang mudah diakses dan digunakan oleh siapa saja,
                       termasuk dalam format JSON dan CSV untuk pengembang.
                     </p>
@@ -198,13 +198,13 @@ export default function OpenDataPage() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Card className="border-2 hover:border-amber-300 hover:shadow-lg transition-all duration-300 h-full text-center group">
+                <Card className="border-2 hover:border-amber-300 dark:hover:border-amber-600 hover:shadow-lg transition-all duration-300 h-full text-center group">
                   <CardContent className="p-6">
-                    <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-200 transition-colors">
-                      <ShieldCheck className="h-8 w-8 text-amber-600" />
+                    <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-200 dark:group-hover:bg-amber-800 transition-colors">
+                      <ShieldCheck className="h-8 w-8 text-amber-600 dark:text-amber-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Akuntabilitas</h3>
-                    <p className="text-gray-500">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Akuntabilitas</h3>
+                    <p className="text-gray-500 dark:text-gray-400">
                       Data yang dipublikasikan telah diverifikasi dan dapat dipertanggungjawabkan
                       kebenarannya sesuai dengan regulasi yang berlaku.
                     </p>
@@ -222,13 +222,13 @@ export default function OpenDataPage() {
             variants={staggerContainer}
           >
             <motion.div variants={fadeInUp} className="text-center mb-8">
-              <p className="text-green-600 font-semibold uppercase tracking-wider text-sm mb-2">
+              <p className="text-green-600 dark:text-green-400 font-semibold uppercase tracking-wider text-sm mb-2">
                 DATA TERBUKA
               </p>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
                 Dataset Tersedia
               </h2>
-              <p className="text-gray-500 mt-2 max-w-2xl mx-auto">
+              <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-2xl mx-auto">
                 Berikut dataset kependudukan yang dapat diakses dan diunduh oleh publik
               </p>
             </motion.div>
@@ -242,7 +242,7 @@ export default function OpenDataPage() {
                     variants={fadeInUp}
                   >
                     <Card
-                      className={`border-2 border-gray-100 ${dataset.borderHover} hover:shadow-lg transition-all duration-300 h-full group`}
+                      className={`border-2 border-gray-100 dark:border-gray-800 ${dataset.borderHover} hover:shadow-lg transition-all duration-300 h-full group`}
                     >
                       <CardContent className="p-6">
                         <div className="flex items-start gap-4 mb-4">
@@ -252,10 +252,10 @@ export default function OpenDataPage() {
                             <Icon className={`h-6 w-6 ${dataset.textIcon}`} />
                           </div>
                           <div>
-                            <h3 className="text-lg font-bold text-gray-900">{dataset.title}</h3>
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{dataset.title}</h3>
                           </div>
                         </div>
-                        <p className="text-gray-500 text-sm mb-4">{dataset.description}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{dataset.description}</p>
                         <Button
                           variant="outline"
                           className={`w-full ${dataset.textIcon} border-current/20 hover:bg-current/5 group/btn`}
@@ -282,42 +282,42 @@ export default function OpenDataPage() {
             variants={staggerContainer}
           >
             <motion.div variants={fadeInUp} className="text-center mb-8">
-              <p className="text-green-600 font-semibold uppercase tracking-wider text-sm mb-2">
+              <p className="text-green-600 dark:text-green-400 font-semibold uppercase tracking-wider text-sm mb-2">
                 FORMAT DATA
               </p>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
                 Format Data yang Tersedia
               </h2>
             </motion.div>
 
             <motion.div variants={fadeInUp}>
-              <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-white overflow-hidden">
+              <Card className="border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50 to-white dark:from-green-900/20 dark:to-gray-900 overflow-hidden">
                 <CardContent className="p-6 md:p-8">
                   <div className="grid sm:grid-cols-3 gap-6">
                     <div className="text-center">
-                      <div className="w-14 h-14 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                        <FileJson className="h-7 w-7 text-teal-600" />
+                      <div className="w-14 h-14 bg-teal-100 dark:bg-teal-900/30 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <FileJson className="h-7 w-7 text-teal-600 dark:text-teal-400" />
                       </div>
-                      <h3 className="font-bold text-gray-900 mb-1">JSON</h3>
-                      <p className="text-gray-500 text-sm">
+                      <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">JSON</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">
                         Format terstruktur untuk integrasi aplikasi dan pengembangan web
                       </p>
                     </div>
                     <div className="text-center">
-                      <div className="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                        <FileSpreadsheet className="h-7 w-7 text-green-600" />
+                      <div className="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <FileSpreadsheet className="h-7 w-7 text-green-600 dark:text-green-400" />
                       </div>
-                      <h3 className="font-bold text-gray-900 mb-1">CSV</h3>
-                      <p className="text-gray-500 text-sm">
+                      <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">CSV</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">
                         Format tabel untuk analisis data menggunakan spreadsheet atau tools analitik
                       </p>
                     </div>
                     <div className="text-center">
-                      <div className="w-14 h-14 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                        <FileText className="h-7 w-7 text-rose-600" />
+                      <div className="w-14 h-14 bg-rose-100 dark:bg-rose-900/30 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <FileText className="h-7 w-7 text-rose-600 dark:text-rose-400" />
                       </div>
-                      <h3 className="font-bold text-gray-900 mb-1">PDF</h3>
-                      <p className="text-gray-500 text-sm">
+                      <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">PDF</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">
                         Format dokumen untuk pelaporan dan keperluan cetak resmi
                       </p>
                     </div>
@@ -351,7 +351,7 @@ export default function OpenDataPage() {
                 >
                   <Button
                     size="lg"
-                    className="bg-white text-green-700 hover:bg-green-50 font-semibold text-base"
+                    className="bg-white text-green-700 hover:bg-green-50 dark:hover:bg-green-800 font-semibold text-base"
                   >
                     <MessageCircle className="mr-2 h-5 w-5" />
                     Hubungi via WhatsApp

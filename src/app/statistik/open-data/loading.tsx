@@ -1,91 +1,169 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { WhatsAppButton } from "@/components/shared/whatsapp-button";
-import { BackToTop } from "@/components/shared/back-to-top";
 
 export default function OpenDataLoading() {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner Skeleton */}
-        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16">
-          <div className="container mx-auto px-4">
+        <section className="relative bg-gradient-to-br from-green-700 to-green-900 dark:from-green-900 dark:to-green-950 py-16 overflow-hidden">
+          <div className="absolute top-10 right-10 w-72 h-72 bg-green-600/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-green-500/10 rounded-full blur-3xl" />
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
-              <div className="h-4 w-48 bg-white/20 rounded mb-6 animate-pulse" />
-              <div className="h-10 w-80 bg-white/20 rounded mb-4 animate-pulse" />
-              <div className="h-5 w-96 bg-white/15 rounded mb-2 animate-pulse" />
-              <div className="h-5 w-72 bg-white/10 rounded animate-pulse" />
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                className="space-y-4"
+              >
+                {/* Breadcrumb skeleton */}
+                <Skeleton className="h-4 w-48 bg-green-600/20" />
+                {/* Title skeleton */}
+                <Skeleton className="h-10 w-80 bg-green-600/20" />
+                {/* Subtitle skeleton */}
+                <Skeleton className="h-5 w-64 bg-green-600/20" />
+                {/* Description skeleton */}
+                <Skeleton className="h-4 w-full max-w-2xl bg-green-600/20" />
+                <Skeleton className="h-4 w-72 bg-green-600/20" />
+              </motion.div>
             </div>
           </div>
         </section>
 
         <div className="container mx-auto px-4 py-12 space-y-16">
-          {/* Prinsip Open Data Skeleton */}
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <div className="h-4 w-24 bg-gray-200 rounded mx-auto animate-pulse" />
-              <div className="h-8 w-48 bg-gray-200 rounded mx-auto animate-pulse" />
-              <div className="h-4 w-72 bg-gray-100 rounded mx-auto animate-pulse" />
+          {/* Section 1: Prinsip Open Data Skeleton */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="space-y-8"
+          >
+            {/* Section header skeleton */}
+            <div className="text-center space-y-3">
+              <Skeleton className="h-4 w-28 mx-auto" />
+              <Skeleton className="h-8 w-56 mx-auto" />
+              <Skeleton className="h-4 w-80 mx-auto" />
             </div>
+
+            {/* Principle cards skeleton */}
             <div className="grid md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-white rounded-xl border-2 border-gray-100 p-6 animate-pulse">
-                  <div className="w-16 h-16 bg-gray-100 rounded-2xl mx-auto mb-4" />
-                  <div className="h-6 w-32 bg-gray-100 rounded mx-auto mb-2" />
-                  <div className="h-4 w-full bg-gray-50 rounded mb-1" />
-                  <div className="h-4 w-5/6 bg-gray-50 rounded" />
-                </div>
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.15 + i * 0.1 }}
+                  className="rounded-xl border-2 p-6 space-y-4 bg-white dark:bg-gray-800/50"
+                >
+                  <div className="flex justify-center">
+                    <Skeleton className="h-16 w-16 rounded-2xl" />
+                  </div>
+                  <Skeleton className="h-6 w-32 mx-auto" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-5/6" />
+                    <Skeleton className="h-4 w-4/6" />
+                  </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.section>
 
-          {/* Dataset Tersedia Skeleton */}
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <div className="h-4 w-28 bg-gray-200 rounded mx-auto animate-pulse" />
-              <div className="h-8 w-44 bg-gray-200 rounded mx-auto animate-pulse" />
-              <div className="h-4 w-64 bg-gray-100 rounded mx-auto animate-pulse" />
+          {/* Section 2: Dataset Tersedia Skeleton */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="space-y-8"
+          >
+            {/* Section header skeleton */}
+            <div className="text-center space-y-3">
+              <Skeleton className="h-4 w-28 mx-auto" />
+              <Skeleton className="h-8 w-48 mx-auto" />
+              <Skeleton className="h-4 w-80 mx-auto" />
             </div>
+
+            {/* Dataset cards skeleton */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="bg-white rounded-xl border-2 border-gray-100 p-6 animate-pulse">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-xl shrink-0" />
-                    <div className="flex-1">
-                      <div className="h-5 w-full bg-gray-100 rounded mb-1" />
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.25 + i * 0.07 }}
+                  className="rounded-xl border-2 p-6 space-y-4 bg-white dark:bg-gray-800/50"
+                >
+                  <div className="flex items-start gap-4">
+                    <Skeleton className="h-12 w-12 rounded-xl shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-5 w-48" />
                     </div>
                   </div>
-                  <div className="h-4 w-3/4 bg-gray-50 rounded mb-4" />
-                  <div className="h-10 w-full bg-gray-100 rounded-lg" />
-                </div>
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-10 w-full rounded-md" />
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.section>
 
-          {/* Format Data Skeleton */}
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <div className="h-4 w-28 bg-gray-200 rounded mx-auto animate-pulse" />
-              <div className="h-8 w-52 bg-gray-200 rounded mx-auto animate-pulse" />
+          {/* Section 3: Format Data Skeleton */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="space-y-8"
+          >
+            <div className="text-center space-y-3">
+              <Skeleton className="h-4 w-28 mx-auto" />
+              <Skeleton className="h-8 w-64 mx-auto" />
             </div>
-            <div className="bg-white rounded-xl border-2 border-green-200 p-6 md:p-8">
-              <div className="grid sm:grid-cols-3 gap-6">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="text-center animate-pulse">
-                    <div className="w-14 h-14 bg-gray-100 rounded-2xl mx-auto mb-3" />
-                    <div className="h-5 w-16 bg-gray-100 rounded mx-auto mb-1" />
-                    <div className="h-4 w-full bg-gray-50 rounded" />
-                  </div>
-                ))}
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.35 }}
+            >
+              <div className="rounded-xl border-2 p-6 md:p-8 bg-gradient-to-br from-green-50 to-white dark:from-green-900/20 dark:to-gray-900">
+                <div className="grid sm:grid-cols-3 gap-6">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="text-center space-y-3">
+                      <Skeleton className="h-14 w-14 rounded-2xl mx-auto" />
+                      <Skeleton className="h-5 w-16 mx-auto" />
+                      <Skeleton className="h-4 w-48 mx-auto" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </motion.section>
+
+          {/* Section 4: CTA Skeleton */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <div className="rounded-xl bg-gradient-to-br from-green-700 to-green-900 dark:from-green-900 dark:to-green-950 p-8 md:p-10 text-center relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-green-600/20 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-teal-500/15 rounded-full blur-2xl" />
+              <div className="relative z-10 space-y-4">
+                <Skeleton className="h-10 w-10 rounded-full mx-auto bg-green-600/20" />
+                <Skeleton className="h-8 w-64 mx-auto bg-green-600/20" />
+                <Skeleton className="h-4 w-full max-w-xl mx-auto bg-green-600/20" />
+                <Skeleton className="h-4 w-48 mx-auto bg-green-600/20" />
+                <Skeleton className="h-12 w-52 mx-auto rounded-md bg-green-600/20" />
+                <Skeleton className="h-3 w-40 mx-auto bg-green-600/20" />
               </div>
             </div>
-          </div>
+          </motion.section>
         </div>
       </main>
-      <Footer />
-      <WhatsAppButton />
-      <BackToTop />
     </div>
   );
 }
