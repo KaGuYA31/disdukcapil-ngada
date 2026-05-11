@@ -40,8 +40,8 @@ const quickLinksData: QuickLinkItem[] = [
   },
   {
     icon: Download,
-    label: "Download Formulir",
-    href: "/formulir",
+    label: "Persyaratan",
+    href: "/layanan",
   },
   {
     icon: CreditCard,

@@ -48,7 +48,6 @@ const navigation: NavItem[] = [
     ],
   },
   { title: "Inovasi", href: "/inovasi" },
-  { title: "Formulir", href: "/formulir" },
   { title: "Berita", href: "/berita" },
   { title: "Pengaduan", href: "/pengaduan" },
   { title: "Hubungi Kami", href: "/hubungi-kami" },

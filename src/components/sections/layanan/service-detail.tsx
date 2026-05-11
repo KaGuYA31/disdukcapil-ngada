@@ -881,7 +881,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                   <BreadcrumbSeparator className="text-green-300" />
                   <BreadcrumbItem>
                     <BreadcrumbLink href="/layanan" className="text-green-200 hover:text-white">
-                      Layanan
+                      Persyaratan Layanan
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="text-green-300" />
@@ -1303,7 +1303,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                 <BreadcrumbSeparator className="text-green-300" />
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/layanan" className="text-green-200 hover:text-white">
-                    Layanan
+                    Persyaratan Layanan
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="text-green-300" />

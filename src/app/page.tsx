@@ -91,7 +91,7 @@ export default function HomePage() {
                 { name: "Cek Status", icon: "🔍", href: "/layanan-online/cek-status", desc: "Lacak pengajuan Anda" },
                 { name: "Pindah Domisili", icon: "🏠", href: "/layanan/pindah-domisili", desc: "Perpindahan penduduk" },
                 { name: "Pengaduan", icon: "💬", href: "/pengaduan", desc: "Sampaikan keluhan" },
-                { name: "Formulir", icon: "📄", href: "/formulir", desc: "Download formulir" },
+                { name: "Persyaratan Layanan", icon: "📋", href: "/layanan", desc: "Cek syarat & formulir" },
                 { name: "Antrian Online", icon: "🎫", href: "/layanan-online", desc: "Ambil nomor antrian" },
               ].map((item) => (
                 <a
