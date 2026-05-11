@@ -1,0 +1,536 @@
+// This is your Prisma schema file for Disdukcapil Ngada
+// Production uses Supabase PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+// =============================================
+// DATA STATISTIK KEPENDUDUKAN
+// =============================================
+
+// Ringkasan Data Utama
+model DataRingkasan {
+  id                String   @id @default(cuid())
+  periode           String   // "Februari 2025"
+  totalPenduduk     Int
+  lakiLaki          Int
+  perempuan         Int
+  rasioJK           Float    // Rasio Jenis Kelamin
+  jumlahKecamatan   Int
+  jumlahKelurahan   Int
+  jumlahDisabilitas Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("data_ringkasan")
+}
+
+// Ringkasan Dokumen Kependudukan
+model RingkasanDokumen {
+  id          String   @id @default(cuid())
+  ektpCetak   Int      @default(0)
+  ektpBelum   Int      @default(0)
+  aktaLahir   Int      @default(0)
+  aktaBelum   Int      @default(0)
+  kiaMiliki   Int      @default(0)
+  kiaBelum    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("ringkasan_dokumen")
+}
+
+// Penduduk Per Kecamatan
+model PendudukKecamatan {
+  id        String   @id @default(cuid())
+  kodeKec   String
+  kecamatan String
+  lakiLaki  Int
+  perempuan Int
+  total     Int
+  rasioJK   Float
+  periode   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("penduduk_kecamatan")
+}
+
+// Penduduk Per Kelurahan/Desa
+model PendudukKelurahan {
+  id        String   @id @default(cuid())
+  kecamatan String
+  kelurahan String
+  lakiLaki  Int
+  perempuan Int
+  total     Int
+  rasioJK   Float
+  periode   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("penduduk_kelurahan")
+}
+
+// Distribusi Agama
+model DistribusiAgama {
+  id         String   @id @default(cuid())
+  agama      String
+  jumlah     Int
+  persentase Float
+  periode    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("distribusi_agama")
+}
+
+// Agama Per Kecamatan
+model AgamaKecamatan {
+  id          String   @id @default(cuid())
+  kecamatan   String
+  buddha      Int      @default(0)
+  hindu       Int      @default(0)
+  islam       Int      @default(0)
+  katholik    Int      @default(0)
+  kepercayaan Int      @default(0)
+  khonghucu   Int      @default(0)
+  kristen     Int      @default(0)
+  periode     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("agama_kecamatan")
+}
+
+// Distribusi Pendidikan
+model DistribusiPendidikan {
+  id         String   @id @default(cuid())
+  tingkat    String
+  jumlah     Int
+  persentase Float
+  periode    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("distribusi_pendidikan")
+}
+
+// Distribusi Pekerjaan
+model DistribusiPekerjaan {
+  id         String   @id @default(cuid())
+  pekerjaan  String
+  jumlah     Int
+  persentase Float
+  periode    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("distribusi_pekerjaan")
+}
+
+// Status Perkawinan
+model StatusPerkawinan {
+  id         String   @id @default(cuid())
+  status     String
+  jumlah     Int
+  persentase Float
+  periode    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("status_perkawinan")
+}
+
+// Perkawinan Per Kecamatan
+model PerkawinanKecamatan {
+  id         String   @id @default(cuid())
+  kecamatan  String
+  belumKawin Int
+  kawin      Int
+  ceraiHidup Int
+  ceraiMati  Int
+  periode    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("perkawinan_kecamatan")
+}
+
+// Distribusi Disabilitas
+model DistribusiDisabilitas {
+  id         String   @id @default(cuid())
+  jenis      String
+  jumlah     Int
+  persentase Float
+  periode    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("distribusi_disabilitas")
+}
+
+// Disabilitas Per Kecamatan
+model DisabilitasKecamatan {
+  id          String   @id @default(cuid())
+  kecamatan   String
+  disabilitas Int
+  periode     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("disabilitas_kecamatan")
+}
+
+// Kepemilikan Dokumen (Ringkasan)
+model KepemilikanDokumen {
+  id            String   @id @default(cuid())
+  dokumen       String
+  memiliki      Int
+  belumMemiliki Int
+  persentase    Float
+  periode       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("kepemilikan_dokumen")
+}
+
+// Dokumen Per Kecamatan
+model DokumenKecamatan {
+  id          String   @id @default(cuid())
+  kecamatan   String
+  wktp        Int
+  ektpCetak   Int
+  ektpBelum   Int
+  totalKK     Int
+  kkCetak     Int
+  kkBelum     Int
+  aktaLahir   Int
+  aktaBelum   Int
+  aktaPersen  Float
+  kiaMiliki   Int
+  kiaBelum    Int
+  kiaPersen   Float
+  periode     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("dokumen_kecamatan")
+}
+
+// Riwayat Upload
+model UploadHistory {
+  id           String   @id @default(cuid())
+  fileName     String
+  periode      String
+  totalRecords Int
+  uploadedBy   String?
+  createdAt    DateTime @default(now())
+
+  @@map("upload_history")
+}
+
+// =============================================
+// DATA WEBSITE
+// =============================================
+
+// Admin user for the admin panel
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  name      String
+  email     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// News/Articles
+model Berita {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String   @db.Text
+  excerpt     String?  @db.Text
+  thumbnail   String?
+  photos      String?  // JSON string array of additional photo URLs
+  category    String   @default("Umum")
+  isPublished Boolean  @default(true)
+  authorId    String?
+  author      String?
+  viewCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Services (Layanan)
+model Layanan {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  description    String   @db.Text
+  icon           String?
+  category       String   @default("Pendaftaran Penduduk") // Pendaftaran Penduduk, Pencatatan Sipil
+  requirements   String   @default("[]") // JSON string of requirements
+  procedures     String   @default("[]") // JSON string of procedures
+  forms          String?  // JSON string of form links
+  faq            String?  // JSON string of FAQs
+  processingTime String?
+  fee            String?
+  isActive       Boolean  @default(true)
+  isOnline       Boolean  @default(false) // Can be done online
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  pengajuanOnline PengajuanOnline[]
+}
+
+// Online Service Submission (Pengajuan Layanan Online)
+model PengajuanOnline {
+  id           String   @id @default(cuid())
+  nomorPengajuan String @unique // Format: ONL-YYYYMMDD-XXXX
+  layananId    String
+  layanan      Layanan  @relation(fields: [layananId], references: [id])
+  
+  // Applicant Data
+  namaLengkap  String
+  nik          String
+  tempatLahir  String?
+  tanggalLahir DateTime?
+  jenisKelamin String? // L/P
+  alamat       String?  @db.Text
+  rt           String?
+  rw           String?
+  kelurahan    String?
+  kecamatan    String?
+  noTelepon    String
+  email        String?
+  
+  // Additional Info
+  keterangan   String? // Additional notes from applicant
+  
+  // Status
+  status       String   @default("Baru") // Baru, Diverifikasi, Diproses, Selesai, Ditolak
+  catatan      String? // Admin notes
+  
+  // Timestamps
+  tanggalPengajuan DateTime @default(now())
+  tanggalProses    DateTime?
+  tanggalSelesai   DateTime?
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Relations
+  dokumen      DokumenPengajuan[]
+  
+  @@map("pengajuan_online")
+}
+
+// Documents for Online Submission
+model DokumenPengajuan {
+  id            String   @id @default(cuid())
+  pengajuanId   String
+  pengajuan     PengajuanOnline @relation(fields: [pengajuanId], references: [id], onDelete: Cascade)
+  namaDokumen   String // Document name/type
+  fileName      String // Original file name
+  fileUrl       String // Storage URL
+  fileSize      String?
+  fileType      String?
+  uploadedAt    DateTime @default(now())
+  
+  @@map("dokumen_pengajuan")
+}
+
+// Complaints/Pengaduan
+model Pengaduan {
+  id        String   @id @default(cuid())
+  name      String
+  nik       String?
+  email     String?
+  phone     String?
+  subject   String
+  message   String   @db.Text
+  status    String   @default("Baru") // Baru, Diproses, Selesai
+  response  String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Announcements/Pengumuman
+model Pengumuman {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  type      String   @default("Info") // Info, Urgent, Maintenance
+  startDate DateTime?
+  endDate   DateTime?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Documents/Downloads for Transparansi
+model Dokumen {
+  id            String   @id @default(cuid())
+  title         String
+  description   String?  @db.Text
+  category      String   // Peraturan, Laporan, SOP, Formulir
+  fileUrl       String
+  fileSize      String?
+  fileType      String?
+  downloadCount Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Innovation Activities (Kegiatan Inovasi Jemput Bola)
+model Inovasi {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  content     String   @db.Text
+  photo       String?  // URL foto kegiatan
+  photos      String?  // JSON string array of additional photo URLs
+  location    String?  // Lokasi kegiatan
+  date        DateTime? // Tanggal kegiatan
+  category    String   @default("Jemput Bola") // Kategori inovasi
+  isPublished Boolean  @default(true)
+  author      String?
+  viewCount   Int      @default(0)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Site Statistics
+model Statistik {
+  id          String   @id @default(cuid())
+  label       String
+  value       String
+  icon        String?
+  description String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Organization Structure
+model StrukturOrganisasi {
+  id          String              @id @default(cuid())
+  name        String
+  position    String
+  photo       String?
+  description String?
+  parentId    String?
+  parent      StrukturOrganisasi? @relation("Hierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children    StrukturOrganisasi[] @relation("Hierarchy")
+  order       Int                 @default(0)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+// Vision & Mission
+model VisiMisi {
+  id        String   @id @default(cuid())
+  type      String   // "visi" or "misi"
+  content   String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// History/Timeline
+model Sejarah {
+  id          String   @id @default(cuid())
+  year        String
+  title       String
+  description String   @db.Text
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Contact Information
+model Kontak {
+  id        String   @id @default(cuid())
+  type      String   // phone, email, address, whatsapp, facebook, instagram, etc.
+  value     String
+  label     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Testimonials (Testimoni Masyarakat)
+model Testimoni {
+  id          String   @id @default(cuid())
+  nama        String
+  pekerjaan   String?
+  kecamatan   String?
+  rating      Int
+  isi         String   @db.Text
+  noTelepon   String?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("testimoni")
+}
+
+// Blanko E-KTP Availability
+model BlankoEKTP {
+  id             String   @id @default(cuid())
+  jumlahTersedia Int      @default(0)
+  keterangan     String?  // Optional note, e.g. "Blanko habis, menunggu pengiriman"
+  updatedBy      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("blanko_ektp")
+}
+
+// Formulir Administrasi Kependudukan
+model Formulir {
+  id            String   @id @default(cuid())
+  code          String   @unique // e.g. "F-1.01", "F-2.01A"
+  name          String   // Full form name
+  description   String?  @db.Text
+  category      String   // "Pendaftaran Penduduk", "Pencatatan Sipil", "Persyaratan", "Pencatatan Sipil LN"
+  fileName      String   // PDF filename in /formulir/
+  fileSize      String?  // e.g. "250 KB"
+  downloadCount Int      @default(0)
+  isActive      Boolean  @default(true)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("formulir")
+}
+
+// Pimpinan Daerah (Bupati & Wakil Bupati)
+model Pimpinan {
+  id        String   @id @default(cuid())
+  role      String   @unique // "Bupati" or "Wakil Bupati"
+  name      String
+  photo     String?  // URL foto pimpinan
+  periode   String?  // e.g. "2024-2029"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pimpinan")
+}
