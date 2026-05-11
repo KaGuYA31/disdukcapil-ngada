@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
+import { ReadingProgressBar } from "@/components/shared/reading-progress-bar";
 import { ServiceDetail } from "@/components/sections/layanan/service-detail";
 
 export const metadata = {
@@ -15,6 +16,7 @@ export default function LayananDetailPage({
 }) {
   return (
     <div className="min-h-screen flex flex-col">
+      <ReadingProgressBar />
       <Header />
       <main id="main-content" className="flex-1">
         <ServiceDetail slug={params} />

@@ -443,7 +443,6 @@ export function FAQInteraktifSection() {
                 {filteredFaqs.map((faq, index) => (
                     <motion.div
                       key={faq.id}
-                      layout
                       custom={index}
                       variants={itemVariants}
                       initial="hidden"

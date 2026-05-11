@@ -1314,3 +1314,293 @@
     display: none !important;
   }
 }
+
+/* ─── Enhanced Print Styles ─── */
+@media print {
+  /* Hide non-content elements */
+  .no-print,
+  header,
+  footer,
+  nav,
+  .print\:hidden,
+  [data-radix-popper-content-wrapper],
+  [role="dialog"],
+  [data-state="open"][role="dialog"],
+  .fixed {
+    display: none !important;
+  }
+
+  /* Reset body */
+  body {
+    font-family: "Georgia", "Times New Roman", serif !important;
+    font-size: 11pt !important;
+    line-height: 1.6 !important;
+    color: #000 !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Make main content full width */
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Card styles for print */
+  .rounded-xl, .rounded-2xl, .rounded-lg {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove gradients */
+  [class*="bg-gradient"] {
+    background: #f8f9fa !important;
+  }
+
+  /* Show link URLs */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+  }
+
+  /* Page breaks */
+  section, article {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  /* Table styles */
+  table {
+    border-collapse: collapse !important;
+  }
+
+  table td, table th {
+    border: 1px solid #ddd !important;
+    padding: 4pt 8pt !important;
+  }
+
+  /* Print header with government branding */
+  @page {
+    margin: 1.5cm;
+    @top-center {
+      content: "Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada";
+      font-size: 8pt;
+      color: #666;
+    }
+    @bottom-center {
+      content: "Halaman " counter(page) " dari " counter(pages);
+      font-size: 8pt;
+      color: #666;
+    }
+  }
+}
+
+/* ─── Micro-Interaction Animations ─── */
+@keyframes slide-in-right {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scale-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes icon-spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes badge-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(22, 163, 74, 0.2); }
+  50% { box-shadow: 0 0 15px rgba(22, 163, 74, 0.4); }
+}
+
+/* ─── Enhanced Utility Classes ─── */
+
+/* Animated gradient background */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Badge with glow effect */
+.badge-glow {
+  animation: badge-glow 2s ease-in-out infinite;
+}
+
+/* Card shine effect on hover */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shine::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    transparent 40%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 60%
+  );
+  transform: rotate(30deg);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.card-shine:hover::after {
+  transform: rotate(30deg) translateY(-30%);
+}
+
+/* 3D card tilt effect */
+.card-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.card-tilt:hover {
+  transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateZ(10px);
+}
+
+/* Staggered animation for list items */
+.stagger-item {
+  animation: slide-in-right 0.4s ease-out both;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0.05s; }
+.stagger-item:nth-child(2) { animation-delay: 0.1s; }
+.stagger-item:nth-child(3) { animation-delay: 0.15s; }
+.stagger-item:nth-child(4) { animation-delay: 0.2s; }
+.stagger-item:nth-child(5) { animation-delay: 0.25s; }
+.stagger-item:nth-child(6) { animation-delay: 0.3s; }
+
+/* Text reveal animation */
+.text-reveal {
+  clip-path: inset(0 100% 0 0);
+  animation: text-reveal-anim 0.8s ease-out forwards;
+}
+
+@keyframes text-reveal-anim {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* Smooth focus ring */
+.focus-ring-smooth {
+  transition: box-shadow 0.2s ease;
+}
+
+.focus-ring-smooth:focus-visible {
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.3), 0 0 0 1px rgba(22, 163, 74, 0.5);
+  outline: none;
+}
+
+/* Government seal badge */
+.gov-seal-badge {
+  position: relative;
+}
+
+.gov-seal-badge::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #15803d, #0d9488, #d97706, #15803d);
+  background-size: 300% 300%;
+  animation: gradient-shift 6s ease infinite;
+  z-index: -1;
+}
+
+/* Notification pulse */
+.notification-pulse {
+  position: relative;
+}
+
+.notification-pulse::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  background: #ef4444;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+/* Glass card variant for dark mode */
+.glass-card-premium {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.dark .glass-card-premium {
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Icon bounce on hover */
+.icon-bounce:hover svg,
+.icon-bounce:hover .lucide {
+  animation: scale-bounce 0.4s ease;
+}
+
+/* Content section fade-in */
+.section-fade-in {
+  animation: slide-in-left 0.6s ease-out both;
+}
+
+/* ─── Enhanced Scrollbar ─── */
+.scrollbar-thin-green {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(22, 163, 74, 0.3) transparent;
+}
+
+.scrollbar-thin-green::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin-green::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin-green::-webkit-scrollbar-thumb {
+  background-color: rgba(22, 163, 74, 0.3);
+  border-radius: 3px;
+}
+
+.scrollbar-thin-green::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(22, 163, 74, 0.5);
+}

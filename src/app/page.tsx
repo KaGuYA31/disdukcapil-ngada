@@ -202,6 +202,12 @@ const QuickPollWidget = dynamic(
   { ssr: false }
 );
 
+// Section Navigator (desktop only)
+const SectionNavigator = dynamic(
+  () => import("@/components/shared/section-navigator").then((m) => ({ default: m.SectionNavigator })),
+  { ssr: false }
+);
+
 // Task 4-a: Previous components
 const LoadingScreen = dynamic(
   () => import("@/components/shared/loading-screen").then((m) => ({ default: m.LoadingScreen })),
@@ -293,6 +299,7 @@ export default function HomePage() {
       <AddTestimoniWidget />
       <QuickAccessPanel />
       <BackToTop />
+      <SectionNavigator />
     </div>
   );
 }

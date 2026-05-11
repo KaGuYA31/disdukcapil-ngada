@@ -35,5 +35,31 @@ export default function StatistikLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Beranda",
+                "item": "https://disdukcapil-ngada.vercel.app"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Data Kependudukan"
+              }
+            ]
+          })
+        }}
+      />
+      {children}
+    </>
+  );
 }
