@@ -50,7 +50,6 @@ const navigation: NavItem[] = [
   { title: "Inovasi", href: "/inovasi" },
   { title: "Berita", href: "/berita" },
   { title: "Pengaduan", href: "/pengaduan" },
-  { title: "Hubungi Kami", href: "/hubungi-kami" },
 ];
 
 // Custom hook for mounted state without setState in useEffect
