@@ -41,7 +41,7 @@ const faqData: FAQItem[] = [
     kategori: "KTP",
     pertanyaan: "Berapa lama proses pembuatan KTP-el baru?",
     jawaban:
-      "Untuk rekam baru KTP-el, proses memerlukan waktu 3-14 hari kerja karena proses perekaman biometrik dan sinkronisasi data ke pusat. Untuk KTP-el yang sudah pernah direkam (perpanjangan/perbaikan), proses selesai di tempat jika blanko tersedia.",
+      "Untuk rekam baru KTP-el, proses akan diinformasikan oleh petugas setelah sinkronisasi data ke pusat. Untuk KTP-el yang sudah pernah direkam (perpanjangan/perbaikan), proses selesai di tempat jika blanko tersedia.",
     tags: ["ktp", "waktu", "proses"],
   },
   {
@@ -65,7 +65,7 @@ const faqData: FAQItem[] = [
     kategori: "KTP",
     pertanyaan: "Bagaimana jika data KTP saya tidak sesuai?",
     jawaban:
-      "Jika terdapat kesalahan data pada KTP-el Anda, segera laporkan ke kantor Disdukcapil dengan membawa: KTP-el asli, Kartu Keluarga, dan dokumen pendukung (ijazah, akta kelahiran, atau surat nikah) sebagai bukti data yang benar. Proses koreksi data memerlukan 1-3 hari kerja setelah verifikasi.",
+      "Jika terdapat kesalahan data pada KTP-el Anda, segera laporkan ke kantor Disdukcapil dengan membawa: KTP-el asli, Kartu Keluarga, dan dokumen pendukung (ijazah, akta kelahiran, atau surat nikah) sebagai bukti data yang benar. Proses koreksi data akan diinformasikan oleh petugas setelah verifikasi.",
     tags: ["ktp", "perbaikan", "koreksi"],
   },
   {
@@ -73,7 +73,7 @@ const faqData: FAQItem[] = [
     kategori: "KTP",
     pertanyaan: "KTP-el hilang, bagaimana cara mengurusnya?",
     jawaban:
-      "Untuk KTP-el yang hilang, lapor ke Disdukcapil dengan membawa: Surat Kehilangan dari Kepolisian, KK asli, dan Pas Foto 2x3 (2 lembar). Jika sudah pernah rekam biometrik, prosesnya cepat. Biaya penggantian GRATIS berdasarkan UU No. 24 Tahun 2013.",
+      "Untuk KTP-el yang hilang, lapor ke Disdukcapil dengan membawa: Surat Kehilangan dari Kepolisian, KK asli, dan Pas Foto 2x3 (2 lembar). Jika sudah pernah rekam biometrik, prosesnya cepat.",
     tags: ["ktp", "hilang", "kehilangan"],
   },
   {
@@ -81,7 +81,7 @@ const faqData: FAQItem[] = [
     kategori: "KK",
     pertanyaan: "Berapa lama proses pembuatan Kartu Keluarga baru?",
     jawaban:
-      "Proses pembuatan KK baru memerlukan waktu 1-3 hari kerja. Pastikan membawa dokumen persyaratan lengkap: KTP-el anggota keluarga, akta kelahiran seluruh anggota, akta nikah/cerai (jika ada perubahan status), dan surat pengantar RT/RW.",
+      "Proses pembuatan KK baru akan diinformasikan oleh petugas. Pastikan membawa dokumen persyaratan lengkap: KTP-el anggota keluarga, akta kelahiran seluruh anggota, akta nikah/cerai (jika ada perubahan status), dan surat pengantar RT/RW.",
     tags: ["kk", "waktu", "proses"],
   },
   {
@@ -89,7 +89,7 @@ const faqData: FAQItem[] = [
     kategori: "KK",
     pertanyaan: "Bagaimana cara menambah anggota KK baru?",
     jawaban:
-      "Untuk menambah anggota KK (kelahiran anak, menikah, dll.), bawa: KK asli, KTP-el Kepala Keluarga, dokumen pendukung (akta kelahiran untuk anak, akta nikah untuk istri), dan surat pengantar RT/RW. Proses selesai dalam 1-3 hari kerja.",
+      "Untuk menambah anggota KK (kelahiran anak, menikah, dll.), bawa: KK asli, KTP-el Kepala Keluarga, dokumen pendukung (akta kelahiran untuk anak, akta nikah untuk istri), dan surat pengantar RT/RW. Proses akan diinformasikan oleh petugas.",
     tags: ["kk", "tambah", "anggota"],
   },
   {
@@ -121,15 +121,15 @@ const faqData: FAQItem[] = [
     kategori: "Akta",
     pertanyaan: "Berapa biaya pembuatan akta kelahiran?",
     jawaban:
-      "Pembuatan akta kelahiran GRATIS berdasarkan UU No. 24 Tahun 2013 tentang Administrasi Kependudukan dan Peraturan Pemerintah No. 37 Tahun 2006. Tidak dipungut biaya apapun untuk pembuatan akta kelahiran, baik untuk kelahiran pertama maupun selanjutnya.",
-    tags: ["akta", "biaya", "gratis"],
+      "Pembuatan akta kelahiran dilakukan sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan dan Peraturan Pemerintah No. 37 Tahun 2006. Untuk informasi lebih lanjut, silakan hubungi petugas di loket pelayanan.",
+    tags: ["akta", "biaya", "umum"],
   },
   {
     id: "akta-4",
     kategori: "Akta",
     pertanyaan: "Bagaimana cara mengurus akta kematian?",
     jawaban:
-      "Bawa dokumen berikut: (1) Surat Keterangan Kematian dari RS/Bidan/Desa, (2) KTP-el almarhum/ahli waris, (3) KK asli, (4) Surat Nikah/Buku Nikah (jika sudah menikah). Laporkan dalam waktu 30 hari sejak kematian. Proses GRATIS dan selesai di hari yang sama.",
+      "Bawa dokumen berikut: (1) Surat Keterangan Kematian dari RS/Bidan/Desa, (2) KTP-el almarhum/ahli waris, (3) KK asli, (4) Surat Nikah/Buku Nikah (jika sudah menikah). Laporkan dalam waktu 30 hari sejak kematian. Proses selesai di hari yang sama.",
     tags: ["akta", "kematian", "proses"],
   },
   {
@@ -145,16 +145,16 @@ const faqData: FAQItem[] = [
     kategori: "Pindah",
     pertanyaan: "Apa saja dokumen untuk pindah ke luar Kabupaten Ngada?",
     jawaban:
-      "Dokumen yang diperlukan: (1) KTP-el asli, (2) KK asli, (3) Surat Pengantar RT/RW, (4) Pas Foto 3x4 (4 lembar), (5) Surat keterangan kerja/kuliah di daerah tujuan (opsional). Proses di Disdukcapil Ngada memerlukan 1-3 hari kerja. Bisa juga diurus online melalui Disdukcapil Online.",
+      "Dokumen yang diperlukan: (1) KTP-el asli, (2) KK asli, (3) Surat Pengantar RT/RW, (4) Pas Foto 3x4 (4 lembar), (5) Surat keterangan kerja/kuliah di daerah tujuan (opsional). Proses di Disdukcapil Ngada akan diinformasikan oleh petugas. Bisa juga diurus online melalui Disdukcapil Online.",
     tags: ["pindah", "luar kota", "dokumen"],
   },
   {
     id: "lainnya-1",
     kategori: "Lainnya",
-    pertanyaan: "Apakah seluruh layanan Disdukcapil gratis?",
+    pertanyaan: "Bagaimana cara mengurus dokumen kependudukan?",
     jawaban:
-      "Ya, sesuai UU No. 24 Tahun 2013 dan kebijakan pemerintah, seluruh layanan administrasi kependudukan TIDAK dipungut biaya apapun. Termasuk pembuatan KTP-el, Kartu Keluarga, Akta Kelahiran, Akta Kematian, Akta Perkawinan, dan layanan lainnya. Jika ada yang meminta biaya, segera laporkan.",
-    tags: ["biaya", "gratis", "umum"],
+      "Kunjungi kantor Disdukcapil Kabupaten Ngada dengan membawa dokumen persyaratan lengkap. Petugas kami akan membantu proses pengurusan dokumen kependudukan Anda. Untuk informasi persyaratan, silakan cek halaman detail layanan.",
+    tags: ["biaya", "umum"],
   },
   {
     id: "lainnya-2",
@@ -192,7 +192,7 @@ const kategoriList = [
 ];
 
 const popularQuestions = [
-  "Apakah seluruh layanan gratis?",
+  "Bagaimana cara mengurus dokumen?",
   "Berapa lama proses KTP-el baru?",
   "Dokumen untuk akta kelahiran?",
   "Cara pindah ke luar kabupaten?",
@@ -286,7 +286,7 @@ export function FAQInteraktifSection() {
       aria-labelledby="faq-interaktif-title"
     >
       {/* ── Gradient Hero Banner ── */}
-      <div className="relative h-[120px] bg-gradient-to-r from-green-700 via-green-800 to-teal-900 overflow-hidden">
+      <div className="relative h-[90px] sm:h-[120px] bg-gradient-to-r from-green-700 via-green-800 to-teal-900 overflow-hidden">
         {/* SVG Pattern Overlay */}
         <div
           className="absolute inset-0 opacity-[0.04]"
@@ -482,10 +482,10 @@ export function FAQInteraktifSection() {
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className="px-5 pb-4 md:px-5">
-                          <div className="pl-[calc(theme(spacing.12)+0.75rem)] text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-[0.9rem]">
+                          <div className="pl-0 sm:pl-[calc(theme(spacing.12)+0.75rem)] text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-[0.9rem]">
                             {faq.jawaban}
                           </div>
-                          <div className="pl-[calc(theme(spacing.12)+0.75rem)] mt-3 flex flex-wrap gap-1.5">
+                          <div className="pl-0 sm:pl-[calc(theme(spacing.12)+0.75rem)] mt-3 flex flex-wrap gap-1.5">
                             {faq.tags.map((tag) => (
                               <span
                                 key={tag}

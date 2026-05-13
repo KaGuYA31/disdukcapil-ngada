@@ -43,7 +43,6 @@ interface PanduanStep {
   judulSingkat: string;
   deskripsi: string;
   deskripsiSingkat: string;
-  estimasiWaktu: string;
   dokumen: string[];
   tips: StepTip[];
 }
@@ -71,7 +70,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Siapkan Dokumen",
         deskripsi: "Kumpulkan semua dokumen yang diperlukan: Surat Pengantar RT/RW, Kartu Keluarga (KK) asli, Akta Kelahiran atau Ijazah, Surat Nikah (jika sudah menikah), dan Pas Foto 2x3 (2 lembar). Pastikan semua dokumen dalam kondisi baik dan fotokopi masing-masing 1 lembar.",
         deskripsiSingkat: "Kumpulkan Surat Pengantar RT/RW, KK asli, Akta Kelahiran/Ijazah, dan dokumen pendukung lainnya.",
-        estimasiWaktu: "1-2 hari",
         dokumen: ["Surat Pengantar RT/RW", "KK Asli", "Akta Kelahiran/Ijazah", "Surat Nikah (jika menikah)", "Pas Foto 2x3 (2 lbr)"],
         tips: [
           { icon: "info", text: "Pastikan data di KK sudah sesuai dengan data diri Anda. Jika ada ketidaksesuaian, ajukan perbaikan KK terlebih dahulu." },
@@ -84,7 +82,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Datang ke Disdukcapil",
         deskripsi: "Kunjungi kantor Disdukcapil Kabupaten Ngada di Jl. El Tari, Bajawa pada jam kerja (Senin-Jumat, 08:00-15:00 WITA). Ambil nomor antrian di loket pendaftaran dan tunggu giliran Anda dipanggil. Disarankan datang di pagi hari untuk menghindari antrian panjang.",
         deskripsiSingkat: "Kunjungi Disdukcapil Ngada, ambil nomor antrian, dan tunggu giliran.",
-        estimasiWaktu: "30-60 menit",
         dokumen: ["Semua dokumen yang telah disiapkan", "Bolpen"],
         tips: [
           { icon: "success", text: "Kantor Disdukcapil buka Senin-Jumat, 08:00-15:00 WITA. Datang pagi untuk antrian lebih cepat." },
@@ -97,7 +94,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Verifikasi Dokumen",
         deskripsi: "Serahkan semua dokumen persyaratan kepada petugas di loket pendaftaran. Petugas akan memeriksa kelengkapan dan keabsahan dokumen Anda. Jika dokumen lengkap, petugas akan mencetak formulir isian data penduduk yang perlu Anda isi dengan benar.",
         deskripsiSingkat: "Serahkan dokumen ke petugas dan isi formulir isian data.",
-        estimasiWaktu: "15-20 menit",
         dokumen: ["Semua dokumen asli + fotokopi"],
         tips: [
           { icon: "warning", text: "Periksa kembali kelengkapan dokumen sebelum ke Disdukcapil untuk menghindari bolak-balik." },
@@ -109,7 +105,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Perekaman Biometrik",
         deskripsi: "Setelah verifikasi dokumen, Anda akan dipanggil untuk melakukan perekaman biometrik meliputi: sidik jari (10 jari), foto wajah, dan pengambilan iris mata. Pastikan Anda dalam keadaan sehat, tidak menggunakan kacamata (saat foto), dan pakaian rapi.",
         deskripsiSingkat: "Lakukan perekaman sidik jari, foto wajah, dan iris mata.",
-        estimasiWaktu: "10-15 menit",
         dokumen: ["KTP lama (jika perpanjangan)", "Surat pengantar dari petugas"],
         tips: [
           { icon: "info", text: "Tidak boleh menggunakan kacamata, lensa kontak warna, atau aksesoris wajah saat perekaman." },
@@ -120,9 +115,8 @@ const layananPanduanList: LayananPanduan[] = [
         nomor: 5,
         judul: "Tunggu Proses Pencetakan",
         judulSingkat: "Tunggu Pencetakan",
-        deskripsi: "Setelah perekaman biometrik berhasil, data Anda akan diverifikasi dan diproses oleh Dukcapil Pusat melalui Sistem Informasi Administrasi Kependudukan (SIAK). Proses ini memakan waktu sekitar 14 hari kerja untuk KTP-el baru. Anda bisa memantau status KTP-el melalui website.",
+        deskripsi: "Setelah perekaman biometrik berhasil, data Anda akan diverifikasi dan diproses oleh Dukcapil Pusat melalui Sistem Informasi Administrasi Kependudukan (SIAK). Anda bisa memantau status KTP-el melalui website.",
         deskripsiSingkat: "Tunggu proses verifikasi dan pencetakan oleh sistem SIAK.",
-        estimasiWaktu: "5-14 hari kerja",
         dokumen: ["Surat Tanda Bukti Perekaman"],
         tips: [
           { icon: "success", text: "Simpan Surat Tanda Bukti Perekaman dengan baik. Ini berlaku sebagai identitas sementara." },
@@ -135,7 +129,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Ambil KTP-el",
         deskripsi: "Setelah KTP-el siap, Anda akan dihubungi oleh petugas atau bisa mengecek statusnya secara online. Datang ke Disdukcapil dengan membawa Surat Tanda Bukti Perekaman untuk mengambil KTP-el Anda. Periksa kembali data di KTP-el sebelum meninggalkan kantor.",
         deskripsiSingkat: "Ambil KTP-el yang sudah jadi dengan membawa bukti perekaman.",
-        estimasiWaktu: "10-15 menit",
         dokumen: ["Surat Tanda Bukti Perekaman", "KTP lama (jika ada)"],
         tips: [
           { icon: "warning", text: "Periksa kembali semua data di KTP-el (nama, NIK, alamat, tanggal lahir) sebelum pulang." },
@@ -156,7 +149,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Siapkan Dokumen",
         deskripsi: "Kumpulkan dokumen untuk semua anggota keluarga yang akan tercatat: KTP-el semua anggota, Akta Kelahiran masing-masing, Surat Nikah/Buku Nikah, dan Surat Pengantar RT/RW. Untuk KK baru, siapkan juga Surat Keterangan Pindah jika berasal dari daerah lain.",
         deskripsiSingkat: "Kumpulkan KTP-el, Akta Kelahiran, dan dokumen keluarga lainnya.",
-        estimasiWaktu: "1-3 hari",
         dokumen: ["KTP-el semua anggota", "Akta Kelahiran anggota", "Surat Nikah/Buku Nikah", "Surat Pengantar RT/RW", "Surat Keterangan Pindah (jika perlu)"],
         tips: [
           { icon: "info", text: "Pastikan semua akta kelahiran anggota keluarga sudah ada dan lengkap." },
@@ -168,7 +160,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Isi Formulir",
         deskripsi: "Ambil dan isi formulir Isian Penduduk (F-1.01) di Disdukcapil. Formulir ini berisi data lengkap seluruh anggota keluarga: nama, NIK, tempat/tanggal lahir, jenis kelamin, pekerjaan, pendidikan, agama, status perkawinan, dan hubungan dalam keluarga.",
         deskripsiSingkat: "Isi formulir F-1.01 dengan data lengkap semua anggota keluarga.",
-        estimasiWaktu: "20-30 menit",
         dokumen: ["Formulir F-1.01 (diisi)", "Semua dokumen keluarga"],
         tips: [
           { icon: "warning", text: "Isi formulir dengan huruf cetak yang jelas dan data yang akurat. Kesalahan data bisa memperlambat proses." },
@@ -180,7 +171,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Verifikasi Data",
         deskripsi: "Serahkan formulir dan dokumen kepada petugas. Petugas akan memverifikasi data, mencocokkan dengan database SIAK, dan mengkonfirmasi kebenaran informasi. Jika ada ketidaksesuaian data, petugas akan memberikan petunjuk perbaikan.",
         deskripsiSingkat: "Petugas memverifikasi dan mencocokkan data Anda dengan database.",
-        estimasiWaktu: "15-30 menit",
         dokumen: ["Formulir F-1.01", "Semua dokumen asli"],
         tips: [
           { icon: "success", text: "Jika semua data cocok, proses dilanjutkan ke pencetakan KK." },
@@ -192,7 +182,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Tanda Tangan & Cetak",
         deskripsi: "Setelah data terverifikasi, Kepala Seksi atau pejabat berwenang akan menandatangani KK. Kemudian KK dicetak oleh petugas. Anda akan diminta memeriksa kembali seluruh data yang tercantum sebelum KK diserahkan.",
         deskripsiSingkat: "KK ditandatangani pejabat dan dicetak, lalu serahkan kepada Anda.",
-        estimasiWaktu: "30-60 menit",
         dokumen: ["Formulir F-1.01 yang telah diverifikasi"],
         tips: [
           { icon: "warning", text: "Periksa setiap data anggota keluarga di KK: NIK, nama, tempat/tanggal lahir, dan alamat." },
@@ -204,7 +193,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Serah Terima",
         deskripsi: "Kartu Keluarga yang sudah jadi diserahkan kepada Anda. Simpan KK dengan baik di tempat yang aman. KK diperlukan untuk berbagai keperluan administrasi seperti pengurusan KTP, pendaftaran sekolah, pembukaan rekening bank, dan lain-lain.",
         deskripsiSingkat: "Terima KK Anda dan simpan dengan baik.",
-        estimasiWaktu: "5-10 menit",
         dokumen: ["KK baru"],
         tips: [
           { icon: "success", text: "Fotokopi KK beberapa lembar untuk keperluan administrasi mendatang." },
@@ -225,7 +213,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Siapkan Surat Kelahiran",
         deskripsi: "Dapatkan Surat Keterangan Kelahiran dari rumah sakit, puskesmas, atau bidan yang membantu persalinan. Surat ini memuat data bayi (nama, jenis kelamin, berat, waktu kelahiran) dan data orang tua. Jika lahir di rumah, minta surat keterangan dari bidan desa setempat.",
         deskripsiSingkat: "Dapatkan Surat Keterangan Kelahiran dari RS/Puskesmas/Bidan.",
-        estimasiWaktu: "1 hari",
         dokumen: ["Surat Keterangan Kelahiran dari RS/Bidan", "Surat Pengantar RT/RW"],
         tips: [
           { icon: "warning", text: "Akta Kelahiran sebaiknya dibuat maksimal 60 hari setelah kelahiran. Lebih dari 60 hari dikenakan proses sidang." },
@@ -237,7 +224,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Kumpulkan Dokumen Ortu",
         deskripsi: "Siapkan KTP-el kedua orang tua asli, Kartu Keluarga (KK) asli, Surat Nikah/Buku Nikah asli, dan Surat Pengantar RT/RW. Jika orang tua belum menikah secara resmi, siapkan surat keterangan tidak mampu menikah dari desa dan akta pengakuan anak.",
         deskripsiSingkat: "Siapkan KTP-el, KK, dan Surat Nikah kedua orang tua.",
-        estimasiWaktu: "1-2 hari",
         dokumen: ["KTP-el kedua orang tua", "KK asli", "Surat Nikah/Buku Nikah", "Surat Pengantar RT/RW"],
         tips: [
           { icon: "info", text: "Jika orang tua belum tercatat di Disdukcapil, lakukan perekaman KTP-el terlebih dahulu." },
@@ -249,10 +235,9 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Datang ke Disdukcapil",
         deskripsi: "Kunjungi kantor Disdukcapil Kabupaten Ngada dengan membawa semua dokumen. Ambil nomor antrian di loket Pencatatan Sipil. Serahkan dokumen kepada petugas dan isi formulir permohonan akta kelahiran. Orang tua atau wali harus hadir langsung.",
         deskripsiSingkat: "Bawa semua dokumen ke Disdukcapil, isi formulir permohonan.",
-        estimasiWaktu: "30-60 menit",
         dokumen: ["Semua dokumen yang telah disiapkan"],
         tips: [
-          { icon: "success", text: "Akta Kelahiran gratis berdasarkan UU No. 24 Tahun 2013. Tidak dipungut biaya apapun." },
+          { icon: "success", text: "Akta Kelahiran diterbitkan sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan." },
         ],
       },
       {
@@ -261,7 +246,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Verifikasi & Terbitkan",
         deskripsi: "Petugas akan memverifikasi seluruh dokumen dan data. Setelah diverifikasi, data kelahiran dicatat dalam database SIAK dan akta kelahiran diterbitkan. Proses ini biasanya dapat selesai dalam hari yang sama jika dokumen lengkap dan data sudah tervalidasi.",
         deskripsiSingkat: "Petugas verifikasi dokumen dan terbitkan akta kelahiran.",
-        estimasiWaktu: "1-3 hari kerja",
         dokumen: ["Formulir permohonan", "Semua dokumen asli"],
         tips: [
           { icon: "info", text: "Jika dokumen lengkap dan data sudah tervalidasi, akta bisa selesai di hari yang sama." },
@@ -273,7 +257,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Ambil Akta",
         deskripsi: "Ambil Akta Kelahiran yang sudah jadi di Disdukcapil. Bawa surat bukti permohonan sebagai tanda terima. Periksa kembali data bayi dan orang tua yang tercantum dalam akta. Pastikan nama, tanggal lahir, dan tempat lahir sudah benar.",
         deskripsiSingkat: "Ambil dan periksa akta kelahiran yang sudah jadi.",
-        estimasiWaktu: "10-15 menit",
         dokumen: ["Surat bukti permohonan"],
         tips: [
           { icon: "warning", text: "Periksa kesesuaian nama, tanggal, dan tempat lahir. Jika ada kesalahan, segera laporkan untuk perbaikan." },
@@ -294,7 +277,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Surat RT/RW",
         deskripsi: "Minta surat pengantar pindah dari RT/RW di kelurahan/desa asal. Surat ini berisi keterangan bahwa Anda benar-benar tinggal di wilayah tersebut dan akan pindah ke alamat baru. Sertakan alasan kepindahan (kerja, kuliah, menikah, dll).",
         deskripsiSingkat: "Minta surat pengantar pindah dari RT/RW desa asal.",
-        estimasiWaktu: "1 hari",
         dokumen: ["Surat Pengantar RT/RW", "KTP-el asli", "KK asli"],
         tips: [
           { icon: "info", text: "Jelaskan alasan kepindahan dengan jelas kepada ketua RT/RW." },
@@ -306,7 +288,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Disdukcapil Asal",
         deskripsi: "Datang ke Disdukcapil kabupaten/kota asal dengan membawa KTP-el, KK, surat pengantar RT/RW, dan pas foto 3x4 (4 lembar). Isi formulir permohonan pindah. Petugas akan menerbitkan Surat Keterangan Pindah (SKP) antar kabupaten/kota.",
         deskripsiSingkat: "Urus SKP di Disdukcapil asal dengan dokumen lengkap.",
-        estimasiWaktu: "1-3 hari kerja",
         dokumen: ["KTP-el asli", "KK asli", "Surat Pengantar RT/RW", "Pas Foto 3x4 (4 lbr)", "Surat keterangan kerja/kuliah (opsional)"],
         tips: [
           { icon: "warning", text: "Proses ini diurus di Disdukcapil ASAL, bukan di tujuan." },
@@ -316,9 +297,8 @@ const layananPanduanList: LayananPanduan[] = [
         nomor: 3,
         judul: "Waktu Proses Sinkronisasi",
         judulSingkat: "Proses Sinkronisasi",
-        deskripsi: "Setelah SKP diterbitkan, data kepindahan akan disinkronkan melalui sistem SIAK antar Disdukcapil asal dan tujuan. Proses ini memakan waktu sekitar 7 hari kerja. Selama proses, Anda bisa menggunakan SKP sebagai dokumen sementara.",
-        deskripsiSingkat: "Tunggu proses sinkronisasi data antar Disdukcapil (~7 hari kerja).",
-        estimasiWaktu: "5-7 hari kerja",
+        deskripsi: "Setelah SKP diterbitkan, data kepindahan akan disinkronkan melalui sistem SIAK antar Disdukcapil asal dan tujuan. Selama proses, Anda bisa menggunakan SKP sebagai dokumen sementara.",
+        deskripsiSingkat: "Tunggu proses sinkronisasi data antar Disdukcapil.",
         dokumen: ["Surat Keterangan Pindah (SKP)"],
         tips: [
           { icon: "success", text: "SKP berlaku sebagai dokumen sementara selama proses pindah berlangsung." },
@@ -331,7 +311,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Disdukcapil Tujuan",
         deskripsi: "Setelah proses sinkronisasi selesai, datang ke Disdukcapil kabupaten/kota tujuan dengan membawa SKP dan dokumen pendukung. Ambil surat pengantar RT/RW dari alamat baru. Petugas akan memverifikasi data dan memproses pencatatan kepindahan.",
         deskripsiSingkat: "Lapor ke Disdukcapil tujuan dengan SKP dan surat pengantar baru.",
-        estimasiWaktu: "1-2 hari kerja",
         dokumen: ["SKP asli", "Surat Pengantar RT/RW baru", "KTP-el asli", "KK asli", "Pas Foto 3x4 (4 lbr)"],
         tips: [
           { icon: "warning", text: "Pastikan sudah punya alamat dan surat pengantar RT/RW baru sebelum ke Disdukcapil tujuan." },
@@ -341,9 +320,8 @@ const layananPanduanList: LayananPanduan[] = [
         nomor: 5,
         judul: "Penerbitan KK & KTP-el Baru",
         judulSingkat: "Terbit KK & KTP Baru",
-        deskripsi: "Disdukcapil tujuan akan menerbitkan KK baru dengan alamat yang sudah berubah. Setelah KK terbit, Anda perlu melakukan perekaman ulang untuk KTP-el dengan alamat baru. Proses KTP-el baru memakan waktu sekitar 14 hari kerja.",
+        deskripsi: "Disdukcapil tujuan akan menerbitkan KK baru dengan alamat yang sudah berubah. Setelah KK terbit, Anda perlu melakukan perekaman ulang untuk KTP-el dengan alamat baru.",
         deskripsiSingkat: "Dapatkan KK baru dan lakukan perekaman KTP-el baru.",
-        estimasiWaktu: "7-14 hari kerja",
         dokumen: ["KK baru", "Dokumen pendukung"],
         tips: [
           { icon: "success", text: "Selamat! Anda resmi tercatat sebagai penduduk di wilayah baru." },
@@ -364,7 +342,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Surat Kematian",
         deskripsi: "Dapatkan Surat Keterangan Kematian dari rumah sakit, puskesmas, atau bidan (jika meninggal di fasilitas kesehatan). Jika meninggal di rumah, minta surat keterangan dari kelurahan/desa. Surat ini memuat data almarhum/ahli waris dan penyebab kematian.",
         deskripsiSingkat: "Dapatkan surat keterangan kematian dari RS/desa.",
-        estimasiWaktu: "1 hari",
         dokumen: ["Surat Keterangan Kematian dari RS/Bidan/Desa"],
         tips: [
           { icon: "warning", text: "Laporkan kematian dalam waktu 30 hari sejak tanggal meninggal dunia." },
@@ -376,7 +353,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Dokumen Ahli Waris",
         deskripsi: "Siapkan KTP-el almarhum/ahli waris, KK asli, Surat Nikah/Buku Nikah (jika sudah menikah), dan Surat Pengantar RT/RW. Jika pelapor bukan keluarga langsung, siapkan surat kuasa dari keluarga terdekat.",
         deskripsiSingkat: "Siapkan KTP-el, KK, dan dokumen keluarga yang ditinggalkan.",
-        estimasiWaktu: "1-2 hari",
         dokumen: ["KTP-el almarhum/ahli waris", "KK asli", "Surat Nikah/Buku Nikah", "Surat Pengantar RT/RW"],
         tips: [
           { icon: "info", text: "Ahli waris atau keluarga terdekat yang berhak melaporkan kematian." },
@@ -388,10 +364,9 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Lapor ke Disdukcapil",
         deskripsi: "Datang ke Disdukcapil Kabupaten Ngada dengan membawa semua dokumen. Ambil nomor antrian loket Pencatatan Sipil. Serahkan dokumen kepada petugas, isi formulir pelaporan kematian, dan berikan keterangan yang diperlukan.",
         deskripsiSingkat: "Bawa semua dokumen ke Disdukcapil, isi formulir pelaporan.",
-        estimasiWaktu: "30-60 menit",
         dokumen: ["Semua dokumen yang telah disiapkan"],
         tips: [
-          { icon: "success", text: "Pembuatan Akta Kematian gratis. Tidak dipungut biaya apapun." },
+          { icon: "success", text: "Akta Kematian diterbitkan sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan." },
         ],
       },
       {
@@ -400,7 +375,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Verifikasi & Terbitkan",
         deskripsi: "Petugas memverifikasi dokumen dan data kematian. Setelah diverifikasi, data kematian dicatat dalam database SIAK dan Akta Kematian diterbitkan. Proses ini biasanya selesai dalam 1-3 hari kerja. Akta Kematian diperlukan untuk pengurusan waris, pensiun, dan administrasi lainnya.",
         deskripsiSingkat: "Petugas verifikasi dan terbitkan Akta Kematian.",
-        estimasiWaktu: "1-3 hari kerja",
         dokumen: ["Formulir pelaporan kematian", "Semua dokumen asli"],
         tips: [
           { icon: "info", text: "Akta Kematian penting untuk pengurusan waris, pensiun janda/duda, dan perubahan KK." },
@@ -412,7 +386,6 @@ const layananPanduanList: LayananPanduan[] = [
         judulSingkat: "Perbarui KK",
         deskripsi: "Setelah mendapat Akta Kematian, ajukan perubahan KK untuk mengeluarkan anggota keluarga yang meninggal. Proses ini bisa dilakukan di Disdukcapil yang sama. Acara keluarga yang terdampak juga perlu mengurus administrasi lanjutan (waris, pensiun, dll).",
         deskripsiSingkat: "Perbarui KK dan urus administrasi lanjutan terkait.",
-        estimasiWaktu: "1-3 hari kerja",
         dokumen: ["Akta Kematian", "KK asli", "KTP-el ahli waris"],
         tips: [
           { icon: "warning", text: "KK harus segera diperbarui setelah ada anggota keluarga yang meninggal." },
@@ -841,11 +814,6 @@ export function PanduanLayananSection() {
                                       <h4 className="text-sm md:text-base font-semibold text-gray-900 dark:text-gray-100">
                                         {isDetailed ? step.judul : step.judulSingkat}
                                       </h4>
-                                      {/* Estimasi Waktu badge with Clock */}
-                                      <Badge className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 text-[10px] px-2 py-0.5 gap-1 font-medium">
-                                        <Clock className="h-3 w-3" />
-                                        {step.estimasiWaktu}
-                                      </Badge>
                                       {/* Step category badge */}
                                       <Badge className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/30 dark:to-teal-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800/40 text-[10px] px-2 py-0.5 font-medium hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors">
                                         Langkah {step.nomor}/{activeLayanan.steps.length}

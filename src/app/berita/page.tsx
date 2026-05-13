@@ -145,7 +145,7 @@ export default function BeritaPage() {
                   </div>
                   Berita & Informasi
                 </motion.h1>
-                <motion.p variants={fadeInUp} className="text-green-100 text-lg md:text-xl leading-relaxed max-w-2xl">
+                <motion.p variants={fadeInUp} className="text-green-100 text-base md:text-xl leading-relaxed">
                   Dapatkan informasi terbaru seputar layanan kependudukan dan
                   kegiatan Disdukcapil Kabupaten Ngada.
                 </motion.p>

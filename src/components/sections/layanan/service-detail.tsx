@@ -235,7 +235,6 @@ interface Layanan {
   procedures: string;
   forms: string | null;
   faq: string | null;
-  processingTime: string | null;
   fee: string | null;
   isActive: boolean;
   category?: string;
@@ -255,7 +254,6 @@ const defaultServices: Record<string, {
   title: string;
   description: string;
   category: string;
-  processingTime: string;
   fee: string;
   color: string;
   bgColor: string;
@@ -273,8 +271,7 @@ const defaultServices: Record<string, {
     title: "KTP-el (Kartu Tanda Penduduk Elektronik)",
     description: "Kartu identitas elektronik untuk warga negara Indonesia yang berusia 17 tahun atau sudah menikah/pernah menikah.",
     category: "Dokumen Identitas",
-    processingTime: "Selesai di Tempat (Kecuali Rekam Baru)",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-green-600",
     bgColor: "bg-green-100",
     sameDayService: true,
@@ -318,11 +315,10 @@ const defaultServices: Record<string, {
     forms: [{ title: "Formulir F-1.01", url: "#", size: "250 KB" }],
     faq: [
       { question: "Berapa lama proses pembuatan KTP-el?", answer: "Untuk cetak KTP-el, proses SELESAI DI TEMPAT. Untuk rekam baru, proses 3-5 hari kerja." },
-      { question: "Apakah ada biaya?", answer: "TIDAK ADA. Seluruh layanan pembuatan KTP-el adalah GRATIS." },
+      { question: "Apakah ada biaya?", answer: "Sesuai ketentuan yang berlaku, informasi biaya dapat ditanyakan langsung ke petugas di loket pelayanan." },
     ],
     notes: [
       "Untuk REKAM BARU KTP-el, pemohon wajib hadir untuk perekaman biometrik",
-      "Semua layanan GRATIS tanpa dipungut biaya apapun",
     ],
   },
   "kartu-keluarga": {
@@ -331,8 +327,7 @@ const defaultServices: Record<string, {
     title: "Kartu Keluarga (KK)",
     description: "Dokumen kependudukan yang memuat data susunan keluarga, hubungan kekeluargaan, dan jumlah anggota keluarga.",
     category: "Dokumen Keluarga",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-teal-600",
     bgColor: "bg-teal-100",
     sameDayService: true,
@@ -372,10 +367,10 @@ const defaultServices: Record<string, {
     ],
     forms: [{ title: "Formulir F-1.01", url: "#", size: "200 KB" }],
     faq: [
-      { question: "Apakah pembuatan KK dikenakan biaya?", answer: "TIDAK ADA. Pembuatan Kartu Keluarga adalah GRATIS." },
+      { question: "Apakah pembuatan KK dikenakan biaya?", answer: "Sesuai ketentuan yang berlaku, informasi biaya dapat ditanyakan langsung ke petugas di loket pelayanan." },
       { question: "Berapa lama prosesnya?", answer: "Proses SELESAI DI TEMPAT jika semua persyaratan sudah lengkap." },
     ],
-    notes: ["Semua layanan GRATIS tanpa dipungut biaya apapun"],
+    notes: [],
   },
   "akta-kelahiran": {
     id: "akta-kelahiran",
@@ -383,8 +378,7 @@ const defaultServices: Record<string, {
     title: "Akta Kelahiran",
     description: "Akta catatan sipil yang diterbitkan untuk setiap peristiwa kelahiran.",
     category: "Pencatatan Sipil",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-pink-600",
     bgColor: "bg-pink-100",
     sameDayService: true,
@@ -410,9 +404,9 @@ const defaultServices: Record<string, {
     ],
     forms: [{ title: "Formulir F-2.01", url: "#", size: "180 KB" }],
     faq: [
-      { question: "Apakah ada biaya untuk akta kelahiran?", answer: "TIDAK ADA. Seluruh layanan pencatatan kelahiran adalah GRATIS." },
+      { question: "Apakah ada biaya untuk akta kelahiran?", answer: "Sesuai ketentuan yang berlaku, informasi biaya dapat ditanyakan langsung ke petugas di loket pelayanan." },
     ],
-    notes: ["Semua layanan GRATIS tanpa dipungut biaya apapun"],
+    notes: [],
   },
   "akta-kematian": {
     id: "akta-kematian",
@@ -420,8 +414,7 @@ const defaultServices: Record<string, {
     title: "Akta Kematian",
     description: "Surat keterangan kematian yang diterbitkan untuk setiap peristiwa kematian.",
     category: "Pencatatan Sipil",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-gray-600",
     bgColor: "bg-gray-100",
     sameDayService: true,
@@ -456,8 +449,7 @@ const defaultServices: Record<string, {
     title: "Akta Perkawinan",
     description: "Pencatatan peristiwa perkawinan warga negara Indonesia.",
     category: "Pencatatan Sipil",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-red-600",
     bgColor: "bg-red-100",
     sameDayService: true,
@@ -491,8 +483,7 @@ const defaultServices: Record<string, {
     title: "Akta Perceraian",
     description: "Pencatatan perceraian yang telah memiliki kekuatan hukum tetap.",
     category: "Pencatatan Sipil",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-amber-600",
     bgColor: "bg-amber-100",
     sameDayService: true,
@@ -526,8 +517,7 @@ const defaultServices: Record<string, {
     title: "Perubahan Data Kependudukan",
     description: "Layanan perubahan atau pemutakhiran data kependudukan.",
     category: "Administrasi Penduduk",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-teal-600",
     bgColor: "bg-teal-100",
     sameDayService: true,
@@ -568,8 +558,7 @@ const defaultServices: Record<string, {
     title: "Legalisasi Dokumen",
     description: "Legalisasi fotokopi dokumen kependudukan oleh pejabat berwenang.",
     category: "Layanan Umum",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-amber-600",
     bgColor: "bg-amber-100",
     sameDayService: true,
@@ -601,8 +590,7 @@ const defaultServices: Record<string, {
     title: "Pindah Datang (Buat KK Sendiri)",
     description: "Layanan perpindahan penduduk untuk membuat KK baru.",
     category: "Administrasi Penduduk",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-orange-600",
     bgColor: "bg-orange-100",
     sameDayService: true,
@@ -634,8 +622,7 @@ const defaultServices: Record<string, {
     title: "Pindah Datang (Numpang KK)",
     description: "Layanan perpindahan penduduk untuk menumpang pada KK yang sudah ada.",
     category: "Administrasi Penduduk",
-    processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: "Sesuai Ketentuan",
     color: "text-teal-600",
     bgColor: "bg-teal-100",
     sameDayService: true,
@@ -932,20 +919,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                 className="lg:col-span-2 space-y-6"
               >
                 {/* Quick Info */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <motion.div variants={staggerItem}>
-                    <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-                      <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                          <Clock className="h-5 w-5 text-green-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Waktu Proses</p>
-                          <p className="font-semibold text-gray-900">{service.processingTime || "Selesai di Tempat"}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
+                <div className="grid sm:grid-cols-1 gap-4">
                   <motion.div variants={staggerItem}>
                     <Card className="border-green-200 bg-green-50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                       <CardContent className="p-4 flex items-center gap-3">
@@ -954,22 +928,22 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                         </div>
                         <div>
                           <p className="text-sm text-green-600">Biaya</p>
-                          <p className="font-bold text-green-700 text-lg">{service.fee || "GRATIS"}</p>
+                          <p className="font-bold text-green-700 text-lg">{service.fee || "Sesuai Ketentuan"}</p>
                         </div>
                       </CardContent>
                     </Card>
                   </motion.div>
                 </div>
 
-                {/* Free Service Notice */}
+                {/* Service Info */}
                 <motion.div variants={staggerItem}>
                   <Card className="bg-green-50 border-green-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                     <CardContent className="p-4 flex items-center gap-3">
                       <Sparkles className="h-6 w-6 text-green-600 flex-shrink-0" />
                       <div>
-                        <p className="font-semibold text-green-800">Pelayanan Gratis</p>
+                        <p className="font-semibold text-green-800">Pelayanan Profesional</p>
                         <p className="text-sm text-green-700">
-                          Seluruh layanan administrasi kependudukan <strong>TIDAK DIPUNGUT BIAYA</strong> apapun (GRATIS).
+                          Seluruh layanan dilayani oleh petugas terlatih dan sesuai <strong>standar operasional</strong> yang berlaku.
                         </p>
                       </div>
                     </CardContent>
@@ -1357,20 +1331,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
               className="lg:col-span-2 space-y-6"
             >
               {/* Quick Info */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                <motion.div variants={staggerItem}>
-                  <Card className="border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-                    <CardContent className="p-4 flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                        <Clock className="h-5 w-5 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Waktu Proses</p>
-                        <p className="font-semibold text-gray-900">{defaultService.processingTime}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+              <div className="grid sm:grid-cols-1 gap-4">
                 <motion.div variants={staggerItem}>
                   <Card className="border-green-200 bg-green-50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                     <CardContent className="p-4 flex items-center gap-3">
@@ -1379,7 +1340,7 @@ export function ServiceDetail({ slug }: { slug: Promise<{ slug: string }> }) {
                       </div>
                       <div>
                         <p className="text-sm text-green-600">Biaya</p>
-                        <p className="font-bold text-green-700 text-lg">{defaultService.fee}</p>
+                        <p className="font-bold text-green-700 text-lg">Sesuai Ketentuan</p>
                       </div>
                     </CardContent>
                   </Card>

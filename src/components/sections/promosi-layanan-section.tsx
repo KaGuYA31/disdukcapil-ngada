@@ -134,7 +134,7 @@ export function PromosiLayananSection() {
             Layanan Populer Kami
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-4">
-            Layanan administrasi kependudukan yang paling sering digunakan masyarakat Kabupaten Ngada — gratis dan mudah diakses
+            Layanan administrasi kependudukan yang paling sering digunakan masyarakat Kabupaten Ngada
           </p>
         </motion.div>
 
@@ -156,13 +156,6 @@ export function PromosiLayananSection() {
                 className="flex-shrink-0 w-[280px] md:w-auto snap-start"
               >
                 <Card className="relative border-gray-200/80 dark:border-gray-700/50 shadow-sm hover:shadow-lg hover:shadow-green-500/10 transition-shadow duration-300 h-full overflow-hidden group bg-white dark:bg-gray-900">
-                  {/* GRATIS Badge */}
-                  <div className="absolute top-3 right-3 z-10">
-                    <Badge className="bg-green-500 text-white hover:bg-green-600 text-[10px] font-bold tracking-wider shadow-md">
-                      GRATIS
-                    </Badge>
-                  </div>
-
                   <CardContent className="p-5 pt-4">
                     {/* Icon */}
                     <div className="relative mb-4">

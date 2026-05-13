@@ -4,7 +4,6 @@ import { useState, useRef, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   BookOpen,
-  Clock,
   FileCheck,
   Users,
   ArrowRight,
@@ -29,7 +28,6 @@ interface PanduanStep {
   judul: string;
   deskripsi: string;
   dokumen: string[];
-  estimasiWaktu: string;
   gratis: boolean;
 }
 
@@ -56,7 +54,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Kumpulkan Surat Pengantar RT/RW, Kartu Keluarga (KK) asli, Akta Kelahiran atau Ijazah, Surat Nikah (jika sudah menikah), dan Pas Foto 2x3 berlatar belakang merah.",
         dokumen: ["Surat Pengantar RT/RW", "KK Asli", "Akta Kelahiran/Ijazah", "Surat Nikah (opsional)", "Pas Foto 2x3 (2 lbr)"],
-        estimasiWaktu: "1-2 hari persiapan",
         gratis: true,
       },
       {
@@ -65,7 +62,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Kunjungi kantor Disdukcapil Kabupaten Ngada di Jl. El Tari, Bajawa pada jam kerja (Senin-Jumat, 08:00-15:00 WITA). Ambil nomor antrian dan tunggu giliran.",
         dokumen: ["Semua dokumen persyaratan"],
-        estimasiWaktu: "30-60 menit antrian",
         gratis: true,
       },
       {
@@ -74,7 +70,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Serahkan dokumen kepada petugas di loket pendaftaran. Petugas akan memeriksa kelengkapan dan keabsahan dokumen Anda, lalu mencetak formulir isian data penduduk.",
         dokumen: ["Dokumen asli + fotokopi"],
-        estimasiWaktu: "15-20 menit",
         gratis: true,
       },
       {
@@ -83,7 +78,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Lakukan perekaman sidik jari (10 jari), foto wajah, dan iris mata. Pastikan tidak menggunakan kacamata, lensa kontak warna, atau aksesoris wajah.",
         dokumen: ["Surat pengantar petugas", "KTP lama (jika perpanjangan)"],
-        estimasiWaktu: "10-15 menit",
         gratis: true,
       },
       {
@@ -92,7 +86,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Data Anda diverifikasi oleh Dukcapil Pusat melalui sistem SIAK. Simpan Surat Tanda Bukti Perekaman sebagai identitas sementara.",
         dokumen: ["Surat Tanda Bukti Perekaman"],
-        estimasiWaktu: "5-14 hari kerja",
         gratis: true,
       },
       {
@@ -101,7 +94,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Datang ke Disdukcapil dengan membawa Surat Tanda Bukti Perekaman. Periksa kembali data di KTP-el sebelum meninggalkan kantor.",
         dokumen: ["Surat Tanda Bukti Perekaman", "KTP lama (jika ada)"],
-        estimasiWaktu: "10-15 menit",
         gratis: true,
       },
     ],
@@ -118,7 +110,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Kumpulkan KTP-el semua anggota keluarga, Akta Kelahiran masing-masing, Surat Nikah/Buku Nikah, dan Surat Pengantar RT/RW.",
         dokumen: ["KTP-el semua anggota", "Akta Kelahiran anggota", "Surat Nikah/Buku Nikah", "Surat Pengantar RT/RW"],
-        estimasiWaktu: "1-3 hari persiapan",
         gratis: true,
       },
       {
@@ -127,7 +118,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Ambil dan isi formulir Isian Penduduk (F-1.01) di Disdukcapil dengan data lengkap seluruh anggota keluarga: NIK, nama, tempat/tanggal lahir, pekerjaan, dll.",
         dokumen: ["Formulir F-1.01", "Semua dokumen keluarga"],
-        estimasiWaktu: "20-30 menit",
         gratis: true,
       },
       {
@@ -136,7 +126,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Petugas memverifikasi data dan mencocokkan dengan database SIAK. Jika ada ketidaksesuaian, petugas akan memberikan petunjuk perbaikan.",
         dokumen: ["Formulir F-1.01", "Dokumen asli"],
-        estimasiWaktu: "15-30 menit",
         gratis: true,
       },
       {
@@ -145,7 +134,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Kepala Seksi menandatangani KK, kemudian KK dicetak oleh petugas. Periksa seluruh data yang tercantum sebelum KK diserahkan.",
         dokumen: ["Formulir F-1.01 terverifikasi"],
-        estimasiWaktu: "30-60 menit",
         gratis: true,
       },
       {
@@ -154,7 +142,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Kartu Keluarga yang sudah jadi diserahkan. Simpan KK dengan baik dan buat fotokopi untuk keperluan administrasi mendatang.",
         dokumen: ["KK baru"],
-        estimasiWaktu: "5-10 menit",
         gratis: true,
       },
     ],
@@ -171,7 +158,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Dapatkan Surat Keterangan Kelahiran dari rumah sakit, puskesmas, atau bidan yang membantu persalinan. Jika lahir di rumah, minta dari bidan desa.",
         dokumen: ["Surat Keterangan Kelahiran RS/Bidan", "Surat Pengantar RT/RW"],
-        estimasiWaktu: "1 hari",
         gratis: true,
       },
       {
@@ -180,7 +166,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Siapkan KTP-el kedua orang tua asli, KK asli, Surat Nikah/Buku Nikah asli, dan Surat Pengantar RT/RW.",
         dokumen: ["KTP-el kedua orang tua", "KK asli", "Surat Nikah/Buku Nikah", "Surat Pengantar RT/RW"],
-        estimasiWaktu: "1-2 hari persiapan",
         gratis: true,
       },
       {
@@ -189,7 +174,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Kunjungi Disdukcapil dengan membawa semua dokumen. Ambil nomor antrian di loket Pencatatan Sipil dan isi formulir permohonan akta kelahiran.",
         dokumen: ["Semua dokumen persyaratan"],
-        estimasiWaktu: "30-60 menit",
         gratis: true,
       },
       {
@@ -198,7 +182,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Petugas memverifikasi dokumen dan data. Jika lengkap, akta bisa selesai di hari yang sama. Data dicatat dalam database SIAK.",
         dokumen: ["Formulir permohonan", "Semua dokumen asli"],
-        estimasiWaktu: "1-3 hari kerja",
         gratis: true,
       },
       {
@@ -207,7 +190,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Ambil Akta Kelahiran yang sudah jadi. Periksa kembali data bayi dan orang tua yang tercantum. Simpan dalam amplop plastik.",
         dokumen: ["Surat bukti permohonan"],
-        estimasiWaktu: "10-15 menit",
         gratis: true,
       },
     ],
@@ -224,7 +206,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Minta surat pengantar pindah dari RT/RW kelurahan/desa asal. Sertakan alasan kepindahan (kerja, kuliah, menikah, dll).",
         dokumen: ["Surat Pengantar RT/RW", "KTP-el asli", "KK asli"],
-        estimasiWaktu: "1 hari",
         gratis: true,
       },
       {
@@ -233,7 +214,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Datang ke Disdukcapil kabupaten/kota asal dengan membawa KTP-el, KK, surat pengantar RT/RW, dan pas foto 3x4 (4 lembar). Petugas menerbitkan SKP.",
         dokumen: ["KTP-el asli", "KK asli", "Surat Pengantar RT/RW", "Pas Foto 3x4 (4 lbr)"],
-        estimasiWaktu: "1-3 hari kerja",
         gratis: true,
       },
       {
@@ -242,7 +222,6 @@ const layananList: LayananData[] = [
         deskripsi:
           "Data kepindahan disinkronkan melalui sistem SIAK antar Disdukcapil asal dan tujuan. SKP berlaku sebagai dokumen sementara selama proses.",
         dokumen: ["Surat Keterangan Pindah (SKP)"],
-        estimasiWaktu: "5-7 hari kerja",
         gratis: true,
       },
       {
@@ -251,16 +230,14 @@ const layananList: LayananData[] = [
         deskripsi:
           "Setelah sinkronisasi selesai, datang ke Disdukcapil tujuan dengan SKP dan surat pengantar RT/RW dari alamat baru. Petugas memproses pencatatan.",
         dokumen: ["SKP asli", "Surat Pengantar RT/RW baru", "KTP-el asli", "KK asli", "Pas Foto 3x4 (4 lbr)"],
-        estimasiWaktu: "1-2 hari kerja",
         gratis: true,
       },
       {
         nomor: 5,
         judul: "Penerbitan KK & KTP-el Baru",
         deskripsi:
-          "Disdukcapil tujuan menerbitkan KK baru dengan alamat baru. Kemudian lakukan perekaman ulang untuk KTP-el baru (sekitar 14 hari kerja).",
+          "Disdukcapil tujuan menerbitkan KK baru dengan alamat baru. Kemudian lakukan perekaman ulang untuk KTP-el baru.",
         dokumen: ["Dokumen pendukung"],
-        estimasiWaktu: "7-14 hari kerja",
         gratis: true,
       },
     ],
@@ -463,17 +440,13 @@ function StepCard({
               {/* Header row */}
               <div className="flex items-center justify-between gap-3 mb-3">
                 <div className={cn("flex items-center gap-2", !isEven && "order-2")}>
-                  <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-0 text-[10px] px-2 py-0.5 gap-1">
-                    <Clock className="h-3 w-3" />
-                    {step.estimasiWaktu}
-                  </Badge>
                   <Badge className={cn(
                     "border-0 text-[10px] px-2 py-0.5 gap-1",
                     step.gratis
                       ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
                       : "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
                   )}>
-                    {step.gratis ? "GRATIS" : "BERBIAYA"}
+                    {step.gratis ? "Sesuai Ketentuan" : "Berbayar"}
                   </Badge>
                 </div>
                 <h4 className={cn("font-semibold text-gray-900 dark:text-gray-100", !isEven && "order-1")}>
@@ -528,17 +501,13 @@ function StepCard({
               <h4 className="font-semibold text-gray-900 dark:text-gray-100">{step.judul}</h4>
             </div>
             <div className="flex items-center gap-2 mb-3">
-              <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-0 text-[10px] px-2 py-0.5 gap-1">
-                <Clock className="h-3 w-3" />
-                {step.estimasiWaktu}
-              </Badge>
               <Badge className={cn(
                 "border-0 text-[10px] px-2 py-0.5 gap-1",
                 step.gratis
                   ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
                   : "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
               )}>
-                {step.gratis ? "GRATIS" : "BERBIAYA"}
+                {step.gratis ? "Sesuai Ketentuan" : "Berbayar"}
               </Badge>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3">
@@ -773,8 +742,8 @@ export function PanduanInteraktifSection() {
             <SummaryCard
               icon={<Sparkles className="h-5 w-5" />}
               label="Biaya"
-              value={summary.allFree ? "GRATIS" : "Berbayar"}
-              sublabel={summary.allFree ? "UU No. 24/2013" : "Biaya administrasi"}
+              value={summary.allFree ? "Sesuai Ketentuan" : "Berbayar"}
+              sublabel={summary.allFree ? "Sesuai peraturan" : "Biaya administrasi"}
               gradient="bg-gradient-to-br from-emerald-500 to-green-600"
               delay={0.1}
             />

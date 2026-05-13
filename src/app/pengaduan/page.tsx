@@ -114,7 +114,7 @@ export default function PengaduanPage() {
                   <MessageSquare className="h-9 w-9 md:h-11 md:w-11 text-green-200" />
                   Bantuan & Pengaduan
                 </motion.h1>
-                <motion.p variants={fadeInUp} className="text-green-100 text-lg md:text-xl leading-relaxed">
+                <motion.p variants={fadeInUp} className="text-green-100 text-base md:text-xl leading-relaxed">
                   Sampaikan pertanyaan, keluhan, atau saran Anda untuk membantu
                   kami meningkatkan kualitas pelayanan.
                 </motion.p>

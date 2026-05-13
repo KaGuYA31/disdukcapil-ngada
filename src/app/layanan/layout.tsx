@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Layanan Administrasi Kependudukan",
   description:
-    "Informasi lengkap persyaratan dan prosedur layanan administrasi kependudukan: KTP-el, Kartu Keluarga, Akta Kelahiran, Akta Kematian, Akta Perkawinan, dan lainnya. Seluruh layanan gratis.",
+    "Informasi lengkap persyaratan dan prosedur layanan administrasi kependudukan: KTP-el, Kartu Keluarga, Akta Kelahiran, Akta Kematian, Akta Perkawinan, dan lainnya.",
   openGraph: {
     title: "Layanan Administrasi Kependudukan | Disdukcapil Ngada",
     description:
-      "Informasi lengkap persyaratan dan prosedur layanan administrasi kependudukan: KTP-el, Kartu Keluarga, Akta Kelahiran, Akta Kematian, Akta Perkawinan, dan lainnya. Seluruh layanan gratis.",
+      "Informasi lengkap persyaratan dan prosedur layanan administrasi kependudukan: KTP-el, Kartu Keluarga, Akta Kelahiran, Akta Kematian, Akta Perkawinan, dan lainnya.",
     url: "https://disdukcapil-ngada.vercel.app/layanan",
     images: [
       {
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Layanan Administrasi Kependudukan | Disdukcapil Ngada",
     description:
-      "Informasi lengkap persyaratan dan prosedur layanan administrasi kependudukan: KTP-el, Kartu Keluarga, Akta Kelahiran, Akta Kematian, Akta Perkawinan, dan lainnya. Seluruh layanan gratis.",
+      "Informasi lengkap persyaratan dan prosedur layanan administrasi kependudukan: KTP-el, Kartu Keluarga, Akta Kelahiran, Akta Kematian, Akta Perkawinan, dan lainnya.",
     images: ["/logo-kabupaten.png"],
   },
   alternates: {

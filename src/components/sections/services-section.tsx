@@ -56,7 +56,6 @@ interface Layanan {
   description: string;
   icon: string | null;
   category: string;
-  processingTime: string | null;
   fee: string | null;
   isActive: boolean;
 }
@@ -102,15 +101,15 @@ function getCategoryColor(category: string) {
 }
 
 const defaultServices: Layanan[] = [
-  { id: "ktp-el", name: "KTP-el", slug: "ktp-el", description: "Kartu Tanda Penduduk Elektronik untuk WNI.", icon: "CreditCard", category: "Pendaftaran Penduduk", processingTime: "Selesai di Tempat*", fee: "GRATIS", isActive: true },
-  { id: "kartu-keluarga", name: "Kartu Keluarga", slug: "kartu-keluarga", description: "Dokumen susunan dan hubungan keluarga.", icon: "Users", category: "Pendaftaran Penduduk", processingTime: "Selesai di Tempat", fee: "GRATIS", isActive: true },
-  { id: "perubahan-data", name: "Perubahan Data", slug: "perubahan-data", description: "Pemutakhiran data kependudukan.", icon: "RefreshCw", category: "Pendaftaran Penduduk", processingTime: "Selesai di Tempat", fee: "GRATIS", isActive: true },
-  { id: "legalisasi", name: "Legalisasi Dokumen", slug: "legalisasi", description: "Legalisasi fotokopi dokumen kependudukan.", icon: "Stamp", category: "Pendaftaran Penduduk", processingTime: "Selesai di Tempat", fee: "GRATIS", isActive: true },
-  { id: "akta-kelahiran", name: "Akta Kelahiran", slug: "akta-kelahiran", description: "Pencatatan kelahiran.", icon: "Baby", category: "Pencatatan Sipil", processingTime: "Selesai di Tempat", fee: "GRATIS", isActive: true },
-  { id: "akta-kematian", name: "Akta Kematian", slug: "akta-kematian", description: "Pencatatan kematian.", icon: "Heart", category: "Pencatatan Sipil", processingTime: "Selesai di Tempat", fee: "GRATIS", isActive: true },
-  { id: "akta-perkawinan", name: "Akta Perkawinan", slug: "akta-perkawinan", description: "Pencatatan perkawinan WNI.", icon: "FileText", category: "Pencatatan Sipil", processingTime: "Selesai di Tempat", fee: "GRATIS", isActive: true },
-  { id: "akta-perceraian", name: "Akta Perceraian", slug: "akta-perceraian", description: "Pencatatan perceraian.", icon: "Gavel", category: "Pencatatan Sipil", processingTime: "Selesai di Tempat", fee: "GRATIS", isActive: true },
-  { id: "pindah-penduduk", name: "Pindah Penduduk", slug: "pindah-penduduk", description: "Perpindahan penduduk antar wilayah.", icon: "MoveRight", category: "Pencatatan Sipil", processingTime: "Selesai di Tempat", fee: "GRATIS", isActive: true },
+  { id: "ktp-el", name: "KTP-el", slug: "ktp-el", description: "Kartu Tanda Penduduk Elektronik untuk WNI.", icon: "CreditCard", category: "Pendaftaran Penduduk", fee: null, isActive: true },
+  { id: "kartu-keluarga", name: "Kartu Keluarga", slug: "kartu-keluarga", description: "Dokumen susunan dan hubungan keluarga.", icon: "Users", category: "Pendaftaran Penduduk", fee: null, isActive: true },
+  { id: "perubahan-data", name: "Perubahan Data", slug: "perubahan-data", description: "Pemutakhiran data kependudukan.", icon: "RefreshCw", category: "Pendaftaran Penduduk", fee: null, isActive: true },
+  { id: "legalisasi", name: "Legalisasi Dokumen", slug: "legalisasi", description: "Legalisasi fotokopi dokumen kependudukan.", icon: "Stamp", category: "Pendaftaran Penduduk", fee: null, isActive: true },
+  { id: "akta-kelahiran", name: "Akta Kelahiran", slug: "akta-kelahiran", description: "Pencatatan kelahiran.", icon: "Baby", category: "Pencatatan Sipil", fee: null, isActive: true },
+  { id: "akta-kematian", name: "Akta Kematian", slug: "akta-kematian", description: "Pencatatan kematian.", icon: "Heart", category: "Pencatatan Sipil", fee: null, isActive: true },
+  { id: "akta-perkawinan", name: "Akta Perkawinan", slug: "akta-perkawinan", description: "Pencatatan perkawinan WNI.", icon: "FileText", category: "Pencatatan Sipil", fee: null, isActive: true },
+  { id: "akta-perceraian", name: "Akta Perceraian", slug: "akta-perceraian", description: "Pencatatan perceraian.", icon: "Gavel", category: "Pencatatan Sipil", fee: null, isActive: true },
+  { id: "pindah-penduduk", name: "Pindah Penduduk", slug: "pindah-penduduk", description: "Perpindahan penduduk antar wilayah.", icon: "MoveRight", category: "Pencatatan Sipil", fee: null, isActive: true },
 ];
 
 // Animation variants for stagger effect
@@ -250,21 +249,6 @@ function CategorySection({
                     <CardDescription className="text-gray-600 dark:text-gray-400 leading-relaxed">
                       {service.description}
                     </CardDescription>
-                    <div className="mt-3 flex items-center gap-2 flex-wrap">
-                      <Badge className="bg-green-50 dark:bg-green-950/50 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800 text-xs gap-1">
-                        <BadgeCheck className="h-3 w-3" />
-                        {service.fee || "GRATIS"}
-                      </Badge>
-                      {service.processingTime && (
-                        <Badge className="bg-teal-50 dark:bg-teal-950/50 text-teal-600 dark:text-teal-300 border border-teal-100 dark:border-teal-800 text-xs gap-1">
-                          <Clock className="h-3 w-3" />
-                          {service.processingTime.replace("*", "")}
-                        </Badge>
-                      )}
-                    </div>
-                    {service.processingTime?.includes("*") && (
-                      <p className="text-[10px] text-gray-400 mt-1.5 italic">* Tergantung kelengkapan berkas</p>
-                    )}
                     {/* Lihat Detail text - fades in on hover */}
                     <div className="mt-3 flex items-center gap-1 text-sm font-medium text-green-600 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300">
                       Lihat Detail
@@ -433,7 +417,7 @@ export function ServicesSection() {
                   <div className="flex-1" />
                 </div>
                 {/* Cards skeleton */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                   {[0, 1, 2, 3].map((cardIndex) => (
                     <div key={cardIndex} className="rounded-xl border border-gray-200 dark:border-gray-800 p-6">
                       <Skeleton className="h-14 w-14 rounded-xl mb-4" />

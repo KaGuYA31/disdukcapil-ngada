@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Clock, Upload, FileCheck, Circle } from "lucide-react";
+import { Check, Upload, FileCheck, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ─── Types ─────────────────────────────────────────────────────────────
@@ -12,7 +12,6 @@ export interface TrackerStep {
   id: string;
   label: string;
   description: string;
-  estimatedTime: string;
   status: StepStatus;
   documentUploaded?: boolean;
   documentRequired?: boolean;
@@ -46,32 +45,27 @@ const defaultSteps: Omit<TrackerStep, "status">[] = [
     id: "pengajuan",
     label: "Pengajuan",
     description: "Formulir dikirim dan diterima sistem",
-    estimatedTime: "Instan",
   },
   {
     id: "verifikasi",
     label: "Verifikasi",
     description: "Dokumen diverifikasi oleh petugas",
-    estimatedTime: "1-2 hari kerja",
     documentRequired: true,
   },
   {
     id: "proses",
     label: "Diproses",
     description: "Data diproses dan dicetak",
-    estimatedTime: "1-5 hari kerja",
   },
   {
     id: "selesai",
     label: "Selesai",
     description: "Dokumen siap diambil",
-    estimatedTime: "1 hari kerja",
   },
   {
     id: "diambil",
     label: "Diambil",
     description: "Dokumen telah diterima pemohon",
-    estimatedTime: "-",
   },
 ];
 
@@ -305,12 +299,6 @@ function ProgressStepHorizontal({ step, index, isLast, compact }: StepProps) {
             <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5 max-w-[100px] leading-tight">
               {step.description}
             </p>
-            <div className="flex items-center gap-1 mt-1">
-              <Clock className="h-3 w-3 text-gray-300 dark:text-gray-600" />
-              <span className="text-[10px] text-gray-300 dark:text-gray-600">
-                {step.estimatedTime}
-              </span>
-            </div>
           </>
         )}
       </div>
@@ -424,12 +412,6 @@ function ProgressStepVertical({ step, index, isLast, compact }: StepProps) {
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
               {step.description}
             </p>
-            <div className="flex items-center gap-1 mt-1.5">
-              <Clock className="h-3 w-3 text-gray-300 dark:text-gray-600" />
-              <span className="text-[10px] text-gray-300 dark:text-gray-600">
-                Estimasi: {step.estimatedTime}
-              </span>
-            </div>
           </>
         )}
 

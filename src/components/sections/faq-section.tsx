@@ -16,9 +16,9 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const faqs = [
   {
-    question: "Apakah seluruh layanan Disdukcapil gratis?",
+    question: "Bagaimana cara mengurus dokumen kependudukan?",
     answer:
-      "Ya, sesuai UU No. 24 Tahun 2013 dan kebijakan pemerintah, seluruh layanan administrasi kependudukan TIDAK dipungut biaya apapun. Termasuk pembuatan KTP-el, Kartu Keluarga, Akta Kelahiran, dan layanan lainnya.",
+      "Kunjungi kantor Disdukcapil Kabupaten Ngada dengan membawa dokumen persyaratan lengkap. Untuk informasi lebih detail, silakan cek halaman detail layanan yang Anda butuhkan.",
   },
   {
     question: "Dokumen apa saja yang perlu dibawa?",
@@ -28,7 +28,7 @@ const faqs = [
   {
     question: "Berapa lama proses pembuatan KTP-el?",
     answer:
-      "Untuk KTP-el yang sudah pernah direkam (perpanjangan/perbaikan), proses selesai di tempat. Untuk rekam baru KTP-el, memerlukan waktu 3-5 hari kerja karena proses perekaman biometrik dan sinkronisasi data ke pusat.",
+      "Untuk KTP-el yang sudah pernah direkam (perpanjangan/perbaikan), proses selesai di tempat. Untuk rekam baru KTP-el, proses akan diinformasikan oleh petugas setelah sinkronisasi data ke pusat.",
   },
   {
     question: "Bagaimana cara mengurus akta kelahiran?",
@@ -53,12 +53,12 @@ const faqs = [
   {
     question: "Bagaimana jika data KTP saya tidak sesuai?",
     answer:
-      "Jika terdapat kesalahan data pada KTP-el Anda, segera laporkan ke kantor Disdukcapil Kabupaten Ngada dengan membawa KTP-el asli, Kartu Keluarga, dan dokumen pendukung (ijazah, akta kelahiran, atau surat nikah) sebagai bukti data yang benar. Proses koreksi data biasanya memerlukan 1-3 hari kerja setelah verifikasi.",
+      "Jika terdapat kesalahan data pada KTP-el Anda, segera laporkan ke kantor Disdukcapil Kabupaten Ngada dengan membawa KTP-el asli, Kartu Keluarga, dan dokumen pendukung (ijazah, akta kelahiran, atau surat nikah) sebagai bukti data yang benar. Proses koreksi data akan diinformasikan oleh petugas setelah verifikasi.",
   },
   {
     question: "Berapa lama proses pembuatan Kartu Keluarga?",
     answer:
-      "Proses pembuatan Kartu Keluarga (KK) baru atau perubahan data KK memerlukan waktu 1-3 hari kerja. Pastikan membawa dokumen persyaratan lengkap: KTP-el anggota keluarga, akta kelahiran, akta nikah/cerai (jika ada perubahan status), dan surat pengantar RT/RW.",
+      "Proses pembuatan Kartu Keluarga (KK) baru atau perubahan data KK akan diinformasikan oleh petugas. Pastikan membawa dokumen persyaratan lengkap: KTP-el anggota keluarga, akta kelahiran, akta nikah/cerai (jika ada perubahan status), dan surat pengantar RT/RW.",
   },
   {
     question: "Apakah ada layanan jemput bola?",

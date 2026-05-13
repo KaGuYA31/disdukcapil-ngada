@@ -53,7 +53,7 @@ const testimonials: TestimonialItem[] = [
     id: 6,
     name: "Dominikus Reo",
     location: "Kec. Golewa",
-    text: "Legalitas dokumen kependudukan gratis! Sangat mengapresiasi pelayanan yang transparan.",
+    text: "Legalitas dokumen kependudukan terproses dengan baik! Sangat mengapresiasi pelayanan yang transparan.",
     rating: 5,
   },
   {

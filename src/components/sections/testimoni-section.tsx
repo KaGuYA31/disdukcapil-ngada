@@ -68,7 +68,7 @@ const hardcodedTestimonials: Testimonial[] = [
     id: "h6",
     name: "Dominikus Reo",
     location: "Kecamatan Golewa",
-    text: "Legalisasi dokumen kependudukan gratis dan cepat. Sangat mengapresiasi pelayanan Disdukcapil Ngada yang memuaskan.",
+    text: "Legalisasi dokumen kependudukan cepat dan mudah. Sangat mengapresiasi pelayanan Disdukcapil Ngada yang memuaskan.",
     rating: 5,
   },
 ];

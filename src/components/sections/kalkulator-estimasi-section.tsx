@@ -64,7 +64,7 @@ const LAYANAN_LIST: LayananData[] = [
       "Surat Pindah (jika dari luar daerah)",
       "Formulir Isian F-1.01",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -86,7 +86,7 @@ const LAYANAN_LIST: LayananData[] = [
       "Pas Foto 3x4 (2 lembar)",
       "Formulir Isian F-1.08",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -110,7 +110,7 @@ const LAYANAN_LIST: LayananData[] = [
       "Ijazah/Surat Keterangan Pendidikan",
       "Formulir Isian F-1.01",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -132,7 +132,7 @@ const LAYANAN_LIST: LayananData[] = [
       "Surat Pengantar RT/RW",
       "Formulir Isian F-1.15/F-1.16",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -155,7 +155,7 @@ const LAYANAN_LIST: LayananData[] = [
       "Surat Pengantar RT/RW",
       "Dua orang saksi dengan KTP-el",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -178,7 +178,7 @@ const LAYANAN_LIST: LayananData[] = [
       "KTP-el pelapor (keluarga)",
       "Dua orang saksi dengan KTP-el",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -201,7 +201,7 @@ const LAYANAN_LIST: LayananData[] = [
       "Surat Pengantar RT/RW",
       "Akta Kelahiran kedua pasangan",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -225,7 +225,7 @@ const LAYANAN_LIST: LayananData[] = [
       "Ijazah terakhir",
       "Surat Keterangan Kerja (jika bekerja)",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -270,7 +270,7 @@ const LAYANAN_LIST: LayananData[] = [
       "Fotokopi dokumen (minimal 2 rangkap)",
       "Surat Pengantar RT/RW (untuk keperluan tertentu)",
     ],
-    biaya: "GRATIS",
+    biaya: "Sesuai Ketentuan",
     biayaDetail: "Sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan",
     isGratis: true,
     tips: [
@@ -814,7 +814,7 @@ export function KalkulatorEstimasiSection() {
                                   {layanan.estimasiNormal[0]}-{layanan.estimasiNormal[1]} hari kerja
                                   {layanan.isGratis && (
                                     <Badge className="ml-2 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800/40 text-[9px] px-1.5 py-0">
-                                      GRATIS
+                                      Sesuai Ketentuan
                                     </Badge>
                                   )}
                                 </p>
@@ -1071,7 +1071,7 @@ export function KalkulatorEstimasiSection() {
                           {layananData.isGratis && (
                             <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-none text-[10px] px-2 py-0 shadow-sm">
                               <Sparkles className="h-3 w-3 mr-0.5" />
-                              GRATIS
+                              Sesuai Ketentuan
                             </Badge>
                           )}
                         </div>
@@ -1400,7 +1400,7 @@ export function KalkulatorEstimasiSection() {
                                 <td className="px-4 py-3 text-center">
                                   {layanan.isGratis ? (
                                     <Badge className="bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800/40 text-[10px]">
-                                      GRATIS
+                                      Sesuai Ketentuan
                                     </Badge>
                                   ) : (
                                     <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">

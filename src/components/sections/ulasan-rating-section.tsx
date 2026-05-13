@@ -108,7 +108,7 @@ const sampleReviews: Review[] = [
     nama: "Katarina Dho",
     layanan: "Legalisir Dokumen",
     rating: 4,
-    komentar: "Proses legalisir dokumen kependudukan gratis dan cepat. Cukup bawa dokumen asli dan fotokopi, selesai dalam waktu singkat.",
+    komentar: "Proses legalisir dokumen kependudukan cepat dan mudah. Cukup bawa dokumen asli dan fotokopi, selesai dalam waktu singkat.",
     tanggal: "28 Desember 2024",
     suka: 14,
   },

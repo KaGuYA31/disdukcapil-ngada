@@ -363,30 +363,10 @@ export function PengaduanSection() {
                 dan merespons pengaduan Anda.
               </motion.p>
 
-              {/* Estimated response time */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
-                className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl p-4 mb-8"
-              >
-                <div className="flex items-center justify-center gap-3">
-                  <Clock className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
-                  <div className="text-left">
-                    <p className="text-sm font-semibold text-green-800 dark:text-green-300">
-                      Estimasi Waktu Respons
-                    </p>
-                    <p className="text-sm text-green-700 dark:text-green-400">
-                      1–3 hari kerja melalui email atau telepon
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.9 }}
               >
                 <Button
                   onClick={() => {
@@ -734,9 +714,9 @@ export function PengaduanSection() {
                         <Info className="h-4 w-4 text-green-600 dark:text-green-400" />
                       </div>
                       <div className="text-sm text-green-800 dark:text-green-300">
-                        <p className="font-semibold mb-1">Waktu Respons</p>
+                        <p className="font-semibold mb-1">Pengaduan Anda</p>
                         <p>
-                          Pengaduan Anda akan ditangani dalam waktu 1–3 hari kerja.
+                          Pengaduan Anda akan ditangani oleh petugas kami.
                           Pastikan data kontak yang Anda berikan aktif dan dapat dihubungi.
                         </p>
                       </div>
@@ -748,7 +728,7 @@ export function PengaduanSection() {
                       <span>Data Anda dilindungi dan hanya digunakan untuk keperluan pengaduan</span>
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <motion.div whileTap={{ scale: 0.98 }} className="flex-1">
                         <Button
                           type="submit"

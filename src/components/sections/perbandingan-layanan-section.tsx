@@ -30,8 +30,6 @@ interface ServiceItem {
   icon: LucideIcon;
   name: string;
   online: boolean;
-  onlineTime: string;
-  offlineTime: string;
   onlineReq: string;
   slug: string;
 }
@@ -42,8 +40,6 @@ const services: ServiceItem[] = [
     icon: IdCard,
     name: "Pembuatan KTP-el",
     online: true,
-    onlineTime: "5-7 hari kerja",
-    offlineTime: "3-5 hari kerja",
     onlineReq: "KTP lama, KK, Surat Pengantar RT/RW",
     slug: "/layanan/ktp-el",
   },
@@ -51,8 +47,6 @@ const services: ServiceItem[] = [
     icon: Users,
     name: "Pembuatan Kartu Keluarga",
     online: false,
-    onlineTime: "-",
-    offlineTime: "3-5 hari kerja",
     onlineReq: "-",
     slug: "/layanan/kartu-keluarga",
   },
@@ -60,8 +54,6 @@ const services: ServiceItem[] = [
     icon: Baby,
     name: "Akta Kelahiran",
     online: true,
-    onlineTime: "3-5 hari kerja",
-    offlineTime: "1-3 hari kerja",
     onlineReq: "Surat Kelahiran, KTP ortu, KK",
     slug: "/layanan/akta-kelahiran",
   },
@@ -69,8 +61,6 @@ const services: ServiceItem[] = [
     icon: Heart,
     name: "Akta Kematian",
     online: true,
-    onlineTime: "3-5 hari kerja",
-    offlineTime: "1-3 hari kerja",
     onlineReq: "Surat Keterangan Kematian, KTP, KK",
     slug: "/layanan/akta-kematian",
   },
@@ -78,8 +68,6 @@ const services: ServiceItem[] = [
     icon: Truck,
     name: "Pindah Domisili",
     online: true,
-    onlineTime: "7-14 hari kerja",
-    offlineTime: "5-10 hari kerja",
     onlineReq: "Surat Pindah, KTP, KK, SKCK",
     slug: "/layanan/pindah-penduduk",
   },
@@ -87,8 +75,6 @@ const services: ServiceItem[] = [
     icon: Stamp,
     name: "Legalisir Dokumen",
     online: false,
-    onlineTime: "-",
-    offlineTime: "1-2 hari kerja",
     onlineReq: "-",
     slug: "/layanan/legalisasi",
   },
@@ -96,8 +82,6 @@ const services: ServiceItem[] = [
     icon: ScrollText,
     name: "Surat Pindah",
     online: true,
-    onlineTime: "5-7 hari kerja",
-    offlineTime: "3-5 hari kerja",
     onlineReq: "KTP, KK, Surat Pengantar",
     slug: "/layanan/perubahan-data",
   },
@@ -327,10 +311,6 @@ export function PerbandinganLayananSection() {
                                     Tersedia
                                   </span>
                                 </div>
-                                <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                                  <Clock className="h-3.5 w-3.5 flex-shrink-0" />
-                                  <span>{service.onlineTime}</span>
-                                </div>
                                 <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
                                   {service.onlineReq}
                                 </p>
@@ -366,10 +346,6 @@ export function PerbandinganLayananSection() {
                                 <span className="text-sm font-medium text-teal-700 dark:text-teal-400">
                                   Tersedia
                                 </span>
-                              </div>
-                              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                                <Clock className="h-3.5 w-3.5 flex-shrink-0" />
-                                <span>{service.offlineTime}</span>
                               </div>
                               <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
                                 Kantor Disdukcapil Kab. Ngada
@@ -419,10 +395,6 @@ export function PerbandinganLayananSection() {
                                       Tersedia
                                     </span>
                                   </div>
-                                  <div className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
-                                    <Clock className="h-3 w-3" />
-                                    {service.onlineTime}
-                                  </div>
                                   <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
                                     {service.onlineReq}
                                   </p>
@@ -458,10 +430,6 @@ export function PerbandinganLayananSection() {
                                   Tersedia
                                 </span>
                               </div>
-                              <div className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
-                                <Clock className="h-3 w-3" />
-                                {service.offlineTime}
-                              </div>
                               <Button size="sm" variant="outline" className="h-7 text-[11px] border-teal-300 dark:border-teal-700 text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-950/50 w-full" asChild>
                                 <a href="/kontak">
                                   Kunjungi Kantor
@@ -495,7 +463,7 @@ export function PerbandinganLayananSection() {
               </Badge>
             </div>
             <p className="text-xs text-gray-400 dark:text-gray-500">
-              Semua layanan kependudukan gratis sesuai UU No. 24 Tahun 2013
+              Layanan sesuai UU No. 24 Tahun 2013 tentang Administrasi Kependudukan
             </p>
           </motion.div>
         </div>

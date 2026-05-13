@@ -26,7 +26,7 @@ const ANNOUNCEMENTS: Announcement[] = [
   {
     id: 2,
     emoji: "📋",
-    text: "Semua layanan GRATIS sesuai UU No. 24/2013",
+    text: "Layanan Administrasi Kependudukan",
   },
   {
     id: 3,

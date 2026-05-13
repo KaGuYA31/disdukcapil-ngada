@@ -69,7 +69,7 @@ const tagCloud = [
   { name: "Kartu Keluarga", size: "text-base", color: "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300" },
   { name: "Akta Kelahiran", size: "text-sm", color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300" },
   { name: "Pelayanan Online", size: "text-base", color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300" },
-  { name: "Gratis", size: "text-lg", color: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" },
+  { name: "Layanan Publik", size: "text-base", color: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" },
   { name: "Ngada", size: "text-sm", color: "bg-lime-100 text-lime-700 dark:bg-lime-900/30 dark:text-lime-300" },
   { name: "Bajawa", size: "text-xs", color: "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300" },
   { name: "Rekaman Biometrik", size: "text-sm", color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300" },

@@ -19,9 +19,9 @@ const features: KeunggulanItem[] = [
   {
     id: 1,
     icon: BadgeCheck,
-    title: "Pelayanan Gratis",
+    title: "Pelayanan Terpadu",
     description:
-      "Seluruh layanan administrasi kependudukan diberikan secara gratis tanpa biaya apapun",
+      "Layanan satu atap untuk kemudahan pengurusan dokumen kependudukan dalam satu tempat",
     iconBg: "bg-teal-100",
     iconBgDark: "dark:bg-teal-900/50",
     iconColor: "text-teal-700",

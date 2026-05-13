@@ -55,7 +55,7 @@ function DocumentCheckerWrapper() {
           <button
             key={service.slug}
             onClick={() => setSelectedService(service.slug)}
-            className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer min-h-[44px] ${
               selectedService === service.slug
                 ? "bg-teal-600 text-white shadow-md shadow-teal-600/25 scale-105"
                 : "bg-white text-gray-700 border border-gray-200 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-700"
@@ -151,18 +151,18 @@ export default function LayananPage() {
                   <br className="hidden sm:block" />
                   <span className="text-green-200">Kependudukan</span>
                 </motion.h1>
-                <motion.p variants={fadeInUp} className="text-green-100 text-lg md:text-xl leading-relaxed">
+                <motion.p variants={fadeInUp} className="text-green-100 text-base md:text-lg leading-relaxed">
                   Informasi lengkap tentang persyaratan dan prosedur layanan
                   administrasi kependudukan sesuai UU No. 24 Tahun 2013 dan
                   Permendagri No. 6 Tahun 2026.
                 </motion.p>
               </motion.div>
 
-              {/* Free Service Banner */}
+              {/* Info Banner */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.5 } }}
-                className="mt-8 bg-white/15 backdrop-blur-sm rounded-xl p-6 border border-white/20 shadow-lg"
+                className="mt-8 bg-white/15 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 shadow-lg"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
@@ -171,11 +171,11 @@ export default function LayananPage() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold mb-2">SELURUH LAYANAN GRATIS</h2>
+                    <h2 className="text-xl font-bold mb-2">Pelayanan Tersedia</h2>
                     <p className="text-green-100">
-                      Sesuai kebijakan pemerintah, seluruh layanan administrasi kependudukan 
-                      <strong> TIDAK DIPUNGUT BIAYA </strong> apapun. Termasuk pembuatan KTP-el, 
-                      KK, Akta, legalisasi dokumen, dan seluruh layanan lainnya.
+                      Disdukcapil Kabupaten Ngada menyediakan berbagai layanan administrasi 
+                      kependudukan meliputi pembuatan KTP-el, KK, Akta, legalisasi dokumen, 
+                      dan seluruh layanan lainnya.
                     </p>
                   </div>
                 </div>
@@ -200,7 +200,7 @@ export default function LayananPage() {
                     <li className="text-green-200 text-xs ml-5 -mt-1">Perubahan atas Permendagri No. 109 Tahun 2019 tentang Formulir dan Buku dalam Administrasi Kependudukan</li>
                     <li>&#8226; UU No. 24 Tahun 2013 tentang Administrasi Kependudukan</li>
                     <li>&#8226; PP No. 37 Tahun 2021 tentang Capil</li>
-                    <li>&#8226; SE Menpan RB Tahun 2024 - Pelayanan Publik Gratis</li>
+                    <li>&#8226; SE Menpan RB Tahun 2024 - Pelayanan Publik</li>
                   </ul>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10">

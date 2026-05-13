@@ -15,7 +15,7 @@ interface Announcement {
 const fallbackAnnouncements: Announcement[] = [
   {
     id: "fallback-1",
-    title: "Pelayanan KTP-el untuk pertama kali GRATIS — pastikan membawa berkas lengkap",
+    title: "Pelayanan KTP-el untuk pertama kali — pastikan membawa berkas lengkap",
     content: null,
   },
   {

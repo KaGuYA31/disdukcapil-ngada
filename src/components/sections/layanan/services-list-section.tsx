@@ -107,7 +107,7 @@ const defaultServices: Layanan[] = [
       "Kartu identitas elektronik untuk WNI berusia 17 tahun atau sudah menikah. Rekam baru, penggantian rusak/hilang, dan perpanjangan.",
     icon: "CreditCard",
     processingTime: "Selesai di Tempat*",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pendaftaran Penduduk",
   },
@@ -119,7 +119,7 @@ const defaultServices: Layanan[] = [
       "KK Baru (Membentuk Keluarga), Tambah Anggota (Anak), KK Hilang/Rusak, dan perubahan data KK.",
     icon: "Users",
     processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pendaftaran Penduduk",
   },
@@ -131,7 +131,7 @@ const defaultServices: Layanan[] = [
       "Perubahan atau pemutakhiran data kependudukan seperti alamat, status perkawinan, dll.",
     icon: "RefreshCw",
     processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pendaftaran Penduduk",
   },
@@ -143,7 +143,7 @@ const defaultServices: Layanan[] = [
       "Legalisasi fotokopi dokumen kependudukan oleh pejabat berwenang untuk keperluan administrasi.",
     icon: "Stamp",
     processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pendaftaran Penduduk",
   },
@@ -155,7 +155,7 @@ const defaultServices: Layanan[] = [
       "Pencatatan kelahiran untuk setiap peristiwa kelahiran, baik baru maupun terlambat.",
     icon: "Baby",
     processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pencatatan Sipil",
   },
@@ -167,7 +167,7 @@ const defaultServices: Layanan[] = [
       "Surat keterangan kematian yang diterbitkan untuk setiap peristiwa kematian.",
     icon: "Heart",
     processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pencatatan Sipil",
   },
@@ -179,7 +179,7 @@ const defaultServices: Layanan[] = [
       "Pencatatan peristiwa perkawinan WNI yang dilangsungkan berdasarkan hukum agama.",
     icon: "FileText",
     processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pencatatan Sipil",
   },
@@ -191,7 +191,7 @@ const defaultServices: Layanan[] = [
       "Pencatatan perceraian yang telah memiliki kekuatan hukum tetap berdasarkan putusan pengadilan.",
     icon: "Gavel",
     processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pencatatan Sipil",
   },
@@ -203,7 +203,7 @@ const defaultServices: Layanan[] = [
       "Layanan administrasi perpindahan penduduk antar kelurahan/kecamatan/kabupaten/kota/provinsi.",
     icon: "MoveRight",
     processingTime: "Selesai di Tempat",
-    fee: "GRATIS",
+    fee: null,
     isActive: true,
     category: "Pencatatan Sipil",
   },
@@ -396,9 +396,6 @@ function ServicesListContent() {
                       Tidak Aktif
                     </Badge>
                   )}
-                  <Badge className="text-xs bg-rose-100 text-rose-700 hover:bg-rose-100 border border-rose-200 font-bold">
-                    GRATIS
-                  </Badge>
                 </div>
               </div>
               <CardTitle className="text-lg group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors mt-4 leading-snug">
@@ -435,7 +432,7 @@ function ServicesListContent() {
   return (
     <section className={`py-12 md:py-16 ${sectionBg} transition-colors duration-300`}>
       <div className="container mx-auto px-4">
-        {/* Free Service Notice */}
+        {/* Service Notice */}
         <motion.div
           initial="hidden"
           animate="visible"
@@ -451,29 +448,27 @@ function ServicesListContent() {
                 <Sparkles className="h-8 w-8 flex-shrink-0" />
               </motion.div>
               <div>
-                <h3 className="font-bold text-xl mb-2">SELURUH LAYANAN GRATIS</h3>
+                <h3 className="font-bold text-xl mb-2">Layanan Kami</h3>
                 <p className="text-green-100">
-                  Sesuai kebijakan pemerintah, seluruh layanan administrasi
-                  kependudukan <strong> TIDAK DIPUNGUT BIAYA </strong> apapun.
-                  Tidak ada biaya pendaftaran, biaya pencetakan, biaya
-                  legalisasi, atau biaya lainnya.
+                  Disdukcapil Kabupaten Ngada menyediakan berbagai layanan administrasi
+                  kependudukan yang profesional dan terstandar untuk seluruh masyarakat.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4" />
-                    <span>KTP-el Gratis</span>
+                    <span>Selesai di Tempat</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4" />
-                    <span>KK Gratis</span>
+                    <span>Persyaratan Jelas</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4" />
-                    <span>Akta Gratis</span>
+                    <span>Petugas Profesional</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4" />
-                    <span>Legalisasi Gratis</span>
+                    <span>Layanan Online</span>
                   </div>
                 </div>
               </div>

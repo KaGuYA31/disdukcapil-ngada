@@ -70,7 +70,7 @@ const downloadableForms = [
 ];
 
 const faqItems = [
-  { question: "Apakah layanan ini dikenakan biaya?", answer: "Tidak. Seluruh layanan administrasi kependudukan GRATIS sesuai UU No. 24 Tahun 2013." },
+  { question: "Apakah layanan ini dikenakan biaya?", answer: "Sesuai ketentuan yang berlaku. Untuk informasi lebih lanjut, silakan hubungi petugas di loket pelayanan." },
   { question: "Berapa lama proses pengerjaannya?", answer: "Sebagian besar layanan selesai di tempat pada hari yang sama. Untuk rekam biometrik baru, memerlukan waktu 3-5 hari kerja." },
   { question: "Apakah wajib datang sendiri?", answer: "Ya, untuk perekaman biometrik (sidik jari, iris mata, foto), pemohon wajib hadir secara langsung ke kantor Disdukcapil." },
   { question: "Dokumen apa saja yang harus dibawa?", answer: "Bawa dokumen asli dan fotokopi persyaratan. Pastikan fotokopi dalam kondisi jelas dan terbaca." },
@@ -80,7 +80,7 @@ const helpfulTips = [
   { icon: FileCheck, text: "Bawa dokumen asli dan fotokopi lengkap", color: "from-green-500 to-emerald-500" },
   { icon: Timer, text: "Datang pagi (08.00) untuk antrian cepat", color: "from-amber-500 to-yellow-500" },
   { icon: UserCheck, text: "Pemohon wajib hadir sendiri untuk perekaman", color: "from-teal-500 to-cyan-500" },
-  { icon: AlertTriangle, text: "Jangan percaya calo, semua layanan GRATIS", color: "from-red-500 to-rose-500" },
+  { icon: AlertTriangle, text: "Jangan percaya calo, urus sendiri di kantor Disdukcapil", color: "from-red-500 to-rose-500" },
 ];
 
 // ─── Widget: Layanan Terkait ──────────────────────────────────────

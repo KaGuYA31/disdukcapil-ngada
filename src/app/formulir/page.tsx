@@ -404,8 +404,8 @@ export default function FormulirPage() {
                         <Download className="h-4 w-4 text-amber-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-gray-900 text-sm mb-1">GRATIS</h3>
-                        <p className="text-xs text-gray-600">Seluruh layanan administrasi kependudukan tidak dipungut biaya apapun sesuai ketentuan pemerintah.</p>
+                        <h3 className="font-medium text-gray-900 text-sm mb-1">Mudah Diunduh</h3>
+                        <p className="text-xs text-gray-600">Seluruh formulir dapat diunduh dan diisi sebelum datang ke kantor Disdukcapil.</p>
                       </div>
                     </div>
                   </CardContent>

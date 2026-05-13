@@ -482,7 +482,7 @@ export default function LayananOnlinePage() {
                 Layanan Online
               </motion.h1>
 
-              <motion.p variants={fadeInUp} transition={{ duration: 0.5 }} className="text-green-100 text-lg">
+              <motion.p variants={fadeInUp} transition={{ duration: 0.5 }} className="text-green-100 text-base md:text-lg">
                 Ajukan layanan kependudukan dari mana saja tanpa harus datang ke kantor.
                 Untuk masyarakat yang lokasinya jauh dari pusat pelayanan.
               </motion.p>
@@ -544,10 +544,6 @@ export default function LayananOnlinePage() {
                   <li className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-green-300" />
                     <span>Pantau status pengajuan kapan saja</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span>GRATIS - tidak dipungut biaya apapun</span>
                   </li>
                 </ul>
               </motion.div>
@@ -636,8 +632,8 @@ export default function LayananOnlinePage() {
                   <BadgeCheck className="h-5 w-5 text-teal-300" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-white">GRATIS</p>
-                  <p className="text-sm text-green-200">100% Bebas Biaya</p>
+                  <p className="text-2xl font-bold text-white">{layananList.length}</p>
+                  <p className="text-sm text-green-200">Layanan Online</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -811,7 +807,7 @@ export default function LayananOnlinePage() {
 
       {/* Submission Form Dialog */}
       <Dialog open={showFormDialog} onOpenChange={setShowFormDialog}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mx-4 sm:mx-0">
           <DialogHeader>
             <DialogTitle className="text-gray-900 dark:text-gray-100">Pengajuan: {selectedLayanan?.name}</DialogTitle>
             <DialogDescription className="text-gray-500 dark:text-gray-400">
@@ -911,7 +907,7 @@ export default function LayananOnlinePage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="rt" className="text-gray-700 dark:text-gray-300">RT</Label>
                     <Input

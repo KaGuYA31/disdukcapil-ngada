@@ -367,7 +367,7 @@ export function BeritaTerkiniWidget() {
                 variant="outline"
                 size="icon"
                 onClick={goToPrev}
-                className="h-9 w-9 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-sm opacity-0 hover:opacity-100 transition-opacity pointer-events-auto border-gray-200 dark:border-gray-700"
+                className="h-10 w-10 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-sm opacity-70 hover:opacity-100 transition-opacity pointer-events-auto border-gray-200 dark:border-gray-700"
                 aria-label="Berita sebelumnya"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -376,7 +376,7 @@ export function BeritaTerkiniWidget() {
                 variant="outline"
                 size="icon"
                 onClick={goToNext}
-                className="h-9 w-9 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-sm opacity-0 hover:opacity-100 transition-opacity pointer-events-auto border-gray-200 dark:border-gray-700"
+                className="h-10 w-10 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-sm opacity-70 hover:opacity-100 transition-opacity pointer-events-auto border-gray-200 dark:border-gray-700"
                 aria-label="Berita berikutnya"
               >
                 <ChevronRight className="h-4 w-4" />

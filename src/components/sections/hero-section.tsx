@@ -425,7 +425,7 @@ export function HeroSection() {
       </div>
 
       {/* Bottom gradient fade to content below */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent dark:from-background" />
+      <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-12 md:h-16 bg-gradient-to-t from-white to-transparent dark:from-background" />
     </section>
   );
 }

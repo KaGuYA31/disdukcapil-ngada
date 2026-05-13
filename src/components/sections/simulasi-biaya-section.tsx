@@ -5,7 +5,6 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   Calculator,
   CheckCircle2,
-  Clock,
   FileText,
   ChevronRight,
   ChevronLeft,
@@ -44,7 +43,6 @@ interface LayananData {
   kategori: string;
   biaya: number;
   isGratis: boolean;
-  estimasiHari: number;
   dokumen: string[];
   keterangan: string;
 }
@@ -56,7 +54,6 @@ const layananData: LayananData[] = [
     kategori: "Pendaftaran Penduduk",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 14,
     dokumen: [
       "Surat Pengantar RT/RW",
       "Kartu Keluarga (KK) Asli",
@@ -72,7 +69,6 @@ const layananData: LayananData[] = [
     kategori: "Pendaftaran Penduduk",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 5,
     dokumen: [
       "KTP-el lama (masih berlaku / habis masa berlaku)",
       "Kartu Keluarga (KK) Asli",
@@ -86,7 +82,6 @@ const layananData: LayananData[] = [
     kategori: "Pendaftaran Penduduk",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 7,
     dokumen: [
       "KTP-el asli",
       "Kartu Keluarga (KK) Asli",
@@ -101,7 +96,6 @@ const layananData: LayananData[] = [
     kategori: "Pendaftaran Penduduk",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 3,
     dokumen: [
       "Surat Pengantar RT/RW",
       "KTP-el semua anggota keluarga",
@@ -117,7 +111,6 @@ const layananData: LayananData[] = [
     kategori: "Pendaftaran Penduduk",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 2,
     dokumen: [
       "KK lama asli",
       "KTP-el asli",
@@ -132,7 +125,6 @@ const layananData: LayananData[] = [
     kategori: "Pencatatan Sipil",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 1,
     dokumen: [
       "Surat Keterangan Kelahiran dari RS/Bidan",
       "KTP kedua orang tua asli",
@@ -148,7 +140,6 @@ const layananData: LayananData[] = [
     kategori: "Pencatatan Sipil",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 1,
     dokumen: [
       "Surat Keterangan Kematian dari RS/Bidan/Desa",
       "KTP-el almarhum/ahli waris",
@@ -163,7 +154,6 @@ const layananData: LayananData[] = [
     kategori: "Pencatatan Sipil",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 1,
     dokumen: [
       "Surat Nikah dari KUA",
       "KTP-el kedua mempelai",
@@ -179,7 +169,6 @@ const layananData: LayananData[] = [
     kategori: "Pencatatan Sipil",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 3,
     dokumen: [
       "Surat Putusan Pengadilan Agama",
       "KTP-el kedua pihak",
@@ -195,7 +184,6 @@ const layananData: LayananData[] = [
     kategori: "Pendaftaran Penduduk",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 3,
     dokumen: [
       "KTP-el asli",
       "KK asli",
@@ -211,7 +199,6 @@ const layananData: LayananData[] = [
     kategori: "Pendaftaran Penduduk",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 1,
     dokumen: [
       "KTP-el asli",
       "KK asli",
@@ -226,7 +213,6 @@ const layananData: LayananData[] = [
     kategori: "Pendaftaran Penduduk",
     biaya: 0,
     isGratis: true,
-    estimasiHari: 7,
     dokumen: [
       "KTP-el asli",
       "KK asli dari daerah asal",
@@ -338,12 +324,6 @@ export function SimulasiBiayaSection() {
     setShowResult(false);
   };
 
-  const formatDate = (estimasiHari: number) => {
-    const days = Number(jumlahTanggungan) > 1 ? estimasiHari + 2 : estimasiHari;
-    if (days <= 1) return "Hari yang sama";
-    return `${days} hari kerja`;
-  };
-
   return (
     <section
       ref={sectionRef}
@@ -376,10 +356,10 @@ export function SimulasiBiayaSection() {
             id="simulasi-biaya-title"
             className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2"
           >
-            Estimasi Biaya & Waktu Pelayanan
+            Estimasi Biaya Pelayanan
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-4">
-            Hitung estimasi biaya dan waktu proses untuk berbagai layanan
+            Hitung estimasi biaya untuk berbagai layanan
             administrasi kependudukan secara cepat dan mudah
           </p>
         </motion.div>
@@ -477,7 +457,7 @@ export function SimulasiBiayaSection() {
                                     variant="outline"
                                     className="text-[10px] px-1.5 py-0 flex-shrink-0 bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800"
                                   >
-                                    {l.isGratis ? "GRATIS" : `Rp ${l.biaya.toLocaleString("id-ID")}`}
+                                    {l.isGratis ? "Sesuai Ketentuan" : `Rp ${l.biaya.toLocaleString("id-ID")}`}
                                   </Badge>
                                 </div>
                               </SelectItem>
@@ -497,7 +477,7 @@ export function SimulasiBiayaSection() {
                                     variant="outline"
                                     className="text-[10px] px-1.5 py-0 flex-shrink-0 bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800"
                                   >
-                                    {l.isGratis ? "GRATIS" : `Rp ${l.biaya.toLocaleString("id-ID")}`}
+                                    {l.isGratis ? "Sesuai Ketentuan" : `Rp ${l.biaya.toLocaleString("id-ID")}`}
                                   </Badge>
                                 </div>
                               </SelectItem>
@@ -621,7 +601,7 @@ export function SimulasiBiayaSection() {
                     animate="visible"
                     className="space-y-5"
                   >
-                    {/* GRATIS Banner */}
+                    {/* Biaya Banner */}
                     <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-green-500 via-green-600 to-teal-600 p-6 text-center shadow-lg">
                       <div className="absolute inset-0 opacity-10">
                         <div className="absolute -top-4 -right-4 w-24 h-24 bg-white rounded-full blur-xl" />
@@ -630,41 +610,26 @@ export function SimulasiBiayaSection() {
                       <div className="relative">
                         <Sparkles className="h-8 w-8 text-yellow-300 mx-auto mb-2" />
                         <h3 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-                          {selectedData.isGratis ? "GRATIS" : `Rp ${selectedData.biaya.toLocaleString("id-ID")}`}
+                          {selectedData.isGratis ? "Sesuai Ketentuan" : `Rp ${selectedData.biaya.toLocaleString("id-ID")}`}
                         </h3>
                         <p className="text-green-100 text-sm mt-1">
                           {selectedData.isGratis
-                            ? "Gratis Berdasarkan UU No. 24 Tahun 2013"
+                            ? "Sesuai peraturan yang berlaku"
                             : "Biaya resmi sesuai peraturan yang berlaku"}
                         </p>
                       </div>
                     </div>
 
-                    {/* Summary Cards */}
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
-                        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-medium mb-1">
-                          <FileText className="h-3.5 w-3.5" />
-                          Layanan
-                        </div>
-                        <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                          {selectedData.nama}
-                        </p>
-                        <p className="text-xs text-gray-400 mt-0.5">{selectedData.kategori}</p>
+                    {/* Summary Card */}
+                    <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-medium mb-1">
+                        <FileText className="h-3.5 w-3.5" />
+                        Layanan
                       </div>
-
-                      <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
-                        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-medium mb-1">
-                          <Clock className="h-3.5 w-3.5" />
-                          Estimasi Waktu
-                        </div>
-                        <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                          {formatDate(selectedData.estimasiHari)}
-                        </p>
-                        <p className="text-xs text-gray-400 mt-0.5">
-                          Jenis: {jenisPermohonanOptions.find((j) => j.value === jenisPermohonan)?.label}
-                        </p>
-                      </div>
+                      <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                        {selectedData.nama}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-0.5">{selectedData.kategori} • Jenis: {jenisPermohonanOptions.find((j) => j.value === jenisPermohonan)?.label}</p>
                     </div>
 
                     {/* Required Documents Checklist */}

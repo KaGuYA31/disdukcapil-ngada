@@ -27,15 +27,15 @@ const trustCards: TrustCard[] = [
     title: "Proses Cepat",
     description:
       "Pengurusan dokumen dalam waktu singkat tanpa mengorbankan warga",
-    stat: "Estimasi 5-15 Menit",
+    stat: "Proses Terpercaya",
   },
   {
     id: 3,
     icon: Heart,
-    title: "Gratis Tanpa Biaya",
+    title: "Profesional & Transparan",
     description:
-      "Seluruh layanan administrasi kependudukan tidak dikenakan biaya apapun",
-    stat: "100% GRATIS",
+      "Proses pelayanan yang profesional, transparan, dan sesuai standar operasional",
+    stat: "Standar Pelayanan",
   },
   {
     id: 4,

@@ -16,7 +16,7 @@ interface Announcement {
 const fallbackAnnouncements: Announcement[] = [
   {
     id: "fallback-1",
-    title: "Pengumuman Penting: Layanan KTP-el dan KK kini GRATIS untuk seluruh masyarakat Kabupaten Ngada",
+    title: "Pengumuman Penting: Layanan KTP-el dan KK tersedia di Kantor Disdukcapil Kabupaten Ngada",
     content: "Pastikan membawa berkas persyaratan lengkap saat datang ke kantor.",
   },
   {

@@ -39,7 +39,6 @@ interface DaySchedule {
     type: "operasional" | "istirahat";
   }[];
   services: string[];
-  estimatedWait: string;
   busyLevel: "low" | "medium" | "high";
 }
 
@@ -55,7 +54,6 @@ const WEEKLY_SCHEDULE: DaySchedule[] = [
       { label: "Sesi Siang", time: "13:00 - 15:00 WITA", type: "operasional" },
     ],
     services: ["KTP-el", "KK", "Akta Lahir", "Akta Nikah", "Pindah Domisili"],
-    estimatedWait: "~30-45 menit",
     busyLevel: "medium",
   },
   {
@@ -69,7 +67,6 @@ const WEEKLY_SCHEDULE: DaySchedule[] = [
       { label: "Sesi Siang", time: "13:00 - 15:00 WITA", type: "operasional" },
     ],
     services: ["KTP-el", "KK", "Akta Lahir", "Akta Kematian", "Surat Pindah"],
-    estimatedWait: "~25-40 menit",
     busyLevel: "low",
   },
   {
@@ -83,7 +80,6 @@ const WEEKLY_SCHEDULE: DaySchedule[] = [
       { label: "Sesi Siang", time: "13:00 - 15:00 WITA", type: "operasional" },
     ],
     services: ["KTP-el", "KK", "Akta Lahir", "Akta Cerai", "Legalisir"],
-    estimatedWait: "~20-35 menit",
     busyLevel: "low",
   },
   {
@@ -97,7 +93,6 @@ const WEEKLY_SCHEDULE: DaySchedule[] = [
       { label: "Sesi Siang", time: "13:00 - 15:00 WITA", type: "operasional" },
     ],
     services: ["KTP-el", "KK", "Akta Lahir", "Pengaduan", "KIA"],
-    estimatedWait: "~25-40 menit",
     busyLevel: "medium",
   },
   {
@@ -111,7 +106,6 @@ const WEEKLY_SCHEDULE: DaySchedule[] = [
       { label: "Sesi Siang", time: "13:00 - 15:00 WITA", type: "operasional" },
     ],
     services: ["KTP-el", "KK", "Akta Lahir", "Surat Keterangan"],
-    estimatedWait: "~30-50 menit",
     busyLevel: "high",
   },
   {
@@ -121,7 +115,6 @@ const WEEKLY_SCHEDULE: DaySchedule[] = [
     isClosed: true,
     slots: [],
     services: [],
-    estimatedWait: "-",
     busyLevel: "low",
   },
   {
@@ -131,7 +124,6 @@ const WEEKLY_SCHEDULE: DaySchedule[] = [
     isClosed: true,
     slots: [],
     services: [],
-    estimatedWait: "-",
     busyLevel: "low",
   },
 ];
@@ -637,12 +629,6 @@ export function JadwalPelayananSection() {
                       </div>
                       <div className="flex items-center gap-3">
                         <BusyLevelBadge level={selectedSchedule.busyLevel} />
-                        <div className="text-right">
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Estimasi Tunggu</p>
-                          <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                            {selectedSchedule.estimatedWait}
-                          </p>
-                        </div>
                       </div>
                     </div>
 

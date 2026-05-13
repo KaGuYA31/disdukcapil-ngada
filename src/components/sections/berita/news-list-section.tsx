@@ -352,7 +352,7 @@ export function NewsListSection() {
                         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-teal-500 to-green-500" />
                         <div className="grid md:grid-cols-2 gap-0">
                           {/* Featured Thumbnail */}
-                          <div className="aspect-video md:aspect-auto bg-gradient-to-br from-green-600 to-green-800 relative overflow-hidden min-h-[280px]">
+                          <div className="aspect-video md:aspect-auto bg-gradient-to-br from-green-600 to-green-800 relative overflow-hidden min-h-[200px] sm:min-h-[280px]">
                             {featured.thumbnail ? (
                               <img
                                 src={featured.thumbnail}

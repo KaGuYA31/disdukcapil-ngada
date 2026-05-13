@@ -859,7 +859,7 @@ export function IndeksKepuasanSection() {
                       </span>
                       {cat.score >= 5.0 && (
                         <Badge className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200/50 dark:border-green-800/30 text-[10px] px-2 py-0.5 font-bold">
-                          GRATIS
+                          SANGAT BAIK
                         </Badge>
                       )}
                     </div>

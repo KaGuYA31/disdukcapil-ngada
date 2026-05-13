@@ -58,9 +58,9 @@ export default function HomePage() {
         <HeroSection />
 
         {/* Layanan Kependudukan — what citizens come for */}
-        <section className="py-16 bg-white dark:bg-gray-900">
+        <section className="py-10 sm:py-16 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
+            <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                 Layanan Kami
               </h2>
@@ -73,9 +73,9 @@ export default function HomePage() {
         </section>
 
         {/* Quick Service Cards — most used services */}
-        <section className="py-16 bg-gray-50 dark:bg-gray-950">
+        <section className="py-10 sm:py-16 bg-gray-50 dark:bg-gray-950">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
+            <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                 Layanan Sering Digunakan
               </h2>
@@ -97,7 +97,7 @@ export default function HomePage() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="group flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center"
+                  className="group flex flex-col items-center p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center"
                 >
                   <span className="text-3xl mb-3">{item.icon}</span>
                   <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{item.name}</h3>
@@ -109,9 +109,9 @@ export default function HomePage() {
         </section>
 
         {/* Berita Terkini */}
-        <section className="py-16 bg-white dark:bg-gray-900">
+        <section className="py-10 sm:py-16 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center justify-between mb-8 sm:mb-10">
               <div>
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                   Berita &amp; Pengumuman
@@ -142,9 +142,9 @@ export default function HomePage() {
         </section>
 
         {/* FAQ — Pertanyaan Umum */}
-        <section className="py-16 bg-gray-50 dark:bg-gray-950">
+        <section className="py-10 sm:py-16 bg-gray-50 dark:bg-gray-950">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
+            <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                 Pertanyaan Umum
               </h2>
@@ -157,9 +157,9 @@ export default function HomePage() {
         </section>
 
         {/* Peta Lokasi Kantor */}
-        <section className="py-16 bg-white dark:bg-gray-900">
+        <section className="py-10 sm:py-16 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
+            <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                 Lokasi Kantor
               </h2>
@@ -172,7 +172,7 @@ export default function HomePage() {
         </section>
 
         {/* CTA — WhatsApp */}
-        <section className="py-16 bg-gradient-to-br from-green-600 to-green-800 dark:from-green-800 dark:to-green-950">
+        <section className="py-10 sm:py-16 bg-gradient-to-br from-green-600 to-green-800 dark:from-green-800 dark:to-green-950">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
               Butuh Bantuan?

@@ -16,7 +16,6 @@ interface FeaturedService {
   name: string;
   description: string;
   icon: React.ElementType;
-  processingTime: number;
 }
 
 const featuredServices: FeaturedService[] = [
@@ -25,28 +24,24 @@ const featuredServices: FeaturedService[] = [
     name: "KTP-el Baru",
     description: "Pembuatan KTP elektronik baru untuk WNI berusia 17 tahun",
     icon: CreditCard,
-    processingTime: 5,
   },
   {
     id: "kartu-keluarga",
     name: "Kartu Keluarga",
     description: "Pembuatan atau perubahan Kartu Keluarga",
     icon: Users,
-    processingTime: 10,
   },
   {
     id: "akta-kelahiran",
     name: "Akta Kelahiran",
     description: "Pencatatan kelahiran dan penerbitan Akta",
     icon: Baby,
-    processingTime: 8,
   },
   {
     id: "surat-pindah",
     name: "Surat Pindah",
     description: "Pindah datang dan pindah domisili",
     icon: ArrowRightLeft,
-    processingTime: 7,
   },
 ];
 
@@ -104,18 +99,6 @@ function FeaturedServiceCard({ service }: { service: FeaturedService }) {
             {service.description}
           </p>
 
-          <div className="flex items-center gap-2 flex-wrap">
-            {/* Processing time */}
-            <Badge className="bg-teal-50 dark:bg-teal-950/50 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-xs gap-1">
-              <Clock className="h-3 w-3" />
-              Estimasi: {service.processingTime} menit
-            </Badge>
-
-            {/* Free badge */}
-            <Badge className="bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 text-xs font-semibold">
-              GRATIS
-            </Badge>
-          </div>
         </CardContent>
       </Card>
     </motion.div>
