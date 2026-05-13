@@ -399,7 +399,7 @@ export function AccessibilityEnhanced({ className }: AccessibilityEnhancedProps)
       }
     : {
         hidden: { x: -20, opacity: 0 },
-        visible: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 300, damping: 30 } },
+        visible: { x: 0, opacity: 1, transition: { type: "spring" as const, stiffness: 300, damping: 30 } },
         exit: { x: -20, opacity: 0, transition: { duration: 0.2 } },
       };
 
@@ -410,7 +410,7 @@ export function AccessibilityEnhanced({ className }: AccessibilityEnhancedProps)
       }
     : {
         initial: { scale: 0, opacity: 0 },
-        animate: { scale: 1, opacity: 1, transition: { type: "spring", stiffness: 260, damping: 20 } },
+        animate: { scale: 1, opacity: 1, transition: { type: "spring" as const, stiffness: 260, damping: 20 } },
       };
 
   return (

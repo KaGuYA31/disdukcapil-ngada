@@ -81,7 +81,7 @@ export function ScrollReveal({
   children,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: triggerOnce, margin });
+  const inView = useInView(ref, { once: triggerOnce, margin: margin as any });
 
   const hidden = hiddenVariants[variant];
 

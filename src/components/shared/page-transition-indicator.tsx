@@ -7,7 +7,7 @@ export function PageTransitionIndicator() {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
   const prevPathRef = useRef(pathname);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (prevPathRef.current !== pathname) {

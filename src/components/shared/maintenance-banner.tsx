@@ -27,7 +27,7 @@ interface MaintenanceBannerProps {
 }
 
 // ─── Icon Map ─────────────────────────────────────────────────────────
-const iconMap: Record<MaintenanceBannerProps["type"], LucideIcon> = {
+const iconMap: Record<NonNullable<MaintenanceBannerProps["type"]>, LucideIcon> = {
   maintenance: AlertTriangle,
   info: Info,
   warning: AlertTriangle,
@@ -48,7 +48,7 @@ interface ThemeConfig {
   labelClasses: string;
 }
 
-const themeMap: Record<MaintenanceBannerProps["type"], ThemeConfig> = {
+const themeMap: Record<NonNullable<MaintenanceBannerProps["type"]>, ThemeConfig> = {
   maintenance: {
     lightBg: "bg-gradient-to-r from-red-600 via-amber-600 to-red-600",
     darkBg: "dark:from-red-900/90 dark:via-amber-900/90 dark:to-red-900/90",
@@ -112,7 +112,7 @@ const themeMap: Record<MaintenanceBannerProps["type"], ThemeConfig> = {
 };
 
 // ─── Default auto-dismiss durations (seconds) ────────────────────────
-const defaultDurations: Record<MaintenanceBannerProps["type"], number> = {
+const defaultDurations: Record<NonNullable<MaintenanceBannerProps["type"]>, number> = {
   maintenance: 30,
   info: 30,
   warning: 45,
