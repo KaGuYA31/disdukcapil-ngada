@@ -6,9 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider  = "sqlite"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 // =============================================
@@ -258,8 +257,8 @@ model Berita {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  content     String   @db.Text
-  excerpt     String?  @db.Text
+  content     String
+  excerpt     String?
   thumbnail   String?
   photos      String?  // JSON string array of additional photo URLs
   category    String   @default("Umum")
@@ -276,11 +275,11 @@ model Layanan {
   id             String   @id @default(cuid())
   name           String
   slug           String   @unique
-  description    String   @db.Text
+  description    String
   icon           String?
   category       String   @default("Pendaftaran Penduduk") // Pendaftaran Penduduk, Pencatatan Sipil
   requirements   String   @default("[]") // JSON string of requirements
-  procedures     String   @default("[]") // JSON string of procedures
+  procedures     String   @default("[]")
   forms          String?  // JSON string of form links
   faq            String?  // JSON string of FAQs
   processingTime String?
@@ -308,7 +307,7 @@ model PengajuanOnline {
   tempatLahir  String?
   tanggalLahir DateTime?
   jenisKelamin String? // L/P
-  alamat       String?  @db.Text
+  alamat       String?
   rt           String?
   rw           String?
   kelurahan    String?
@@ -360,9 +359,9 @@ model Pengaduan {
   email     String?
   phone     String?
   subject   String
-  message   String   @db.Text
+  message   String
   status    String   @default("Baru") // Baru, Diproses, Selesai
-  response  String?  @db.Text
+  response  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -371,7 +370,7 @@ model Pengaduan {
 model Pengumuman {
   id        String   @id @default(cuid())
   title     String
-  content   String   @db.Text
+  content   String
   type      String   @default("Info") // Info, Urgent, Maintenance
   startDate DateTime?
   endDate   DateTime?
@@ -384,7 +383,7 @@ model Pengumuman {
 model Dokumen {
   id            String   @id @default(cuid())
   title         String
-  description   String?  @db.Text
+  description   String?  
   category      String   // Peraturan, Laporan, SOP, Formulir
   fileUrl       String
   fileSize      String?
@@ -400,8 +399,8 @@ model Inovasi {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  description String   @db.Text
-  content     String   @db.Text
+  description String
+  content     String
   photo       String?  // URL foto kegiatan
   photos      String?  // JSON string array of additional photo URLs
   location    String?  // Lokasi kegiatan
@@ -459,7 +458,7 @@ model Sejarah {
   id          String   @id @default(cuid())
   year        String
   title       String
-  description String   @db.Text
+  description String
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -483,7 +482,7 @@ model Testimoni {
   pekerjaan   String?
   kecamatan   String?
   rating      Int
-  isi         String   @db.Text
+  isi         String
   noTelepon   String?
   isPublished Boolean  @default(false)
   createdAt   DateTime @default(now())
@@ -509,7 +508,7 @@ model Formulir {
   id            String   @id @default(cuid())
   code          String   @unique // e.g. "F-1.01", "F-2.01A"
   name          String   // Full form name
-  description   String?  @db.Text
+  description   String?  
   category      String   // "Pendaftaran Penduduk", "Pencatatan Sipil", "Persyaratan", "Pencatatan Sipil LN"
   fileName      String   // PDF filename in /formulir/
   fileSize      String?  // e.g. "250 KB"

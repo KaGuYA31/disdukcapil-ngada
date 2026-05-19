@@ -430,8 +430,8 @@ async function handlePengaduan(query: string, request: NextRequest) {
     complaint = await db.pengaduan.findFirst({
       where: {
         OR: [
-          { subject: { contains: query, mode: "insensitive" } },
-          { name: { contains: query, mode: "insensitive" } },
+          { subject: { contains: query } },
+          { name: { contains: query } },
           { id: query },
         ],
       },
