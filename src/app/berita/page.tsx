@@ -69,7 +69,7 @@ export default function BeritaPage() {
         />
 
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-10 sm:py-16 md:py-20 relative overflow-hidden">
           {/* Pattern overlay */}
           <div className="absolute inset-0 opacity-[0.04]">
             <div

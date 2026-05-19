@@ -438,18 +438,8 @@ function StepCard({
 
             <div className="relative z-10">
               {/* Header row */}
-              <div className="flex items-center justify-between gap-3 mb-3">
-                <div className={cn("flex items-center gap-2", !isEven && "order-2")}>
-                  <Badge className={cn(
-                    "border-0 text-[10px] px-2 py-0.5 gap-1",
-                    step.gratis
-                      ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                      : "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
-                  )}>
-                    {step.gratis ? "Sesuai Ketentuan" : "Berbayar"}
-                  </Badge>
-                </div>
-                <h4 className={cn("font-semibold text-gray-900 dark:text-gray-100", !isEven && "order-1")}>
+              <div className="flex items-center gap-3 mb-3">
+                <h4 className={cn("font-semibold text-gray-900 dark:text-gray-100")}>
                   {step.judul}
                 </h4>
               </div>
@@ -500,16 +490,7 @@ function StepCard({
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               <h4 className="font-semibold text-gray-900 dark:text-gray-100">{step.judul}</h4>
             </div>
-            <div className="flex items-center gap-2 mb-3">
-              <Badge className={cn(
-                "border-0 text-[10px] px-2 py-0.5 gap-1",
-                step.gratis
-                  ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                  : "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
-              )}>
-                {step.gratis ? "Sesuai Ketentuan" : "Berbayar"}
-              </Badge>
-            </div>
+
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3">
               {step.deskripsi}
             </p>
@@ -609,12 +590,9 @@ export function PanduanInteraktifSection() {
   // Compute summary data
   const summary = useMemo(() => {
     const totalDocs = new Set(activeLayanan.steps.flatMap((s) => s.dokumen)).size;
-    const allFree = activeLayanan.steps.every((s) => s.gratis);
-    // Parse rough total time from last step (sums to approximate end-to-end)
     return {
       totalSteps: activeLayanan.steps.length,
       totalDocs,
-      allFree,
       difficulty: activeLayanan.difficulty,
     };
   }, [activeLayanan]);
@@ -738,14 +716,6 @@ export function PanduanInteraktifSection() {
               sublabel="Siapkan sebelumnya"
               gradient="bg-gradient-to-br from-teal-500 to-cyan-600"
               delay={0.05}
-            />
-            <SummaryCard
-              icon={<Sparkles className="h-5 w-5" />}
-              label="Biaya"
-              value={summary.allFree ? "Sesuai Ketentuan" : "Berbayar"}
-              sublabel={summary.allFree ? "Sesuai peraturan" : "Biaya administrasi"}
-              gradient="bg-gradient-to-br from-emerald-500 to-green-600"
-              delay={0.1}
             />
             <SummaryCard
               icon={<Zap className="h-5 w-5" />}

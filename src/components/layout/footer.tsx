@@ -367,7 +367,7 @@ export function Footer() {
             </div>
 
             {/* Social feed items — horizontal on desktop, stacked on mobile */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
               {socialFeedItems.map((item) => (
                 <a
                   key={item.name}
@@ -436,7 +436,7 @@ export function Footer() {
         {/* Newsletter Mini Form */}
         <div className="mt-8">
           <div className="max-w-xl mx-auto">
-            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2 sm:gap-2">
               <div className="relative flex-1">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                 <input
@@ -453,7 +453,7 @@ export function Footer() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-400 hover:to-teal-400 text-white text-sm font-medium shadow-lg shadow-green-500/20 transition-all duration-200 flex items-center gap-2"
+                className="px-5 py-3 sm:py-2.5 rounded-lg bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-400 hover:to-teal-400 text-white text-sm font-medium shadow-lg shadow-green-500/20 transition-all duration-200 flex items-center justify-center gap-2 min-h-[44px]"
               >
                 <Send className="h-4 w-4" />
                 <span className="hidden sm:inline">Langganan</span>

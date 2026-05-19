@@ -39,21 +39,13 @@ const faqData: FAQItem[] = [
   {
     id: "ktp-1",
     kategori: "KTP",
-    pertanyaan: "Berapa lama proses pembuatan KTP-el baru?",
-    jawaban:
-      "Untuk rekam baru KTP-el, proses akan diinformasikan oleh petugas setelah sinkronisasi data ke pusat. Untuk KTP-el yang sudah pernah direkam (perpanjangan/perbaikan), proses selesai di tempat jika blanko tersedia.",
-    tags: ["ktp", "waktu", "proses"],
-  },
-  {
-    id: "ktp-2",
-    kategori: "KTP",
     pertanyaan: "Dokumen apa saja yang dibutuhkan untuk pembuatan KTP-el baru?",
     jawaban:
       "Dokumen yang diperlukan: (1) Surat Pengantar RT/RW, (2) Kartu Keluarga (KK) asli, (3) Akta Kelahiran atau Ijazah, (4) Surat Nikah (jika sudah menikah), (5) Pas Foto 2x3 sebanyak 2 lembar. Pemohon harus hadir langsung untuk perekaman biometrik.",
     tags: ["ktp", "dokumen", "syarat"],
   },
   {
-    id: "ktp-3",
+    id: "ktp-2",
     kategori: "KTP",
     pertanyaan: "Apakah bisa mengurus KTP dari luar kota?",
     jawaban:
@@ -61,7 +53,7 @@ const faqData: FAQItem[] = [
     tags: ["ktp", "online", "luar kota"],
   },
   {
-    id: "ktp-4",
+    id: "ktp-3",
     kategori: "KTP",
     pertanyaan: "Bagaimana jika data KTP saya tidak sesuai?",
     jawaban:
@@ -69,7 +61,7 @@ const faqData: FAQItem[] = [
     tags: ["ktp", "perbaikan", "koreksi"],
   },
   {
-    id: "ktp-5",
+    id: "ktp-4",
     kategori: "KTP",
     pertanyaan: "KTP-el hilang, bagaimana cara mengurusnya?",
     jawaban:
@@ -79,26 +71,26 @@ const faqData: FAQItem[] = [
   {
     id: "kk-1",
     kategori: "KK",
-    pertanyaan: "Berapa lama proses pembuatan Kartu Keluarga baru?",
-    jawaban:
-      "Proses pembuatan KK baru akan diinformasikan oleh petugas. Pastikan membawa dokumen persyaratan lengkap: KTP-el anggota keluarga, akta kelahiran seluruh anggota, akta nikah/cerai (jika ada perubahan status), dan surat pengantar RT/RW.",
-    tags: ["kk", "waktu", "proses"],
-  },
-  {
-    id: "kk-2",
-    kategori: "KK",
     pertanyaan: "Bagaimana cara menambah anggota KK baru?",
     jawaban:
       "Untuk menambah anggota KK (kelahiran anak, menikah, dll.), bawa: KK asli, KTP-el Kepala Keluarga, dokumen pendukung (akta kelahiran untuk anak, akta nikah untuk istri), dan surat pengantar RT/RW. Proses akan diinformasikan oleh petugas.",
     tags: ["kk", "tambah", "anggota"],
   },
   {
-    id: "kk-3",
+    id: "kk-2",
     kategori: "KK",
     pertanyaan: "Apakah bisa membuat KK terpisah dari orang tua?",
     jawaban:
       "Ya, bisa membuat KK terpisah dengan syarat: sudah menikah (bagi yang menikah) atau sudah berusia 17 tahun ke atas dan sudah bekerja/menikah. Bawa KTP-el, KK lama, akta nikah (jika menikah), surat pengantar RT/RW, dan surat keterangan kerja.",
     tags: ["kk", "pisah", "baru"],
+  },
+  {
+    id: "kk-3",
+    kategori: "KK",
+    pertanyaan: "Bagaimana cara mengurus KK yang hilang atau rusak?",
+    jawaban:
+      "Untuk KK yang hilang atau rusak, bawa Surat Keterangan Hilang dari Kepolisian (jika hilang) atau KK rusak asli ke Disdukcapil. Proses akan diinformasikan oleh petugas setelah verifikasi dokumen.",
+    tags: ["kk", "hilang", "rusak"],
   },
   {
     id: "akta-1",
@@ -193,10 +185,10 @@ const kategoriList = [
 
 const popularQuestions = [
   "Bagaimana cara mengurus dokumen?",
-  "Berapa lama proses KTP-el baru?",
   "Dokumen untuk akta kelahiran?",
   "Cara pindah ke luar kabupaten?",
   "KTP hilang, bagaimana caranya?",
+  "Apakah bisa mengurus KTP dari luar kota?",
 ];
 
 // FAQ items marked as "popular" by ID
@@ -282,7 +274,7 @@ export function FAQInteraktifSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
+      className="py-10 sm:py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden"
       aria-labelledby="faq-interaktif-title"
     >
       {/* ── Gradient Hero Banner ── */}
@@ -406,7 +398,7 @@ export function FAQInteraktifSection() {
                     role="tab"
                     aria-selected={isActive}
                     onClick={() => setActiveKategori(kat.value)}
-                    className="relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+                    className="px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200"
                   >
                     {isActive && (
                       <motion.div
@@ -416,7 +408,7 @@ export function FAQInteraktifSection() {
                       />
                     )}
                     <KatIcon className={`h-3.5 w-3.5 relative z-10 ${isActive ? "text-white" : "text-gray-500 dark:text-gray-400"}`} />
-                    <span className={`relative z-10 ${isActive ? "text-white" : "text-gray-600 dark:text-gray-400"}`}>
+                  <span className={`relative z-10 text-xs sm:text-sm ${isActive ? "text-white" : "text-gray-600 dark:text-gray-400"}`}>
                       {kat.label}
                     </span>
                     {kat.value !== "Semua" && (
@@ -563,7 +555,7 @@ export function FAQInteraktifSection() {
                       <button
                         key={q}
                         onClick={() => handlePopularClick(q)}
-                        className="flex items-center gap-2 text-left w-full p-2.5 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-700 dark:hover:text-green-400 transition-colors group"
+                        className="flex items-center gap-2 text-left w-full p-3 min-h-[44px] rounded-lg text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-700 dark:hover:text-green-400 transition-colors group"
                       >
                         <Sparkles className="h-3 w-3 text-amber-500 flex-shrink-0" />
                         <span className="flex-1">{q}</span>

@@ -423,7 +423,7 @@ export function PengaduanSection() {
               variants={sectionTitleVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
-              className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6"
+              className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6"
             >
               Informasi Kontak
             </motion.h2>

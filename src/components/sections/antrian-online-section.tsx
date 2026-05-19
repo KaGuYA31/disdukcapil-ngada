@@ -539,33 +539,8 @@ export function AntrianOnlineSection() {
                 </div>
               </motion.div>
 
-              {/* Estimasi Tunggu */}
-              <motion.div variants={cardVariants} whileHover={{ y: -3, transition: { duration: 0.25 } }} className="col-span-2 sm:col-span-2">
-                <div className="h-full rounded-xl p-4 border border-gray-200 dark:border-gray-700/50 bg-white/70 dark:bg-gray-800/40 backdrop-blur-sm shadow-sm hover:shadow-lg hover:border-orange-200 dark:hover:border-orange-800/40 transition-all duration-300 relative overflow-hidden">
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-500 opacity-0 hover:opacity-100 transition-opacity duration-300" />
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 flex-shrink-0 bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900/40 dark:to-red-900/40 rounded-xl flex items-center justify-center shadow-sm">
-                      <Timer className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">
-                        Estimasi Waktu Tunggu Anda
-                      </p>
-                      <p className="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">
-                        {formatEstimasi(queueData.estimasiTungguAnda)}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0 text-right">
-                      <Badge className="bg-gradient-to-r from-orange-100 to-red-50 dark:from-orange-900/40 dark:to-red-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800/40 text-[10px]">
-                        Perkiraan
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
               {/* Your Queue Number */}
-              <motion.div variants={cardVariants} whileHover={{ y: -3, transition: { duration: 0.25 } }}>
+              <motion.div variants={cardVariants} whileHover={{ y: -3, transition: { duration: 0.25 } }} className="col-span-2 sm:col-span-3">
                 <div className="h-full rounded-xl p-4 border border-gray-200 dark:border-gray-700/50 bg-white/70 dark:bg-gray-800/40 backdrop-blur-sm shadow-sm hover:shadow-lg hover:border-purple-200 dark:hover:border-purple-800/40 transition-all duration-300 relative overflow-hidden">
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400 to-violet-500 opacity-0 hover:opacity-100 transition-opacity duration-300" />
                   <div className="flex flex-col items-center text-center">

@@ -350,16 +350,16 @@ export function SimulasiBiayaSection() {
         >
           <span className="inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold text-sm uppercase tracking-wider">
             <Calculator className="h-4 w-4" />
-            Simulasi Biaya
+            Informasi Layanan
           </span>
           <h2
             id="simulasi-biaya-title"
             className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent mt-2"
           >
-            Estimasi Biaya Pelayanan
+            Informasi Layanan Kependudukan
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-4">
-            Hitung estimasi biaya untuk berbagai layanan
+            Dapatkan informasi persyaratan untuk berbagai layanan
             administrasi kependudukan secara cepat dan mudah
           </p>
         </motion.div>
@@ -451,15 +451,7 @@ export function SimulasiBiayaSection() {
                             .filter((l) => l.kategori === "Pendaftaran Penduduk")
                             .map((l) => (
                               <SelectItem key={l.id} value={l.id}>
-                                <div className="flex items-center justify-between w-full gap-4">
-                                  <span>{l.nama}</span>
-                                  <Badge
-                                    variant="outline"
-                                    className="text-[10px] px-1.5 py-0 flex-shrink-0 bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800"
-                                  >
-                                    {l.isGratis ? "Sesuai Ketentuan" : `Rp ${l.biaya.toLocaleString("id-ID")}`}
-                                  </Badge>
-                                </div>
+                                <span>{l.nama}</span>
                               </SelectItem>
                             ))}
                         </SelectGroup>
@@ -471,15 +463,7 @@ export function SimulasiBiayaSection() {
                             .filter((l) => l.kategori === "Pencatatan Sipil")
                             .map((l) => (
                               <SelectItem key={l.id} value={l.id}>
-                                <div className="flex items-center justify-between w-full gap-4">
-                                  <span>{l.nama}</span>
-                                  <Badge
-                                    variant="outline"
-                                    className="text-[10px] px-1.5 py-0 flex-shrink-0 bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800"
-                                  >
-                                    {l.isGratis ? "Sesuai Ketentuan" : `Rp ${l.biaya.toLocaleString("id-ID")}`}
-                                  </Badge>
-                                </div>
+                                <span>{l.nama}</span>
                               </SelectItem>
                             ))}
                         </SelectGroup>
@@ -601,7 +585,7 @@ export function SimulasiBiayaSection() {
                     animate="visible"
                     className="space-y-5"
                   >
-                    {/* Biaya Banner */}
+                    {/* Summary Banner */}
                     <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-green-500 via-green-600 to-teal-600 p-6 text-center shadow-lg">
                       <div className="absolute inset-0 opacity-10">
                         <div className="absolute -top-4 -right-4 w-24 h-24 bg-white rounded-full blur-xl" />
@@ -609,13 +593,11 @@ export function SimulasiBiayaSection() {
                       </div>
                       <div className="relative">
                         <Sparkles className="h-8 w-8 text-yellow-300 mx-auto mb-2" />
-                        <h3 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-                          {selectedData.isGratis ? "Sesuai Ketentuan" : `Rp ${selectedData.biaya.toLocaleString("id-ID")}`}
+                        <h3 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+                          {selectedData.nama}
                         </h3>
                         <p className="text-green-100 text-sm mt-1">
-                          {selectedData.isGratis
-                            ? "Sesuai peraturan yang berlaku"
-                            : "Biaya resmi sesuai peraturan yang berlaku"}
+                          {selectedData.kategori}
                         </p>
                       </div>
                     </div>

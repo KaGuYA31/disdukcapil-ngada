@@ -314,7 +314,6 @@ const defaultServices: Record<string, {
     ],
     forms: [{ title: "Formulir F-1.01", url: "#", size: "250 KB" }],
     faq: [
-      { question: "Berapa lama proses pembuatan KTP-el?", answer: "Untuk cetak KTP-el, proses SELESAI DI TEMPAT. Untuk rekam baru, proses 3-5 hari kerja." },
       { question: "Apakah ada biaya?", answer: "Sesuai ketentuan yang berlaku, informasi biaya dapat ditanyakan langsung ke petugas di loket pelayanan." },
     ],
     notes: [
@@ -368,7 +367,6 @@ const defaultServices: Record<string, {
     forms: [{ title: "Formulir F-1.01", url: "#", size: "200 KB" }],
     faq: [
       { question: "Apakah pembuatan KK dikenakan biaya?", answer: "Sesuai ketentuan yang berlaku, informasi biaya dapat ditanyakan langsung ke petugas di loket pelayanan." },
-      { question: "Berapa lama prosesnya?", answer: "Proses SELESAI DI TEMPAT jika semua persyaratan sudah lengkap." },
     ],
     notes: [],
   },

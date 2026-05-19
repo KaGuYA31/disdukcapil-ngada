@@ -55,7 +55,7 @@ function DocumentCheckerWrapper() {
           <button
             key={service.slug}
             onClick={() => setSelectedService(service.slug)}
-            className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer min-h-[44px] ${
+            className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer min-h-[44px] ${
               selectedService === service.slug
                 ? "bg-teal-600 text-white shadow-md shadow-teal-600/25 scale-105"
                 : "bg-white text-gray-700 border border-gray-200 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-700"
@@ -104,7 +104,7 @@ export default function LayananPage() {
         />
 
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-16 md:py-20 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-10 sm:py-16 md:py-20 relative overflow-hidden">
           {/* Decorative gradient orbs */}
           <motion.div
             variants={floatOrb}

@@ -405,16 +405,6 @@ function ServicesListContent() {
             <CardContent className="relative z-10">
               <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2">{service.description}</p>
 
-              {/* Processing time indicator */}
-              <div className="flex items-center gap-2 text-sm mb-4">
-                <div className="w-7 h-7 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Clock className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
-                </div>
-                <span className="font-medium text-green-600 dark:text-green-400">
-                  {service.processingTime || "Selesai di Tempat"}
-                </span>
-              </div>
-
               {/* Footer with sliding arrow */}
               <div className="pt-3 border-t border-gray-100 dark:border-gray-800">
                 <span className="text-green-700 dark:text-green-400 text-sm font-medium inline-flex items-center gap-0 group-hover:gap-2 transition-all duration-300">

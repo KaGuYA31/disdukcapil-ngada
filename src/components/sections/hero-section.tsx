@@ -220,7 +220,7 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(16,185,129,0.15)_0%,_transparent_60%)]" />
 
       {/* Content */}
-      <div className="relative mx-auto max-w-5xl px-4 py-16 md:py-24 lg:py-28">
+      <div className="relative mx-auto max-w-5xl px-4 py-10 sm:py-16 md:py-24 lg:py-28">
         <div className="flex flex-col items-center text-center space-y-8">
           {/* 1. Greeting + Live Clock */}
           <motion.div
@@ -247,7 +247,7 @@ export function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
+            className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight"
           >
             <span className="bg-gradient-to-r from-white via-green-100 to-emerald-200 bg-clip-text text-transparent">
               Disdukcapil Kabupaten Ngada
@@ -260,7 +260,7 @@ export function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-base sm:text-lg text-green-200/80 max-w-xl"
+            className="text-sm sm:text-lg text-green-200/80 max-w-xl"
           >
             Portal Layanan Kependudukan &amp; Pencatatan Sipil
           </motion.p>
@@ -301,13 +301,13 @@ export function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-xl"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-xl"
           >
             {quickActions.map(({ label, href, Icon, description }) => (
               <Link
                 key={href}
                 href={href}
-                className="group flex flex-col items-center gap-3 rounded-2xl bg-white p-5 shadow-md hover:shadow-xl transition-all duration-200 hover:-translate-y-1"
+                className="group flex flex-row sm:flex-col items-center gap-3 rounded-2xl bg-white p-4 sm:p-5 shadow-md hover:shadow-xl transition-all duration-200 hover:-translate-y-1"
               >
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-200">
                   <Icon className="h-5 w-5" />
@@ -392,12 +392,12 @@ export function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="flex flex-wrap gap-3 justify-center pt-2"
+            className="flex flex-wrap gap-3 justify-center pt-2 w-full sm:w-auto"
           >
             <Link href="/layanan">
               <Button
                 size="lg"
-                className="bg-white text-emerald-700 hover:bg-green-50 h-11 px-5 font-semibold shadow-md rounded-xl transition-all duration-200 hover:-translate-y-0.5"
+                className="bg-white text-emerald-700 hover:bg-green-50 h-11 px-5 font-semibold shadow-md rounded-xl transition-all duration-200 hover:-translate-y-0.5 flex-1 sm:flex-none justify-center"
               >
                 <FileText className="mr-2 h-4 w-4" />
                 Lihat Persyaratan
@@ -406,7 +406,7 @@ export function HeroSection() {
             <Link href="/layanan-online">
               <Button
                 size="lg"
-                className="bg-white/15 backdrop-blur-sm border border-white/25 text-white hover:bg-white hover:text-emerald-700 h-11 px-5 font-semibold rounded-xl transition-all duration-200 hover:-translate-y-0.5"
+                className="bg-white/15 backdrop-blur-sm border border-white/25 text-white hover:bg-white hover:text-emerald-700 h-11 px-5 font-semibold rounded-xl transition-all duration-200 hover:-translate-y-0.5 flex-1 sm:flex-none justify-center"
               >
                 Layanan Online
               </Button>

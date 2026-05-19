@@ -412,7 +412,7 @@ export default function LayananOnlinePage() {
       <Header />
       <main className="flex-1" id="main-content">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-10 sm:py-16 md:py-20 relative overflow-hidden">
           {/* Pattern overlay */}
           <div className="absolute inset-0 opacity-[0.04]">
             <div
@@ -807,7 +807,7 @@ export default function LayananOnlinePage() {
 
       {/* Submission Form Dialog */}
       <Dialog open={showFormDialog} onOpenChange={setShowFormDialog}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mx-4 sm:mx-0">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mx-2 sm:mx-0 p-4 sm:p-6">
           <DialogHeader>
             <DialogTitle className="text-gray-900 dark:text-gray-100">Pengajuan: {selectedLayanan?.name}</DialogTitle>
             <DialogDescription className="text-gray-500 dark:text-gray-400">

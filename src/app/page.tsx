@@ -83,7 +83,7 @@ export default function HomePage() {
                 Akses cepat ke layanan yang paling banyak diminta
               </p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto">
               {[
                 { name: "KTP-el", icon: "🪪", href: "/layanan/ktp-el", desc: "Kartu Tanda Penduduk Elektronik" },
                 { name: "Kartu Keluarga", icon: "👨‍👩‍👧‍👦", href: "/layanan/kartu-keluarga", desc: "KK dan perubahan data" },
@@ -97,11 +97,11 @@ export default function HomePage() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="group flex flex-col items-center p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center"
+                  className="group flex flex-col items-center p-3 sm:p-4 md:p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center min-h-[100px] sm:min-h-0 justify-center"
                 >
-                  <span className="text-3xl mb-3">{item.icon}</span>
-                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{item.name}</h3>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{item.desc}</p>
+                  <span className="text-2xl sm:text-3xl mb-1 sm:mb-3">{item.icon}</span>
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm">{item.name}</h3>
+                  <p className="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 mt-0.5 line-clamp-2">{item.desc}</p>
                 </a>
               ))}
             </div>
@@ -180,12 +180,12 @@ export default function HomePage() {
             <p className="text-green-100 max-w-xl mx-auto mb-8">
               Hubungi kami melalui WhatsApp atau kunjungi langsung kantor Disdukcapil Kabupaten Ngada
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-full sm:w-auto">
               <a
                 href="https://wa.me/6281234567890"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-green-500 text-white font-semibold px-8 py-3 rounded-xl hover:bg-green-400 transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-green-500 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-green-400 transition-colors w-full sm:w-auto min-h-[48px]"
               >
                 WhatsApp
               </a>

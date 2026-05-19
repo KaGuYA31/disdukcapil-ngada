@@ -352,7 +352,7 @@ export function NewsListSection() {
                         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-teal-500 to-green-500" />
                         <div className="grid md:grid-cols-2 gap-0">
                           {/* Featured Thumbnail */}
-                          <div className="aspect-video md:aspect-auto bg-gradient-to-br from-green-600 to-green-800 relative overflow-hidden min-h-[200px] sm:min-h-[280px]">
+                          <div className="aspect-video md:aspect-auto bg-gradient-to-br from-green-600 to-green-800 relative overflow-hidden min-h-[180px] sm:min-h-[240px] md:min-h-[280px]">
                             {featured.thumbnail ? (
                               <img
                                 src={featured.thumbnail}
@@ -385,7 +385,7 @@ export function NewsListSection() {
                           </div>
 
                           {/* Featured Content */}
-                          <CardContent className="p-6 md:p-8 flex flex-col justify-center">
+                          <CardContent className="p-4 sm:p-5 md:p-6 md:p-8 flex flex-col justify-center">
                             <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 mb-3">
                               <span className="flex items-center gap-1">
                                 <Calendar className="h-3.5 w-3.5" />
@@ -400,10 +400,10 @@ export function NewsListSection() {
                                 {featured.viewCount} dilihat
                               </span>
                             </div>
-                            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors mb-3 line-clamp-2">
+                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors mb-2 sm:mb-3 line-clamp-2">
                               {featured.title}
                             </h2>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed line-clamp-3 mb-4">
+                            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3 mb-3 sm:mb-4">
                               {featured.excerpt}
                             </p>
                             <div className="flex items-center gap-2 text-green-700 dark:text-green-400 font-medium text-sm group-hover:gap-3 transition-all">

@@ -81,7 +81,7 @@ function MobileNavItem({
         <button
           onClick={() => setExpanded(!expanded)}
           className={cn(
-            "w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+            "w-full flex items-center justify-between px-4 min-h-[44px] text-sm font-medium rounded-lg transition-all duration-200",
             isCurrentActive
               ? "text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/30"
               : "text-gray-700 hover:text-green-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-green-400 dark:hover:bg-green-900/30"
@@ -104,7 +104,7 @@ function MobileNavItem({
         <Link
           href={item.href}
           className={cn(
-            "block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+            "block px-4 min-h-[44px] flex items-center text-sm font-medium rounded-lg transition-all duration-200",
             isActive
               ? "text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/30"
               : "text-gray-700 hover:text-green-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-green-400 dark:hover:bg-green-900/30"
@@ -132,7 +132,7 @@ function MobileNavItem({
                 key={child.href}
                 href={child.href}
                 className={cn(
-                  "flex flex-col px-3 py-2.5 rounded-lg transition-colors",
+                  "flex flex-col px-3 py-2.5 rounded-lg transition-colors min-h-[44px] justify-center",
                   pathname === child.href
                     ? "text-green-700 bg-green-50 font-medium dark:text-green-400 dark:bg-green-900/30"
                     : "text-gray-500 hover:text-green-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-green-400 dark:hover:bg-green-900/30"
@@ -337,7 +337,7 @@ export function Header() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[340px] p-0 overflow-y-auto">
+              <SheetContent side="right" className="w-[280px] sm:w-[340px] p-0 overflow-y-auto">
                 <SheetHeader className="border-b border-gray-100 px-4 py-4 dark:border-gray-700">
                   <SheetTitle className="flex items-center gap-3">
                     <div className="relative w-8 h-8 flex-shrink-0">
@@ -371,7 +371,7 @@ export function Header() {
                   <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-700">
                     <button
                       onClick={openSearchCommand}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-500 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 hover:text-green-700 transition-all dark:text-gray-400 dark:border-gray-600 dark:hover:border-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400"
+                      className="w-full flex items-center gap-3 px-4 min-h-[44px] text-sm text-gray-500 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 hover:text-green-700 transition-all dark:text-gray-400 dark:border-gray-600 dark:hover:border-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400"
                     >
                       <Search className="h-4 w-4" />
                       <span>Cari halaman, layanan, atau berita...</span>
@@ -385,14 +385,14 @@ export function Header() {
                   <div className="pt-4 mt-4 border-t border-gray-100 space-y-2 dark:border-gray-700">
                     <Link
                       href="/admin"
-                      className="block px-4 py-2.5 text-sm text-center border border-green-700 text-green-700 rounded-lg hover:bg-green-50 font-medium transition-colors dark:border-green-500 dark:text-green-400 dark:hover:bg-green-900/30"
+                      className="block px-4 py-2.5 text-sm text-center border border-green-700 text-green-700 rounded-lg hover:bg-green-50 font-medium transition-colors dark:border-green-500 dark:text-green-400 dark:hover:bg-green-900/30 min-h-[44px] flex items-center justify-center"
                     >
                       Login Admin
                     </Link>
                     {mounted && (
                       <button
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                        className="w-full px-4 py-2.5 text-sm text-center border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 font-medium transition-colors flex items-center justify-center gap-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+                        className="w-full px-4 py-2.5 text-sm text-center border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 font-medium transition-colors flex items-center justify-center gap-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 min-h-[44px]"
                         aria-label="Toggle theme"
                       >
                         {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}

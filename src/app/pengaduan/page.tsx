@@ -45,7 +45,7 @@ export default function PengaduanPage() {
       <Header />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
-        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-16 md:py-20 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-green-700 via-green-800 to-teal-900 text-white py-10 sm:py-16 md:py-20 relative overflow-hidden">
           {/* Pattern overlay */}
           <div className="absolute inset-0 opacity-[0.04]">
             <div
@@ -144,22 +144,6 @@ export default function PengaduanPage() {
                       </div>
                     );
                   })}
-                </motion.div>
-
-                {/* Estimated Response Time */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="mt-6 flex items-center gap-3 bg-green-600/30 backdrop-blur-sm rounded-xl p-4 border border-green-500/30"
-                >
-                  <div className="w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Clock className="h-5 w-5 text-amber-300" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white">Estimasi Waktu Respons</p>
-                    <p className="text-sm text-green-200">
-                      1–3 hari kerja melalui email atau telepon
-                    </p>
-                  </div>
                 </motion.div>
 
                 {/* Trust Badge */}

@@ -26,9 +26,9 @@ const faqs = [
       "Untuk umumnya, Anda perlu membawa: KTP asli, Kartu Keluarga asli, dan fotokopi masing-masing. Untuk layanan tertentu mungkin diperlukan dokumen tambahan. Silakan cek halaman detail layanan untuk informasi lengkap.",
   },
   {
-    question: "Berapa lama proses pembuatan KTP-el?",
+    question: "Bagaimana cara mengurus KTP-el baru?",
     answer:
-      "Untuk KTP-el yang sudah pernah direkam (perpanjangan/perbaikan), proses selesai di tempat. Untuk rekam baru KTP-el, proses akan diinformasikan oleh petugas setelah sinkronisasi data ke pusat.",
+      "Kunjungi kantor Disdukcapil Kabupaten Ngada dengan membawa dokumen persyaratan lengkap. Untuk informasi lebih detail, silakan cek halaman detail layanan yang Anda butuhkan.",
   },
   {
     question: "Bagaimana cara mengurus akta kelahiran?",
@@ -56,9 +56,9 @@ const faqs = [
       "Jika terdapat kesalahan data pada KTP-el Anda, segera laporkan ke kantor Disdukcapil Kabupaten Ngada dengan membawa KTP-el asli, Kartu Keluarga, dan dokumen pendukung (ijazah, akta kelahiran, atau surat nikah) sebagai bukti data yang benar. Proses koreksi data akan diinformasikan oleh petugas setelah verifikasi.",
   },
   {
-    question: "Berapa lama proses pembuatan Kartu Keluarga?",
+    question: "Bagaimana cara mengurus KK baru?",
     answer:
-      "Proses pembuatan Kartu Keluarga (KK) baru atau perubahan data KK akan diinformasikan oleh petugas. Pastikan membawa dokumen persyaratan lengkap: KTP-el anggota keluarga, akta kelahiran, akta nikah/cerai (jika ada perubahan status), dan surat pengantar RT/RW.",
+      "Kunjungi kantor Disdukcapil Kabupaten Ngada dengan membawa dokumen persyaratan lengkap. Untuk informasi lebih detail, silakan cek halaman detail layanan yang Anda butuhkan.",
   },
   {
     question: "Apakah ada layanan jemput bola?",

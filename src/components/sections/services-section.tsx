@@ -320,7 +320,7 @@ export function ServicesSection() {
   const totalServices = services.length;
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
+    <section className="py-10 sm:py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
       {/* Subtle background dot grid pattern */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div
@@ -349,7 +349,7 @@ export function ServicesSection() {
           </div>
 
           {/* Label with green-100 pill and Service icon */}
-          <span className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold text-sm uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">
+          <span className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold text-xs sm:text-sm uppercase tracking-wider px-3 sm:px-4 py-1.5 rounded-full mb-4">
             <ConciergeBell className="h-4 w-4" />
             Layanan Kami
           </span>
@@ -368,10 +368,10 @@ export function ServicesSection() {
             </motion.div>
           )}
 
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mt-2">
             Layanan Administrasi Kependudukan
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-4">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-4">
             Berbagai layanan administrasi kependudukan yang dapat diakses oleh
             masyarakat Kabupaten Ngada. Silakan pilih layanan yang Anda
             butuhkan.
@@ -392,7 +392,7 @@ export function ServicesSection() {
               <button
                 key={tab.value}
                 onClick={() => setActiveTab(tab.value)}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer ${
                   activeTab === tab.value
                     ? "bg-green-700 text-white shadow-md shadow-green-700/25"
                     : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-green-300 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/30"
