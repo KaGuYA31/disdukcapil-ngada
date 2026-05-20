@@ -160,9 +160,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     return () => clearInterval(interval);
   }, []);
 
-  const handleLogout = () => {
-    document.cookie = "admin_session=; path=/; max-age=0";
-    router.push("/");
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // Even if the API call fails, redirect to login
+    }
+    window.location.href = "/admin";
   };
 
   const pageTitle = getPageTitle(pathname);
