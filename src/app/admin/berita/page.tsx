@@ -42,6 +42,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { AdminLayout } from "@/components/admin/admin-layout";
+import { useAdminAuth } from "@/hooks/use-admin-auth";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -74,6 +75,7 @@ const categories = ["Informasi", "Pengumuman", "Kegiatan"];
 function AdminBeritaContent() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
+  const { isAuthenticated, isLoading: authLoading } = useAdminAuth();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -114,8 +116,15 @@ function AdminBeritaContent() {
   };
 
   useEffect(() => {
-    fetchNews();
-  }, []);
+    if (!authLoading && !isAuthenticated) {
+      window.location.href = "/admin";
+      return;
+    }
+  }, [authLoading, isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) fetchNews();
+  }, [isAuthenticated]);
 
   const filteredNews = news.filter(
     (item) =>
@@ -259,12 +268,18 @@ function AdminBeritaContent() {
     });
   };
 
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-green-600" />
-      </div>
+      <AdminLayout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+        </div>
+      </AdminLayout>
     );
+  }
+
+  if (!isAuthenticated) {
+    return null;
   }
 
   return (

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   FileText,
@@ -31,6 +31,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useAdminAuth } from "@/hooks/use-admin-auth";
 
 interface AdminMenuItem {
   title: string;
@@ -149,25 +150,16 @@ function formatDate(date: Date): string {
 }
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { logout } = useAdminAuth();
 
   // Update time every minute
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 60000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-    } catch {
-      // Even if the API call fails, redirect to login
-    }
-    window.location.href = "/admin";
-  };
 
   const pageTitle = getPageTitle(pathname);
 
@@ -282,7 +274,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" side="top">
-                    <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600">
+                    <DropdownMenuItem onClick={logout} className="text-red-600 focus:text-red-600">
                       <LogOut className="mr-2 h-4 w-4" />
                       Keluar
                     </DropdownMenuItem>
@@ -347,14 +339,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => router.push("/admin/pengaturan")}>
+                  <DropdownMenuItem onClick={() => (window.location.href = "/admin/pengaturan")}>
                     <Settings className="mr-2 h-4 w-4" />
                     Pengaturan
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600">
+                  <DropdownMenuItem onClick={logout} className="text-red-600 focus:text-red-600">
                     <LogOut className="mr-2 h-4 w-4" />
-                    Keluar
+                    Keluar ke Website
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

@@ -43,6 +43,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { useToast } from "@/hooks/use-toast";
+import { useAdminAuth } from "@/hooks/use-admin-auth";
 
 const STORAGE_KEY = "inovasi_categories";
 const DEFAULT_CATEGORIES = [
@@ -127,31 +128,13 @@ export default function AdminInovasiPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   // Auth check
-  const [authState, setAuthState] = useState({ isAuthenticated: false, isLoading: true });
+  const { isAuthenticated, isLoading: authLoading } = useAdminAuth();
 
   useEffect(() => {
-    fetch("/api/auth/check")
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw new Error("Not authenticated");
-      })
-      .then((data) => {
-        if (data.authenticated) {
-          setAuthState({ isAuthenticated: true, isLoading: false });
-        } else {
-          setAuthState({ isAuthenticated: false, isLoading: false });
-        }
-      })
-      .catch(() => {
-        setAuthState({ isAuthenticated: false, isLoading: false });
-      });
-  }, []);
-
-  useEffect(() => {
-    if (!authState.isLoading && !authState.isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       window.location.href = "/admin";
     }
-  }, [authState.isLoading, authState.isAuthenticated]);
+  }, [authLoading, isAuthenticated]);
 
   // Load categories from localStorage on mount
   useEffect(() => {
@@ -160,10 +143,10 @@ export default function AdminInovasiPage() {
   }, []);
 
   useEffect(() => {
-    if (authState.isAuthenticated) {
+    if (isAuthenticated) {
       fetchActivities();
     }
-  }, [authState.isAuthenticated]);
+  }, [isAuthenticated]);
 
   // ---- Category management ----
 
@@ -366,7 +349,7 @@ export default function AdminInovasiPage() {
     return counts;
   }, [activities]);
 
-  if (authState.isLoading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-green-600" />
@@ -374,7 +357,7 @@ export default function AdminInovasiPage() {
     );
   }
 
-  if (!authState.isAuthenticated) {
+  if (!isAuthenticated) {
     return null;
   }
 

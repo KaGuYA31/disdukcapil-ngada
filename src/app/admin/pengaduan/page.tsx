@@ -24,6 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { useToast } from "@/hooks/use-toast";
+import { useAdminAuth } from "@/hooks/use-admin-auth";
 import {
   Search,
   Eye,
@@ -93,31 +94,13 @@ export default function AdminPengaduanPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [responseData, setResponseData] = useState("");
 
-  const [authState, setAuthState] = useState({ isAuthenticated: false, isLoading: true });
+  const { isAuthenticated, isLoading: authLoading } = useAdminAuth();
 
   useEffect(() => {
-    fetch("/api/auth/check")
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw new Error("Not authenticated");
-      })
-      .then((data) => {
-        if (data.authenticated) {
-          setAuthState({ isAuthenticated: true, isLoading: false });
-        } else {
-          setAuthState({ isAuthenticated: false, isLoading: false });
-        }
-      })
-      .catch(() => {
-        setAuthState({ isAuthenticated: false, isLoading: false });
-      });
-  }, []);
-
-  useEffect(() => {
-    if (!authState.isLoading && !authState.isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       window.location.href = "/admin";
     }
-  }, [authState.isLoading, authState.isAuthenticated]);
+  }, [authLoading, isAuthenticated]);
 
   const filteredComplaints = complaints.filter((item) => {
     const matchesSearch =
@@ -163,7 +146,7 @@ export default function AdminPengaduanPage() {
     });
   };
 
-  if (authState.isLoading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin text-green-600">Loading...</div>
@@ -171,7 +154,7 @@ export default function AdminPengaduanPage() {
     );
   }
 
-  if (!authState.isAuthenticated) {
+  if (!isAuthenticated) {
     return null;
   }
 

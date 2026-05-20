@@ -40,11 +40,6 @@ const AccessibilitySettingsWidget = dynamic(
   { ssr: false }
 );
 
-const QuickAccessPanel = dynamic(
-  () => import("@/components/shared/quick-access-panel").then((m) => ({ default: m.QuickAccessPanel })),
-  { ssr: false }
-);
-
 // ─── Homepage ───────────────────────────────────────────────────────
 
 export default function HomePage() {
@@ -201,7 +196,6 @@ export default function HomePage() {
       <CookieConsent />
       <AccessibilitySettingsWidget />
       <WhatsAppButton />
-      <QuickAccessPanel />
       <BackToTop />
     </div>
   );

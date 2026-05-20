@@ -31,6 +31,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { AdminLayout } from "@/components/admin/admin-layout";
+import { useAdminAuth } from "@/hooks/use-admin-auth";
 import { useToast } from "@/hooks/use-toast";
 import {
   DndContext,
@@ -210,37 +211,19 @@ export default function AdminLayananPage() {
   );
 
   // Auth check
-  const [authState, setAuthState] = useState({ isAuthenticated: false, isLoading: true });
+  const { isAuthenticated, isLoading: authLoading } = useAdminAuth();
 
   useEffect(() => {
-    fetch("/api/auth/check")
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw new Error("Not authenticated");
-      })
-      .then((data) => {
-        if (data.authenticated) {
-          setAuthState({ isAuthenticated: true, isLoading: false });
-        } else {
-          setAuthState({ isAuthenticated: false, isLoading: false });
-        }
-      })
-      .catch(() => {
-        setAuthState({ isAuthenticated: false, isLoading: false });
-      });
-  }, []);
-
-  useEffect(() => {
-    if (!authState.isLoading && !authState.isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       window.location.href = "/admin";
     }
-  }, [authState.isLoading, authState.isAuthenticated]);
+  }, [authLoading, isAuthenticated]);
 
   useEffect(() => {
-    if (authState.isAuthenticated) {
+    if (isAuthenticated) {
       fetchLayanan();
     }
-  }, [authState.isAuthenticated]);
+  }, [isAuthenticated]);
 
   const fetchLayanan = async () => {
     try {
@@ -530,7 +513,7 @@ export default function AdminLayananPage() {
     }
   };
 
-  if (authState.isLoading || loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-green-600" />
@@ -538,7 +521,7 @@ export default function AdminLayananPage() {
     );
   }
 
-  if (!authState.isAuthenticated) {
+  if (!isAuthenticated) {
     return null;
   }
 

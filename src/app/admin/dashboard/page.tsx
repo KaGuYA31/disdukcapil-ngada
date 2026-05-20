@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAdminAuth } from "@/hooks/use-admin-auth";
 import Link from "next/link";
 import {
   Users,
@@ -77,38 +78,20 @@ export default function AdminDashboardPage() {
   });
   const [blanko, setBlanko] = useState<BlankoData | null>(null);
 
-  const [authState, setAuthState] = useState({ isAuthenticated: false, isLoading: true });
+  const { isAuthenticated, isLoading: authLoading } = useAdminAuth();
 
   useEffect(() => {
-    fetch("/api/auth/check")
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw new Error("Not authenticated");
-      })
-      .then((data) => {
-        if (data.authenticated) {
-          setAuthState({ isAuthenticated: true, isLoading: false });
-        } else {
-          setAuthState({ isAuthenticated: false, isLoading: false });
-        }
-      })
-      .catch(() => {
-        setAuthState({ isAuthenticated: false, isLoading: false });
-      });
-  }, []);
-
-  useEffect(() => {
-    if (!authState.isLoading && !authState.isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       window.location.href = "/admin";
     }
-  }, [authState.isLoading, authState.isAuthenticated]);
+  }, [authLoading, isAuthenticated]);
 
   useEffect(() => {
-    if (authState.isAuthenticated) {
+    if (isAuthenticated) {
       fetchStatistik();
       fetchBlanko();
     }
-  }, [authState.isAuthenticated]);
+  }, [isAuthenticated]);
 
   const fetchBlanko = async () => {
     try {
@@ -163,7 +146,7 @@ export default function AdminDashboardPage() {
     periode: "-",
   };
 
-  if (authState.isLoading || loading) {
+  if (authLoading || loading) {
     return (
       <AdminLayout>
         <div className="min-h-[60vh] flex items-center justify-center">
@@ -176,7 +159,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  if (!authState.isAuthenticated) {
+  if (!isAuthenticated) {
     return null;
   }
 
