@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Users,
@@ -71,7 +70,6 @@ function getTodayFormatted() {
 }
 
 export default function AdminDashboardPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [statistik, setStatistik] = useState<StatistikData>({
     ringkasan: null,
@@ -79,22 +77,31 @@ export default function AdminDashboardPage() {
   });
   const [blanko, setBlanko] = useState<BlankoData | null>(null);
 
-  const authState = useMemo(() => {
-    if (typeof document === "undefined")
-      return { isAuthenticated: false, isLoading: true };
-    const cookies = document.cookie.split(";");
-    const sessionCookie = cookies.find((c) =>
-      c.trim().startsWith("admin_session=")
-    );
-    const isLoggedIn = sessionCookie?.split("=")[1] === "true";
-    return { isAuthenticated: isLoggedIn, isLoading: false };
+  const [authState, setAuthState] = useState({ isAuthenticated: false, isLoading: true });
+
+  useEffect(() => {
+    fetch("/api/auth/check")
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Not authenticated");
+      })
+      .then((data) => {
+        if (data.authenticated) {
+          setAuthState({ isAuthenticated: true, isLoading: false });
+        } else {
+          setAuthState({ isAuthenticated: false, isLoading: false });
+        }
+      })
+      .catch(() => {
+        setAuthState({ isAuthenticated: false, isLoading: false });
+      });
   }, []);
 
   useEffect(() => {
-    if (!authState.isAuthenticated && !authState.isLoading) {
-      router.push("/admin");
+    if (!authState.isLoading && !authState.isAuthenticated) {
+      window.location.href = "/admin";
     }
-  }, [authState.isAuthenticated, authState.isLoading, router]);
+  }, [authState.isLoading, authState.isAuthenticated]);
 
   useEffect(() => {
     if (authState.isAuthenticated) {

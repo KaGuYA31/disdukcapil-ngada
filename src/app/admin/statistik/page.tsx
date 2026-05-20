@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
 import {
   Save,
   Loader2,
@@ -63,7 +62,6 @@ const initialData: StatistikData = {
 type ImportStatus = "idle" | "uploading" | "success" | "error";
 
 export default function AdminStatistikPage() {
-  const router = useRouter();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(true);
@@ -83,19 +81,31 @@ export default function AdminStatistikPage() {
   const [dragOver, setDragOver] = useState(false);
 
   // Auth check
-  const authState = useMemo(() => {
-    if (typeof document === "undefined") return { isAuthenticated: false, isLoading: true };
-    const cookies = document.cookie.split(";");
-    const sessionCookie = cookies.find((c) => c.trim().startsWith("admin_session="));
-    const isLoggedIn = sessionCookie?.split("=")[1] === "true";
-    return { isAuthenticated: isLoggedIn, isLoading: false };
+  const [authState, setAuthState] = useState({ isAuthenticated: false, isLoading: true });
+
+  useEffect(() => {
+    fetch("/api/auth/check")
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Not authenticated");
+      })
+      .then((data) => {
+        if (data.authenticated) {
+          setAuthState({ isAuthenticated: true, isLoading: false });
+        } else {
+          setAuthState({ isAuthenticated: false, isLoading: false });
+        }
+      })
+      .catch(() => {
+        setAuthState({ isAuthenticated: false, isLoading: false });
+      });
   }, []);
 
   useEffect(() => {
-    if (!authState.isAuthenticated && !authState.isLoading) {
-      router.push("/admin");
+    if (!authState.isLoading && !authState.isAuthenticated) {
+      window.location.href = "/admin";
     }
-  }, [authState.isAuthenticated, authState.isLoading, router]);
+  }, [authState.isLoading, authState.isAuthenticated]);
 
   useEffect(() => {
     if (authState.isAuthenticated) {

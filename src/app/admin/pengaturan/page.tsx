@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,7 +35,6 @@ interface PimpinanData {
 }
 
 export default function PengaturanPage() {
-  const router = useRouter();
   const { toast } = useToast();
 
   // Blanko E-KTP state
@@ -56,16 +54,31 @@ export default function PengaturanPage() {
   const [wakilPhoto, setWakilPhoto] = useState("");
   const [wakilPeriode, setWakilPeriode] = useState("");
 
-  const authState = useMemo(() => {
-    if (typeof document === "undefined")
-      return { isAuthenticated: false, isLoading: true };
-    const cookies = document.cookie.split(";");
-    const sessionCookie = cookies.find((c) =>
-      c.trim().startsWith("admin_session=")
-    );
-    const isLoggedIn = sessionCookie?.split("=")[1] === "true";
-    return { isAuthenticated: isLoggedIn, isLoading: false };
+  const [authState, setAuthState] = useState({ isAuthenticated: false, isLoading: true });
+
+  useEffect(() => {
+    fetch("/api/auth/check")
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Not authenticated");
+      })
+      .then((data) => {
+        if (data.authenticated) {
+          setAuthState({ isAuthenticated: true, isLoading: false });
+        } else {
+          setAuthState({ isAuthenticated: false, isLoading: false });
+        }
+      })
+      .catch(() => {
+        setAuthState({ isAuthenticated: false, isLoading: false });
+      });
   }, []);
+
+  useEffect(() => {
+    if (!authState.isLoading && !authState.isAuthenticated) {
+      window.location.href = "/admin";
+    }
+  }, [authState.isLoading, authState.isAuthenticated]);
 
   // Fetch data on mount
   useEffect(() => {
@@ -234,7 +247,6 @@ export default function PengaturanPage() {
   }
 
   if (!authState.isAuthenticated) {
-    router.push("/admin");
     return null;
   }
 

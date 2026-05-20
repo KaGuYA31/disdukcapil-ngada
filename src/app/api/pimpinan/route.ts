@@ -37,7 +37,7 @@ export async function PUT(request: NextRequest) {
     // Upsert: create or update by role
     const pimpinan = await db.pimpinan.upsert({
       where: { role },
-      create: { role, name, photo: photo || null, periode: periode || null },
+      create: { role, name, photo: photo || null, periode: periode || null, description: "" },
       update: { name, photo: photo || null, periode: periode || null },
     });
 
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     // Upsert: create or update by role
     const pimpinan = await db.pimpinan.upsert({
       where: { role },
-      create: { role, name, photo: photo || null, periode: periode || null },
+      create: { role, name, photo: photo || null, periode: periode || null, description: "" },
       update: { name, photo: photo || null, periode: periode || null },
     });
 

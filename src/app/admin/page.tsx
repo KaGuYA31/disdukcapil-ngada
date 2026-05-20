@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Building2, Lock, User, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
 function AdminLoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -55,7 +54,7 @@ function AdminLoginForm() {
 
       // Redirect to the originally requested page, or dashboard
       const redirectPath = searchParams.get("redirect") || "/admin/dashboard";
-      router.push(redirectPath);
+      window.location.href = redirectPath;
     } catch {
       setError("Terjadi kesalahan koneksi. Silakan coba lagi.");
     } finally {
