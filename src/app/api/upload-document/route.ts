@@ -40,12 +40,16 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Validate file type - allow images and documents
+    // Validate file type - allow images, videos and documents
     const allowedTypes = [
       "image/jpeg", 
       "image/png", 
       "image/gif", 
       "image/webp",
+      "video/mp4",
+      "video/webm",
+      "video/ogg",
+      "video/quicktime",
       "application/pdf",
       "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -60,11 +64,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file size (max 10MB for documents)
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    // Validate file size (max 50MB for videos, 10MB for other files)
+    const isVideo = file.type.startsWith("video/");
+    const maxSize = isVideo ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
     if (file.size > maxSize) {
       return NextResponse.json(
-        { success: false, error: "Ukuran file terlalu besar. Maksimal 10MB" },
+        { success: false, error: isVideo ? "Ukuran video terlalu besar. Maksimal 50MB" : "Ukuran file terlalu besar. Maksimal 10MB" },
         { status: 400 }
       );
     }

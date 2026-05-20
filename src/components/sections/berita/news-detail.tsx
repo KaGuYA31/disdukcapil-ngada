@@ -19,6 +19,7 @@ import {
   Images,
   CheckCircle2,
   List,
+  Video,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -46,6 +47,7 @@ interface NewsItem {
   author: string | null;
   thumbnail: string | null;
   photos: string | null;
+  videos: string | null;
   viewCount: number;
   createdAt: string;
 }
@@ -149,6 +151,16 @@ function extractTOC(content: string): TOCItem[] {
     }
   });
   return items;
+}
+
+function getYouTubeEmbedUrl(url: string): string | null {
+  if (!url) return null;
+  if (url.includes('youtube.com/embed/')) return url;
+  const match1 = url.match(/[?&]v=([^&]+)/);
+  if (match1) return `https://www.youtube.com/embed/${match1[1]}`;
+  const match2 = url.match(/youtu\.be\/([^?]+)/);
+  if (match2) return `https://www.youtube.com/embed/${match2[1]}`;
+  return null;
 }
 
 // Inject IDs into heading elements in HTML content
@@ -382,6 +394,14 @@ export function NewsDetail() {
     additionalPhotos = news.photos ? JSON.parse(news.photos) : [];
   } catch {
     additionalPhotos = [];
+  }
+
+  // Parse additional videos
+  let additionalVideos: string[] = [];
+  try {
+    additionalVideos = news.videos ? JSON.parse(news.videos) : [];
+  } catch {
+    additionalVideos = [];
   }
 
   return (
@@ -626,6 +646,55 @@ export function NewsDetail() {
                             />
                           </div>
                         ))}
+                      </motion.div>
+                    </motion.div>
+                  )}
+
+                  {/* Video Gallery */}
+                  {additionalVideos.length > 0 && (
+                    <motion.div
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, margin: "-50px" }}
+                      variants={staggerContainer}
+                      className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700"
+                    >
+                      <motion.div variants={fadeInUp} className="flex items-center gap-2 mb-4">
+                        <Video className="h-5 w-5 text-green-700 dark:text-green-400" />
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Video</h3>
+                      </motion.div>
+                      <motion.div
+                        variants={fadeInUp}
+                        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                      >
+                        {additionalVideos.map((videoUrl, index) => {
+                          const embedUrl = getYouTubeEmbedUrl(videoUrl);
+                          return (
+                            <div
+                              key={index}
+                              className="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800"
+                            >
+                              <div className="aspect-video">
+                                {embedUrl ? (
+                                  <iframe
+                                    src={embedUrl}
+                                    title={`${news.title} - Video ${index + 1}`}
+                                    className="w-full h-full rounded-xl"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                  />
+                                ) : (
+                                  <video
+                                    src={videoUrl}
+                                    controls
+                                    className="w-full h-full rounded-xl"
+                                    preload="metadata"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </motion.div>
                     </motion.div>
                   )}

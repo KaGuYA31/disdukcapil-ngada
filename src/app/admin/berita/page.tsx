@@ -12,8 +12,10 @@ import {
   Loader2,
   Image as ImageIcon,
   X,
+  Video,
 } from "lucide-react";
 import { ImageUpload } from "@/components/ui/image-upload";
+import { VideoUpload } from "@/components/ui/video-upload";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -65,6 +67,7 @@ interface NewsItem {
   author: string | null;
   thumbnail: string | null;
   photos: string | null;
+  videos: string | null;
   viewCount: number;
   createdAt: string;
   updatedAt: string;
@@ -92,6 +95,7 @@ function AdminBeritaContent() {
     isPublished: true,
     thumbnail: "",
     photos: [] as string[],
+    videos: [] as string[],
   });
 
   // Fetch news from API
@@ -141,6 +145,12 @@ function AdminBeritaContent() {
       } catch {
         parsedPhotos = [];
       }
+      let parsedVideos: string[] = [];
+      try {
+        parsedVideos = item.videos ? JSON.parse(item.videos) : [];
+      } catch {
+        parsedVideos = [];
+      }
       setFormData({
         title: item.title,
         excerpt: item.excerpt || "",
@@ -149,6 +159,7 @@ function AdminBeritaContent() {
         isPublished: item.isPublished,
         thumbnail: item.thumbnail || "",
         photos: parsedPhotos,
+        videos: parsedVideos,
       });
     } else {
       setEditingNews(null);
@@ -160,6 +171,7 @@ function AdminBeritaContent() {
         isPublished: true,
         thumbnail: "",
         photos: [],
+        videos: [],
       });
     }
     setIsDialogOpen(true);
@@ -181,6 +193,25 @@ function AdminBeritaContent() {
       const newPhotos = [...prev.photos];
       newPhotos[index] = url;
       return { ...prev, photos: newPhotos };
+    });
+  };
+
+  const addVideoSlot = () => {
+    setFormData((prev) => ({ ...prev, videos: [...prev.videos, ""] }));
+  };
+
+  const removeVideoSlot = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      videos: prev.videos.filter((_, i) => i !== index),
+    }));
+  };
+
+  const updateVideoSlot = (index: number, url: string) => {
+    setFormData((prev) => {
+      const newVideos = [...prev.videos];
+      newVideos[index] = url;
+      return { ...prev, videos: newVideos };
     });
   };
 
@@ -455,6 +486,54 @@ function AdminBeritaContent() {
               )}
               {formData.photos.length === 0 && (
                 <p className="text-xs text-gray-400 italic">Belum ada foto tambahan</p>
+              )}
+            </div>
+            {/* Video */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-2">
+                  <Video className="h-4 w-4 text-green-700" />
+                  Video
+                </Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addVideoSlot}
+                  className="text-green-700 border-green-300 hover:bg-green-50"
+                >
+                  <Plus className="h-3.5 w-3.5 mr-1" />
+                  Tambah Video
+                </Button>
+              </div>
+              {formData.videos.length > 0 && (
+                <div className="space-y-3">
+                  {formData.videos.map((video, index) => (
+                    <div key={index} className="relative group">
+                      <div className="flex items-start gap-2">
+                        <div className="flex-1">
+                          <VideoUpload
+                            value={video}
+                            onChange={(url) => updateVideoSlot(index, url)}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="mt-1 shrink-0"
+                          onClick={() => removeVideoSlot(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">Video {index + 1}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {formData.videos.length === 0 && (
+                <p className="text-xs text-gray-400 italic">Belum ada video</p>
               )}
             </div>
             <div className="space-y-2">

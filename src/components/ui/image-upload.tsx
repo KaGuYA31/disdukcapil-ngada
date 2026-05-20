@@ -40,7 +40,7 @@ export function ImageUpload({ value, onChange, className, disabled }: ImageUploa
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("/api/upload", {
+      const response = await fetch("/api/upload-document", {
         method: "POST",
         body: formData,
       });

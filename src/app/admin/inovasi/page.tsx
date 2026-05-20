@@ -17,8 +17,10 @@ import {
   EyeOff,
   Tag,
   AlertTriangle,
+  Video,
 } from "lucide-react";
 import { ImageUpload } from "@/components/ui/image-upload";
+import { VideoUpload } from "@/components/ui/video-upload";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -80,6 +82,8 @@ interface Inovasi {
   description: string;
   content: string;
   photo: string | null;
+  photos: string | null;  // JSON string array
+  videos: string | null;  // JSON string array
   location: string | null;
   date: string | null;
   category: string;
@@ -93,6 +97,8 @@ interface FormData {
   description: string;
   content: string;
   photo: string;
+  photos: string[];
+  videos: string[];
   location: string;
   date: string;
   category: string;
@@ -119,6 +125,8 @@ export default function AdminInovasiPage() {
     description: "",
     content: "",
     photo: "",
+    photos: [],
+    videos: [],
     location: "",
     date: "",
     category: DEFAULT_CATEGORIES[0],
@@ -212,6 +220,48 @@ export default function AdminInovasiPage() {
     }
   };
 
+  // ---- Photo / Video slot helpers ----
+
+  const addPhotoSlot = () => {
+    setFormData((prev) => ({ ...prev, photos: [...prev.photos, ""] }));
+  };
+
+  const removePhotoSlot = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== index),
+    }));
+  };
+
+  const updatePhotoSlot = (index: number, url: string) => {
+    setFormData((prev) => {
+      const newPhotos = [...prev.photos];
+      newPhotos[index] = url;
+      return { ...prev, photos: newPhotos };
+    });
+  };
+
+  const addVideoSlot = () => {
+    setFormData((prev) => ({ ...prev, videos: [...prev.videos, ""] }));
+  };
+
+  const removeVideoSlot = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      videos: prev.videos.filter((_, i) => i !== index),
+    }));
+  };
+
+  const updateVideoSlot = (index: number, url: string) => {
+    setFormData((prev) => {
+      const newVideos = [...prev.videos];
+      newVideos[index] = url;
+      return { ...prev, videos: newVideos };
+    });
+  };
+
+  // ---- Submit ----
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -240,6 +290,8 @@ export default function AdminInovasiPage() {
           description: "",
           content: "",
           photo: "",
+          photos: [],
+          videos: [],
           location: "",
           date: "",
           category: categories[0] || DEFAULT_CATEGORIES[0],
@@ -269,11 +321,28 @@ export default function AdminInovasiPage() {
 
   const handleEdit = (activity: Inovasi) => {
     setEditingId(activity.id);
+
+    let parsedPhotos: string[] = [];
+    try {
+      parsedPhotos = activity.photos ? JSON.parse(activity.photos) : [];
+    } catch {
+      parsedPhotos = [];
+    }
+
+    let parsedVideos: string[] = [];
+    try {
+      parsedVideos = activity.videos ? JSON.parse(activity.videos) : [];
+    } catch {
+      parsedVideos = [];
+    }
+
     setFormData({
       title: activity.title,
       description: activity.description,
       content: activity.content,
       photo: activity.photo || "",
+      photos: parsedPhotos,
+      videos: parsedVideos,
       location: activity.location || "",
       date: activity.date ? activity.date.split("T")[0] : "",
       category: activity.category,
@@ -322,6 +391,8 @@ export default function AdminInovasiPage() {
       description: "",
       content: "",
       photo: "",
+      photos: [],
+      videos: [],
       location: "",
       date: "",
       category: categories[0] || DEFAULT_CATEGORIES[0],
@@ -597,13 +668,14 @@ export default function AdminInovasiPage() {
                 />
               </div>
 
+              {/* Foto Utama */}
               <div className="space-y-2">
-                <Label>Foto Kegiatan</Label>
+                <Label>Foto Utama</Label>
                 <ImageUpload
                   value={formData.photo}
                   onChange={(url) => setFormData({ ...formData, photo: url })}
                 />
-                <p className="text-xs text-gray-500">Upload foto langsung dari komputer</p>
+                <p className="text-xs text-gray-500">Upload foto utama langsung dari komputer</p>
               </div>
 
               <div className="space-y-2">
@@ -664,6 +736,101 @@ export default function AdminInovasiPage() {
                   onChange={(e) => setFormData({ ...formData, author: e.target.value })}
                   placeholder="Nama penulis"
                 />
+              </div>
+
+              {/* Foto Tambahan */}
+              <div className="space-y-3 md:col-span-2">
+                <div className="flex items-center justify-between">
+                  <Label>Foto Tambahan</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addPhotoSlot}
+                    className="text-green-700 border-green-300 hover:bg-green-50"
+                  >
+                    <Plus className="h-3.5 w-3.5 mr-1" />
+                    Tambah Foto
+                  </Button>
+                </div>
+                {formData.photos.length > 0 && (
+                  <div className="space-y-3">
+                    {formData.photos.map((photo, index) => (
+                      <div key={index} className="relative group">
+                        <div className="flex items-start gap-2">
+                          <div className="flex-1">
+                            <ImageUpload
+                              value={photo}
+                              onChange={(url) => updatePhotoSlot(index, url)}
+                            />
+                          </div>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="mt-1 shrink-0"
+                            onClick={() => removePhotoSlot(index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1">Foto {index + 1}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {formData.photos.length === 0 && (
+                  <p className="text-xs text-gray-400 italic">Belum ada foto tambahan</p>
+                )}
+              </div>
+
+              {/* Video */}
+              <div className="space-y-3 md:col-span-2">
+                <div className="flex items-center justify-between">
+                  <Label className="flex items-center gap-2">
+                    <Video className="h-4 w-4 text-green-700" />
+                    Video
+                  </Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addVideoSlot}
+                    className="text-green-700 border-green-300 hover:bg-green-50"
+                  >
+                    <Plus className="h-3.5 w-3.5 mr-1" />
+                    Tambah Video
+                  </Button>
+                </div>
+                {formData.videos.length > 0 && (
+                  <div className="space-y-3">
+                    {formData.videos.map((video, index) => (
+                      <div key={index} className="relative group">
+                        <div className="flex items-start gap-2">
+                          <div className="flex-1">
+                            <VideoUpload
+                              value={video}
+                              onChange={(url) => updateVideoSlot(index, url)}
+                            />
+                          </div>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="mt-1 shrink-0"
+                            onClick={() => removeVideoSlot(index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1">Video {index + 1}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {formData.videos.length === 0 && (
+                  <p className="text-xs text-gray-400 italic">Belum ada video</p>
+                )}
               </div>
 
               <div className="flex items-center space-x-2 md:col-span-2">

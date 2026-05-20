@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title, excerpt, content, category, thumbnail, photos, author, isPublished } = body;
+    const { title, excerpt, content, category, thumbnail, photos, videos, author, isPublished } = body;
 
     if (!title || !content) {
       return NextResponse.json(
@@ -92,6 +92,7 @@ export async function POST(request: NextRequest) {
         category: category || "Umum",
         thumbnail,
         photos: photos && Array.isArray(photos) && photos.length > 0 ? JSON.stringify(photos) : null,
+        videos: videos && Array.isArray(videos) && videos.length > 0 ? JSON.stringify(videos) : null,
         author,
         isPublished: isPublished ?? true,
       },

@@ -14,6 +14,7 @@ import {
   Loader2,
   Share2,
   Images,
+  Video,
 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -27,6 +28,7 @@ interface InovasiDetail {
   content: string;
   photo: string | null;
   photos: string | null;
+  videos: string | null;
   location: string | null;
   date: string | null;
   category: string;
@@ -239,20 +241,6 @@ export default function InovasiDetailPage() {
                 )}
               </div>
 
-              {/* Photo (if available and not shown in hero) */}
-              {activity.photo && (
-                <div className="mt-8">
-                  <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden">
-                    <Image
-                      src={activity.photo}
-                      alt={activity.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-              )}
-
               {/* Photo Gallery */}
               {(() => {
                 let additionalPhotos: string[] = [];
@@ -261,29 +249,94 @@ export default function InovasiDetailPage() {
                 } catch {
                   additionalPhotos = [];
                 }
-                if (additionalPhotos.length === 0) return null;
+
+                let additionalVideos: string[] = [];
+                try {
+                  additionalVideos = activity.videos ? JSON.parse(activity.videos) : [];
+                } catch {
+                  additionalVideos = [];
+                }
+
+                function getYouTubeEmbedUrl(url: string): string | null {
+                  if (!url) return null;
+                  // Already an embed URL
+                  if (url.includes('youtube.com/embed/')) return url;
+                  // youtube.com/watch?v=
+                  const match1 = url.match(/[?&]v=([^&]+)/);
+                  if (match1) return `https://www.youtube.com/embed/${match1[1]}`;
+                  // youtu.be/
+                  const match2 = url.match(/youtu\.be\/([^?]+)/);
+                  if (match2) return `https://www.youtube.com/embed/${match2[1]}`;
+                  return null;
+                }
+
                 return (
-                  <div className="mt-8 pt-6 border-t border-gray-200">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Images className="h-5 w-5 text-green-700" />
-                      <h3 className="text-lg font-semibold text-gray-900">Foto Galeri</h3>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {additionalPhotos.map((photo, index) => (
-                        <div
-                          key={index}
-                          className="relative aspect-[4/3] rounded-lg overflow-hidden border border-gray-200 bg-gray-100"
-                        >
-                          <Image
-                            src={photo}
-                            alt={`${activity.title} - Foto ${index + 1}`}
-                            fill
-                            className="object-cover hover:scale-105 transition-transform duration-300"
-                          />
+                  <>
+                    {/* Photo Gallery */}
+                    {additionalPhotos.length > 0 && (
+                      <div className="mt-8 pt-6 border-t border-gray-200">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Images className="h-5 w-5 text-green-700" />
+                          <h3 className="text-lg font-semibold text-gray-900">Foto Galeri</h3>
                         </div>
-                      ))}
-                    </div>
-                  </div>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          {additionalPhotos.map((photo, index) => (
+                            <div
+                              key={index}
+                              className="relative aspect-[4/3] rounded-lg overflow-hidden border border-gray-200 bg-gray-100"
+                            >
+                              <Image
+                                src={photo}
+                                alt={`${activity.title} - Foto ${index + 1}`}
+                                fill
+                                className="object-cover hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Video Gallery */}
+                    {additionalVideos.length > 0 && (
+                      <div className="mt-8 pt-6 border-t border-gray-200">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Video className="h-5 w-5 text-green-700" />
+                          <h3 className="text-lg font-semibold text-gray-900">Video</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {additionalVideos.map((videoUrl, index) => {
+                            const embedUrl = getYouTubeEmbedUrl(videoUrl);
+                            return (
+                              <div
+                                key={index}
+                                className="rounded-lg overflow-hidden border border-gray-200 bg-gray-100"
+                              >
+                                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                                  {embedUrl ? (
+                                    <iframe
+                                      src={embedUrl}
+                                      title={`${activity.title} - Video ${index + 1}`}
+                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                      allowFullScreen
+                                      className="absolute inset-0 w-full h-full rounded-lg"
+                                    />
+                                  ) : (
+                                    <video
+                                      src={videoUrl}
+                                      controls
+                                      className="absolute inset-0 w-full h-full rounded-lg"
+                                      preload="metadata"
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </>
                 );
               })()}
             </div>

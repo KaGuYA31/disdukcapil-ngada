@@ -262,6 +262,7 @@ model Berita {
   excerpt     String?  @db.Text
   thumbnail   String?
   photos      String?  // JSON string array of additional photo URLs
+  videos      String?  // JSON string array of video URLs (YouTube, Vimeo, direct)
   category    String   @default("Umum")
   isPublished Boolean  @default(true)
   authorId    String?
@@ -404,6 +405,7 @@ model Inovasi {
   content     String   @db.Text
   photo       String?  // URL foto kegiatan
   photos      String?  // JSON string array of additional photo URLs
+  videos      String?  // JSON string array of video URLs (YouTube, Vimeo, direct)
   location    String?  // Lokasi kegiatan
   date        DateTime? // Tanggal kegiatan
   category    String   @default("Jemput Bola") // Kategori inovasi
