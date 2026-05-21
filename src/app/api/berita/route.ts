@@ -11,9 +11,13 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "10");
     const page = parseInt(searchParams.get("page") || "1");
 
-    const where: Record<string, unknown> = {
-      isPublished: true,
-    };
+    const where: Record<string, unknown> = {};
+
+    // Admin can fetch all items (including drafts) with ?all=true
+    const all = searchParams.get("all") === "true";
+    if (!all) {
+      where.isPublished = true;
+    }
 
     if (category && category !== "Semua") {
       where.category = category;

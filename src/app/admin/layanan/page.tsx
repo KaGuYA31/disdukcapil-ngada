@@ -446,6 +446,20 @@ export default function AdminLayananPage() {
         body: JSON.stringify(payload),
       });
 
+      if (!response.ok) {
+        let errorMsg = `Server error (${response.status})`;
+        try {
+          const errData = await response.json();
+          errorMsg = errData.error || errorMsg;
+        } catch { /* ignore parse error */ }
+        toast({
+          title: "Error",
+          description: errorMsg,
+          variant: "destructive",
+        });
+        return;
+      }
+
       const result = await response.json();
 
       if (result.success) {
@@ -456,13 +470,13 @@ export default function AdminLayananPage() {
         setShowDialog(false);
         fetchLayanan();
       } else {
-        throw new Error(result.error);
+        throw new Error(result.error || "Terjadi kesalahan");
       }
     } catch (error) {
       console.error("Error saving layanan:", error);
       toast({
         title: "Error",
-        description: "Gagal menyimpan layanan",
+        description: error instanceof Error ? error.message : "Gagal menyimpan layanan",
         variant: "destructive",
       });
     } finally {

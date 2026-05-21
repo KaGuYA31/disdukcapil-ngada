@@ -18,6 +18,7 @@ import { verifyAdminSession } from "@/lib/auth";
 const PROTECTED_API_PREFIXES: string[] = [
   "/api/berita",
   "/api/inovasi",
+  "/api/layanan",
   "/api/layanan-online",
   "/api/admin",
   "/api/upload-document",

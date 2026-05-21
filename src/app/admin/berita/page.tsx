@@ -102,7 +102,7 @@ function AdminBeritaContent() {
   const fetchNews = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/berita");
+      const response = await fetch("/api/berita?all=true");
       const result = await response.json();
       if (result.success) {
         setNews(result.data);
@@ -233,12 +233,20 @@ function AdminBeritaContent() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
+        if (!response.ok) {
+          let errorMsg = `Server error (${response.status})`;
+          try {
+            const errData = await response.json();
+            errorMsg = errData.error || errorMsg;
+          } catch { /* ignore */ }
+          throw new Error(errorMsg);
+        }
         const result = await response.json();
         if (result.success) {
           toast({ title: "Berhasil", description: "Berita berhasil diperbarui" });
           fetchNews();
         } else {
-          throw new Error(result.error);
+          throw new Error(result.error || "Terjadi kesalahan");
         }
       } else {
         const response = await fetch("/api/berita", {
@@ -246,12 +254,20 @@ function AdminBeritaContent() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
+        if (!response.ok) {
+          let errorMsg = `Server error (${response.status})`;
+          try {
+            const errData = await response.json();
+            errorMsg = errData.error || errorMsg;
+          } catch { /* ignore */ }
+          throw new Error(errorMsg);
+        }
         const result = await response.json();
         if (result.success) {
           toast({ title: "Berhasil", description: "Berita berhasil ditambahkan" });
           fetchNews();
         } else {
-          throw new Error(result.error);
+          throw new Error(result.error || "Terjadi kesalahan");
         }
       }
       setIsDialogOpen(false);
@@ -259,7 +275,7 @@ function AdminBeritaContent() {
       console.error("Error saving news:", error);
       toast({
         title: "Error",
-        description: "Gagal menyimpan berita",
+        description: error instanceof Error ? error.message : "Gagal menyimpan berita",
         variant: "destructive",
       });
     } finally {

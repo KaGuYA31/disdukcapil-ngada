@@ -3,7 +3,6 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { BackToTop } from "@/components/shared/back-to-top";
-import { QuickAccessPanel } from "@/components/shared/quick-access-panel";
 import { SearchCommand } from "@/components/shared/search-command";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 
@@ -48,7 +47,6 @@ export default function HubungiKamiLayout({ children }: { children: React.ReactN
       <Footer />
       <WhatsAppButton />
       <BackToTop />
-      <QuickAccessPanel />
       <CookieConsent />
       <SearchCommand />
     </>

@@ -37,9 +37,13 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const where: Record<string, unknown> = {
-      isPublished: true,
-    };
+    // Admin can fetch all items (including drafts) with ?all=true
+    const all = searchParams.get("all") === "true";
+
+    const where: Record<string, unknown> = {};
+    if (!all) {
+      where.isPublished = true;
+    }
 
     if (category && category !== "Semua") {
       where.category = category;
@@ -64,7 +68,7 @@ export async function GET(request: NextRequest) {
         db.inovasi.count({ where }),
         db.inovasi.groupBy({
           by: ["category"],
-          where: { isPublished: true },
+          where: all ? {} : { isPublished: true },
           orderBy: { category: "asc" },
         }),
       ]),

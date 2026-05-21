@@ -205,7 +205,7 @@ export default function AdminInovasiPage() {
   const fetchActivities = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/inovasi?limit=100");
+      const response = await fetch("/api/inovasi?all=true&limit=100");
       const data = await response.json();
       setActivities(data.data || []);
     } catch (error) {
@@ -277,6 +277,20 @@ export default function AdminInovasiPage() {
         body: JSON.stringify(body),
       });
 
+      if (!response.ok) {
+        let errorMsg = `Server error (${response.status})`;
+        try {
+          const errData = await response.json();
+          errorMsg = errData.error || errorMsg;
+        } catch { /* ignore parse error */ }
+        toast({
+          title: "Error",
+          description: errorMsg,
+          variant: "destructive",
+        });
+        return;
+      }
+
       const data = await response.json();
 
       if (data.success) {
@@ -311,7 +325,7 @@ export default function AdminInovasiPage() {
       console.error("Error saving activity:", error);
       toast({
         title: "Error",
-        description: "Gagal menyimpan kegiatan",
+        description: error instanceof Error ? error.message : "Gagal menyimpan kegiatan",
         variant: "destructive",
       });
     } finally {
