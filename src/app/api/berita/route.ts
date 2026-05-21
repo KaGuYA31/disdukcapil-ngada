@@ -1,5 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { randomUUID } from "crypto";
+
+// Ensure columns exist (safe to run multiple times)
+async function ensureColumns() {
+  try {
+    await db.$executeRawUnsafe(`
+      DO $$ BEGIN
+        ALTER TABLE "berita" ADD COLUMN IF NOT EXISTS "photos" TEXT;
+        ALTER TABLE "berita" ADD COLUMN IF NOT EXISTS "videos" TEXT;
+      EXCEPTION WHEN OTHERS THEN NULL;
+      END $$;
+    `);
+  } catch {
+    // Columns might already exist or this is SQLite - ignore errors
+  }
+}
 
 // GET - Fetch all news (using raw SQL for schema resilience)
 export async function GET(request: NextRequest) {
@@ -62,7 +78,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create new news
+// POST - Create new news (using raw SQL for schema resilience)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -75,29 +91,46 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Ensure photos/videos columns exist in production DB
+    await ensureColumns();
+
     const slug = title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .substring(0, 100);
 
-    const existing = await db.berita.findUnique({ where: { slug } });
-    const finalSlug = existing ? `${slug}-${Date.now()}` : slug;
+    // Check for existing slug using raw SQL
+    const existing = await db.$queryRawUnsafe(
+      `SELECT "id" FROM "berita" WHERE "slug" = $1 LIMIT 1`,
+      slug
+    );
+    const finalSlug = Array.isArray(existing) && (existing as any[]).length > 0
+      ? `${slug}-${Date.now()}`
+      : slug;
 
-    const news = await db.berita.create({
-      data: {
-        title,
-        slug: finalSlug,
-        excerpt: excerpt || content.substring(0, 150) + "...",
-        content,
-        category: category || "Umum",
-        thumbnail,
-        photos: photos && Array.isArray(photos) && photos.length > 0 ? JSON.stringify(photos) : null,
-        videos: videos && Array.isArray(videos) && videos.length > 0 ? JSON.stringify(videos) : null,
-        author,
-        isPublished: isPublished ?? true,
-      },
-    });
+    const id = randomUUID();
+    const excerptValue = excerpt || content.substring(0, 150) + "...";
+    const photosValue = photos && Array.isArray(photos) && photos.length > 0
+      ? JSON.stringify(photos) : null;
+    const videosValue = videos && Array.isArray(videos) && videos.length > 0
+      ? JSON.stringify(videos) : null;
+
+    // Insert using parameterized raw SQL
+    await db.$executeRawUnsafe(
+      `INSERT INTO "berita" ("id", "title", "slug", "content", "excerpt", "category", "thumbnail", "photos", "videos", "author", "isPublished", "viewCount", "createdAt", "updatedAt")
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 0, NOW(), NOW())`,
+      id, title, finalSlug, content, excerptValue, category || "Umum", thumbnail || null,
+      photosValue, videosValue, author || null, isPublished !== false
+    );
+
+    // Fetch the created record
+    const rows = await db.$queryRawUnsafe(
+      `SELECT * FROM "berita" WHERE "id" = $1`,
+      id
+    );
+
+    const news = Array.isArray(rows) ? (rows as any[])[0] : null;
 
     return NextResponse.json({ success: true, data: news });
   } catch (error) {

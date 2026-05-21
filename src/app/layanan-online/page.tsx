@@ -360,6 +360,15 @@ export default function LayananOnlinePage() {
         return;
       }
 
+      if (response.status === 401) {
+        toast({
+          title: "Akses Ditolak",
+          description: "Sesi Anda telah berakhir. Silakan muat ulang halaman.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       if (result.success) {
         setNomorPengajuan(result.data.nomorPengajuan);
         setShowFormDialog(false);

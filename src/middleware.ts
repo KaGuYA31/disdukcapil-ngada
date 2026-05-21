@@ -19,7 +19,6 @@ const PROTECTED_API_PREFIXES: string[] = [
   "/api/berita",
   "/api/inovasi",
   "/api/layanan",
-  "/api/layanan-online",
   "/api/admin",
   "/api/upload-document",
   "/api/blanko-ektp",
@@ -28,6 +27,11 @@ const PROTECTED_API_PREFIXES: string[] = [
   "/api/pengumuman",
   "/api/testimoni",
   "/api/formulir/sync",
+];
+
+/** API routes where PUT/DELETE require admin auth (public POST allowed). */
+const ADMIN_WRITE_PREFIXES: string[] = [
+  "/api/layanan-online/", // PUT/DELETE individual submissions (admin only), POST is public
 ];
 
 /** HTTP methods that require authentication on protected API routes. */
@@ -110,7 +114,29 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return NextResponse.next();
   }
 
-  // ---- 3. Public routes – allow through ----
+  // ---- 3. Admin write routes (PUT/DELETE only, POST is public) ----
+
+  if (pathname.startsWith("/api/") && ADMIN_WRITE_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+    // Only protect PUT/DELETE/PATCH, not POST or GET
+    if (method === "PUT" || method === "DELETE" || method === "PATCH") {
+      const { valid } = await verifyAdminSession(request);
+      if (!valid) {
+        return new NextResponse(
+          JSON.stringify({
+            error: "Unauthorized",
+            message: "Autentikasi diperlukan untuk mengakses resource ini",
+          }),
+          {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
+    }
+    return NextResponse.next();
+  }
+
+  // ---- 4. Public routes – allow through ----
 
   return NextResponse.next();
 }

@@ -1,5 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { randomUUID } from "crypto";
+
+// Ensure columns exist (safe to run multiple times)
+async function ensureColumns() {
+  try {
+    await db.$executeRawUnsafe(`
+      DO $$ BEGIN
+        ALTER TABLE "inovasi" ADD COLUMN IF NOT EXISTS "photos" TEXT;
+        ALTER TABLE "inovasi" ADD COLUMN IF NOT EXISTS "videos" TEXT;
+      EXCEPTION WHEN OTHERS THEN NULL;
+      END $$;
+    `);
+  } catch {
+    // Columns might already exist or this is SQLite - ignore errors
+  }
+}
 
 // GET - Fetch innovation activities (using raw SQL for schema resilience)
 export async function GET(request: NextRequest) {
@@ -88,7 +104,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create new innovation activity
+// POST - Create new innovation activity (raw SQL)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -113,35 +129,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Ensure photos/videos columns exist in production DB
+    await ensureColumns();
+
     const baseSlug = title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .substring(0, 100);
 
-    const existing = await db.inovasi.findUnique({ where: { slug: baseSlug } });
-    const slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
+    // Check for existing slug using raw SQL
+    const existing = await db.$queryRawUnsafe(
+      `SELECT "id" FROM "inovasi" WHERE "slug" = $1 LIMIT 1`,
+      baseSlug
+    );
+    const slug = Array.isArray(existing) && (existing as any[]).length > 0
+      ? `${baseSlug}-${Date.now()}`
+      : baseSlug;
 
-    const inovasi = await db.inovasi.create({
-      data: {
-        title,
-        slug,
-        description,
-        content,
-        photo: photo || null,
-        photos: photos && Array.isArray(photos) && photos.length > 0 ? JSON.stringify(photos) : null,
-        videos: videos && Array.isArray(videos) && videos.length > 0 ? JSON.stringify(videos) : null,
-        location: location || null,
-        date: date ? new Date(date) : null,
-        category: category || "Jemput Bola",
-        isPublished: isPublished ?? true,
-        author: author || null,
-      },
-    });
+    const id = randomUUID();
+    const photosValue = photos && Array.isArray(photos) && photos.length > 0
+      ? JSON.stringify(photos) : null;
+    const videosValue = videos && Array.isArray(videos) && videos.length > 0
+      ? JSON.stringify(videos) : null;
+
+    // Insert using parameterized raw SQL
+    await db.$executeRawUnsafe(
+      `INSERT INTO "inovasi" ("id", "title", "slug", "description", "content", "photo", "photos", "videos", "location", "date", "category", "isPublished", "author", "viewCount", "order", "createdAt", "updatedAt")
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 0, 0, NOW(), NOW())`,
+      id, title, slug, description, content,
+      photo || null, photosValue, videosValue,
+      location || null, date ? new Date(date) : null,
+      category || "Jemput Bola", isPublished !== false,
+      author || null
+    );
+
+    // Fetch the created record
+    const rows = await db.$queryRawUnsafe(
+      `SELECT * FROM "inovasi" WHERE "id" = $1`,
+      id
+    );
 
     return NextResponse.json({
       success: true,
-      data: inovasi,
+      data: Array.isArray(rows) ? (rows as any[])[0] : null,
       message: "Inovasi berhasil dibuat",
     });
   } catch (error) {
@@ -154,7 +185,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PUT - Update innovation activity
+// PUT - Update innovation activity (raw SQL)
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
@@ -180,46 +211,120 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const existing = await db.inovasi.findUnique({ where: { id } });
-    if (!existing) {
+    await ensureColumns();
+
+    // Check if exists
+    const existingRows = await db.$queryRawUnsafe(
+      `SELECT * FROM "inovasi" WHERE "id" = $1 LIMIT 1`,
+      id
+    );
+
+    if (!Array.isArray(existingRows) || (existingRows as any[]).length === 0) {
       return NextResponse.json(
         { success: false, error: "Inovasi tidak ditemukan" },
         { status: 404 }
       );
     }
 
-    let slug = existing.slug;
+    const existing = (existingRows as any[])[0];
+
+    // Generate new slug if title changed
+    let newSlug = existing.slug;
     if (title && title !== existing.title) {
       const baseSlug = title
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, "")
         .replace(/\s+/g, "-")
         .substring(0, 100);
-      const slugExists = await db.inovasi.findUnique({ where: { slug: baseSlug } });
-      slug = slugExists ? `${baseSlug}-${Date.now()}` : baseSlug;
+      const slugCheck = await db.$queryRawUnsafe(
+        `SELECT "id" FROM "inovasi" WHERE "slug" = $1 AND "id" != $2 LIMIT 1`,
+        baseSlug, id
+      );
+      newSlug = Array.isArray(slugCheck) && (slugCheck as any[]).length > 0
+        ? `${baseSlug}-${Date.now()}`
+        : baseSlug;
     }
 
-    const inovasi = await db.inovasi.update({
-      where: { id },
-      data: {
-        title: title || existing.title,
-        slug,
-        description: description || existing.description,
-        content: content || existing.content,
-        photo: photo !== undefined ? photo : existing.photo,
-        photos: photos !== undefined ? (Array.isArray(photos) && photos.length > 0 ? JSON.stringify(photos) : null) : existing.photos,
-        videos: videos !== undefined ? (Array.isArray(videos) && videos.length > 0 ? JSON.stringify(videos) : null) : existing.videos,
-        location: location !== undefined ? location : existing.location,
-        date: date ? new Date(date) : existing.date,
-        category: category || existing.category,
-        isPublished: isPublished !== undefined ? isPublished : existing.isPublished,
-        author: author !== undefined ? author : existing.author,
-      },
-    });
+    // Build dynamic UPDATE
+    const setClauses: string[] = [`"updatedAt" = NOW()`];
+    const values: unknown[] = [];
+    let paramIdx = 0;
+
+    if (title) {
+      paramIdx++;
+      setClauses.push(`"title" = $${paramIdx}`);
+      values.push(title);
+      paramIdx++;
+      setClauses.push(`"slug" = $${paramIdx}`);
+      values.push(newSlug);
+    }
+    if (description) {
+      paramIdx++;
+      setClauses.push(`"description" = $${paramIdx}`);
+      values.push(description);
+    }
+    if (content) {
+      paramIdx++;
+      setClauses.push(`"content" = $${paramIdx}`);
+      values.push(content);
+    }
+    if (photo !== undefined) {
+      paramIdx++;
+      setClauses.push(`"photo" = $${paramIdx}`);
+      values.push(photo);
+    }
+    if (photos !== undefined) {
+      paramIdx++;
+      setClauses.push(`"photos" = $${paramIdx}`);
+      values.push(Array.isArray(photos) && photos.length > 0 ? JSON.stringify(photos) : null);
+    }
+    if (videos !== undefined) {
+      paramIdx++;
+      setClauses.push(`"videos" = $${paramIdx}`);
+      values.push(Array.isArray(videos) && videos.length > 0 ? JSON.stringify(videos) : null);
+    }
+    if (location !== undefined) {
+      paramIdx++;
+      setClauses.push(`"location" = $${paramIdx}`);
+      values.push(location);
+    }
+    if (date) {
+      paramIdx++;
+      setClauses.push(`"date" = $${paramIdx}`);
+      values.push(new Date(date));
+    }
+    if (category) {
+      paramIdx++;
+      setClauses.push(`"category" = $${paramIdx}`);
+      values.push(category);
+    }
+    if (isPublished !== undefined) {
+      paramIdx++;
+      setClauses.push(`"isPublished" = $${paramIdx}`);
+      values.push(isPublished);
+    }
+    if (author !== undefined) {
+      paramIdx++;
+      setClauses.push(`"author" = $${paramIdx}`);
+      values.push(author);
+    }
+
+    values.push(id);
+
+    await db.$executeRawUnsafe(
+      `UPDATE "inovasi" SET ${setClauses.join(", ")} WHERE "id" = $${paramIdx + 1}`,
+      ...values
+    );
+
+    // Fetch updated record
+    const updated = await db.$queryRawUnsafe(
+      `SELECT * FROM "inovasi" WHERE "id" = $1`,
+      id
+    );
 
     return NextResponse.json({
       success: true,
-      data: inovasi,
+      data: Array.isArray(updated) ? (updated as any[])[0] : null,
       message: "Inovasi berhasil diperbarui",
     });
   } catch (error) {
@@ -232,7 +337,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// DELETE - Delete innovation activity
+// DELETE - Delete innovation activity (raw SQL)
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -245,15 +350,23 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const existing = await db.inovasi.findUnique({ where: { id } });
-    if (!existing) {
+    // Check if exists
+    const existingRows = await db.$queryRawUnsafe(
+      `SELECT "id" FROM "inovasi" WHERE "id" = $1 LIMIT 1`,
+      id
+    );
+
+    if (!Array.isArray(existingRows) || (existingRows as any[]).length === 0) {
       return NextResponse.json(
         { success: false, error: "Inovasi tidak ditemukan" },
         { status: 404 }
       );
     }
 
-    await db.inovasi.delete({ where: { id } });
+    await db.$executeRawUnsafe(
+      `DELETE FROM "inovasi" WHERE "id" = $1`,
+      id
+    );
 
     return NextResponse.json({
       success: true,
