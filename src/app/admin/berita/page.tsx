@@ -238,6 +238,7 @@ function AdminBeritaContent() {
           try {
             const errData = await response.json();
             errorMsg = errData.error || errorMsg;
+            if (errData.debug) errorMsg += ` (${errData.debug})`;
           } catch { /* ignore */ }
           throw new Error(errorMsg);
         }
@@ -259,6 +260,7 @@ function AdminBeritaContent() {
           try {
             const errData = await response.json();
             errorMsg = errData.error || errorMsg;
+            if (errData.debug) errorMsg += ` (${errData.debug})`;
           } catch { /* ignore */ }
           throw new Error(errorMsg);
         }

@@ -102,8 +102,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, data: news });
   } catch (error) {
     console.error("Error creating news:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal membuat berita" },
+      { success: false, error: "Gagal membuat berita", debug: msg },
       { status: 500 }
     );
   }

@@ -115,8 +115,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error creating layanan:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal menambahkan layanan" },
+      { success: false, error: "Gagal menambahkan layanan", debug: msg },
       { status: 500 }
     );
   }
@@ -202,8 +203,9 @@ export async function PUT(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error updating layanan:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal memperbarui layanan" },
+      { success: false, error: "Gagal memperbarui layanan", debug: msg },
       { status: 500 }
     );
   }
@@ -243,8 +245,9 @@ export async function DELETE(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error deleting layanan:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal menghapus layanan" },
+      { success: false, error: "Gagal menghapus layanan", debug: msg },
       { status: 500 }
     );
   }

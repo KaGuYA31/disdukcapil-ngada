@@ -104,8 +104,9 @@ export async function PUT(
     return NextResponse.json({ success: true, data: news });
   } catch (error) {
     console.error("Error updating news:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal memperbarui berita" },
+      { success: false, error: "Gagal memperbarui berita", debug: msg },
       { status: 500 }
     );
   }
@@ -144,8 +145,9 @@ export async function DELETE(
     return NextResponse.json({ success: true, message: "Berita berhasil dihapus" });
   } catch (error) {
     console.error("Error deleting news:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal menghapus berita" },
+      { success: false, error: "Gagal menghapus berita", debug: msg },
       { status: 500 }
     );
   }

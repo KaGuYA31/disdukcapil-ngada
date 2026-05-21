@@ -146,8 +146,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error creating innovation activity:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal membuat inovasi" },
+      { success: false, error: "Gagal membuat inovasi", debug: msg },
       { status: 500 }
     );
   }
@@ -223,8 +224,9 @@ export async function PUT(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error updating innovation activity:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal memperbarui inovasi" },
+      { success: false, error: "Gagal memperbarui inovasi", debug: msg },
       { status: 500 }
     );
   }
@@ -259,8 +261,9 @@ export async function DELETE(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error deleting innovation activity:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal menghapus inovasi" },
+      { success: false, error: "Gagal menghapus inovasi", debug: msg },
       { status: 500 }
     );
   }

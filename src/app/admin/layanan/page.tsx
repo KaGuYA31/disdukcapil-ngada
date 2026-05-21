@@ -451,6 +451,7 @@ export default function AdminLayananPage() {
         try {
           const errData = await response.json();
           errorMsg = errData.error || errorMsg;
+          if (errData.debug) errorMsg += ` (${errData.debug})`;
         } catch { /* ignore parse error */ }
         toast({
           title: "Error",
