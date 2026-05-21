@@ -206,8 +206,22 @@ export default function AdminInovasiPage() {
     try {
       setLoading(true);
       const response = await fetch("/api/inovasi?all=true&limit=100");
+      if (!response.ok) {
+        console.error("Fetch activities failed with status:", response.status);
+        toast({
+          title: "Error",
+          description: `Gagal memuat data kegiatan (HTTP ${response.status})`,
+          variant: "destructive",
+        });
+        return;
+      }
       const data = await response.json();
-      setActivities(data.data || []);
+      if (data.success && Array.isArray(data.data)) {
+        setActivities(data.data);
+      } else {
+        console.error("Fetch activities returned unexpected data:", data);
+        setActivities([]);
+      }
     } catch (error) {
       console.error("Error fetching activities:", error);
       toast({

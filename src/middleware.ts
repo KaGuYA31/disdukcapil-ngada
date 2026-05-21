@@ -29,9 +29,14 @@ const PROTECTED_API_PREFIXES: string[] = [
   "/api/formulir/sync",
 ];
 
-/** API routes where PUT/DELETE require admin auth (public POST allowed). */
-const ADMIN_WRITE_PREFIXES: string[] = [
-  "/api/layanan-online/", // PUT/DELETE individual submissions (admin only), POST is public
+/**
+ * Public API paths that must NEVER be blocked by the protected-prefix check.
+ * /api/layanan-online is a public endpoint for citizen submissions.
+ * Without this exclusion, "/api/layanan-online" would match "/api/layanan"
+ * via startsWith() and incorrectly require admin auth for public POSTs.
+ */
+const PUBLIC_API_EXCLUSIONS: string[] = [
+  "/api/layanan-online",
 ];
 
 /** HTTP methods that require authentication on protected API routes. */
@@ -39,7 +44,14 @@ const WRITE_METHODS = new Set(["POST", "PUT", "DELETE", "PATCH"]);
 
 // ---- Helpers ----
 
+function isPublicApiPath(pathname: string): boolean {
+  return PUBLIC_API_EXCLUSIONS.some(
+    (p) => pathname === p || pathname.startsWith(p + "/")
+  );
+}
+
 function isProtectedApiRoute(pathname: string): boolean {
+  if (isPublicApiPath(pathname)) return false;
   return PROTECTED_API_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 
@@ -114,10 +126,11 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return NextResponse.next();
   }
 
-  // ---- 3. Admin write routes (PUT/DELETE only, POST is public) ----
+  // ---- 3. Public API paths with admin-only write sub-routes ----
+  // /api/layanan-online POST is public (citizen submissions)
+  // /api/layanan-online/[id] PUT/DELETE require admin auth
 
-  if (pathname.startsWith("/api/") && ADMIN_WRITE_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
-    // Only protect PUT/DELETE/PATCH, not POST or GET
+  if (pathname.startsWith("/api/layanan-online/")) {
     if (method === "PUT" || method === "DELETE" || method === "PATCH") {
       const { valid } = await verifyAdminSession(request);
       if (!valid) {
@@ -136,7 +149,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return NextResponse.next();
   }
 
-  // ---- 4. Public routes – allow through ----
+  // ---- 4. All other routes – allow through ----
 
   return NextResponse.next();
 }

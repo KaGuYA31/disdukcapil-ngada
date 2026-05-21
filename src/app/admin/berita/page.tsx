@@ -102,10 +102,22 @@ function AdminBeritaContent() {
   const fetchNews = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/berita?all=true");
+      const response = await fetch("/api/berita?all=true&limit=100");
+      if (!response.ok) {
+        console.error("Fetch news failed with status:", response.status);
+        toast({
+          title: "Error",
+          description: `Gagal memuat data berita (HTTP ${response.status})`,
+          variant: "destructive",
+        });
+        return;
+      }
       const result = await response.json();
-      if (result.success) {
+      if (result.success && Array.isArray(result.data)) {
         setNews(result.data);
+      } else {
+        console.error("Fetch news returned unexpected data:", result);
+        setNews([]);
       }
     } catch (error) {
       console.error("Error fetching news:", error);
