@@ -14,8 +14,9 @@ export async function GET(request: NextRequest) {
 
     // If ID is provided, fetch single item
     if (id) {
+      const safeId = id.replace(/'/g, "''");
       const rows = await db.$queryRawUnsafe(
-        `SELECT * FROM "inovasi" WHERE "id" = '${id.replace(/'/g, "''")}' LIMIT 1`
+        `SELECT * FROM "inovasi" WHERE "id" = '${safeId}' LIMIT 1`
       );
       if (!Array.isArray(rows) || (rows as Record<string, unknown>[]).length === 0) {
         return NextResponse.json(
@@ -24,64 +25,57 @@ export async function GET(request: NextRequest) {
         );
       }
       const inovasi = (rows as Record<string, unknown>[])[0];
-      // Increment view count
       await db.$executeRawUnsafe(
-        `UPDATE "inovasi" SET "viewCount" = COALESCE("viewCount", 0) + 1 WHERE "id" = '${id.replace(/'/g, "''")}'`
+        `UPDATE "inovasi" SET "viewCount" = COALESCE("viewCount", 0) + 1 WHERE "id" = '${safeId}'`
       );
       return NextResponse.json({ success: true, data: inovasi });
     }
 
     // Build WHERE clause
-    let whereClause = "";
-    const params: string[] = [];
-    let paramIndex = 1;
+    const conditions: string[] = [];
+    const params: unknown[] = [];
 
     if (!all) {
-      whereClause += ` AND "isPublished" = true`;
+      conditions.push('"isPublished" = true');
     }
     if (category && category !== "Semua") {
       params.push(category);
-      whereClause += ` AND "category" = $${paramIndex++}`;
+      conditions.push(`"category" = $${conditions.length + 1}`);
     }
     if (q) {
-      params.push(`%${q}%`, `%${q}%`, `%${q}%`);
-      whereClause += ` AND ("title" ILIKE $${paramIndex} OR "description" ILIKE $${paramIndex + 1} OR "content" ILIKE $${paramIndex + 2})`;
-      paramIndex += 3;
+      const pattern = `%${q}%`;
+      params.push(pattern, pattern, pattern);
+      conditions.push(`("title" ILIKE $${conditions.length + 1} OR "description" ILIKE $${conditions.length + 2} OR "content" ILIKE $${conditions.length + 3})`);
     }
 
+    const whereClause = conditions.length > 0 ? ` WHERE ${conditions.join(" AND ")}` : "";
     const offset = (page - 1) * limit;
 
-    const query = `SELECT * FROM "inovasi" WHERE 1=1${whereClause} ORDER BY COALESCE("date", "createdAt") DESC LIMIT ${limit} OFFSET ${offset}`;
-    const countQuery = `SELECT COUNT(*)::int as count FROM "inovasi" WHERE 1=1${whereClause}`;
+    const selectQuery = `SELECT * FROM "inovasi"${whereClause} ORDER BY COALESCE("date", "createdAt") DESC LIMIT ${limit} OFFSET ${offset}`;
+    const countQuery = `SELECT COUNT(*)::int as count FROM "inovasi"${whereClause}`;
     const catQuery = `SELECT "category", COUNT(*)::int as count FROM "inovasi" WHERE ${all ? '1=1' : '"isPublished" = true'} GROUP BY "category" ORDER BY "category" ASC`;
 
     const [rows, countRows, catRows] = await Promise.all([
-      params.length > 0 ? db.$queryRawUnsafe(query, ...params) : db.$queryRawUnsafe(query),
+      params.length > 0 ? db.$queryRawUnsafe(selectQuery, ...params) : db.$queryRawUnsafe(selectQuery),
       params.length > 0 ? db.$queryRawUnsafe(countQuery, ...params) : db.$queryRawUnsafe(countQuery),
       db.$queryRawUnsafe(catQuery),
     ]);
 
-    const total = (countRows as { count: number }[])[0]?.count || 0;
-    const categories = (catRows as { category: string; count: number }[])
-      .map((r) => r.category)
-      .filter(Boolean);
+    const total = Array.isArray(countRows) && countRows.length > 0
+      ? (countRows as { count: number }[])[0].count : 0;
+    const categories = Array.isArray(catRows)
+      ? (catRows as { category: string; count: number }[]).map((r) => r.category).filter(Boolean)
+      : [];
 
     return NextResponse.json(
       {
         success: true,
         data: rows,
         categories,
-        pagination: {
-          total,
-          page,
-          pageSize: limit,
-          totalPages: Math.ceil(total / limit),
-        },
+        pagination: { total, page, pageSize: limit, totalPages: Math.ceil(total / limit) },
       },
       {
-        headers: {
-          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
-        },
+        headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" },
       }
     );
   } catch (error) {

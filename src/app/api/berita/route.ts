@@ -11,62 +11,45 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const all = searchParams.get("all") === "true";
 
-    let whereClause = "";
-    const params: string[] = [];
-    let paramIndex = 1;
+    // Build WHERE clause
+    const conditions: string[] = [];
+    const params: unknown[] = [];
 
     if (!all) {
-      whereClause += ` AND "isPublished" = true`;
+      conditions.push('"isPublished" = true');
     }
     if (category && category !== "Semua") {
       params.push(category);
-      whereClause += ` AND "category" = $${paramIndex++}`;
+      conditions.push(`"category" = $${conditions.length + 1}`);
     }
     if (q) {
-      params.push(`%${q}%`, `%${q}%`, `%${q}%`);
-      whereClause += ` AND ("title" ILIKE $${paramIndex} OR "excerpt" ILIKE $${paramIndex + 1} OR "content" ILIKE $${paramIndex + 2})`;
-      paramIndex += 3;
+      const pattern = `%${q}%`;
+      params.push(pattern, pattern, pattern);
+      conditions.push(`("title" ILIKE $${conditions.length + 1} OR "excerpt" ILIKE $${conditions.length + 2} OR "content" ILIKE $${conditions.length + 3})`);
     }
 
+    const whereClause = conditions.length > 0 ? ` WHERE ${conditions.join(" AND ")}` : "";
     const offset = (page - 1) * limit;
 
-    const [rows, countResult] = await Promise.all([
-      db.$queryRawUnsafe(
-        `SELECT * FROM "berita" WHERE 1=1${whereClause} ORDER BY "createdAt" DESC LIMIT ${limit} OFFSET ${offset}`,
-      ),
-      db.$queryRawUnsafe(
-        `SELECT COUNT(*)::int as count FROM "berita" WHERE 1=1${whereClause}`,
-      ),
+    const selectQuery = `SELECT * FROM "berita"${whereClause} ORDER BY "createdAt" DESC LIMIT ${limit} OFFSET ${offset}`;
+    const countQuery = `SELECT COUNT(*)::int as count FROM "berita"${whereClause}`;
+
+    const [rows, countRows] = await Promise.all([
+      params.length > 0 ? db.$queryRawUnsafe(selectQuery, ...params) : db.$queryRawUnsafe(selectQuery),
+      params.length > 0 ? db.$queryRawUnsafe(countQuery, ...params) : db.$queryRawUnsafe(countQuery),
     ]);
 
-    // Replace parameter placeholders
-    let finalRows = rows;
-    if (params.length > 0) {
-      const finalQuery = `SELECT * FROM "berita" WHERE 1=1${whereClause} ORDER BY "createdAt" DESC LIMIT ${limit} OFFSET ${offset}`;
-      finalRows = await db.$queryRawUnsafe(finalQuery, ...params);
-
-      const finalCountQuery = `SELECT COUNT(*)::int as count FROM "berita" WHERE 1=1${whereClause}`;
-      const countRows = await db.$queryRawUnsafe(finalCountQuery, ...params);
-      (countResult as { count: number }[]))[0].count;
-    }
-
-    const total = (countResult as { count: number }[])[0]?.count || 0;
+    const total = Array.isArray(countRows) && countRows.length > 0
+      ? (countRows as { count: number }[])[0].count : 0;
 
     return NextResponse.json(
       {
         success: true,
-        data: finalRows,
-        pagination: {
-          total,
-          page,
-          pageSize: limit,
-          totalPages: Math.ceil(total / limit),
-        },
+        data: rows,
+        pagination: { total, page, pageSize: limit, totalPages: Math.ceil(total / limit) },
       },
       {
-        headers: {
-          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
-        },
+        headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" },
       }
     );
   } catch (error) {
@@ -92,14 +75,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate slug from title
     const slug = title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .substring(0, 100);
 
-    // Check if slug exists
     const existing = await db.berita.findUnique({ where: { slug } });
     const finalSlug = existing ? `${slug}-${Date.now()}` : slug;
 
