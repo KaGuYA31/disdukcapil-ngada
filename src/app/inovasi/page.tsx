@@ -526,6 +526,7 @@ export default function InovasiPage() {
                               alt={activity.title}
                               fill
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              loading="lazy"
                               className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                             />
                           ) : (

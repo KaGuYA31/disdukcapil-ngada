@@ -294,6 +294,7 @@ export default function PengaturanPage() {
                     <ImageUpload
                       value={bupatiPhoto}
                       onChange={(url) => setBupatiPhoto(url)}
+                      folder="pengaturan"
                     />
                     <p className="text-xs text-gray-500">Upload foto langsung dari komputer (JPG/PNG, maks. 5MB)</p>
                   </div>
@@ -337,6 +338,7 @@ export default function PengaturanPage() {
                     <ImageUpload
                       value={wakilPhoto}
                       onChange={(url) => setWakilPhoto(url)}
+                      folder="pengaturan"
                     />
                     <p className="text-xs text-gray-500">Upload foto langsung dari komputer (JPG/PNG, maks. 5MB)</p>
                   </div>

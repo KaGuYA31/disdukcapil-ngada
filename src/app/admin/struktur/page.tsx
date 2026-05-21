@@ -328,6 +328,7 @@ export default function AdminStrukturPage() {
                                 src={item.photo}
                                 alt={item.name}
                                 fill
+                                sizes="48px"
                                 className="object-cover"
                               />
                             ) : (
@@ -443,6 +444,7 @@ export default function AdminStrukturPage() {
               <ImageUpload
                 value={formData.photo}
                 onChange={(url) => setFormData({ ...formData, photo: url })}
+                folder="struktur"
               />
               <p className="text-xs text-gray-500">Upload foto langsung dari komputer</p>
             </div>

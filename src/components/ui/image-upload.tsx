@@ -11,9 +11,10 @@ interface ImageUploadProps {
   onChange: (url: string) => void;
   className?: string;
   disabled?: boolean;
+  folder?: string; // Supabase storage folder
 }
 
-export function ImageUpload({ value, onChange, className, disabled }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, className, disabled, folder }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,6 +40,9 @@ export function ImageUpload({ value, onChange, className, disabled }: ImageUploa
     try {
       const formData = new FormData();
       formData.append("file", file);
+      if (folder) {
+        formData.append("folder", folder);
+      }
 
       const response = await fetch("/api/upload-document", {
         method: "POST",

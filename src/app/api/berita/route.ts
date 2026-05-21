@@ -40,16 +40,23 @@ export async function GET(request: NextRequest) {
       { context: "Berita GET", maxRetries: 2, delayMs: 300 }
     );
 
-    return NextResponse.json({
-      success: true,
-      data: news,
-      pagination: {
-        total,
-        page,
-        pageSize: limit,
-        totalPages: Math.ceil(total / limit),
+    return NextResponse.json(
+      {
+        success: true,
+        data: news,
+        pagination: {
+          total,
+          page,
+          pageSize: limit,
+          totalPages: Math.ceil(total / limit),
+        },
       },
-    });
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
+        },
+      }
+    );
   } catch (error) {
     console.error("Error fetching news:", error);
     return NextResponse.json(

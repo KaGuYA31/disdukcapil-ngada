@@ -191,19 +191,55 @@ export default function LayananOnlinePage() {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
+    const file = files[0];
+
+    // Client-side validation for public uploads
+    const publicAllowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "application/pdf",
+    ];
+    const publicMaxSize = 5 * 1024 * 1024; // 5MB
+
+    if (!publicAllowedTypes.includes(file.type)) {
+      toast({
+        title: "Tipe File Tidak Diizinkan",
+        description: "Hanya file JPG, PNG, GIF, WebP, dan PDF yang diperbolehkan.",
+        variant: "destructive",
+      });
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > publicMaxSize) {
+      toast({
+        title: "Ukuran File Terlalu Besar",
+        description: "Ukuran file maksimal 5MB untuk upload publik.",
+        variant: "destructive",
+      });
+      e.target.value = "";
+      return;
+    }
+
     setUploadingDocs(true);
     try {
-      const file = files[0];
       const formDataUpload = new FormData();
       formDataUpload.append("file", file);
       formDataUpload.append("folder", "pengajuan");
 
-      const response = await fetch("/api/upload-document", {
+      const response = await fetch("/api/public-upload", {
         method: "POST",
         body: formDataUpload,
       });
 
       const result = await response.json();
+
+      if (response.status === 429) {
+        throw new Error(result.error || `Terlalu banyak permintaan. Silakan tunggu ${result.retryAfter || 60} detik.`);
+      }
+
       if (result.success) {
         setFormData((prev) => ({
           ...prev,

@@ -559,6 +559,7 @@ export default function AdminInovasiPage() {
                                 src={activity.photo}
                                 alt={activity.title}
                                 fill
+                                sizes="64px"
                                 className="object-cover"
                               />
                             ) : (
@@ -674,6 +675,7 @@ export default function AdminInovasiPage() {
                 <ImageUpload
                   value={formData.photo}
                   onChange={(url) => setFormData({ ...formData, photo: url })}
+                  folder="inovasi"
                 />
                 <p className="text-xs text-gray-500">Upload foto utama langsung dari komputer</p>
               </div>
@@ -762,6 +764,7 @@ export default function AdminInovasiPage() {
                             <ImageUpload
                               value={photo}
                               onChange={(url) => updatePhotoSlot(index, url)}
+                              folder="inovasi"
                             />
                           </div>
                           <Button

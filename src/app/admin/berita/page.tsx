@@ -440,6 +440,7 @@ function AdminBeritaContent() {
               <ImageUpload
                 value={formData.thumbnail}
                 onChange={(url) => setFormData((prev) => ({ ...prev, thumbnail: url }))}
+                folder="berita"
               />
               <p className="text-xs text-gray-500">Upload foto langsung dari komputer</p>
             </div>
@@ -467,6 +468,7 @@ function AdminBeritaContent() {
                           <ImageUpload
                             value={photo}
                             onChange={(url) => updatePhotoSlot(index, url)}
+                            folder="berita"
                           />
                         </div>
                         <Button

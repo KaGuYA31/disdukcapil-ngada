@@ -20,7 +20,6 @@ const PROTECTED_API_PREFIXES: string[] = [
   "/api/inovasi",
   "/api/layanan-online",
   "/api/admin",
-  "/api/upload",
   "/api/upload-document",
   "/api/blanko-ektp",
   "/api/pimpinan",
