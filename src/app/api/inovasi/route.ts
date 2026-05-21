@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { withRetry } from "@/lib/retry";
 
-// GET - Fetch all published innovation activities or single by ID
+// GET - Fetch innovation activities (using raw SQL for schema resilience)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -11,78 +10,66 @@ export async function GET(request: NextRequest) {
     const q = searchParams.get("q");
     const limit = parseInt(searchParams.get("limit") || "10");
     const page = parseInt(searchParams.get("page") || "1");
+    const all = searchParams.get("all") === "true";
 
     // If ID is provided, fetch single item
     if (id) {
-      const inovasi = await db.inovasi.findUnique({
-        where: { id },
-      });
-
-      if (!inovasi) {
+      const rows = await db.$queryRawUnsafe(
+        `SELECT * FROM "inovasi" WHERE "id" = '${id.replace(/'/g, "''")}' LIMIT 1`
+      );
+      if (!Array.isArray(rows) || (rows as Record<string, unknown>[]).length === 0) {
         return NextResponse.json(
           { success: false, error: "Inovasi tidak ditemukan" },
           { status: 404 }
         );
       }
-
+      const inovasi = (rows as Record<string, unknown>[])[0];
       // Increment view count
-      await db.inovasi.update({
-        where: { id },
-        data: { viewCount: { increment: 1 } },
-      });
-
-      return NextResponse.json({
-        success: true,
-        data: inovasi,
-      });
+      await db.$executeRawUnsafe(
+        `UPDATE "inovasi" SET "viewCount" = COALESCE("viewCount", 0) + 1 WHERE "id" = '${id.replace(/'/g, "''")}'`
+      );
+      return NextResponse.json({ success: true, data: inovasi });
     }
 
-    // Admin can fetch all items (including drafts) with ?all=true
-    const all = searchParams.get("all") === "true";
+    // Build WHERE clause
+    let whereClause = "";
+    const params: string[] = [];
+    let paramIndex = 1;
 
-    const where: Record<string, unknown> = {};
     if (!all) {
-      where.isPublished = true;
+      whereClause += ` AND "isPublished" = true`;
     }
-
     if (category && category !== "Semua") {
-      where.category = category;
+      params.push(category);
+      whereClause += ` AND "category" = $${paramIndex++}`;
     }
-
     if (q) {
-      where.OR = [
-        { title: { contains: q } },
-        { description: { contains: q } },
-        { content: { contains: q } },
-      ];
+      params.push(`%${q}%`, `%${q}%`, `%${q}%`);
+      whereClause += ` AND ("title" ILIKE $${paramIndex} OR "description" ILIKE $${paramIndex + 1} OR "content" ILIKE $${paramIndex + 2})`;
+      paramIndex += 3;
     }
 
-    const [inovasi, total, categoriesResult] = await withRetry(
-      () => Promise.all([
-        db.inovasi.findMany({
-          where,
-          orderBy: { date: "desc" },
-          skip: (page - 1) * limit,
-          take: limit,
-        }),
-        db.inovasi.count({ where }),
-        db.inovasi.groupBy({
-          by: ["category"],
-          where: all ? {} : { isPublished: true },
-          orderBy: { category: "asc" },
-        }),
-      ]),
-      { context: "Inovasi GET", maxRetries: 2, delayMs: 300 }
-    );
+    const offset = (page - 1) * limit;
 
-    const categories = categoriesResult
+    const query = `SELECT * FROM "inovasi" WHERE 1=1${whereClause} ORDER BY COALESCE("date", "createdAt") DESC LIMIT ${limit} OFFSET ${offset}`;
+    const countQuery = `SELECT COUNT(*)::int as count FROM "inovasi" WHERE 1=1${whereClause}`;
+    const catQuery = `SELECT "category", COUNT(*)::int as count FROM "inovasi" WHERE ${all ? '1=1' : '"isPublished" = true'} GROUP BY "category" ORDER BY "category" ASC`;
+
+    const [rows, countRows, catRows] = await Promise.all([
+      params.length > 0 ? db.$queryRawUnsafe(query, ...params) : db.$queryRawUnsafe(query),
+      params.length > 0 ? db.$queryRawUnsafe(countQuery, ...params) : db.$queryRawUnsafe(countQuery),
+      db.$queryRawUnsafe(catQuery),
+    ]);
+
+    const total = (countRows as { count: number }[])[0]?.count || 0;
+    const categories = (catRows as { category: string; count: number }[])
       .map((r) => r.category)
       .filter(Boolean);
 
     return NextResponse.json(
       {
         success: true,
-        data: inovasi,
+        data: rows,
         categories,
         pagination: {
           total,
@@ -99,8 +86,9 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     console.error("Error fetching innovation activities:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal mengambil data inovasi" },
+      { success: false, error: "Gagal mengambil data inovasi", debug: msg },
       { status: 500 }
     );
   }
@@ -124,7 +112,6 @@ export async function POST(request: NextRequest) {
       author,
     } = body;
 
-    // Validate required fields
     if (!title || !description || !content) {
       return NextResponse.json(
         { success: false, error: "Judul, deskripsi, dan konten harus diisi" },
@@ -132,14 +119,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate slug from title
     const baseSlug = title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .substring(0, 100);
 
-    // Check if slug exists and make it unique
     const existing = await db.inovasi.findUnique({ where: { slug: baseSlug } });
     const slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
 
@@ -200,7 +185,6 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Check if innovation exists
     const existing = await db.inovasi.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json(
@@ -209,7 +193,6 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Generate new slug if title changes
     let slug = existing.slug;
     if (title && title !== existing.title) {
       const baseSlug = title
@@ -217,7 +200,6 @@ export async function PUT(request: NextRequest) {
         .replace(/[^a-z0-9\s-]/g, "")
         .replace(/\s+/g, "-")
         .substring(0, 100);
-
       const slugExists = await db.inovasi.findUnique({ where: { slug: baseSlug } });
       slug = slugExists ? `${baseSlug}-${Date.now()}` : baseSlug;
     }
@@ -267,7 +249,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Check if innovation exists
     const existing = await db.inovasi.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json(

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { withRetry } from "@/lib/retry";
 
-// GET - Fetch all news
+// GET - Fetch all news (using raw SQL for schema resilience)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -10,44 +9,53 @@ export async function GET(request: NextRequest) {
     const q = searchParams.get("q");
     const limit = parseInt(searchParams.get("limit") || "10");
     const page = parseInt(searchParams.get("page") || "1");
-
-    const where: Record<string, unknown> = {};
-
-    // Admin can fetch all items (including drafts) with ?all=true
     const all = searchParams.get("all") === "true";
+
+    let whereClause = "";
+    const params: string[] = [];
+    let paramIndex = 1;
+
     if (!all) {
-      where.isPublished = true;
+      whereClause += ` AND "isPublished" = true`;
     }
-
     if (category && category !== "Semua") {
-      where.category = category;
+      params.push(category);
+      whereClause += ` AND "category" = $${paramIndex++}`;
     }
-
     if (q) {
-      where.OR = [
-        { title: { contains: q } },
-        { excerpt: { contains: q } },
-        { content: { contains: q } },
-      ];
+      params.push(`%${q}%`, `%${q}%`, `%${q}%`);
+      whereClause += ` AND ("title" ILIKE $${paramIndex} OR "excerpt" ILIKE $${paramIndex + 1} OR "content" ILIKE $${paramIndex + 2})`;
+      paramIndex += 3;
     }
 
-    const [news, total] = await withRetry(
-      () => Promise.all([
-        db.berita.findMany({
-          where,
-          orderBy: { createdAt: "desc" },
-          skip: (page - 1) * limit,
-          take: limit,
-        }),
-        db.berita.count({ where }),
-      ]),
-      { context: "Berita GET", maxRetries: 2, delayMs: 300 }
-    );
+    const offset = (page - 1) * limit;
+
+    const [rows, countResult] = await Promise.all([
+      db.$queryRawUnsafe(
+        `SELECT * FROM "berita" WHERE 1=1${whereClause} ORDER BY "createdAt" DESC LIMIT ${limit} OFFSET ${offset}`,
+      ),
+      db.$queryRawUnsafe(
+        `SELECT COUNT(*)::int as count FROM "berita" WHERE 1=1${whereClause}`,
+      ),
+    ]);
+
+    // Replace parameter placeholders
+    let finalRows = rows;
+    if (params.length > 0) {
+      const finalQuery = `SELECT * FROM "berita" WHERE 1=1${whereClause} ORDER BY "createdAt" DESC LIMIT ${limit} OFFSET ${offset}`;
+      finalRows = await db.$queryRawUnsafe(finalQuery, ...params);
+
+      const finalCountQuery = `SELECT COUNT(*)::int as count FROM "berita" WHERE 1=1${whereClause}`;
+      const countRows = await db.$queryRawUnsafe(finalCountQuery, ...params);
+      (countResult as { count: number }[]))[0].count;
+    }
+
+    const total = (countResult as { count: number }[])[0]?.count || 0;
 
     return NextResponse.json(
       {
         success: true,
-        data: news,
+        data: finalRows,
         pagination: {
           total,
           page,
