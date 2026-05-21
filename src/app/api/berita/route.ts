@@ -63,8 +63,9 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     console.error("Error fetching news:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: "Gagal mengambil data berita" },
+      { success: false, error: "Gagal mengambil data berita", debug: msg },
       { status: 500 }
     );
   }
