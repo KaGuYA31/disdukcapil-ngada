@@ -49,8 +49,14 @@ const navigation: NavItem[] = [
   },
   { title: "Inovasi", href: "/inovasi" },
   { title: "Berita", href: "/berita" },
-  { title: "Statistik Kependudukan", href: "/statistik" },
-  { title: "Struktur Organisasi", href: "/profil#struktur" },
+  {
+    title: "Informasi",
+    href: "/statistik",
+    children: [
+      { title: "Statistik Kependudukan", href: "/statistik" },
+      { title: "Struktur Organisasi", href: "/profil#struktur" },
+    ],
+  },
   { title: "Pengaduan", href: "/pengaduan" },
 ];
 

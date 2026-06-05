@@ -644,9 +644,29 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET - Get all statistics data
+// GET - Get all statistics data using raw SQL for resilience against missing tables
 export async function GET() {
   try {
+    // Helper: query a single row (findFirst equivalent)
+    async function queryFirst(sql: string) {
+      try {
+        const rows = await db.$queryRawUnsafe(sql) as Record<string, unknown>[];
+        return rows.length > 0 ? rows[0] : null;
+      } catch {
+        return null;
+      }
+    }
+
+    // Helper: query many rows (findMany equivalent)
+    async function queryMany(sql: string) {
+      try {
+        const rows = await db.$queryRawUnsafe(sql) as Record<string, unknown>[];
+        return rows;
+      } catch {
+        return [];
+      }
+    }
+
     const [
       ringkasan,
       kecamatan,
@@ -660,27 +680,27 @@ export async function GET() {
       ringkasanDokumen,
       uploadHistory,
     ] = await Promise.all([
-      db.dataRingkasan.findFirst({ orderBy: { createdAt: "desc" } }),
-      db.pendudukKecamatan.findMany({ orderBy: { kecamatan: "asc" } }),
-      db.pendudukKelurahan.findMany({ orderBy: [{ kecamatan: "asc" }, { kelurahan: "asc" }] }),
-      db.distribusiAgama.findMany({ orderBy: { jumlah: "desc" } }),
-      db.distribusiPendidikan.findMany({ orderBy: { jumlah: "desc" } }),
-      db.distribusiPekerjaan.findMany({ orderBy: { jumlah: "desc" } }),
-      db.statusPerkawinan.findMany({ orderBy: { jumlah: "desc" } }),
-      db.distribusiDisabilitas.findMany({ orderBy: { jumlah: "desc" } }),
-      db.dokumenKecamatan.findMany({ orderBy: { kecamatan: "asc" } }),
-      db.ringkasanDokumen.findFirst({ orderBy: { createdAt: "desc" } }),
-      db.uploadHistory.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
+      queryFirst(`SELECT * FROM "data_ringkasan" ORDER BY "createdAt" DESC LIMIT 1`),
+      queryMany(`SELECT * FROM "penduduk_kecamatan" ORDER BY "kecamatan" ASC`),
+      queryMany(`SELECT * FROM "penduduk_kelurahan" ORDER BY "kecamatan" ASC, "kelurahan" ASC`),
+      queryMany(`SELECT * FROM "distribusi_agama" ORDER BY "jumlah" DESC`),
+      queryMany(`SELECT * FROM "distribusi_pendidikan" ORDER BY "jumlah" DESC`),
+      queryMany(`SELECT * FROM "distribusi_pekerjaan" ORDER BY "jumlah" DESC`),
+      queryMany(`SELECT * FROM "status_perkawinan" ORDER BY "jumlah" DESC`),
+      queryMany(`SELECT * FROM "distribusi_disabilitas" ORDER BY "jumlah" DESC`),
+      queryMany(`SELECT * FROM "dokumen_kecamatan" ORDER BY "kecamatan" ASC`),
+      queryFirst(`SELECT * FROM "ringkasan_dokumen" ORDER BY "createdAt" DESC LIMIT 1`),
+      queryMany(`SELECT * FROM "upload_history" ORDER BY "createdAt" DESC LIMIT 5`),
     ]);
 
     // If ringkasanDokumen exists, use it; otherwise calculate from dokumen kecamatan
     const docSummary = ringkasanDokumen || (dokumen.length > 0 ? {
-      ektpCetak: dokumen.reduce((sum, d) => sum + d.ektpCetak, 0),
-      ektpBelum: dokumen.reduce((sum, d) => sum + d.ektpBelum, 0),
-      aktaLahir: dokumen.reduce((sum, d) => sum + d.aktaLahir, 0),
-      aktaBelum: dokumen.reduce((sum, d) => sum + d.aktaBelum, 0),
-      kiaMiliki: dokumen.reduce((sum, d) => sum + d.kiaMiliki, 0),
-      kiaBelum: dokumen.reduce((sum, d) => sum + d.kiaBelum, 0),
+      ektpCetak: dokumen.reduce((sum, d) => sum + Number(d.ektpCetak || 0), 0),
+      ektpBelum: dokumen.reduce((sum, d) => sum + Number(d.ektpBelum || 0), 0),
+      aktaLahir: dokumen.reduce((sum, d) => sum + Number(d.aktaLahir || 0), 0),
+      aktaBelum: dokumen.reduce((sum, d) => sum + Number(d.aktaBelum || 0), 0),
+      kiaMiliki: dokumen.reduce((sum, d) => sum + Number(d.kiaMiliki || 0), 0),
+      kiaBelum: dokumen.reduce((sum, d) => sum + Number(d.kiaBelum || 0), 0),
     } : null);
 
     return NextResponse.json({

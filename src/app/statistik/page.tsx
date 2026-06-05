@@ -439,12 +439,12 @@ export default function StatistikPage() {
   // Use ringkasanDokumen if available, otherwise calculate from dokumen kecamatan
   const totalDokumen = data.ringkasanDokumen || data.dokumen.reduce(
     (acc, d) => ({
-      ektpCetak: acc.ektpCetak + d.ektpCetak,
-      ektpBelum: acc.ektpBelum + d.ektpBelum,
-      aktaLahir: acc.aktaLahir + d.aktaLahir,
-      aktaBelum: acc.aktaBelum + d.aktaBelum,
-      kiaMiliki: acc.kiaMiliki + d.kiaMiliki,
-      kiaBelum: acc.kiaBelum + d.kiaBelum,
+      ektpCetak: acc.ektpCetak + (d.ektpCetak || 0),
+      ektpBelum: acc.ektpBelum + (d.ektpBelum || 0),
+      aktaLahir: acc.aktaLahir + (d.aktaLahir || 0),
+      aktaBelum: acc.aktaBelum + (d.aktaBelum || 0),
+      kiaMiliki: acc.kiaMiliki + (d.kiaMiliki || 0),
+      kiaBelum: acc.kiaBelum + (d.kiaBelum || 0),
     }),
     { ektpCetak: 0, ektpBelum: 0, aktaLahir: 0, aktaBelum: 0, kiaMiliki: 0, kiaBelum: 0 }
   );
@@ -464,6 +464,8 @@ export default function StatistikPage() {
     perempuan: 0,
     rasioJK: 0,
   };
+
+  const noData = ringkasan.totalPenduduk === 0 && data.ringkasan === null;
 
   const totalKTP = totalDokumen.ektpCetak + totalDokumen.ektpBelum;
   const totalAkta = totalDokumen.aktaLahir + totalDokumen.aktaBelum;
@@ -568,6 +570,39 @@ export default function StatistikPage() {
           </div>
         </section>
 
+        {/* ============================================= */}
+        {/* Content: No-data notice or Charts             */}
+        {/* ============================================= */}
+        {noData ? (
+          <div className="container mx-auto px-4 py-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" as const }}
+              className="max-w-lg mx-auto text-center"
+            >
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-teal-100 dark:from-blue-900/30 dark:to-teal-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                <BarChart3 className="h-10 w-10 text-blue-500 dark:text-blue-400" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+                Data Statistik Belum Tersedia
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                Data statistik belum tersedia. Silakan upload data melalui panel admin.
+              </p>
+              <Button
+                asChild
+                className="bg-green-700 hover:bg-green-800 text-white gap-2"
+                size="lg"
+              >
+                <a href="/admin">
+                  Buka Panel Admin
+                </a>
+              </Button>
+            </motion.div>
+          </div>
+        ) : (
+        <>
         {/* ============================================= */}
         {/* Quick Stats Summary Cards                     */}
         {/* ============================================= */}
@@ -990,6 +1025,8 @@ export default function StatistikPage() {
             <p>Sumber: Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ngada</p>
           </motion.div>
         </div>
+        </>
+        )}
       </main>
       <Footer />
       <WhatsAppButton />
