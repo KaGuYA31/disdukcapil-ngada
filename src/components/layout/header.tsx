@@ -49,6 +49,8 @@ const navigation: NavItem[] = [
   },
   { title: "Inovasi", href: "/inovasi" },
   { title: "Berita", href: "/berita" },
+  { title: "Statistik Kependudukan", href: "/statistik" },
+  { title: "Struktur Organisasi", href: "/profil#struktur" },
   { title: "Pengaduan", href: "/pengaduan" },
 ];
 
@@ -174,7 +176,9 @@ export function Header() {
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
+    // Strip hash fragment for comparison
+    const basePath = href.split("#")[0];
+    return pathname.startsWith(basePath);
   };
 
   return (
